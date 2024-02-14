@@ -1,5 +1,4 @@
 import { StyleSheet, Text, View } from 'react-native';
-import {useFonts} from "expo-font";
 import { Animated, Easing } from 'react-native';
 import { useEffect, useRef } from 'react';
 import SignInButton from '../components/SignInButton';
@@ -19,7 +18,7 @@ const styles = StyleSheet.create({
     },
     splashText: {
       fontSize: 50,
-      fontFamily: 'BlueScreen',
+      fontFamily: 'Blue Screen Personal Use',
     }
 });
 
@@ -33,10 +32,6 @@ const secondStepFunction = (t) => stepFunction(14.0, t);
 const thirdStepFunction = (t) => stepFunction(16.0, t);
 
 export default function SplashScreen() {
-    
-      const [loaded] = useFonts({
-        "BlueScreen": require("../assets/fonts/BlueScreen.ttf")
-      });
     
       const firstLineDisplayed = useRef(new Animated.Value(0)).current;
       const secondLineDisplayed = useRef(new Animated.Value(0)).current;
@@ -122,20 +117,19 @@ export default function SplashScreen() {
         return (
         <View style={styles.container}>
           
-            {loaded && (<>
-              <Animated.View style={[styles.textContainer, {width: firstLineDisplayed.interpolate({inputRange: [0, 100], outputRange: ['0%', '100%']}),
-              borderRightColor: blinkingCaretOne.interpolate({inputRange: [0, 0.5, 0.6, 1], outputRange: ['transparent', 'transparent', '#7FFFD4', '#7FFFD4']})}]}>
-                <Text numberOfLines={1} style={styles.splashText}>Timeboxing</Text>
-              </Animated.View>
-              <Animated.View style={[styles.textContainer, {width: secondLineDisplayed.interpolate({inputRange: [0, 100], outputRange: ['0%', '100%']}),
-              borderRightColor: blinkingCaretTwo.interpolate({inputRange: [0, 0.5, 0.6, 1], outputRange: ['transparent', 'transparent', '#7FFFD4', '#7FFFD4']})}]}>
-                <Text  numberOfLines={1} style={styles.splashText}>For The</Text>
-              </Animated.View>
-              <Animated.View style={[styles.textContainer, {width: thirdLineDisplayed.interpolate({inputRange: [0, 100], outputRange: ['0%', '100%']}),
-              borderRightColor: blinkingCaretThree.interpolate({inputRange: [0, 0.5, 0.6, 1], outputRange: ['transparent', 'transparent', '#7FFFD4', '#7FFFD4']})}]}>
-                <Text numberOfLines={1} style={styles.splashText}>Everyman</Text>
-              </Animated.View>
-            </>)}
+            
+            <Animated.View style={[styles.textContainer, {width: firstLineDisplayed.interpolate({inputRange: [0, 100], outputRange: ['0%', '100%']}),
+            borderRightColor: blinkingCaretOne.interpolate({inputRange: [0, 0.5, 0.6, 1], outputRange: ['transparent', 'transparent', '#7FFFD4', '#7FFFD4']})}]}>
+              <Text numberOfLines={1} style={styles.splashText}>Timeboxing</Text>
+            </Animated.View>
+            <Animated.View style={[styles.textContainer, {width: secondLineDisplayed.interpolate({inputRange: [0, 100], outputRange: ['0%', '100%']}),
+            borderRightColor: blinkingCaretTwo.interpolate({inputRange: [0, 0.5, 0.6, 1], outputRange: ['transparent', 'transparent', '#7FFFD4', '#7FFFD4']})}]}>
+              <Text  numberOfLines={1} style={styles.splashText}>For The</Text>
+            </Animated.View>
+            <Animated.View style={[styles.textContainer, {width: thirdLineDisplayed.interpolate({inputRange: [0, 100], outputRange: ['0%', '100%']}),
+            borderRightColor: blinkingCaretThree.interpolate({inputRange: [0, 0.5, 0.6, 1], outputRange: ['transparent', 'transparent', '#7FFFD4', '#7FFFD4']})}]}>
+              <Text numberOfLines={1} style={styles.splashText}>Everyman</Text>
+            </Animated.View>
             <SignInButton />
         </View>
         );

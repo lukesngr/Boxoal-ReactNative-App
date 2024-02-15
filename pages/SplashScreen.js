@@ -18,7 +18,8 @@ const styles = StyleSheet.create({
     },
     splashText: {
       fontSize: 50,
-      fontFamily: 'Blue Screen Personal Use',
+      fontFamily: 'BlueScreen',
+      color: 'black'
     }
 });
 

@@ -2,6 +2,8 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import SplashScreen from './pages/SplashScreen';
 import { Text } from 'react-native';
+import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Stack = createNativeStackNavigator();
 
@@ -19,10 +21,20 @@ export const linking = {
 
 
 export function Login({ navigation, route }) {
-  console.log(route);
   const { accessToken } = route.params;
-  console.log(accessToken);
-  return <><Text>hello</Text></>
+  axios.get('https://api.github.com/user/emails', {
+    headers: {
+      Authorization: `token ${accessToken}`
+    }
+  }).then(response => {
+      return AsyncStorage.setItem(
+        'username',
+        response.data[0].email,
+      );
+  }).catch(err => {
+    console.log(err);
+  });
+  return <><Text>screwed up</Text></>
 }
 
 export default function App() {

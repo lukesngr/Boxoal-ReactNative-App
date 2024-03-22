@@ -2,6 +2,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import { Animated, Easing } from 'react-native';
 import { useEffect, useRef } from 'react';
 import SignInButton from '../components/SignInButton';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const styles = StyleSheet.create({
     container: {
@@ -32,7 +33,7 @@ const firstStepFunction = (t) => stepFunction(20.0, t);
 const secondStepFunction = (t) => stepFunction(14.0, t);
 const thirdStepFunction = (t) => stepFunction(16.0, t);
 
-export default function SplashScreen() {
+export default function SplashScreen({navigation}) {
     
       const firstLineDisplayed = useRef(new Animated.Value(0)).current;
       const secondLineDisplayed = useRef(new Animated.Value(0)).current;
@@ -115,6 +116,12 @@ export default function SplashScreen() {
           )
         ]).start();
       });
+
+      AsyncStorage.getItem('username').then((value) => {
+        if(value !== null) {
+          navigation.navigate('Timeboxes');
+        }
+      })
         return (
         <View style={styles.container}>
           

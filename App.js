@@ -4,6 +4,7 @@ import SplashScreen from './pages/SplashScreen';
 import { Text } from 'react-native';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import Timeboxes from './pages/Timeboxes';
 
 const Stack = createNativeStackNavigator();
 
@@ -31,10 +32,11 @@ export function Login({ navigation, route }) {
         'username',
         response.data[0].email,
       );
+      navigation.navigate('SplashScreen')
   }).catch(err => {
     console.log(err);
   });
-  return <><Text>screwed up</Text></>
+  return <><Text>Login Successful!</Text></>
 }
 
 export default function App() {

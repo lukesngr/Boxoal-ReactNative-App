@@ -8,7 +8,7 @@ function ScheduleContextProvider({ children }) {
     const [selectedDate, setSelectedDate] = useState(new Date());
     
     return (
-      <ScheduleContext.Provider value={{ selectedSchedule, setSelectedSchedule, expanded, setExpanded, selectedDate, setSelectedDate }}>
+      <ScheduleContext.Provider value={{ selectedSchedule, setSelectedSchedule, selectedDate, setSelectedDate }}>
         {children}
       </ScheduleContext.Provider>
     );

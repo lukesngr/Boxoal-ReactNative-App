@@ -1,5 +1,8 @@
 import { Text } from "react-native";
 import DatePicker from "react-native-date-picker";
+import { useState, useContext } from "react";
+import { FontAwesomeIcon, faCalendar } from "@fortawesome/react-native-fontawesome";
+import { ScheduleContext } from "../ScheduleContext";
 
 export default function TimeboxHeading(props) {
     const [visible, setVisible] = useState(false);

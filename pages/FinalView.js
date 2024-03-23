@@ -8,9 +8,12 @@ const Tab = createBottomTabNavigator();
 export default function FinalView() {
   return (
     <Tab.Navigator>
-      <Tab.Screen name="Timeboxes" component={Timeboxes} />
-      <Tab.Screen name="Schedule" component={Schedules} />
-      <Tab.Screen name="Areas" component={Areas} />
+      <Tab.Screen name="Timeboxes" component={Timeboxes} 
+      options={{headerShown: false}}/>
+      <Tab.Screen name="Schedule" component={Schedules} 
+      options={{headerShown: false}}/>
+      <Tab.Screen name="Areas" component={Areas} 
+      options={{headerShown: false}}/>
     </Tab.Navigator>
   )
 }

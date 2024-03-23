@@ -119,7 +119,7 @@ export default function SplashScreen({navigation}) {
 
       AsyncStorage.getItem('username').then((value) => {
         if(value !== null) {
-          navigation.navigate('Timeboxes');
+          navigation.navigate('FinalView');
         }
       })
         return (

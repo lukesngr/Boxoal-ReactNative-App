@@ -5,6 +5,7 @@ import { Text } from 'react-native';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Timeboxes from './pages/Timeboxes';
+import FinalView from './pages/FinalView';
 
 const Stack = createNativeStackNavigator();
 
@@ -52,8 +53,8 @@ export default function App() {
           component={Login}
           options={{headerShown: false}}></Stack.Screen>
         <Stack.Screen
-          name="Timeboxes"
-          component={Timeboxes}
+          name="FinalView"
+          component={FinalView}
           options={{headerShown: false}}></Stack.Screen>
       </Stack.Navigator>
     </NavigationContainer>

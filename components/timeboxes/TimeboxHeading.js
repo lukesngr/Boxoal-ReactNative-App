@@ -1,8 +1,9 @@
-import { Text } from "react-native";
+import { Text, View, Button, Pressable } from "react-native";
 import DatePicker from "react-native-date-picker";
 import { useState, useContext } from "react";
-import { FontAwesomeIcon, faCalendar } from "@fortawesome/react-native-fontawesome";
+import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { ScheduleContext } from "../ScheduleContext";
+import { faCalendar } from "@fortawesome/free-regular-svg-icons";
 
 export default function TimeboxHeading(props) {
     const [visible, setVisible] = useState(false);
@@ -10,15 +11,26 @@ export default function TimeboxHeading(props) {
 
     return (
         <View>
-            <Text>My Timeboxes</Text>
-            <FontAwesomeIcon onPress={setVisible(true)} icon={faCalendar} />
+            <Text style={{fontSize: 28, color: 'black', textAlign: 'center', marginTop: 4}}>
+                My Timeboxes 
+                <Pressable onPress={() => setVisible(true)}>
+                    <FontAwesomeIcon icon={faCalendar} size={32}/>
+                </Pressable>
+            </Text>
+            
+            
             <DatePicker
                 modal
                 mode="date"
                 date={selectedDate}
-                onDateChange={setSelectedDate}
-                visible={visible}
-                onConfirm={() => setVisible(false)}
+                onDateChange={(date) => setSelectedDate(date)}
+                open={visible}
+                onConfirm={(date) => 
+                    {
+                        setSelectedDate(date);
+                        setVisible(false);
+                    }
+                }
                 onCancel={() => setVisible(false)}></DatePicker>
         </View>
     )

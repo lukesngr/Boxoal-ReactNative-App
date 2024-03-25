@@ -19,7 +19,7 @@ export default function Timeboxes() {
 
   AsyncStorage.getItem('username').then((value) => {
     if(value !== null) {
-      setUsernameSet(value);  
+      setUsername(value);  
     }
   })
 

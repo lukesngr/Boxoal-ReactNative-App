@@ -91,25 +91,25 @@ export function calculateBoxesBetweenTwoDateTimes(dateTime1, dateTime2, boxSizeU
     }
 }
 
-export function calculateMaxNumberOfBoxes(schedule, time, date) {
-    let wakeUpTimeSeparated = schedule.wakeupTime.split(":").map(function(num) { return parseInt(num); });
+export function calculateMaxNumberOfBoxes(wakeupTime, boxSizeUnit, boxSizeNumber, timeboxes, time, date) {
+    let wakeUpTimeSeparated = wakeupTime.split(":").map(function(num) { return parseInt(num); });
     let timeSeparated = time.split(":").map(function(num) { return parseInt(num); });
     let currentDateTime = convertToDateTime(time, date);
     let maxNumberOfBoxes = 0;
 
-    for(let i = 0; i < schedule.timeboxes.length; i++) { //for each time box
-        let timeboxStartTimeInDateTime = new Date(schedule.timeboxes[i].startTime);
+    for(let i = 0; i < timeboxes.length; i++) { //for each time box
+        let timeboxStartTimeInDateTime = new Date(timeboxes[i].startTime);
 
         if(currentDateTime < timeboxStartTimeInDateTime) { //if timebox occurs after the time of a timebox
-            maxNumberOfBoxes = calculateBoxesBetweenTwoDateTimes(currentDateTime, timeboxStartTimeInDateTime, schedule.boxSizeUnit, schedule.boxSizeNumber);
-            i = schedule.timeboxes.length;
+            maxNumberOfBoxes = calculateBoxesBetweenTwoDateTimes(currentDateTime, timeboxStartTimeInDateTime, boxSizeUnit, boxSizeNumber);
+            i = timeboxes.length;
         }else{
             i++;
         }
     }
 
     if(maxNumberOfBoxes <= 0) {
-        maxNumberOfBoxes = calculateMaxNumberOfBoxesAfterTimeIfEmpty(schedule.boxSizeUnit, schedule.boxSizeNumber, timeSeparated, wakeUpTimeSeparated);
+        maxNumberOfBoxes = calculateMaxNumberOfBoxesAfterTimeIfEmpty(boxSizeUnit, boxSizeNumber, timeSeparated, wakeUpTimeSeparated);
     }
 
     return maxNumberOfBoxes;
@@ -166,15 +166,16 @@ export function calculatePixelsFromTopOfGridBasedOnTime(wakeupTime, boxSizeUnit,
     return justBoxesHeight+inBetweenHeight;
 }
 
-export function calculateOverlayHeightForNow(schedule, overlayDimensions) {
+export function calculateOverlayHeightForNow(wakeupTime, boxSizeUnit, boxSizeNumber, overlayDimensions) {
     const currentDate = new Date();
 
-    return calculatePixelsFromTopOfGridBasedOnTime(schedule.wakeupTime, schedule.boxSizeUnit, schedule.boxSizeNumber, overlayDimensions, currentDate);
+    return calculatePixelsFromTopOfGridBasedOnTime(wakeupTime, boxSizeUnit, boxSizeNumber, overlayDimensions, currentDate);
 }
 
-export function calculateSizeOfRecordingOverlay(schedule, overlayDimensions, originalOverlayHeight) {
+export function calculateSizeOfRecordingOverlay(wakeupTime, boxSizeUnit, boxSizeNumber, overlayDimensions, originalOverlayHeight) {
     //could do much more math but choosing easy route
-    let overlaysTotalHeight = calculateOverlayHeightForNow(schedule, overlayDimensions);
+    console.log(overlayDimensions);
+    let overlaysTotalHeight = calculateOverlayHeightForNow(wakeupTime, boxSizeUnit, boxSizeNumber, overlayDimensions);
     let recordingOverlayHeight = overlaysTotalHeight - originalOverlayHeight;
     return recordingOverlayHeight;
 }
@@ -199,7 +200,9 @@ export function thereIsNoRecording(recordedBoxes, reoccuring, date, time) {
     return false;
 }
 
-export function generateTimeBoxGrid(schedule, selectedDate, timeBoxGrid) {
+export function generateTimeBoxGrid(schedule, selectedDate) {
+    let timeBoxGrid = new Map();
+
     schedule.timeboxes.forEach(function (element) { //for each timebox
         const [time, date] = convertToTimeAndDate(element.startTime); //convert the datetime to a time and date e.g. format hh:mm dd/mm
         if(element.reoccuring != null) {
@@ -221,3 +224,7 @@ export function generateTimeBoxGrid(schedule, selectedDate, timeBoxGrid) {
     });
     return timeBoxGrid
 }
+
+export function getHeightForBoxes(numberOfBoxes) { return `calc(${(numberOfBoxes * 100)}% + ${(numberOfBoxes - 1) * 2}px)` }
+
+    

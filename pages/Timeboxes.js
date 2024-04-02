@@ -4,7 +4,6 @@ import Loading from '../components/Loading';
 import serverIP from '../modules/serverIP';
 import TimeboxGrid from '../components/timeboxes/TimeboxGrid';
 import { useContext, useEffect } from 'react';
-import { ScheduleContext } from '../components/ScheduleContext';
 import dayjs from 'dayjs';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useQuery } from '@tanstack/react-query';
@@ -14,7 +13,7 @@ export const SessionContext = createContext();
 
 export default function Timeboxes() {
   const username = useSelector(state => state.username.value);
-  const {selectedDate, setSelectedDate, ...leftovers} = useContext(ScheduleContext);
+  const selectedDate = useSelector(state => state.selectedDate.value);
   let startOfWeek = dayjs(selectedDate).startOf('week').hour(0).minute(0).toDate();
   let endOfWeek = dayjs(selectedDate).endOf('week').add(1, 'day').hour(23).minute(59).toDate(); //another day as sometimes timeboxes will go into next week
 

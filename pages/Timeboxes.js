@@ -8,20 +8,15 @@ import { ScheduleContext } from '../components/ScheduleContext';
 import dayjs from 'dayjs';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useQuery } from '@tanstack/react-query';
+import { useSelector } from 'react-redux';
 
 export const SessionContext = createContext();
 
 export default function Timeboxes() {
-  const [username, setUsername] = useState('');
+  const username = useSelector(state => state.username.value);
   const {selectedDate, setSelectedDate, ...leftovers} = useContext(ScheduleContext);
   let startOfWeek = dayjs(selectedDate).startOf('week').hour(0).minute(0).toDate();
   let endOfWeek = dayjs(selectedDate).endOf('week').add(1, 'day').hour(23).minute(59).toDate(); //another day as sometimes timeboxes will go into next week
-
-  AsyncStorage.getItem('username').then((value) => {
-    if(value !== null) {
-      setUsername(value);  
-    }
-  })
 
   
   if(username !== '') {
@@ -38,9 +33,7 @@ export default function Timeboxes() {
       return (
         <>
           <TimeboxHeading />
-          <SessionContext.Provider value={{username}}>
-            <TimeboxGrid data={data}></TimeboxGrid>
-          </SessionContext.Provider>
+          <TimeboxGrid data={data}></TimeboxGrid>
         </>
         )
   }

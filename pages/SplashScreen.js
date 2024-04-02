@@ -3,6 +3,7 @@ import { Animated, Easing } from 'react-native';
 import { useEffect, useRef } from 'react';
 import SignInButton from '../components/SignInButton';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import useDispatch from 'react-redux';
 
 const styles = StyleSheet.create({
     container: {
@@ -34,111 +35,112 @@ const secondStepFunction = (t) => stepFunction(14.0, t);
 const thirdStepFunction = (t) => stepFunction(16.0, t);
 
 export default function SplashScreen({navigation}) {
-    
-      const firstLineDisplayed = useRef(new Animated.Value(0)).current;
-      const secondLineDisplayed = useRef(new Animated.Value(0)).current;
-      const thirdLineDisplayed = useRef(new Animated.Value(0)).current;
-    
-      const blinkingCaretOne = useRef(new Animated.Value(0)).current;
-      const blinkingCaretTwo = useRef(new Animated.Value(0)).current;
-      const blinkingCaretThree = useRef(new Animated.Value(0)).current;
-    
-      useEffect(() => {
-        Animated.sequence([
-          Animated.timing(firstLineDisplayed, {
-            toValue: 100,
-            useNativeDriver: false,
-            duration: 2000,
-            easing: firstStepFunction
-          }),
-          Animated.timing(secondLineDisplayed, {
-            toValue: 100,
-            useNativeDriver: false,
-            duration: 2000,
-            easing: secondStepFunction
-          }),
-          Animated.timing(thirdLineDisplayed, {
-            toValue: 100,
-            useNativeDriver: false,
-            duration: 2000,
-            easing: thirdStepFunction
-          })
-        ]).start();
-    
-        Animated.sequence([
-          Animated.loop(
-            Animated.sequence([
-              Animated.timing(blinkingCaretOne, {
-                toValue: 1,
-                useNativeDriver: false,
-                duration: 500,
-                easing: Easing.linear
-              }),
-              Animated.timing(blinkingCaretOne, {
-                toValue: 0,
-                useNativeDriver: false,
-                duration: 0
-              })
-            ]),
-            { iterations: 4 }
-          ), 
-          Animated.loop(
-            Animated.sequence([
-              Animated.timing(blinkingCaretTwo, {
-                toValue: 1,
-                useNativeDriver: false,
-                duration: 500,
-                easing: Easing.linear
-              }),
-              Animated.timing(blinkingCaretTwo, {
-                toValue: 0,
-                useNativeDriver: false,
-                duration: 0
-              })
-            ]),
-            { iterations: 4 }
-          ),
-          Animated.loop(
-            Animated.sequence([
-              Animated.timing(blinkingCaretThree, {
-                toValue: 1,
-                useNativeDriver: false,
-                duration: 500,
-                easing: Easing.linear
-              }),
-              Animated.timing(blinkingCaretThree, {
-                toValue: 0,
-                useNativeDriver: false,
-                duration: 0
-              })
-            ]),
-            { iterations: 4 }
-          )
-        ]).start();
-      });
 
-      AsyncStorage.getItem('username').then((value) => {
-        if(value !== null) {
-          navigation.navigate('FinalView');
-        }
+  const dispatch = useDispatch();
+
+  const firstLineDisplayed = useRef(new Animated.Value(0)).current;
+  const secondLineDisplayed = useRef(new Animated.Value(0)).current;
+  const thirdLineDisplayed = useRef(new Animated.Value(0)).current;
+
+  const blinkingCaretOne = useRef(new Animated.Value(0)).current;
+  const blinkingCaretTwo = useRef(new Animated.Value(0)).current;
+  const blinkingCaretThree = useRef(new Animated.Value(0)).current;
+
+  useEffect(() => {
+    Animated.sequence([
+      Animated.timing(firstLineDisplayed, {
+        toValue: 100,
+        useNativeDriver: false,
+        duration: 2000,
+        easing: firstStepFunction
+      }),
+      Animated.timing(secondLineDisplayed, {
+        toValue: 100,
+        useNativeDriver: false,
+        duration: 2000,
+        easing: secondStepFunction
+      }),
+      Animated.timing(thirdLineDisplayed, {
+        toValue: 100,
+        useNativeDriver: false,
+        duration: 2000,
+        easing: thirdStepFunction
       })
-        return (
-        <View style={styles.container}>
-          
-            
-            <Animated.View style={[styles.textContainer, {width: firstLineDisplayed.interpolate({inputRange: [0, 100], outputRange: ['0%', '100%']}),
-            borderRightColor: blinkingCaretOne.interpolate({inputRange: [0, 0.5, 0.6, 1], outputRange: ['transparent', 'transparent', '#7FFFD4', '#7FFFD4']})}]}>
-              <Text numberOfLines={1} style={styles.splashText}>Timeboxing</Text>
-            </Animated.View>
-            <Animated.View style={[styles.textContainer, {width: secondLineDisplayed.interpolate({inputRange: [0, 100], outputRange: ['0%', '100%']}),
-            borderRightColor: blinkingCaretTwo.interpolate({inputRange: [0, 0.5, 0.6, 1], outputRange: ['transparent', 'transparent', '#7FFFD4', '#7FFFD4']})}]}>
-              <Text  numberOfLines={1} style={styles.splashText}>For The</Text>
-            </Animated.View>
-            <Animated.View style={[styles.textContainer, {width: thirdLineDisplayed.interpolate({inputRange: [0, 100], outputRange: ['0%', '100%']}),
-            borderRightColor: blinkingCaretThree.interpolate({inputRange: [0, 0.5, 0.6, 1], outputRange: ['transparent', 'transparent', '#7FFFD4', '#7FFFD4']})}]}>
-              <Text numberOfLines={1} style={styles.splashText}>Everyman</Text>
-            </Animated.View>
-            <SignInButton />
-        </View>
-        );
+    ]).start();
+
+    Animated.sequence([
+      Animated.loop(
+        Animated.sequence([
+          Animated.timing(blinkingCaretOne, {
+            toValue: 1,
+            useNativeDriver: false,
+            duration: 500,
+            easing: Easing.linear
+          }),
+          Animated.timing(blinkingCaretOne, {
+            toValue: 0,
+            useNativeDriver: false,
+            duration: 0
+          })
+        ]),
+        { iterations: 4 }
+      ), 
+      Animated.loop(
+        Animated.sequence([
+          Animated.timing(blinkingCaretTwo, {
+            toValue: 1,
+            useNativeDriver: false,
+            duration: 500,
+            easing: Easing.linear
+          }),
+          Animated.timing(blinkingCaretTwo, {
+            toValue: 0,
+            useNativeDriver: false,
+            duration: 0
+          })
+        ]),
+        { iterations: 4 }
+      ),
+      Animated.loop(
+        Animated.sequence([
+          Animated.timing(blinkingCaretThree, {
+            toValue: 1,
+            useNativeDriver: false,
+            duration: 500,
+            easing: Easing.linear
+          }),
+          Animated.timing(blinkingCaretThree, {
+            toValue: 0,
+            useNativeDriver: false,
+            duration: 0
+          })
+        ]),
+        { iterations: 4 }
+      )
+    ]).start();
+  });
+
+  AsyncStorage.getItem('username').then((value) => {
+    if(value !== null) {
+      dispatch({type: 'username/set', payload: value});
+      navigation.navigate('FinalView');
+    }
+  })
+  return (
+  <View style={styles.container}>
+    <Animated.View style={[styles.textContainer, {width: firstLineDisplayed.interpolate({inputRange: [0, 100], outputRange: ['0%', '100%']}),
+    borderRightColor: blinkingCaretOne.interpolate({inputRange: [0, 0.5, 0.6, 1], outputRange: ['transparent', 'transparent', '#7FFFD4', '#7FFFD4']})}]}>
+      <Text numberOfLines={1} style={styles.splashText}>Timeboxing</Text>
+    </Animated.View>
+    <Animated.View style={[styles.textContainer, {width: secondLineDisplayed.interpolate({inputRange: [0, 100], outputRange: ['0%', '100%']}),
+    borderRightColor: blinkingCaretTwo.interpolate({inputRange: [0, 0.5, 0.6, 1], outputRange: ['transparent', 'transparent', '#7FFFD4', '#7FFFD4']})}]}>
+      <Text  numberOfLines={1} style={styles.splashText}>For The</Text>
+    </Animated.View>
+    <Animated.View style={[styles.textContainer, {width: thirdLineDisplayed.interpolate({inputRange: [0, 100], outputRange: ['0%', '100%']}),
+    borderRightColor: blinkingCaretThree.interpolate({inputRange: [0, 0.5, 0.6, 1], outputRange: ['transparent', 'transparent', '#7FFFD4', '#7FFFD4']})}]}>
+      <Text numberOfLines={1} style={styles.splashText}>Everyman</Text>
+    </Animated.View>
+    <SignInButton />
+  </View>
+  );
 }

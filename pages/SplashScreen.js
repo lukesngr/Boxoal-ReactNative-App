@@ -3,7 +3,7 @@ import { Animated, Easing } from 'react-native';
 import { useEffect, useRef } from 'react';
 import SignInButton from '../components/SignInButton';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import useDispatch from 'react-redux';
+import {useDispatch} from 'react-redux';
 
 const styles = StyleSheet.create({
     container: {

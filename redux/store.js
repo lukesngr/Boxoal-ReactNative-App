@@ -8,6 +8,8 @@ import timeboxGridReducer from './timeboxGrid'
 import timeboxRecordingReducer from './timeboxRecording'
 import timeboxDialogReducer from './timeboxDialog'
 import usernameReducer from './username'
+import selectedDateReducer from './selectedDate'
+import selectedScheduleReducer from './selectedSchedule'
 
 export default configureStore({
   reducer: {
@@ -20,5 +22,7 @@ export default configureStore({
     timeboxRecording: timeboxRecordingReducer,
     timeboxDialog: timeboxDialogReducer,
     username: usernameReducer,
+    selectedDate: selectedDateReducer,
+    selectedSchedule: selectedScheduleReducer,
   },
 })

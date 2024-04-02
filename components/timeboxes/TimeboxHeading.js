@@ -2,12 +2,13 @@ import { Text, View, Button, Pressable } from "react-native";
 import DatePicker from "react-native-date-picker";
 import { useState, useContext } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
-import { ScheduleContext } from "../ScheduleContext";
 import { faCalendar } from "@fortawesome/free-regular-svg-icons";
+import { useDispatch, useSelector } from "react-redux";
 
 export default function TimeboxHeading(props) {
     const [visible, setVisible] = useState(false);
-    const {selectedDate, setSelectedDate, ...leftovers} = useContext(ScheduleContext);
+    const selectedDate = useSelector(state => state.selectedDate.value);
+    const dispatch = useDispatch();
 
     return (
         <View>
@@ -23,11 +24,11 @@ export default function TimeboxHeading(props) {
                 modal
                 mode="date"
                 date={selectedDate}
-                onDateChange={(date) => setSelectedDate(date)}
+                onDateChange={(date) => dispatch({type: 'selectedDate/set', payload: date})}
                 open={visible}
                 onConfirm={(date) => 
                     {
-                        setSelectedDate(date);
+                        dispatch({type: 'selectedDate/set', payload: date})
                         setVisible(false);
                     }
                 }

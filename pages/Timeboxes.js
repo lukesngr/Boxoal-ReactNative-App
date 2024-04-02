@@ -9,8 +9,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useQuery } from '@tanstack/react-query';
 import { useSelector } from 'react-redux';
 
-export const SessionContext = createContext();
-
 export default function Timeboxes() {
   const username = useSelector(state => state.username.value);
   const selectedDate = useSelector(state => state.selectedDate.value);

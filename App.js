@@ -6,8 +6,12 @@ import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Timeboxes from './pages/Timeboxes';
 import FinalView from './pages/FinalView';
+import { Provider } from 'react-redux';
+import store from './redux/store';
+import { QueryClientProvider, QueryClient } from '@tanstack/react-query';
 
 const Stack = createNativeStackNavigator();
+export const queryClient = new QueryClient();
 
 export const linking = {
   prefixes: ['boxoal://'],
@@ -41,7 +45,10 @@ export function Login({ navigation, route }) {
 }
 
 export default function App() {
-  return (<NavigationContainer linking={linking} fallback={<Text>Loading</Text>}>
+  return (
+    <QueryClientProvider client={queryClient}>
+    <Provider store={store}>
+    <NavigationContainer linking={linking} fallback={<Text>Loading</Text>}>
       <Stack.Navigator>
         <Stack.Screen
           name="SplashScreen"
@@ -58,5 +65,7 @@ export default function App() {
           options={{headerShown: false}}></Stack.Screen>
       </Stack.Navigator>
     </NavigationContainer>
+    </Provider>
+    </QueryClientProvider>
   );
 }

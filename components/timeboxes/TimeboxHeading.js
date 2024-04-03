@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faCalendar } from "@fortawesome/free-regular-svg-icons";
 import { useDispatch, useSelector } from "react-redux";
 
-export default function TimeboxHeading(props) {
+export default function TimeboxHeading() {
     const [visible, setVisible] = useState(false);
     const selectedDate = useSelector(state => state.selectedDate.value);
     const dispatch = useDispatch();

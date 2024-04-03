@@ -8,6 +8,7 @@ import dayjs from 'dayjs';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useQuery } from '@tanstack/react-query';
 import { useSelector } from 'react-redux';
+import axios from 'axios';
 
 export default function Timeboxes() {
   const username = useSelector(state => state.username.value);
@@ -15,18 +16,16 @@ export default function Timeboxes() {
   let startOfWeek = dayjs(selectedDate).startOf('week').hour(0).minute(0).toDate();
   let endOfWeek = dayjs(selectedDate).endOf('week').add(1, 'day').hour(23).minute(59).toDate(); //another day as sometimes timeboxes will go into next week
 
-  
   if(username !== '') {
     const {status, data, error, refetch} = useQuery({
       queryKey: ["schedules", selectedDate], 
       queryFn: async () => {
-          const response = await axios.get(serverIP+"/api/getSchedules", { userEmail: props.session.user.email, startOfWeek, endOfWeek });
-      
-          return response;},
+          const response = await axios.get(serverIP+"/getSchedules", { params: {userEmail: username, startOfWeek, endOfWeek}, headers: { 'Origin': 'BoxoalApp-1233' }});
+          return response.response.data;
+        },
       enabled: true})
 
-      if(status === 'loading') return <Loading />
-
+      if(status === 'pending') return <Loading />
       return (
         <>
           <TimeboxHeading />

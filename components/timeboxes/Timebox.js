@@ -9,7 +9,7 @@ export default function Timebox(props) {
     return (
     <View style={{borderWidth: 1, padding: 1, borderColor: 'black', width: 50.5}}>
         <Pressable onPress={onPress}>
-            <Text>+</Text>
+            <Text></Text>
         </Pressable>
     </View>
     )

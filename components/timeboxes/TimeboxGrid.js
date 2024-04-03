@@ -1,12 +1,17 @@
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { getArrayOfDayDateDayNameAndMonthForHeaders } from "../../modules/dateLogic";
 import { returnTimesSeperatedForSchedule } from "../../modules/timeLogic";
 import useTimeboxGridRedux from "../../hooks/useTimeboxGridRedux";
 import { useScheduleSetter } from "../../hooks/useScheduleSetter";
 import { View, Text, ScrollView } from "react-native";
 import Timebox from "./Timebox";
+import { ifCurrentDay } from "../../modules/dateLogic";
 
 export default function TimeboxGrid(props) {
+    const [gridHeight, setGridHeight] = useState(0);
+    const [headerHeight, setHeaderHeight] = useState(0);
+    const [headerWidth, setHeaderWidth] = useState(0);
+    const [timeboxHeight, setTimeboxHeight] = useState(0);
     const selectedDate = useSelector(state => state.selectedDate.value);
     const selectedSchedule = useSelector(state => state.selectedSchedule.value);
     const schedule = props.data[selectedSchedule];
@@ -21,12 +26,19 @@ export default function TimeboxGrid(props) {
             <View style={{flexDirection: 'row'}}>
                 <View style={{flex: 1, justifyContent: 'center', alignItems: 'center', borderColor: 'black', borderWidth: 1, padding: 1}}></View>
                 {dayToName.map((day, index) => {
-                    return <View key={index} style={{flex: 1, justifyContent: 'center', alignItems: 'center', borderColor: 'black', borderWidth: 1, padding: 1}}>
-                        <Text style={{fontSize: 16, color: 'black'}}>{day.name+" ("+day.date+"/"+day.month+")"}</Text>
+                    return <View key={index} style={{flex: 1, justifyContent: 'center', alignItems: 'center', borderColor: 'black', 
+                                borderWidth: 1, padding: 1, backgroundColor: ifCurrentDay(index, 'black', 'white')}}
+                                onLayout={(event) => {
+                                    if(index == 0) {
+                                        setHeaderHeight(event.nativeEvent.layout.height);
+                                        setHeaderWidth(event.nativeEvent.layout.width);
+                                    }
+                                }}>
+                        <Text style={{fontSize: 16, color: ifCurrentDay(index, 'white', 'black')}}>{day.name+" ("+day.date+"/"+day.month+")"}</Text>
                     </View>
                 })}
             </View>
-            <View style={{flexDirection: 'column'}}>
+            <View style={{flexDirection: 'column'}} onLayout={(event) => {setGridHeight(event.nativeEvent.height)}}>
                 {listOfTimes.map((time, index) => {
                     return <View key={index} style={{flexDirection: 'row'}}>
                         <View style={{borderWidth: 1, padding: 1}}>

@@ -15,7 +15,6 @@ export default function Timeboxes() {
   const selectedDate = useSelector(state => state.selectedDate.value);
   let startOfWeek = dayjs(selectedDate).startOf('week').hour(0).minute(0).toDate();
   let endOfWeek = dayjs(selectedDate).endOf('week').add(1, 'day').hour(23).minute(59).toDate(); //another day as sometimes timeboxes will go into next week
-  console.log(selectedDate, username);
   const {status, data, error, refetch} = useQuery({
     queryKey: ["schedule", selectedDate], 
     queryFn: async () => {
@@ -25,7 +24,6 @@ export default function Timeboxes() {
     enabled: true})
 
     if(status === 'pending') return <Loading />
-    console.log(data)
 
     return (
       <>

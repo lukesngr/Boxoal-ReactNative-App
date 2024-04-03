@@ -3,6 +3,8 @@ import { getArrayOfDayDateDayNameAndMonthForHeaders } from "../../modules/dateLo
 import { returnTimesSeperatedForSchedule } from "../../modules/timeLogic";
 import useTimeboxGridRedux from "../../hooks/useTimeboxGridRedux";
 import { useScheduleSetter } from "../../hooks/useScheduleSetter";
+import { View, Text, ScrollView } from "react-native";
+import Timebox from "./Timebox";
 
 export default function TimeboxGrid(props) {
     const selectedDate = useSelector(state => state.selectedDate.value);
@@ -15,5 +17,31 @@ export default function TimeboxGrid(props) {
     useTimeboxGridRedux(schedule, selectedDate); //make a map for the timeboxes with another map inside it, makes lookup fast
     useScheduleSetter(schedule); //set schedule data to redux store (timeboxes, recordedTimeboxes, goals
     console.log(schedule);
-    return <></>
+    return (
+    <ScrollView>
+        <View style={{marginLeft: 4, marginRight: 4}}>
+            <View style={{flexDirection: 'row'}}>
+                <View style={{flex: 1, justifyContent: 'center', alignItems: 'center', borderColor: 'black', borderWidth: 1, padding: 1}}></View>
+                {dayToName.map((day, index) => {
+                    return <View key={index} style={{flex: 1, justifyContent: 'center', alignItems: 'center', borderColor: 'black', borderWidth: 1, padding: 1}}>
+                        <Text style={{fontSize: 16, color: 'black'}}>{day.name+" ("+day.date+"/"+day.month+")"}</Text>
+                    </View>
+                })}
+            </View>
+            <View style={{flexDirection: 'column'}}>
+                {listOfTimes.map((time, index) => {
+                    return <View key={index} style={{flexDirection: 'row'}}>
+                        <View style={{borderWidth: 1, padding: 1}}>
+                            <Text style={{fontSize: 18, color: 'black', width: 46}}>{time}</Text>
+                        </View>
+                        {dayToName.map((day, index) => {
+                            return <Timebox key={index}></Timebox>
+                        })}
+                    </View>
+                })}
+                
+            </View>
+        </View>
+    </ScrollView>
+    )
 }

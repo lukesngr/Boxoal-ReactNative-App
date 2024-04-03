@@ -3,7 +3,7 @@ import { createSlice } from '@reduxjs/toolkit'
 export const selectedDate = createSlice({
   name: 'selectedDate',
   initialState: {
-    value: new Date(),
+    value: new Date().toUTCString(),
   },
   reducers: {
     set: (state, action) => {

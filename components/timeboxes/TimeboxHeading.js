@@ -23,12 +23,12 @@ export default function TimeboxHeading() {
             <DatePicker
                 modal
                 mode="date"
-                date={selectedDate}
-                onDateChange={(date) => dispatch({type: 'selectedDate/set', payload: date})}
+                date={new Date(selectedDate)}
+                onDateChange={(date) => dispatch({type: 'selectedDate/set', payload: date.toUTCString()})}
                 open={visible}
                 onConfirm={(date) => 
                     {
-                        dispatch({type: 'selectedDate/set', payload: date})
+                        dispatch({type: 'selectedDate/set', payload: date.toUTCString()})
                         setVisible(false);
                     }
                 }

@@ -205,7 +205,6 @@ export function generateTimeBoxGrid(schedule, selectedDate) {
 
     schedule.timeboxes.forEach(function (element) { //for each timebox
         const [time, date] = convertToTimeAndDate(element.startTime); //convert the datetime to a time and date e.g. format hh:mm dd/mm
-        console.log(time, date);
         if(element.reoccuring != null) {
             if(element.reoccuring.reoccurFrequency === "daily") {
                 for(let i = 0; i < 7; i++) {

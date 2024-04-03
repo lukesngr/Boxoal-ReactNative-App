@@ -35,7 +35,7 @@ export default function TimeboxGrid(props) {
                             <Text style={{fontSize: 18, color: 'black', width: 46}}>{time}</Text>
                         </View>
                         {dayToName.map((day, index) => {
-                            return <Timebox key={index}></Timebox>
+                            return <Timebox key={index} day={day} time={time}></Timebox>
                         })}
                     </View>
                 })}

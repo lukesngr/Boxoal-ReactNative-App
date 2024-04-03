@@ -10,9 +10,9 @@ export default function FinalView() {
         <Tab.Navigator>
         <Tab.Screen name="Timeboxes" component={Timeboxes} 
         options={{headerShown: false}}/>
-        <Tab.Screen name="Schedule" component={Schedules} 
+        <Tab.Screen name="Schedules" component={Schedules} 
         options={{headerShown: false}}/>
-        <Tab.Screen name="Areas" component={Areas} 
+        <Tab.Screen name="Settings" component={Areas} 
         options={{headerShown: false}}/>
         </Tab.Navigator>
   )

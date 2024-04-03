@@ -15,25 +15,23 @@ export default function Timeboxes() {
   const selectedDate = useSelector(state => state.selectedDate.value);
   let startOfWeek = dayjs(selectedDate).startOf('week').hour(0).minute(0).toDate();
   let endOfWeek = dayjs(selectedDate).endOf('week').add(1, 'day').hour(23).minute(59).toDate(); //another day as sometimes timeboxes will go into next week
+  console.log(selectedDate, username);
+  const {status, data, error, refetch} = useQuery({
+    queryKey: ["schedule", selectedDate], 
+    queryFn: async () => {
+        const response = await axios.get(serverIP+"/getSchedules", { params: {userEmail: username, startOfWeek, endOfWeek}, headers: { 'Origin': 'http://localhost:3000' }});
+        return response.data;
+      },
+    enabled: true})
 
-  if(username !== '') {
-    const {status, data, error, refetch} = useQuery({
-      queryKey: ["schedules", selectedDate], 
-      queryFn: async () => {
-          const response = await axios.get(serverIP+"/getSchedules", { params: {userEmail: username, startOfWeek, endOfWeek}, headers: { 'Origin': 'BoxoalApp-1233' }});
-          return response.response.data;
-        },
-      enabled: true})
+    if(status === 'pending') return <Loading />
+    console.log(data)
 
-      if(status === 'pending') return <Loading />
-      return (
-        <>
-          <TimeboxHeading />
-          <TimeboxGrid data={data}></TimeboxGrid>
-        </>
-        )
-  }
-
-  return <Loading />     
+    return (
+      <>
+        <TimeboxHeading />
+        <TimeboxGrid data={data}></TimeboxGrid>
+      </>
+      )
   
 }

@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import { getArrayOfDayDateDayNameAndMonthForHeaders } from "../../modules/dateLogic";
+import { getArrayOfDayDateDayNameAndMonthForHeaders, ifEqualOrBeyondCurrentDay } from "../../modules/dateLogic";
 import { returnTimesSeperatedForSchedule } from "../../modules/timeLogic";
 import useTimeboxGridRedux from "../../hooks/useTimeboxGridRedux";
 import { useScheduleSetter } from "../../hooks/useScheduleSetter";
@@ -8,12 +8,12 @@ import Timebox from "./Timebox";
 import { ifCurrentDay } from "../../modules/dateLogic";
 import { useState } from "react";
 import useOverlayDimensions from "../../hooks/useOverlayDimensions";
+import Overlay from "../Overlay";
 
 export default function TimeboxGrid(props) {
     const [gridHeight, setGridHeight] = useState(0);
     const [headerHeight, setHeaderHeight] = useState(0);
     const [headerWidth, setHeaderWidth] = useState(0);
-    const [timeboxHeight, setTimeboxHeight] = useState(0);
     const selectedDate = useSelector(state => state.selectedDate.value);
     const selectedSchedule = useSelector(state => state.selectedSchedule.value);
     const schedule = props.data[selectedSchedule];
@@ -22,6 +22,7 @@ export default function TimeboxGrid(props) {
 
     useTimeboxGridRedux(schedule, selectedDate); //make a map for the timeboxes with another map inside it, makes lookup fast
     useScheduleSetter(schedule); //set schedule data to redux store (timeboxes, recordedTimeboxes, goals
+    useOverlayDimensions(gridHeight, headerHeight, headerWidth); //calculate overlay dimensions
     return (
     <ScrollView>
         <View style={{marginLeft: 4, marginRight: 4}}>
@@ -37,10 +38,11 @@ export default function TimeboxGrid(props) {
                                     }
                                 }}>
                         <Text style={{fontSize: 16, color: ifCurrentDay(index, 'white', 'black')}}>{day.name+" ("+day.date+"/"+day.month+")"}</Text>
+                        <Overlay notActive={ifEqualOrBeyondCurrentDay(index, true, false)}></Overlay>
                     </View>
                 })}
             </View>
-            <View style={{flexDirection: 'column'}} onLayout={(event) => {setGridHeight(event.nativeEvent.height)}}>
+            <View style={{flexDirection: 'column', elevation: 2}} onLayout={(event) => {setGridHeight(event.nativeEvent.layout.height)}}>
                 {listOfTimes.map((time, index) => {
                     return <View key={index} style={{flexDirection: 'row'}}>
                         <View style={{borderWidth: 1, padding: 1}}>

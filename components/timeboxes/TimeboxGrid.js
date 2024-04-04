@@ -6,6 +6,8 @@ import { useScheduleSetter } from "../../hooks/useScheduleSetter";
 import { View, Text, ScrollView } from "react-native";
 import Timebox from "./Timebox";
 import { ifCurrentDay } from "../../modules/dateLogic";
+import { useState } from "react";
+import useOverlayDimensions from "../../hooks/useOverlayDimensions";
 
 export default function TimeboxGrid(props) {
     const [gridHeight, setGridHeight] = useState(0);

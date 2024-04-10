@@ -11,7 +11,6 @@ import useOverlayDimensions from "../../hooks/useOverlayDimensions";
 import Overlay from "../Overlay";
 
 export default function TimeboxGrid(props) {
-    const [gridHeight, setGridHeight] = useState(0);
     const [headerHeight, setHeaderHeight] = useState(0);
     const [headerWidth, setHeaderWidth] = useState(0);
     const selectedDate = useSelector(state => state.selectedDate.value);
@@ -22,7 +21,7 @@ export default function TimeboxGrid(props) {
 
     useTimeboxGridRedux(schedule, selectedDate); //make a map for the timeboxes with another map inside it, makes lookup fast
     useScheduleSetter(schedule); //set schedule data to redux store (timeboxes, recordedTimeboxes, goals
-    useOverlayDimensions(gridHeight, headerHeight, headerWidth); //calculate overlay dimensions
+    useOverlayDimensions(headerHeight, headerWidth); //calculate overlay dimensions
     return (
     <ScrollView>
         <View style={{marginLeft: 4, marginRight: 4}}>
@@ -42,7 +41,7 @@ export default function TimeboxGrid(props) {
                     </View>
                 })}
             </View>
-            <View style={{flexDirection: 'column', elevation: 2}} onLayout={(event) => {setGridHeight(event.nativeEvent.layout.height)}}>
+            <View style={{flexDirection: 'column', elevation: 2}}>
                 {listOfTimes.map((time, index) => {
                     return <View key={index} style={{flexDirection: 'row'}}>
                         <View style={{borderWidth: 1, padding: 1}}>

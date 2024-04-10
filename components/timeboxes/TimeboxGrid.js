@@ -9,6 +9,8 @@ import { ifCurrentDay } from "../../modules/dateLogic";
 import { useState } from "react";
 import useOverlayDimensions from "../../hooks/useOverlayDimensions";
 import Overlay from "../Overlay";
+import ActiveOverlay from "../ActiveOverlay";
+import useActiveOverlay from "../../hooks/useActiveOverlay";
 
 export default function TimeboxGrid(props) {
     const [headerHeight, setHeaderHeight] = useState(0);
@@ -22,6 +24,7 @@ export default function TimeboxGrid(props) {
     useTimeboxGridRedux(schedule, selectedDate); //make a map for the timeboxes with another map inside it, makes lookup fast
     useScheduleSetter(schedule); //set schedule data to redux store (timeboxes, recordedTimeboxes, goals
     useOverlayDimensions(headerHeight, headerWidth); //calculate overlay dimensions
+    useActiveOverlay(schedule);
     return (
     <ScrollView>
         <View style={{marginLeft: 4, marginRight: 4}}>

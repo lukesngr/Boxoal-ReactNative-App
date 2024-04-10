@@ -1,4 +1,5 @@
 import { useSelector } from "react-redux";
+import { View } from "react-native";
 export default function ActiveOverlay() {
     const overlayDimensions = useSelector(state => state.overlayDimensions.value);
     const activeOverlayHeight = useSelector(state => state.activeOverlayHeight.value);

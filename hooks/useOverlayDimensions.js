@@ -6,10 +6,11 @@ export default function useOverlayDimensions(gridHeight, headerHeight, headerWid
 
     function calculateOverlayDimensions() {
         if (gridHeight != 0 && headerHeight != 0 && headerWidth != 0) { 
-            const overlayHeight = gridHeight - headerHeight; //overlay is under headers but goes till end of grid
+            //const overlayHeight = gridHeight - headerHeight; //overlay is under headers but goes till end of grid
             console.log(gridHeight, headerHeight)
+            
 
-            dispatch({type: 'overlayDimensions/set', payload: [headerWidth, overlayHeight, 30]});
+            dispatch({type: 'overlayDimensions/set', payload: [headerWidth, 48*30, 30, headerHeight]});
         }
     };
 

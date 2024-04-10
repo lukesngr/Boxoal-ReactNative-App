@@ -6,8 +6,8 @@ export default function Overlay(props) {
 
     console.log(overlayDimensions, props.notActive);
     
-    return (<>{!props.notActive && <View style={{width: overlayDimensions[0]+"px", 
-        height: overlayDimensions[1]+"px", 
-        backgroundColor: '#D9D9D9', opacity: 0.7, 
-        zIndex: 999, elevation: 100, position: 'absolute', transform: 'translateX(-1px) translateY(1px)'}}></View>}</>);
+    return (<>{!props.notActive && <View style={{width: overlayDimensions[0], 
+        height: overlayDimensions[1], 
+        backgroundColor: '#D9D9D9', opacity: 1, 
+        zIndex: 999, elevation: 1, top: 0, position: 'absolute', transform: [{translateY: overlayDimensions[3]}]}}></View>}</>);
 }

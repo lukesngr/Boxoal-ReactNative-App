@@ -28,8 +28,9 @@ export default function TimeboxGrid(props) {
             <View style={{flexDirection: 'row'}}>
                 <View style={{flex: 1, justifyContent: 'center', alignItems: 'center', borderColor: 'black', borderWidth: 1, padding: 1}}></View>
                 {dayToName.map((day, index) => {
-                    return <View key={index} style={{flex: 1, justifyContent: 'center', alignItems: 'center', borderColor: 'black', 
-                                borderWidth: 1, padding: 1, backgroundColor: ifCurrentDay(index, 'black', 'white')}}
+                    return (
+                    <View key={index} style={{flex: 1, justifyContent: 'center', alignItems: 'center', borderColor: 'black', 
+                        borderWidth: 1, padding: 1, backgroundColor: ifCurrentDay(index, 'black', 'white')}}
                                 onLayout={(event) => {
                                     if(index == 0) {
                                         setHeaderHeight(event.nativeEvent.layout.height);
@@ -37,8 +38,10 @@ export default function TimeboxGrid(props) {
                                     }
                                 }}>
                         <Text style={{fontSize: 16, color: ifCurrentDay(index, 'white', 'black')}}>{day.name+" ("+day.date+"/"+day.month+")"}</Text>
-                        <Overlay notActive={ifEqualOrBeyondCurrentDay(index, true, false)}></Overlay>
-                    </View>
+                        {ifCurrentDay(index, true, false) ? (<>
+                                <ActiveOverlay></ActiveOverlay>
+                            </>) : (<Overlay notActive={ifEqualOrBeyondCurrentDay(index, true, false)}></Overlay>)}
+                    </View>)
                 })}
             </View>
             <View style={{flexDirection: 'column', elevation: 2}}>

@@ -1,16 +1,21 @@
 import { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { calculateMaxNumberOfBoxesAfterTimeIfEmpty } from "../modules/coreLogic";
+import { useSelector } from "react-redux";
 
-export default function useOverlayDimensions(gridHeight, headerHeight, headerWidth) {
+export default function useOverlayDimensions(headerHeight, headerWidth) {
     const dispatch = useDispatch();
-    const [boxSizeUnit, boxSizeNumber, wakeupTime] = useSelector(state => state.scheduleEssentials.value); 
+    const {boxSizeUnit, boxSizeNumber, wakeupTime} = useSelector(state => state.scheduleEssentials.value); 
 
     function calculateOverlayDimensions() {
-        if (gridHeight != 0 && headerHeight != 0 && headerWidth != 0) { 
-            const overlayHeight = calculateMaxNumberOfBoxesAfterTimeIfEmpty(wakeupTime, boxSizeUnit, boxSizeNumber)*30;
-            console.log(gridHeight, headerHeight)
+        if (headerHeight != 0 && headerWidth != 0) {
             
+            let overlayHeight = 0;
+            if(boxSizeUnit == 'min') {
+                overlayHeight = Math.floor(24*60 / boxSizeNumber) * 30;
+            }else if(boxSizeUnit == 'hr') {
+                overlayHeight = Math.floor(24 / boxSizeNumber) * 30;
+            }
 
             dispatch({type: 'overlayDimensions/set', payload: [headerWidth, overlayHeight, 30, headerHeight]});
         }
@@ -23,7 +28,7 @@ export default function useOverlayDimensions(gridHeight, headerHeight, headerWid
 
     useEffect(() => {
         calculateOverlayDimensions();
-    }, [gridHeight, headerHeight, headerWidth]);
+    }, [headerHeight, headerWidth]);
 
     return;
 }

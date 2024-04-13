@@ -1,5 +1,9 @@
-import { Pressable, View, Text } from "react-native"
+import { Pressable, View, Text, Modal } from "react-native"
 import NormalTimebox from "./NormalTimebox";
+import { useState } from "react";
+import {useSelector, useDispatch} from 'react-redux';
+import { ifEqualOrBeyondCurrentDay } from "../../modules/dateLogic";
+import CreateTimeboxForm from "./CreateTimeboxForm";
 
 export default function Timebox(props) {
     function onPress() {
@@ -11,10 +15,16 @@ export default function Timebox(props) {
     const timeboxGrid = useSelector(state => state.timeboxGrid.value);
     const dispatch = useDispatch();
 
-    let date = day.date+"/"+day.month;
-    let dayName = day.name;
-    let active = ifEqualOrBeyondCurrentDay(index, true, false)
-    let data = timeboxGrid.get(date)?.get(time);
+    let date = props.day.date+"/"+props.day.month;
+    let dayName = props.day.name;
+    let active = ifEqualOrBeyondCurrentDay(props.index, true, false)
+    let data;
+
+    if(timeboxGrid) { 
+        if(timeboxGrid[date]) {
+            data = timeboxGrid[date][props.time]; 
+        }
+    }
 
     return (
     <View style={{borderWidth: 1, padding: 1, borderColor: 'black', width: 50.5, height: 30}}>

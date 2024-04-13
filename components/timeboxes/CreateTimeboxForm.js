@@ -1,6 +1,6 @@
 import {useState, useEffect} from 'react';
 import {useSelector} from 'react-redux';
-import {convertToDateTime, addBoxesToTime, calculateMaxNumberOfBoxes} from '../../utils/timeboxUtils';
+import {convertToDateTime, addBoxesToTime, calculateMaxNumberOfBoxes} from '../../modules/dateLogic';
 import { Alert, TextInput } from 'react-native';
 
 export default function CreateTimeboxForm() {

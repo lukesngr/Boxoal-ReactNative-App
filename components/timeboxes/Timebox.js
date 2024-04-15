@@ -7,8 +7,7 @@ import CreateTimeboxForm from "./CreateTimeboxForm";
 
 export default function Timebox(props) {
     function onPress() {
-        console.log(props.day.date+"/"+props.day.month);
-        console.log(props.time);
+        setModalVisible(true);
     }
 
     const [modalVisible, setModalVisible] = useState(false);
@@ -38,7 +37,7 @@ export default function Timebox(props) {
         onRequestClose={() => {
           setModalVisible(!modalVisible);
         }}>
-            {data ? (<NormalTimebox></NormalTimebox>) : (<CreateTimeboxForm></CreateTimeboxForm>)}
+            {data ? (<NormalTimebox></NormalTimebox>) : (<CreateTimeboxForm time={props.time} dayName={dayName} date={date}></CreateTimeboxForm>)}
         </Modal>
     </View>
     )

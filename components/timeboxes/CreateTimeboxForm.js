@@ -1,26 +1,39 @@
 import {useState, useEffect} from 'react';
 import {useSelector} from 'react-redux';
-import {convertToDateTime, addBoxesToTime, calculateMaxNumberOfBoxes} from '../../modules/dateLogic';
-import { Alert, TextInput } from 'react-native';
+import {convertToDateTime, addBoxesToTime, calculateMaxNumberOfBoxes} from '../../modules/coreLogic';
+import { Alert, TextInput, View, Text, Button } from 'react-native';
+import {Picker} from '@react-native-picker/picker';
+import { StyleSheet } from 'react-native';
 
-export default function CreateTimeboxForm() {
+const styles = StyleSheet.create({
+    overallModal: {
+        backgroundColor: 'white',
+        padding: 10,
+    },
+    textInput: {
+        color: 'black',
+        borderWidth: 1,
+        borderColor: '#7FFFD4',
+    },
+    button: {
+        color: '#7FFFD4'
+    }
+  });
+
+export default function CreateTimeboxForm(props) {
     const listOfColors = ["#00E3DD", "#00C5E6", "#00A4E7", "#0081DC", "#1E5ABF", "#348D9D", "#67D6FF"];
     let {time, date, dayName} = props;
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
-    const [goalSelected, setGoalSelected] = useState(1);
     const [reoccurFrequency, setReoccurFrequency] = useState("no");
     const [weeklyDate, setWeeklyDate] = useState(new Date());
-    const [numberOfBoxes, setNumberOfBoxes] = useState(1);
+    const [numberOfBoxes, setNumberOfBoxes] = useState('1');
     const {id, wakeupTime, boxSizeUnit, boxSizeNumber} = useSelector(state => state.scheduleEssentials.value);
     const {timeboxes, goals} = useSelector(state => state.scheduleData.value);
+    const [goalSelected, setGoalSelected] = useState(goals.length == 0 ? 1 : goals[0].id);
 
 
     let maxNumberOfBoxes = calculateMaxNumberOfBoxes(wakeupTime, boxSizeUnit, boxSizeNumber, timeboxes, time, date);
-
-    useEffect(() => {
-        setTimeboxFormData({...timeboxFormData, goalSelected: goals.length == 0 ? 1 : goals[0].id});
-    }, []);
     
     function handleSubmit(e) {
         e.preventDefault();
@@ -68,15 +81,16 @@ export default function CreateTimeboxForm() {
     }
 
     return (
-        <View> 
-            <Text>Add TimeBox</Text>
-            <TextInput onChangeText={setTitle} value={title} placeholder='Title'></TextInput>
-            <Text>Description</Text>
-            <TextInput onChangeText={setDescription} value={description} placeholder='Description'></TextInput>
-            <Text>Boxes</Text>
-            <TextInput keyboardType="numeric" onChangeText={sanitizedSetNumberOfBoxes} value={numberOfBoxes} placeholder='Boxes'></TextInput>
-            <Text>Reoccuring?</Text>
-            <Picker selectedValue={reoccurFrequency} onValueChange={setReoccurFrequency}>
+        <View style={{backgroundColor: 'white'}}>  
+            <Text style={{color: 'black'}}>Add TimeBox</Text>
+            <Text style={{color: 'black'}}>Title</Text>
+            <TextInput style={styles.textInput} onChangeText={setTitle} value={title} placeholder='Title'></TextInput>
+            <Text style={{color: 'black'}}>Description</Text>
+            <TextInput style={styles.textInput} placeholderTextColor={"black"} onChangeText={setDescription} value={description} placeholder='Description'></TextInput>
+            <Text style={{color: 'black'}}>Boxes</Text>
+            <TextInput style={{color: 'black'}} keyboardType="numeric" onChangeText={sanitizedSetNumberOfBoxes} value={numberOfBoxes} placeholder='Boxes'></TextInput>
+            <Text style={{color: 'black'}}>Reoccuring?</Text>
+            <Picker style={{color: 'black'}} selectedValue={reoccurFrequency} onValueChange={setReoccurFrequency}>
                 <Picker.Item label="No" value="no" />
                 <Picker.Item label="Daily" value="daily" />
                 <Picker.Item label="Weekly" value="weekly" />

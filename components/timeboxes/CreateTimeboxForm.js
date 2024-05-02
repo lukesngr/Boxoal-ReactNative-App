@@ -35,8 +35,11 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderColor: 'black',
     },
-    button: {
-        color: '#7FFFD4'
+    picker: {
+        padding: 1,
+        fontSize: 20,
+        color: 'black',
+        marginBottom: 0
     }
   });
 
@@ -106,7 +109,7 @@ export default function CreateTimeboxForm(props) {
             <TextInput style={styles.textInput} keyboardType="numeric" onChangeText={sanitizedSetNumberOfBoxes} value={numberOfBoxes}></TextInput>
             <Text style={styles.label}>Reoccuring?</Text>
             <View style={styles.pickerBorder}>
-                <Picker style={{color: "black"}} itemStyle={styles.pickerItem} selectedValue={reoccurFrequency} onValueChange={(itemValue, itemIndex) => setReoccurFrequency(itemValue)}>
+                <Picker style={styles.picker} itemStyle={styles.pickerItem} selectedValue={reoccurFrequency} onValueChange={(itemValue, itemIndex) => setReoccurFrequency(itemValue)}>
                     <Picker.Item label="No" value="no" />
                     <Picker.Item label="Daily" value="daily" />
                     <Picker.Item label="Weekly" value="weekly" />
@@ -128,7 +131,7 @@ export default function CreateTimeboxForm(props) {
                     </Picker>
                 </>
             )}
-            <Button style={styles.button} title="Add TimeBox" disabled={goals.length == 0} onPress={handleSubmit} />
+            <Button color="#7FFFD4" title="Add TimeBox" disabled={goals.length == 0} onPress={handleSubmit} />
         </View>
     );
 }

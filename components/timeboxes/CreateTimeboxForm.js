@@ -4,16 +4,34 @@ import {convertToDateTime, addBoxesToTime, calculateMaxNumberOfBoxes} from '../.
 import { Alert, TextInput, View, Text, Button } from 'react-native';
 import {Picker} from '@react-native-picker/picker';
 import { StyleSheet } from 'react-native';
+import DatePicker from "react-native-date-picker";
 
 const styles = StyleSheet.create({
+    modalContainer: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        blurRadius: 10,
+    },
     overallModal: {
         backgroundColor: 'white',
         padding: 10,
+        width: '80%',
+    },
+    title: {
+        color: 'black',
+        fontSize: 30
+    },
+    label: {
+        color: 'black',
+        fontSize: 25,
     },
     textInput: {
         color: 'black',
         borderWidth: 1,
-        borderColor: '#7FFFD4',
+        borderColor: 'black',
+        padding: 1,
+        fontSize: 20,
     },
     button: {
         color: '#7FFFD4'
@@ -35,8 +53,7 @@ export default function CreateTimeboxForm(props) {
 
     let maxNumberOfBoxes = calculateMaxNumberOfBoxes(wakeupTime, boxSizeUnit, boxSizeNumber, timeboxes, time, date);
     
-    function handleSubmit(e) {
-        e.preventDefault();
+    function handleSubmit() {
         let startTime = convertToDateTime(time, date);
         let endTime = convertToDateTime(addBoxesToTime(boxSizeUnit, boxSizeNumber, time, numberOfBoxes), date); //add boxes to start time to get end time
         let color = listOfColors[Math.floor(Math.random() * listOfColors.length)]; //randomly pick a box color     
@@ -60,13 +77,9 @@ export default function CreateTimeboxForm(props) {
         axios.post('/api/createTimebox', data).then(() => {
             //reset the form
             queryClient.refetchQueries();
-            e.target.reset();
-            toast.success("Added timebox!", {
-                position: toast.POSITION.TOP_RIGHT,
-            });
+            Alert.alert("Added timebox");
         }).catch(function(error) {
-            toast.error("Error occurred please try again or contact developer");
-            console.log(error); 
+            Alert.alert("Error please contact developer");
         })
 
     }
@@ -81,16 +94,17 @@ export default function CreateTimeboxForm(props) {
     }
 
     return (
-        <View style={{backgroundColor: 'white'}}>  
-            <Text style={{color: 'black'}}>Add TimeBox</Text>
-            <Text style={{color: 'black'}}>Title</Text>
-            <TextInput style={styles.textInput} onChangeText={setTitle} value={title} placeholder='Title'></TextInput>
-            <Text style={{color: 'black'}}>Description</Text>
-            <TextInput style={styles.textInput} placeholderTextColor={"black"} onChangeText={setDescription} value={description} placeholder='Description'></TextInput>
-            <Text style={{color: 'black'}}>Boxes</Text>
-            <TextInput style={{color: 'black'}} keyboardType="numeric" onChangeText={sanitizedSetNumberOfBoxes} value={numberOfBoxes} placeholder='Boxes'></TextInput>
-            <Text style={{color: 'black'}}>Reoccuring?</Text>
-            <Picker style={{color: 'black'}} selectedValue={reoccurFrequency} onValueChange={setReoccurFrequency}>
+        <View style={styles.modalContainer}>
+        <View style={styles.overallModal}>  
+            <Text style={styles.title}>Add TimeBox</Text>
+            <Text style={styles.label}>Title</Text>
+            <TextInput style={styles.textInput} onChangeText={setTitle} value={title}></TextInput>
+            <Text style={styles.label}>Description</Text>
+            <TextInput style={styles.textInput} placeholderTextColor={"black"} onChangeText={setDescription} value={description}></TextInput>
+            <Text style={styles.label}>Boxes</Text>
+            <TextInput style={styles.textInput} keyboardType="numeric" onChangeText={sanitizedSetNumberOfBoxes} value={numberOfBoxes}></TextInput>
+            <Text style={styles.label}>Reoccuring?</Text>
+            <Picker style={styles.textInput} selectedValue={reoccurFrequency} onValueChange={setReoccurFrequency}>
                 <Picker.Item label="No" value="no" />
                 <Picker.Item label="Daily" value="daily" />
                 <Picker.Item label="Weekly" value="weekly" />
@@ -112,6 +126,7 @@ export default function CreateTimeboxForm(props) {
                 </>
             )}
             <Button title="Add TimeBox" disabled={goals.length == 0} onPress={handleSubmit} />
+        </View>
         </View>
     );
 }

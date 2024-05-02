@@ -5,6 +5,16 @@ import {useSelector, useDispatch} from 'react-redux';
 import { ifEqualOrBeyondCurrentDay } from "../../modules/dateLogic";
 import CreateTimeboxForm from "./CreateTimeboxForm";
 
+const styles = {
+    modalContainer: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        blurRadius: 10,
+        backgroundColor: 'rgba(128, 128, 128, 0.2)'
+    }
+}
+
 export default function Timebox(props) {
     function onPress() {
         setModalVisible(true);
@@ -37,7 +47,9 @@ export default function Timebox(props) {
         onRequestClose={() => {
           setModalVisible(!modalVisible);
         }}>
+            <View style={styles.modalContainer}>
             {data ? (<NormalTimebox></NormalTimebox>) : (<CreateTimeboxForm time={props.time} dayName={dayName} date={date}></CreateTimeboxForm>)}
+            </View>
         </Modal>
     </View>
     )

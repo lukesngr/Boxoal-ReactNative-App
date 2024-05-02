@@ -7,12 +7,6 @@ import { StyleSheet } from 'react-native';
 import DatePicker from "react-native-date-picker";
 
 const styles = StyleSheet.create({
-    modalContainer: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        blurRadius: 10,
-    },
     overallModal: {
         backgroundColor: 'white',
         padding: 10,
@@ -20,11 +14,11 @@ const styles = StyleSheet.create({
     },
     title: {
         color: 'black',
-        fontSize: 30
+        fontSize: 25
     },
     label: {
         color: 'black',
-        fontSize: 25,
+        fontSize: 20,
     },
     textInput: {
         color: 'black',
@@ -32,6 +26,14 @@ const styles = StyleSheet.create({
         borderColor: 'black',
         padding: 1,
         fontSize: 20,
+    },
+    pickerItem: {
+        color: 'black',
+        fontSize: 20,
+    },
+    pickerBorder: {
+        borderWidth: 1,
+        borderColor: 'black',
     },
     button: {
         color: '#7FFFD4'
@@ -94,7 +96,6 @@ export default function CreateTimeboxForm(props) {
     }
 
     return (
-        <View style={styles.modalContainer}>
         <View style={styles.overallModal}>  
             <Text style={styles.title}>Add TimeBox</Text>
             <Text style={styles.label}>Title</Text>
@@ -104,11 +105,13 @@ export default function CreateTimeboxForm(props) {
             <Text style={styles.label}>Boxes</Text>
             <TextInput style={styles.textInput} keyboardType="numeric" onChangeText={sanitizedSetNumberOfBoxes} value={numberOfBoxes}></TextInput>
             <Text style={styles.label}>Reoccuring?</Text>
-            <Picker style={styles.textInput} selectedValue={reoccurFrequency} onValueChange={setReoccurFrequency}>
-                <Picker.Item label="No" value="no" />
-                <Picker.Item label="Daily" value="daily" />
-                <Picker.Item label="Weekly" value="weekly" />
-            </Picker>
+            <View style={styles.pickerBorder}>
+                <Picker style={{color: "black"}} itemStyle={styles.pickerItem} selectedValue={reoccurFrequency} onValueChange={(itemValue, itemIndex) => setReoccurFrequency(itemValue)}>
+                    <Picker.Item label="No" value="no" />
+                    <Picker.Item label="Daily" value="daily" />
+                    <Picker.Item label="Weekly" value="weekly" />
+                </Picker>
+            </View>
             {reoccurFrequency == 'weekly' && 
                 <>
                     <Text>Weekly Date</Text>
@@ -125,8 +128,7 @@ export default function CreateTimeboxForm(props) {
                     </Picker>
                 </>
             )}
-            <Button title="Add TimeBox" disabled={goals.length == 0} onPress={handleSubmit} />
-        </View>
+            <Button style={styles.button} title="Add TimeBox" disabled={goals.length == 0} onPress={handleSubmit} />
         </View>
     );
 }

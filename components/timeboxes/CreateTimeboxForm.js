@@ -1,10 +1,11 @@
 import {useState, useEffect} from 'react';
 import {useSelector} from 'react-redux';
 import {convertToDateTime, addBoxesToTime, calculateMaxNumberOfBoxes} from '../../modules/coreLogic';
-import { Alert, TextInput, View, Text, Button } from 'react-native';
+import { Alert, TextInput, View, Text } from 'react-native';
 import {Picker} from '@react-native-picker/picker';
 import { StyleSheet } from 'react-native';
 import DatePicker from "react-native-date-picker";
+import Button from './Button';
 
 const styles = StyleSheet.create({
     overallModal: {
@@ -40,6 +41,16 @@ const styles = StyleSheet.create({
         fontSize: 20,
         color: 'black',
         marginBottom: 0
+    },
+    buttonOutlineStyle: {
+        backgroundColor: '#7FFFD4',
+        padding: 5,
+        marginTop: 10,
+    },
+    buttonTextStyle: {
+        color: 'black',
+        fontSize: 20,
+        textAlign: 'center',
     }
   });
 
@@ -109,7 +120,7 @@ export default function CreateTimeboxForm(props) {
             <TextInput style={styles.textInput} keyboardType="numeric" onChangeText={sanitizedSetNumberOfBoxes} value={numberOfBoxes}></TextInput>
             <Text style={styles.label}>Reoccuring?</Text>
             <View style={styles.pickerBorder}>
-                <Picker style={styles.picker} itemStyle={styles.pickerItem} selectedValue={reoccurFrequency} onValueChange={(itemValue, itemIndex) => setReoccurFrequency(itemValue)}>
+                <Picker style={styles.picker} itemStyle={styles.pickerItem} selectedValue={reoccurFrequency} onValueChange={setReoccurFrequency(itemValue)}>
                     <Picker.Item label="No" value="no" />
                     <Picker.Item label="Daily" value="daily" />
                     <Picker.Item label="Weekly" value="weekly" />
@@ -117,21 +128,23 @@ export default function CreateTimeboxForm(props) {
             </View>
             {reoccurFrequency == 'weekly' && 
                 <>
-                    <Text>Weekly Date</Text>
+                    <Text style={styles.label}>Weekly Date</Text>
                     <DatePicker onChange={setWeeklyDate} value={weeklyDate} />
                 </>
             }
-            {goals.length == 0 ? (<Text>Must create a goal first</Text>) : (
+            {goals.length == 0 ? (<Text style={styles.label}>Need to make goal first</Text>) : (
                 <>
-                    <Text>Goal</Text>
-                    <Picker selectedValue={goalSelected} onValueChange={setGoalSelected}>
-                        {goals.map((goal, index) => (
-                            <Picker.Item key={index} label={goal.name} value={String(goal.id)} />
-                        ))}
-                    </Picker>
+                    <Text style={styles.label}>Goal</Text>
+                    <View style={styles.pickerBorder}>
+                        <Picker style={styles.picker} itemStyle={styles.pickerItem} selectedValue={goalSelected} onValueChange={setGoalSelected}>
+                            {goals.map((goal, index) => (
+                                <Picker.Item key={index} label={goal.name} value={String(goal.id)} />
+                            ))}
+                        </Picker>
+                    </View>
                 </>
             )}
-            <Button color="#7FFFD4" title="Add TimeBox" disabled={goals.length == 0} onPress={handleSubmit} />
+            <Button textStyle={styles.buttonTextStyle} outlineStyle={styles.buttonOutlineStyle} title="Create" disabled={goals.length == 0} onPress={handleSubmit} />
         </View>
     );
 }

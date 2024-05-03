@@ -15,7 +15,6 @@ const styles = StyleSheet.create({
         padding: 10,
         width: '80%',
         height: 'auto',
-        flex: 0.54, //most dumb fix but can't get it to work otherwise
     },
     title: {
         color: 'black',
@@ -59,8 +58,6 @@ const styles = StyleSheet.create({
         textAlign: 'center',
     },
     titleBarContainer: {
-        flex: 1,
-        display: 'flex',
         flexDirection: 'row',
         justifyContent: 'space-between',
         height: 'auto',

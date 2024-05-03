@@ -1,21 +1,27 @@
 import {useState, useEffect} from 'react';
 import {useSelector} from 'react-redux';
 import {convertToDateTime, addBoxesToTime, calculateMaxNumberOfBoxes} from '../../modules/coreLogic';
-import { Alert, TextInput, View, Text } from 'react-native';
+import { Alert, TextInput, View, Text, Pressable } from 'react-native';
 import {Picker} from '@react-native-picker/picker';
 import { StyleSheet } from 'react-native';
-import DatePicker from "react-native-date-picker";
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import { faCalendar } from '@fortawesome/free-regular-svg-icons';
 import Button from './Button';
+import { faXmark } from '@fortawesome/free-solid-svg-icons';
 
 const styles = StyleSheet.create({
     overallModal: {
         backgroundColor: 'white',
         padding: 10,
         width: '80%',
+        height: 'auto',
+        flex: 0.54, //most dumb fix but can't get it to work otherwise
     },
     title: {
         color: 'black',
-        fontSize: 25
+        fontSize: 22,
+        padding: 0,
+        margin: 0,
     },
     label: {
         color: 'black',
@@ -51,12 +57,22 @@ const styles = StyleSheet.create({
         color: 'black',
         fontSize: 20,
         textAlign: 'center',
-    }
+    },
+    titleBarContainer: {
+        flex: 1,
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        height: 'auto',
+        margin: 0,
+        padding: 0,
+    },
   });
 
 export default function CreateTimeboxForm(props) {
     const listOfColors = ["#00E3DD", "#00C5E6", "#00A4E7", "#0081DC", "#1E5ABF", "#348D9D", "#67D6FF"];
     let {time, date, dayName} = props;
+    const [visible, setVisible] = useState(false);
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
     const [reoccurFrequency, setReoccurFrequency] = useState("no");
@@ -110,8 +126,11 @@ export default function CreateTimeboxForm(props) {
     }
 
     return (
-        <View style={styles.overallModal}>  
-            <Text style={styles.title}>Add TimeBox</Text>
+        <View style={styles.overallModal}>
+            <View style={styles.titleBarContainer}>  
+                <Text style={styles.title}>Add TimeBox</Text>
+                <FontAwesomeIcon icon={faXmark} size={25}/>
+            </View>
             <Text style={styles.label}>Title</Text>
             <TextInput style={styles.textInput} onChangeText={setTitle} value={title}></TextInput>
             <Text style={styles.label}>Description</Text>
@@ -120,7 +139,7 @@ export default function CreateTimeboxForm(props) {
             <TextInput style={styles.textInput} keyboardType="numeric" onChangeText={sanitizedSetNumberOfBoxes} value={numberOfBoxes}></TextInput>
             <Text style={styles.label}>Reoccuring?</Text>
             <View style={styles.pickerBorder}>
-                <Picker style={styles.picker} itemStyle={styles.pickerItem} selectedValue={reoccurFrequency} onValueChange={setReoccurFrequency(itemValue)}>
+                <Picker style={styles.picker} itemStyle={styles.pickerItem} selectedValue={reoccurFrequency} onValueChange={setReoccurFrequency}>
                     <Picker.Item label="No" value="no" />
                     <Picker.Item label="Daily" value="daily" />
                     <Picker.Item label="Weekly" value="weekly" />
@@ -129,7 +148,22 @@ export default function CreateTimeboxForm(props) {
             {reoccurFrequency == 'weekly' && 
                 <>
                     <Text style={styles.label}>Weekly Date</Text>
-                    <DatePicker onChange={setWeeklyDate} value={weeklyDate} />
+                    <Pressable onPress={() => setVisible(true)}>
+                        <FontAwesomeIcon icon={faCalendar} size={25}/>
+                    </Pressable>
+                    <DatePicker
+                        modal
+                        mode="date"
+                        date={new Date(weeklyDate)}
+                        onDateChange={(date) => setWeeklyDate(date.toUTCString())}
+                        open={visible}
+                        onConfirm={(date) => 
+                            {
+                                setWeeklyDate(date.toUTCString());
+                                setVisible(false);
+                            }
+                        }
+                        onCancel={() => setVisible(false)}></DatePicker>
                 </>
             }
             {goals.length == 0 ? (<Text style={styles.label}>Need to make goal first</Text>) : (

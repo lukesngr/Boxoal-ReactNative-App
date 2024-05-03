@@ -10,8 +10,7 @@ const styles = {
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        blurRadius: 10,
-        backgroundColor: 'rgba(128, 128, 128, 0.2)'
+        backgroundColor: 'rgba(128, 128, 128, 0.2)',
     }
 }
 

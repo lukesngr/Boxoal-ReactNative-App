@@ -129,7 +129,9 @@ export default function CreateTimeboxForm(props) {
         <View style={styles.overallModal}>
             <View style={styles.titleBarContainer}>  
                 <Text style={styles.title}>Add TimeBox</Text>
-                <FontAwesomeIcon icon={faXmark} size={25}/>
+                <Pressable onPress={() => props.close(false)}>
+                    <FontAwesomeIcon icon={faXmark} size={25}/>
+                </Pressable>
             </View>
             <Text style={styles.label}>Title</Text>
             <TextInput style={styles.textInput} onChangeText={setTitle} value={title}></TextInput>

@@ -34,6 +34,8 @@ export default function Timebox(props) {
         }
     }
 
+    console.log(data);
+
     return (
     <View style={{borderWidth: 1, padding: 1, borderColor: 'black', width: 50.5, height: 30}}>
         <Pressable onPress={onPress}>

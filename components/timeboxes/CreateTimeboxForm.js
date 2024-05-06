@@ -8,6 +8,10 @@ import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faCalendar } from '@fortawesome/free-regular-svg-icons';
 import Button from './Button';
 import { faXmark } from '@fortawesome/free-solid-svg-icons';
+import DatePicker from 'react-native-date-picker';
+import axios from 'axios';
+import { queryClient } from '../../App';
+import serverIP from '../../modules/serverIP';
 
 const styles = StyleSheet.create({
     overallModal: {
@@ -97,17 +101,16 @@ export default function CreateTimeboxForm(props) {
             goal: {connect: {id: parseInt(goalSelected)}}
         }
 
-        console.log(goalSelected);
-
-        if(reoccurFrequency != "no") { data["reoccuring"] = {create: {reoccurFrequency: "no"}}; }
+        if(reoccurFrequency == "no") { data["reoccuring"] = {create: {reoccurFrequency: "no"}}; }
         if(reoccurFrequency == "weekly") {data.reoccuring.create.weeklyDay = new Date(weeklyDate).getDay();}
-
+        console.log(data);
         //post to api
-        axios.post('/api/createTimebox', data).then(() => {
+        axios.post(serverIP+'/createTimebox', data, {headers: { 'Origin': 'http://localhost:3000' }}).then(() => {
             //reset the form
             queryClient.refetchQueries();
             Alert.alert("Added timebox");
         }).catch(function(error) {
+            console.log(error);
             Alert.alert("Error please contact developer");
         })
 

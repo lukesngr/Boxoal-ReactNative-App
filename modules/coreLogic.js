@@ -209,17 +209,17 @@ export function generateTimeBoxGrid(schedule, selectedDate) {
             if(element.reoccuring.reoccurFrequency === "daily") {
                 for(let i = 0; i < 7; i++) {
                     let currentDate = dayjs(selectedDate).day(i).format('D/M');
-                    if (!Object.hasOwn(timeBoxGrid, currentDate)) { timeBoxGrid.currentDate = {}; } //if date key not in map than set empty map to date key
-                    timeBoxGrid[currentDate] = {time: element}; //lookup date key and set the map inside it to key of time with value of the element itself
+                    if (!Object.hasOwn(timeBoxGrid, currentDate)) { timeBoxGrid[currentDate] = {}; } //if date key not in map than set empty map to date key
+                    timeBoxGrid[currentDate][time] = element; //lookup date key and set the map inside it to key of time with value of the element itself
                 }
             }else if(element.reoccuring.reoccurFrequency === "weekly") {
                 let currentDate = dayjs(selectedDate).day(element.reoccuring.weeklyDay).format('D/M');
-                if (!Object.hasOwn(timeBoxGrid, currentDate)) { timeBoxGrid.currentDate = {}; } //if date key not in map than set empty map to date key
-                timeBoxGrid[currentDate] = {time: element}; //lookup date key and set the map inside it to key of time with value of the element itself
+                if (!Object.hasOwn(timeBoxGrid, currentDate)) { timeBoxGrid[currentDate] = {}; } //if date key not in map than set empty map to date key
+                timeBoxGrid[currentDate][time] = element; //lookup date key and set the map inside it to key of time with value of the element itself
             }
         }else{
-            if(!Object.hasOwn(timeBoxGrid, date)) { timeBoxGrid.date = {}; } //if date key not in map than set empty map to date key
-            timeBoxGrid[date] = {time: element}; //lookup date key and set the map inside it to key of time with value of the element itself
+            if(!Object.hasOwn(timeBoxGrid, date)) { timeBoxGrid[date] = {}; } //if date key not in map than set empty map to date key
+            timeBoxGrid[date][time] = element; //lookup date key and set the map inside it to key of time with value of the element itself
         }
     });
 

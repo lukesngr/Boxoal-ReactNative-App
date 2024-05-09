@@ -3,14 +3,47 @@ import axios from 'axios';
 import { toast } from "react-toastify";
 import { queryClient } from './../../pages/_app';
 import { useState } from "react";
-import { faCircleCheck, faCircleDot, faCircleStop } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useDispatch, useSelector } from "react-redux";
 import { setActiveOverlayInterval, resetActiveOverlayInterval } from "@/redux/activeOverlayInterval";
+import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
+import { faXmark } from "@fortawesome/free-solid-svg-icons";
+import { StyleSheet, Text, View, Pressable } from "react-native";
 
+const styles = StyleSheet.create({
+    overallModal: {
+        backgroundColor: 'white',
+        padding: 10,
+        width: '80%',
+        height: 'auto',
+    },
+    title: {
+        color: 'black',
+        fontSize: 22,
+        padding: 0,
+        margin: 0,
+    },
+    buttonOutlineStyle: {
+        backgroundColor: '#7FFFD4',
+        padding: 5,
+        marginTop: 10,
+    },
+    buttonTextStyle: {
+        color: 'black',
+        fontSize: 20,
+        textAlign: 'center',
+    },
+    titleBarContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        height: 'auto',
+        margin: 0,
+        padding: 0,
+    },
+});
 
-export default function EditTimeboxForm(props) {
-    const {data, height, tags, date, time} = props;
+export default function TimeboxActionsForm(props) {
+    const {data, date, time} = props;
+    const [showEditTimeboxForm, setShowEditTimeboxForm] = useState(false);
     const timeboxRecording = useSelector(state => state.timeboxRecording.value);
     const {id, boxSizeUnit, boxSizeNumber} = useSelector(state => state.scheduleEssentials.value);
     const dispatch = useDispatch();
@@ -59,5 +92,14 @@ export default function EditTimeboxForm(props) {
             console.log(error); 
         })  
     }
-    return <></>;
+    return (
+        <View style={styles.overallModal}>
+            <View style={styles.titleBarContainer}>  
+                <Text style={styles.title}>Timebox Actions</Text>
+                <Pressable onPress={() => props.close(false)}>
+                    <FontAwesomeIcon icon={faXmark} size={25}/>
+                </Pressable>
+            </View>
+        </View>
+    );
 }

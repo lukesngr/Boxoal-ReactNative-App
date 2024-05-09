@@ -1,13 +1,14 @@
 import { addBoxesToTime, convertToDateTime, thereIsNoRecording } from "@/modules/coreLogic";
 import axios from 'axios';
-import { toast } from "react-toastify";
-import { queryClient } from './../../pages/_app';
+import { queryClient } from '../../App';
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setActiveOverlayInterval, resetActiveOverlayInterval } from "@/redux/activeOverlayInterval";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
 import { StyleSheet, Text, View, Pressable } from "react-native";
+import Button from "./Button";
+import EditTimeboxForm from "./EditTimeboxForm";
 
 const styles = StyleSheet.create({
     overallModal: {
@@ -58,37 +59,32 @@ export default function TimeboxActionsForm(props) {
     }
 
     function stopRecording() {
-        dispatch({type: 'timeboxRecording/set', payload: [-1, 0]});
+        let recordedStartTime = timeboxRecording[2];
+        dispatch({type: 'timeboxRecording/set', payload: [-1, 0, 0]});
         dispatch(resetActiveOverlayInterval());
-        axios.post('/api/createRecordedTimebox', 
-            {recordedStartTime: recordedStartTime, recordedEndTime: new Date(), timeBox: {connect: {id: data.id}}, schedule: {connect: {id}}
-        }).then(() => {
+        axios.post(serverIP+'/createRecordedTimebox', 
+            {recordedStartTime: recordedStartTime, recordedEndTime: new Date(), timeBox: {connect: {id: data.id}}, schedule: {connect: {id}}},
+            {headers: { 'Origin': 'http://localhost:3000' }}
+        ).then(() => {
             queryClient.refetchQueries();
-            toast.success("Added recorded timebox!", {
-                position: toast.POSITION.TOP_RIGHT,
-            });
+            Alert.alert("Added recorded timebox");
         }).catch(function(error) {
-            toast.error("Error: "+error, {
-                position: toast.POSITION.TOP_RIGHT,
-            });
+            Alert.alert("Error contact developer");
             console.log(error); 
         })  
     }
 
     function autoRecord() {
-        axios.post('/api/createRecordedTimebox', 
+        axios.post(serverIP+'/createRecordedTimebox', 
             {recordedStartTime: convertToDateTime(time, date), 
                 recordedEndTime: convertToDateTime(addBoxesToTime(boxSizeUnit, boxSizeNumber, time, data.numberOfBoxes), date),
-                 timeBox: {connect: {id: data.id}}, schedule: {connect: {id}}
-        }).then(() => {
+                 timeBox: {connect: {id: data.id}}, schedule: {connect: {id}}},
+            {headers: { 'Origin': 'http://localhost:3000' }}
+        ).then(() => {
             queryClient.refetchQueries();
-            toast.success("Added recorded timebox!", {
-                position: toast.POSITION.TOP_RIGHT,
-            });
+            Alert.alert("Added recorded timebox");
         }).catch(function(error) {
-            toast.error("Error: "+error, {
-                position: toast.POSITION.TOP_RIGHT,
-            });
+            Alert.alert("Error contact developer");
             console.log(error); 
         })  
     }
@@ -100,6 +96,13 @@ export default function TimeboxActionsForm(props) {
                     <FontAwesomeIcon icon={faXmark} size={25}/>
                 </Pressable>
             </View>
+            {noPreviousRecording && timeboxIsntRecording && <>
+                <Button outlineStyle={styles.buttonOutlineStyle} textStyle={styles.buttonTextStyle} title="Record" onPress={startRecording}></Button>
+                <Button outlineStyle={styles.buttonOutlineStyle} textStyle={styles.buttonTextStyle} title="Complete" onPress={autoRecord}></Button> 
+            </>}
+            {noPreviousRecording && timeboxIsRecording && 
+            <Button outlineStyle={styles.buttonOutlineStyle} textStyle={styles.buttonTextStyle} title="Stop Recording" onPress={stopRecording}></Button>}
+            <EditTimeboxForm data={data}></EditTimeboxForm>
         </View>
     );
 }

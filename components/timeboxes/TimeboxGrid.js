@@ -8,8 +8,8 @@ import Timebox from "./Timebox";
 import { ifCurrentDay } from "../../modules/dateLogic";
 import { useState } from "react";
 import useOverlayDimensions from "../../hooks/useOverlayDimensions";
-import Overlay from "../Overlay";
-import ActiveOverlay from "../ActiveOverlay";
+import Overlay from "../overlay/Overlay";
+import ActiveOverlay from "../overlay/ActiveOverlay";
 import useActiveOverlay from "../../hooks/useActiveOverlay";
 
 export default function TimeboxGrid(props) {

@@ -11,6 +11,7 @@ import useOverlayDimensions from "../../hooks/useOverlayDimensions";
 import Overlay from "../overlay/Overlay";
 import ActiveOverlay from "../overlay/ActiveOverlay";
 import useActiveOverlay from "../../hooks/useActiveOverlay";
+import RecordingOverlay from "../overlay/RecordingOverlay";
 
 export default function TimeboxGrid(props) {
     const [headerHeight, setHeaderHeight] = useState(0);
@@ -43,6 +44,7 @@ export default function TimeboxGrid(props) {
                         <Text style={{fontSize: 16, color: ifCurrentDay(index, 'white', 'black')}}>{day.name+" ("+day.date+"/"+day.month+")"}</Text>
                         {ifCurrentDay(index, true, false) ? (<>
                                 <ActiveOverlay></ActiveOverlay>
+                                <RecordingOverlay></RecordingOverlay>
                             </>) : (<Overlay notActive={ifEqualOrBeyondCurrentDay(index, true, false)}></Overlay>)}
                     </View>)
                 })}

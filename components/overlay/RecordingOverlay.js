@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { calculateSizeOfRecordingOverlay } from '../../modules/coreLogic';
 import { useSelector } from 'react-redux';
+import { View } from 'react-native';
 
 export default function RecordingOverlay() {
     const timeboxRecording = useSelector(state => state.timeboxRecording.value);
@@ -13,7 +14,7 @@ export default function RecordingOverlay() {
         backgroundColor: 'red',
         opacity: 0.7,
         zIndex: 997,
-        position: absolute,
+        position: 'absolute',
         width: '100%',
         width: overlayDimensions[0]+"px", 
         height: recordingOverlayHeight,

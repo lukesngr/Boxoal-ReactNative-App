@@ -37,7 +37,7 @@ export default function RecordingOverlay() {
 
     return (
         <>
-            {timeboxRecording != -1 && 
+            {timeboxRecording[0] != -1 && 
             <View style={recordingOverlayStyle}></View>}
         </>
     )

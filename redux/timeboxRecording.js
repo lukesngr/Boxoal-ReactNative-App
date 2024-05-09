@@ -3,7 +3,7 @@ import { createSlice } from '@reduxjs/toolkit'
 export const timeboxRecording = createSlice({
   name: 'timeboxRecording',
   initialState: {
-    value: [-1, 0],
+    value: [-1, 0, -1],
   },
   reducers: {
     set: (state, action) => {

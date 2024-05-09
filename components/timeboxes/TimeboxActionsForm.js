@@ -54,12 +54,12 @@ export default function TimeboxActionsForm(props) {
     const timeboxIsRecording = timeboxRecording[0] == data.id && timeboxRecording[1] == date;
 
     function startRecording() {
-        dispatch({type: 'timeboxRecording/set', payload: [data.id, date, new Date()]});
+        dispatch({type: 'timeboxRecording/set', payload: [data.id, date, new Date().toISOString()]});
         dispatch(setActiveOverlayInterval());
     }
 
     function stopRecording() {
-        let recordedStartTime = timeboxRecording[2];
+        let recordedStartTime = new Date(timeboxRecording[2]);
         dispatch({type: 'timeboxRecording/set', payload: [-1, 0, 0]});
         dispatch(resetActiveOverlayInterval());
         axios.post(serverIP+'/createRecordedTimebox', 

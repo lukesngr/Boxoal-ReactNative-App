@@ -1,9 +1,9 @@
-import { addBoxesToTime, convertToDateTime, thereIsNoRecording } from "@/modules/coreLogic";
+import { addBoxesToTime, convertToDateTime, thereIsNoRecording } from "../../modules/coreLogic";
 import axios from 'axios';
 import { queryClient } from '../../App';
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setActiveOverlayInterval, resetActiveOverlayInterval } from "@/redux/activeOverlayInterval";
+import { setActiveOverlayInterval, resetActiveOverlayInterval } from "../../redux/activeOverlayInterval";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
 import { StyleSheet, Text, View, Pressable } from "react-native";

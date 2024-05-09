@@ -4,6 +4,7 @@ import { useState } from "react";
 import {useSelector, useDispatch} from 'react-redux';
 import { ifEqualOrBeyondCurrentDay } from "../../modules/dateLogic";
 import CreateTimeboxForm from "./CreateTimeboxForm";
+import EditTimeboxForm from "./EditTimeboxForm";
 
 const styles = {
     modalContainer: {
@@ -30,16 +31,14 @@ export default function Timebox(props) {
 
     if(timeboxGrid) { 
         if(timeboxGrid[date]) {
-            data = timeboxGrid[date][props.time]; 
+            data = timeboxGrid[date][props.time];
         }
     }
-
-    console.log(data, timeboxGrid);
 
     return (
     <View style={{borderWidth: 1, padding: 1, borderColor: 'black', width: 50.5, height: 30}}>
         <Pressable onPress={onPress}>
-            <Text></Text>
+            {data ? (<NormalTimebox data={data}></NormalTimebox>) : (<Text></Text>)}
         </Pressable>
         <Modal
         animationType="slide"
@@ -49,7 +48,7 @@ export default function Timebox(props) {
           setModalVisible(!modalVisible);
         }}>
             <View style={styles.modalContainer}>
-            {data ? (<NormalTimebox></NormalTimebox>) : (<CreateTimeboxForm time={props.time} dayName={dayName} date={date} close={setModalVisible}></CreateTimeboxForm>)}
+            {data ? (<EditTimeboxForm data={data}></EditTimeboxForm>) : (<CreateTimeboxForm time={props.time} dayName={dayName} date={date} close={setModalVisible}></CreateTimeboxForm>)}
             </View>
         </Modal>
     </View>

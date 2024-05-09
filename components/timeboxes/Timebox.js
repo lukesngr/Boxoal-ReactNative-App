@@ -4,7 +4,7 @@ import { useState } from "react";
 import {useSelector, useDispatch} from 'react-redux';
 import { ifEqualOrBeyondCurrentDay } from "../../modules/dateLogic";
 import CreateTimeboxForm from "./CreateTimeboxForm";
-import EditTimeboxForm from "./EditTimeboxForm";
+import EditTimeboxForm from "./TimeboxActionsForm";
 
 const styles = {
     modalContainer: {

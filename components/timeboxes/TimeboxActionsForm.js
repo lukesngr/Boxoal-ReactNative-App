@@ -92,7 +92,7 @@ export default function TimeboxActionsForm(props) {
     }
     return (
     <>
-        {showEditTimeboxForm ? (<EditTimeboxForm data={data}></EditTimeboxForm>) : (
+        {showEditTimeboxForm ? (<EditTimeboxForm close={() => setShowEditTimeboxForm(false)} data={data}></EditTimeboxForm>) : (
         <View style={styles.overallModal}>
             <View style={styles.titleBarContainer}>  
                 <Text style={styles.title}>Timebox Actions</Text>

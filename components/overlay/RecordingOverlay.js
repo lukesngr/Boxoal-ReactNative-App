@@ -13,12 +13,11 @@ export default function RecordingOverlay() {
     let recordingOverlayStyle = {
         backgroundColor: 'red',
         opacity: 0.7,
-        zIndex: 997,
+        zIndex: 999,
         position: 'absolute',
         width: '100%',
-        width: overlayDimensions[0]+"px", 
+        width: overlayDimensions[0], 
         height: recordingOverlayHeight,
-        transform: `translate(-3px, ${activeOverlayHeight+3}px)`
     }
 
     useEffect(() => {
@@ -28,6 +27,7 @@ export default function RecordingOverlay() {
             }, 5000);
         
             return () => {
+                console.log(`clearing interval`);
                 clearInterval(recordingOverlayInterval);
             };
         }else{

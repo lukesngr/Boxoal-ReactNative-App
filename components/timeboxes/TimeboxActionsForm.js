@@ -7,6 +7,7 @@ import { setActiveOverlayInterval, resetActiveOverlayInterval } from "../../redu
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
 import { StyleSheet, Text, View, Pressable } from "react-native";
+import serverIP from "../../modules/serverIP";
 import Button from "./Button";
 import EditTimeboxForm from "./EditTimeboxForm";
 
@@ -55,13 +56,13 @@ export default function TimeboxActionsForm(props) {
 
     function startRecording() {
         dispatch({type: 'timeboxRecording/set', payload: [data.id, date, new Date().toISOString()]});
-        dispatch(setActiveOverlayInterval());
+        dispatch(resetActiveOverlayInterval());
     }
 
     function stopRecording() {
         let recordedStartTime = new Date(timeboxRecording[2]);
         dispatch({type: 'timeboxRecording/set', payload: [-1, 0, 0]});
-        dispatch(resetActiveOverlayInterval());
+        dispatch(setActiveOverlayInterval());
         axios.post(serverIP+'/createRecordedTimebox', 
             {recordedStartTime: recordedStartTime, recordedEndTime: new Date(), timeBox: {connect: {id: data.id}}, schedule: {connect: {id}}},
             {headers: { 'Origin': 'http://localhost:3000' }}

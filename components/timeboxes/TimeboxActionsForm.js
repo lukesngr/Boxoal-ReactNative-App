@@ -91,6 +91,8 @@ export default function TimeboxActionsForm(props) {
         })  
     }
     return (
+    <>
+        {showEditTimeboxForm ? (<EditTimeboxForm data={data}></EditTimeboxForm>) : (
         <View style={styles.overallModal}>
             <View style={styles.titleBarContainer}>  
                 <Text style={styles.title}>Timebox Actions</Text>
@@ -104,7 +106,7 @@ export default function TimeboxActionsForm(props) {
             </>}
             {noPreviousRecording && timeboxIsRecording && 
             <Button outlineStyle={styles.buttonOutlineStyle} textStyle={styles.buttonTextStyle} title="Stop Recording" onPress={stopRecording}></Button>}
-            <EditTimeboxForm data={data}></EditTimeboxForm>
-        </View>
-    );
+            <Button outlineStyle={styles.buttonOutlineStyle} textStyle={styles.buttonTextStyle} title="Edit" onPress={() => setShowEditTimeboxForm(true)}></Button>
+        </View>)}
+    </>);
 }

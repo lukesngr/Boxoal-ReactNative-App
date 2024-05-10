@@ -19,12 +19,12 @@ export default function useOverlayDimensions(headerHeight, headerWidth) {
 
             dispatch({type: 'overlayDimensions/set', payload: [headerWidth, overlayHeight, 30, headerHeight]});
         }
+        
     };
 
     //when page first loads calculate overlay dimensions
     useEffect(() => {
         calculateOverlayDimensions();
-        console.log("fdf")
     }, []);
 
     useEffect(() => {

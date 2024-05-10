@@ -18,6 +18,7 @@ export default function RecordingOverlay() {
         width: overlayDimensions[0], 
         height: recordingOverlayHeight,
         top: 0,
+        transform: [{translateY: activeOverlayHeight}]
     }
 
     useEffect(() => {

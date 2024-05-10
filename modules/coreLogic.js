@@ -174,7 +174,6 @@ export function calculateOverlayHeightForNow(wakeupTime, boxSizeUnit, boxSizeNum
 
 export function calculateSizeOfRecordingOverlay(wakeupTime, boxSizeUnit, boxSizeNumber, overlayDimensions, originalOverlayHeight) {
     //could do much more math but choosing easy route
-    console.log(overlayDimensions);
     let overlaysTotalHeight = calculateOverlayHeightForNow(wakeupTime, boxSizeUnit, boxSizeNumber, overlayDimensions);
     let recordingOverlayHeight = overlaysTotalHeight - originalOverlayHeight;
     return recordingOverlayHeight;

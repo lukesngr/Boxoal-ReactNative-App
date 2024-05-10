@@ -3,8 +3,6 @@ import { View } from "react-native";
 
 export default function Overlay(props) {
     const overlayDimensions = useSelector(state => state.overlayDimensions.value);
-
-    console.log(overlayDimensions, props.notActive);
     
     return (<>{!props.notActive && <View style={{width: overlayDimensions[0], 
         height: overlayDimensions[1], 

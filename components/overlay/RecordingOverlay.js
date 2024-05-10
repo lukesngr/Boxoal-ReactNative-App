@@ -18,6 +18,7 @@ export default function RecordingOverlay() {
         width: '100%',
         width: overlayDimensions[0], 
         height: recordingOverlayHeight,
+        transform: [{translateY: activeOverlayHeight}]
     }
 
     useEffect(() => {
@@ -27,15 +28,12 @@ export default function RecordingOverlay() {
             }, 5000);
         
             return () => {
-                console.log(`clearing interval`);
                 clearInterval(recordingOverlayInterval);
             };
         }else{
             setRecordingOverlayHeight("0px");
         }
     }, [timeboxRecording])
-
-    console.log(recordingOverlayHeight);
 
     return (
         <>

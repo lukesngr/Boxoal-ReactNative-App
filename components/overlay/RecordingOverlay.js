@@ -35,8 +35,8 @@ export default function RecordingOverlay() {
         }
     }, [timeboxRecording])
 
-    console.log("recordingOverlayHeight", recordingOverlayHeight);
-    console.log("activeOverlayHeight", activeOverlayHeight);
+    //console.log("recordingOverlayHeight", recordingOverlayHeight);
+    //console.log("activeOverlayHeight", activeOverlayHeight);
 
     return (
         <>

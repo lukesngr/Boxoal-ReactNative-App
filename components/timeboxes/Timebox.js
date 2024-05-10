@@ -49,7 +49,7 @@ export default function Timebox(props) {
           setModalVisible(!modalVisible);
         }}>
             <View style={styles.modalContainer}>
-            {data ? (<TimeboxActionsForm data={data} close={setModalVisible}></TimeboxActionsForm>) : (
+            {data ? (<TimeboxActionsForm time={props.time} date={date} data={data} close={setModalVisible}></TimeboxActionsForm>) : (
             <CreateTimeboxForm time={props.time} dayName={dayName} date={date} close={setModalVisible}></CreateTimeboxForm>)}
             </View>
         </Modal>

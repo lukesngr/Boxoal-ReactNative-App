@@ -21,15 +21,16 @@ export default function Timeboxes() {
         const response = await axios.get(serverIP+"/getSchedules", { params: {userEmail: username, startOfWeek, endOfWeek}, headers: { 'Origin': 'http://localhost:3000' }});
         return response.data;
       },
-    enabled: true})
+    enabled: true
+  })
 
-    if(status === 'pending') return <Loading />
+  if(status === 'pending') return <Loading />
 
-    return (
-      <>
-        <TimeboxHeading />
-        <TimeboxGrid data={data}></TimeboxGrid>
-      </>
-      )
+  return (
+    <>
+      <TimeboxHeading />
+      <TimeboxGrid data={data}></TimeboxGrid>
+    </>
+  )
   
 }

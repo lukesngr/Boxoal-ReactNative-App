@@ -31,7 +31,7 @@ const rootReducer = combineReducers({
 const persistConfig = {
   key: 'root',
   storage: AsyncStorage,
-  whitelist: ['username', 'timeboxRecording'],
+  whitelist: ['username', 'timeboxRecording', 'activeOverlayInterval'],
 }
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

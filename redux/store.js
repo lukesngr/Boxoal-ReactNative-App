@@ -10,19 +10,33 @@ import timeboxDialogReducer from './timeboxDialog'
 import usernameReducer from './username'
 import selectedDateReducer from './selectedDate'
 import selectedScheduleReducer from './selectedSchedule'
+import storage from 'redux-persist/lib/storage';
+import { persistStore, persistReducer } from 'redux-persist';
 
-export default configureStore({
-  reducer: {
-    scheduleEssentials: scheduleEssentialsReducer,
-    overlayDimensions: overlayDimensionsReducer,
-    activeOverlayHeight: activeOverlayHeightReducer,
-    activeOverlayInterval: activeOverlayIntervalReducer,
-    scheduleData: scheduleDataReducer,
-    timeboxGrid: timeboxGridReducer,
-    timeboxRecording: timeboxRecordingReducer,
-    timeboxDialog: timeboxDialogReducer,
-    username: usernameReducer,
-    selectedDate: selectedDateReducer,
-    selectedSchedule: selectedScheduleReducer,
-  },
-})
+const rootReducer = {
+  scheduleEssentials: scheduleEssentialsReducer,
+  overlayDimensions: overlayDimensionsReducer,
+  activeOverlayHeight: activeOverlayHeightReducer,
+  activeOverlayInterval: activeOverlayIntervalReducer,
+  scheduleData: scheduleDataReducer,
+  timeboxGrid: timeboxGridReducer,
+  timeboxRecording: timeboxRecordingReducer,
+  timeboxDialog: timeboxDialogReducer,
+  username: usernameReducer,
+  selectedDate: selectedDateReducer,
+  selectedSchedule: selectedScheduleReducer,
+};
+
+const persistConfig = {
+  key: 'root',
+  storage,
+  whitelist: ['username', 'timeboxRecording'],
+}
+
+const persistedReducer = persistReducer(persistConfig, rootReducer);
+
+export const store = configureStore({
+  reducer: persistedReducer,
+});
+
+export const persistor = persistStore(store);

@@ -24,6 +24,7 @@ export default function useOverlayDimensions(headerHeight, headerWidth) {
     //when page first loads calculate overlay dimensions
     useEffect(() => {
         calculateOverlayDimensions();
+        console.log("fdf")
     }, []);
 
     useEffect(() => {

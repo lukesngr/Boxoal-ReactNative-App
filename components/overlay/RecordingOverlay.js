@@ -15,10 +15,9 @@ export default function RecordingOverlay() {
         opacity: 0.7,
         zIndex: 999,
         position: 'absolute',
-        width: '100%',
         width: overlayDimensions[0], 
         height: recordingOverlayHeight,
-        transform: [{translateY: activeOverlayHeight}]
+        top: 0,
     }
 
     useEffect(() => {

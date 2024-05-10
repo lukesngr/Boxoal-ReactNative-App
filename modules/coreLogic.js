@@ -145,7 +145,7 @@ export function addBoxesToTime(boxSizeUnit, boxSizeNumber, time, numberOfBoxes) 
 
 export function calculatePixelsFromTopOfGridBasedOnTime(wakeupTime, boxSizeUnit, boxSizeNumber, overlayDimensions, time) {
 
-    if(overlayDimensions == 0 ) { //hasn't been set yet
+    if(overlayDimensions[0] == 0 ) { //hasn't been set yet
         return 0;
     }
 

@@ -7,8 +7,9 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import Timeboxes from './pages/Timeboxes';
 import FinalView from './pages/FinalView';
 import { Provider } from 'react-redux';
-import store from './redux/store';
+import {store, persistor} from './redux/store';
 import { QueryClientProvider, QueryClient } from '@tanstack/react-query';
+import { PersistGate } from 'redux-persist/integration/react';
 
 const Stack = createNativeStackNavigator();
 export const queryClient = new QueryClient();
@@ -47,25 +48,27 @@ export function Login({ navigation, route }) {
 export default function App() {
   return (
     <QueryClientProvider client={queryClient}>
-    <Provider store={store}>
-    <NavigationContainer linking={linking} fallback={<Text>Loading</Text>}>
-      <Stack.Navigator>
-        <Stack.Screen
-          name="SplashScreen"
-          component={SplashScreen}
-          options={ {headerShown: false} }
-        />
-        <Stack.Screen
-          name="Login"
-          component={Login}
-          options={{headerShown: false}}></Stack.Screen>
-        <Stack.Screen
-          name="FinalView"
-          component={FinalView}
-          options={{headerShown: false}}></Stack.Screen>
-      </Stack.Navigator>
-    </NavigationContainer>
-    </Provider>
+      <Provider store={store}>
+        <PersistGate persistor={persistor} loading={null}>
+          <NavigationContainer linking={linking} fallback={<Text>Loading</Text>}>
+            <Stack.Navigator>
+              <Stack.Screen
+                name="SplashScreen"
+                component={SplashScreen}
+                options={ {headerShown: false} }
+              />
+              <Stack.Screen
+                name="Login"
+                component={Login}
+                options={{headerShown: false}}></Stack.Screen>
+              <Stack.Screen
+                name="FinalView"
+                component={FinalView}
+                options={{headerShown: false}}></Stack.Screen>
+            </Stack.Navigator>
+          </NavigationContainer>
+        </PersistGate>
+      </Provider>
     </QueryClientProvider>
   );
 }

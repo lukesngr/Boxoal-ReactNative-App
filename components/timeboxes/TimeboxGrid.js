@@ -13,6 +13,21 @@ import ActiveOverlay from "../overlay/ActiveOverlay";
 import useActiveOverlay from "../../hooks/useActiveOverlay";
 import RecordingOverlay from "../overlay/RecordingOverlay";
 
+const styles = StyleSheet.create({
+    overallView: {
+        marginLeft: 4, 
+        marginRight: 4
+    },
+    timeboxCell: {
+        flex: 1, 
+        justifyContent: 'center', 
+        alignItems: 'center', 
+        borderColor: 'black', 
+        borderWidth: 1, 
+        padding: 1
+    }
+});
+
 export default function TimeboxGrid(props) {
     const [headerHeight, setHeaderHeight] = useState(0);
     const [headerWidth, setHeaderWidth] = useState(0);
@@ -28,13 +43,12 @@ export default function TimeboxGrid(props) {
     useActiveOverlay(schedule);
     return (
     <ScrollView>
-        <View style={{marginLeft: 4, marginRight: 4}}>
+        <View style={styles.overallView}>
             <View style={{flexDirection: 'row'}}>
-                <View style={{flex: 1, justifyContent: 'center', alignItems: 'center', borderColor: 'black', borderWidth: 1, padding: 1}}></View>
+                <View style={styles.timeboxCell}></View>
                 {dayToName.map((day, index) => {
                     return (
-                    <View key={index} style={{flex: 1, justifyContent: 'center', alignItems: 'center', borderColor: 'black', 
-                        borderWidth: 1, padding: 1, backgroundColor: ifCurrentDay(index, 'black', 'white')}}
+                    <View key={index} style={{backgroundColor: ifCurrentDay(index, 'black', 'white'), ...timeboxCell}}
                                 onLayout={(event) => {
                                     if(index == 0) {
                                         setHeaderHeight(event.nativeEvent.layout.height);

@@ -66,7 +66,7 @@ export default function TimeboxGrid(props) {
                     </View>)
                 })}
             </View>
-            <View style={{flexDirection: 'column', elevation: 2}}>
+            <View style={{flexDirection: 'column'}}>
                 {listOfTimes.map((time, index) => {
                     return <View key={index} style={{flexDirection: 'row'}}>
                         <View style={{borderWidth: 1, padding: 1}}>

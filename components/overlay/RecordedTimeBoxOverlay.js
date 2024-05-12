@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { View } from "react-native";
+import { View, Text } from "react-native";
 import { useSelector } from "react-redux";
 import { calculatePixelsFromTopOfGridBasedOnTime } from "../../modules/coreLogic";
 
@@ -38,12 +38,13 @@ export default function RecordedTimeBoxOverlay(props) {
         <>
         <View key={index} style={{width: overlayDimensions[0], 
             height: recordedBoxes.heightForBox, 
-            transform: [translateY(recordedBoxes.marginFromTop)],
+            transform: [{translateY: recordedBoxes.marginFromTop}],
             backgroundColor: 'red',
             opacity: 0.7,
-            zIndex: 997,
-            position: absolute,
-            width: '100%',}}>{recordedBoxes.title}</View>
+            zIndex: 999,
+            position: 'absolute',
+            width: '100%',}}>
+        <Text>{recordedBoxes.title}</Text></View>
         </>
     ))}</>
 }

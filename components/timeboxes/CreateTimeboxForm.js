@@ -101,9 +101,11 @@ export default function CreateTimeboxForm(props) {
             goal: {connect: {id: parseInt(goalSelected)}}
         }
 
-        if(reoccurFrequency == "no") { data["reoccuring"] = {create: {reoccurFrequency: "no"}}; }
-        if(reoccurFrequency == "weekly") {data.reoccuring.create.weeklyDay = new Date(weeklyDate).getDay();}
-        console.log(data);
+        if(reoccurFrequency == "weekly") {
+            data["reoccuring"] = {create: {reoccurFrequency: "weekly", weeklyDay: new Date(weeklyDate).getDay()}};
+        }else if(reoccurFrequency == "daily") {
+            data["reoccuring"] = {create: {reoccurFrequency: "daily"}};
+        }
         //post to api
         axios.post(serverIP+'/createTimebox', data, {headers: { 'Origin': 'http://localhost:3000' }}).then(() => {
             //reset the form

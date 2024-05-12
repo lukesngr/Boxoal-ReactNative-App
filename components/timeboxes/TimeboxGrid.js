@@ -12,7 +12,8 @@ import Overlay from "../overlay/Overlay";
 import ActiveOverlay from "../overlay/ActiveOverlay";
 import useActiveOverlay from "../../hooks/useActiveOverlay";
 import RecordingOverlay from "../overlay/RecordingOverlay";
-import RecordedTimeBoxOverlay from "../overlay/REcordedTimeBoxOverlay";
+import RecordedTimeBoxOverlay from "../overlay/RecordedTimeBoxOverlay";
+import { StyleSheet } from "react-native";
 
 const styles = StyleSheet.create({
     overallView: {
@@ -49,7 +50,7 @@ export default function TimeboxGrid(props) {
                 <View style={styles.timeboxCell}></View>
                 {dayToName.map((day, index) => {
                     return (
-                    <View key={index} style={{backgroundColor: ifCurrentDay(index, 'black', 'white'), ...timeboxCell}}
+                    <View key={index} style={{backgroundColor: ifCurrentDay(index, 'black', 'white'), ...styles.timeboxCell}}
                                 onLayout={(event) => {
                                     if(index == 0) {
                                         setHeaderHeight(event.nativeEvent.layout.height);

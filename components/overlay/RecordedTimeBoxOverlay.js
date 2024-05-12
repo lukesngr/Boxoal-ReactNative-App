@@ -42,8 +42,7 @@ export default function RecordedTimeBoxOverlay(props) {
             backgroundColor: 'red',
             opacity: 0.7,
             zIndex: 999,
-            position: 'absolute',
-            width: '100%',}}>
+            position: 'absolute'}}>
         <Text>{recordedBoxes.title}</Text></View>
         </>
     ))}</>

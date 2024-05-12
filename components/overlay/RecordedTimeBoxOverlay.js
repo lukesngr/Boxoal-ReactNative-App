@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { View } from "react-native";
 import { useSelector } from "react-redux";
-import { calculatePixelsFromTopOfGridBasedOnTime } from "../../helpers/calculatePixelsFromTopOfGridBasedOnTime";
+import { calculatePixelsFromTopOfGridBasedOnTime } from "../../modules/coreLogic";
 
 export default function RecordedTimeBoxOverlay(props) {
     const [recordedBoxes, setRecordedBoxes] = useState([]);

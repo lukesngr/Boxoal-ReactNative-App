@@ -12,6 +12,7 @@ import Overlay from "../overlay/Overlay";
 import ActiveOverlay from "../overlay/ActiveOverlay";
 import useActiveOverlay from "../../hooks/useActiveOverlay";
 import RecordingOverlay from "../overlay/RecordingOverlay";
+import RecordedTimeBoxOverlay from "../overlay/REcordedTimeBoxOverlay";
 
 const styles = StyleSheet.create({
     overallView: {
@@ -61,6 +62,7 @@ export default function TimeboxGrid(props) {
                                 <ActiveOverlay></ActiveOverlay>
                                 <RecordingOverlay></RecordingOverlay>
                         </>) : (<Overlay notActive={ifEqualOrBeyondCurrentDay(index, true, false)}></Overlay>)}
+                        <RecordedTimeBoxOverlay day={day}></RecordedTimeBoxOverlay>
                     </View>)
                 })}
             </View>

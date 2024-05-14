@@ -37,7 +37,7 @@ export default function Timebox(props) {
     }
 
     return (
-    <View style={{borderWidth: 1, borderColor: 'black', width: 50.5, height: 30, zIndex: 995, position: 'relative'}}>
+    <View style={{borderWidth: 1, borderColor: 'black', width: 50.5, height: 30, zIndex: 998}}>
         <Pressable onPress={onPress}>
             {data ? (<NormalTimebox data={data}></NormalTimebox>) : (<Text></Text>)}
         </Pressable>

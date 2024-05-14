@@ -42,6 +42,7 @@ export default function TimeboxGrid(props) {
     useScheduleSetter(schedule); //set schedule data to redux store (timeboxes, recordedTimeboxes, goals
     useOverlayDimensions(headerHeight, headerWidth); //calculate overlay dimensions
     useActiveOverlay(schedule);
+    const overlayDimensions = useSelector(state => state.overlayDimensions.value);
     return (
     <ScrollView>
         <View style={styles.overallView}>
@@ -62,7 +63,6 @@ export default function TimeboxGrid(props) {
                                 <ActiveOverlay></ActiveOverlay>
                                 <RecordingOverlay></RecordingOverlay>
                         </>) : (<Overlay notActive={ifEqualOrBeyondCurrentDay(index, true, false)}></Overlay>)}
-                        <RecordedTimeBoxOverlay day={day}></RecordedTimeBoxOverlay>
                     </View>)
                 })}
             </View>
@@ -77,7 +77,11 @@ export default function TimeboxGrid(props) {
                         })}
                     </View>
                 })}
-                
+            </View>
+            <View style={{position: 'absolute', transform: [{translateX: 50}], zIndex: 999}}>
+            {dayToName.map((day, index) => {
+                    return <RecordedTimeBoxOverlay index={index} day={day}></RecordedTimeBoxOverlay>
+            })}
             </View>
         </View>
     </ScrollView>

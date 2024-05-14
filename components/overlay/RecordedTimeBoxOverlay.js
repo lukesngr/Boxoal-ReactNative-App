@@ -38,9 +38,9 @@ export default function RecordedTimeBoxOverlay(props) {
         <>
         <View key={index} style={{width: overlayDimensions[0], 
             height: recordedBoxes.heightForBox, 
-            transform: [{translateY: recordedBoxes.marginFromTop}],
+            transform: [{translateY: recordedBoxes.marginFromTop}, {translateX: overlayDimensions[0]*props.index}],
             backgroundColor: 'red',
-            opacity: 0.7,
+            opacity: 0.9,
             zIndex: 999,
             position: 'absolute'}}>
         <Text>{recordedBoxes.title}</Text></View>

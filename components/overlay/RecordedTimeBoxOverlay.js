@@ -40,7 +40,7 @@ export default function RecordedTimeBoxOverlay(props) {
             height: recordedBoxes.heightForBox, 
             transform: [{translateY: recordedBoxes.marginFromTop}, {translateX: overlayDimensions[0]*props.index}],
             backgroundColor: 'red',
-            opacity: 0.9,
+            opacity: 0.7,
             zIndex: 999,
             position: 'absolute'}}>
         <Text>{recordedBoxes.title}</Text></View>

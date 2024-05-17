@@ -19,16 +19,18 @@ export function ifCurrentDay(number, returnIfTrue, returnIfFalse) {
     const {wakeupTime} = useSelector(state => state.scheduleEssentials.value);
     const dateObject = new Date();
     let currentDay = dateObject.getDay();
-    let cutOffDateTime = convertToDateTime(wakeupTime, dateObject.getDay()+'/'+dateObject.getMonth());
+    let cutOffDateTime = convertToDateTime(wakeupTime, dateObject.getDate()+'/'+(dateObject.getMonth()+1));
 
     if(typeof number !== 'number') { 
         console.log("Non-number datatype given to comparison function");
         return returnIfFalse;
     }
 
+    console.log(number, currentDay, dateObject, cutOffDateTime);
+
     if(number == currentDay && dateObject >= cutOffDateTime) {
         return returnIfTrue;
-    }else if(number == currentDay+1 && dateObject < cutOffDateTime) {
+    }else if((number+1) == currentDay && dateObject < cutOffDateTime) {
         return returnIfTrue;
     }
     return returnIfFalse;
@@ -38,7 +40,7 @@ export function ifEqualOrBeyondCurrentDay(number, returnIfTrue, returnIfFalse) {
     const {wakeupTime} = useSelector(state => state.scheduleEssentials.value);
     const dateObject = new Date();
     let currentDay = dateObject.getDay();
-    let cutOffDateTime = convertToDateTime(wakeupTime, dateObject.getDay()+'/'+dateObject.getMonth());
+    let cutOffDateTime = convertToDateTime(wakeupTime, dateObject.getDate()+'/'+(dateObject.getMonth()+1));
 
     if(typeof number !== 'number') { 
         console.log("Non-number datatype given to comparison function");
@@ -47,7 +49,7 @@ export function ifEqualOrBeyondCurrentDay(number, returnIfTrue, returnIfFalse) {
     
     if(number >= currentDay && dateObject >= cutOffDateTime) {
         return returnIfTrue;
-    }else if(number >= currentDay+1 && dateObject < cutOffDateTime) {
+    }else if((number+1) >= currentDay && dateObject < cutOffDateTime) {
         return returnIfTrue;
     }
     return returnIfFalse;

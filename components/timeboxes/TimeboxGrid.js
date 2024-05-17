@@ -58,11 +58,9 @@ export default function TimeboxGrid(props) {
                                     }
                                 }}>
                         <Text style={{fontSize: 16, color: ifCurrentDay(index, 'white', 'black')}}>{day.name+" ("+day.date+"/"+day.month+")"}</Text>
-                        {ifCurrentDay(index, true, false) ? (
-                        <>
-                                <ActiveOverlay></ActiveOverlay>
-                                <RecordingOverlay></RecordingOverlay>
-                        </>) : (<Overlay notActive={ifEqualOrBeyondCurrentDay(index, true, false)}></Overlay>)}
+                        {ifCurrentDay(index, true, false) && <ActiveOverlay></ActiveOverlay>}
+                        {ifEqualOrBeyondCurrentDay(index, true, false) && <Overlay></Overlay>}
+                        <RecordingOverlay></RecordingOverlay>
                     </View>)
                 })}
             </View>

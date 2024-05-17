@@ -26,16 +26,14 @@ export default function RecordingOverlay(props) {
         transform: [{translateY: marginFromTop}]
     }
     let currentDate = dayjs().date(props.day.date).month(props.day.month-1);
-    console.log(timeboxRecording);
     let startDate = timeboxRecording[2];
 
     useEffect(() => {
         if(timeboxRecording[0] != -1 && dayjs(timeboxRecording[2]).isSameOrBefore(currentDate)) {
-            console.log("yes")
             let recordingOverlayInterval = setInterval(() => {
-                const [overlayHeight, topMargin] = calculateSizeOfRecordingOverlay(wakeupTime, boxSizeUnit, boxSizeNumber, overlayDimensions, activeOverlayHeight, props.day, startDate);
-                setRecordingOverlayHeight(overlayHeight);
-                setMarginFromTop(topMargin);
+                const recordingOverlayArray = calculateSizeOfRecordingOverlay(wakeupTime, boxSizeUnit, boxSizeNumber, overlayDimensions, activeOverlayHeight, props.day, startDate);
+                setRecordingOverlayHeight(recordingOverlayArray[0]);
+                setMarginFromTop(recordingOverlayArray[1]);
             }, 5000);
         
             return () => {

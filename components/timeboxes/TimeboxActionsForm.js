@@ -11,6 +11,7 @@ import serverIP from "../../modules/serverIP";
 import Button from "./Button";
 import EditTimeboxForm from "./EditTimeboxForm";
 import { Alert } from "react-native";
+import notifee from '@notifee/react-native';
 
 const styles = StyleSheet.create({
     overallModal: {
@@ -55,7 +56,7 @@ export default function TimeboxActionsForm(props) {
     const timeboxIsntRecording = timeboxRecording[0] == -1;
     const timeboxIsRecording = timeboxRecording[0] == data.id && timeboxRecording[1] == date;
 
-    function startRecording() {
+    async function startRecording() {
         dispatch({type: 'timeboxRecording/set', payload: [data.id, date, new Date().toISOString()]});
         dispatch(resetActiveOverlayInterval());
     }

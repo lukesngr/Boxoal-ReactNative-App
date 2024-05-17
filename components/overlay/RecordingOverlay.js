@@ -22,6 +22,22 @@ export default function RecordingOverlay() {
     }
 
     useEffect(() => {
+        
+        if(timeboxRecording[0] != -1) {
+            let recordingOverlayInterval = setInterval(() => {
+                setRecordingOverlayHeight(calculateSizeOfRecordingOverlay(wakeupTime, boxSizeUnit, boxSizeNumber, overlayDimensions, activeOverlayHeight));
+                console.log(activeOverlayHeight, calculateSizeOfRecordingOverlay(wakeupTime, boxSizeUnit, boxSizeNumber, overlayDimensions, activeOverlayHeight));
+            }, 5000);
+        
+            return () => {
+                clearInterval(recordingOverlayInterval);
+            };
+        }else{
+            setRecordingOverlayHeight("0px");
+        }
+    }, [])
+
+    useEffect(() => {
         if(timeboxRecording[0] != -1) {
             let recordingOverlayInterval = setInterval(() => {
                 setRecordingOverlayHeight(calculateSizeOfRecordingOverlay(wakeupTime, boxSizeUnit, boxSizeNumber, overlayDimensions, activeOverlayHeight));

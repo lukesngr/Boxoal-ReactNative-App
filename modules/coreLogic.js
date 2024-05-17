@@ -181,7 +181,7 @@ export function calculateSizeOfRecordingOverlay(wakeupTime, boxSizeUnit, boxSize
         }else if(day.date > currentDate.getDate()) {
             return [calculateOverlayHeightForNow(wakeupTime, boxSizeUnit, boxSizeNumber, overlayDimensions), 0];
         }
-    else{
+    }else{
         let overlaysTotalHeight = calculatePixelsFromTopOfGridBasedOnTime(wakeupTime, boxSizeUnit, boxSizeNumber, overlayDimensions, currentDate);
         let recordingOverlayHeight = overlaysTotalHeight - originalOverlayHeight;
         return recordingOverlayHeight;

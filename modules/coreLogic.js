@@ -172,11 +172,20 @@ export function calculateOverlayHeightForNow(wakeupTime, boxSizeUnit, boxSizeNum
     return calculatePixelsFromTopOfGridBasedOnTime(wakeupTime, boxSizeUnit, boxSizeNumber, overlayDimensions, currentDate);
 }
 
-export function calculateSizeOfRecordingOverlay(wakeupTime, boxSizeUnit, boxSizeNumber, overlayDimensions, originalOverlayHeight) {
+export function calculateSizeOfRecordingOverlay(wakeupTime, boxSizeUnit, boxSizeNumber, overlayDimensions, originalOverlayHeight, day, recordedStartTime) {
     //could do much more math but choosing easy route
-    let overlaysTotalHeight = calculateOverlayHeightForNow(wakeupTime, boxSizeUnit, boxSizeNumber, overlayDimensions);
-    let recordingOverlayHeight = overlaysTotalHeight - originalOverlayHeight;
-    return recordingOverlayHeight;
+    const currentDate = new Date();
+    if(recordedStartTime.getDate() < currentDate.getDate() && recordedStartTime.getMonth() == currentDate.getMonth() && recordedStartTime.getFullYear() == currentDate.getFullYear()) {
+        if(day.date < currentDate.getDate()) {
+            return [overlayDimensions[1], 0];
+        }else if(day.date > currentDate.getDate()) {
+            return [calculateOverlayHeightForNow(wakeupTime, boxSizeUnit, boxSizeNumber, overlayDimensions), 0];
+        }
+    else{
+        let overlaysTotalHeight = calculatePixelsFromTopOfGridBasedOnTime(wakeupTime, boxSizeUnit, boxSizeNumber, overlayDimensions, currentDate);
+        let recordingOverlayHeight = overlaysTotalHeight - originalOverlayHeight;
+        return recordingOverlayHeight;
+    }
 }
 
 

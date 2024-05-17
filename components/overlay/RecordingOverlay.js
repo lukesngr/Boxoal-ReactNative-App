@@ -3,6 +3,9 @@ import { calculateSizeOfRecordingOverlay } from '../../modules/coreLogic';
 import { useSelector } from 'react-redux';
 import { View } from 'react-native';
 import { set } from '../../redux/activeOverlayInterval';
+import dayjs from 'dayjs';
+var isSameOrBefore = require('dayjs/plugin/isSameOrBefore')
+dayjs.extend(isSameOrBefore)
 
 export default function RecordingOverlay(props) {
     const timeboxRecording = useSelector(state => state.timeboxRecording.value);
@@ -22,12 +25,15 @@ export default function RecordingOverlay(props) {
         top: 0,
         transform: [{translateY: marginFromTop}]
     }
-    let overlayDateTime = new Date(props.day.date, props.day.month);
+    let currentDate = dayjs().date(props.day.date).month(props.day.month-1);
+    console.log(timeboxRecording);
+    let startDate = timeboxRecording[2];
 
     useEffect(() => {
-        if(timeboxRecording[0] != -1 && timeboxRecording[2] <= overlayDateTime) {
+        if(timeboxRecording[0] != -1 && dayjs(timeboxRecording[2]).isSameOrBefore(currentDate)) {
+            console.log("yes")
             let recordingOverlayInterval = setInterval(() => {
-                const [overlayHeight, topMargin] = calculateSizeOfRecordingOverlay(wakeupTime, boxSizeUnit, boxSizeNumber, overlayDimensions, activeOverlayHeight, props.day, timeboxRecording[2]);
+                const [overlayHeight, topMargin] = calculateSizeOfRecordingOverlay(wakeupTime, boxSizeUnit, boxSizeNumber, overlayDimensions, activeOverlayHeight, props.day, startDate);
                 setRecordingOverlayHeight(overlayHeight);
                 setMarginFromTop(topMargin);
             }, 5000);

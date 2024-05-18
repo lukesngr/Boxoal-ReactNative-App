@@ -14,8 +14,10 @@ export default function useActiveOverlay(schedule) {
         if(timeboxRecording[0] == -1) {
             dispatch({type:"activeOverlayHeight/set", payload: calculateOverlayHeightForNow(schedule.wakeupTime, schedule.boxSizeUnit, schedule.boxSizeNumber, overlayDimensions)});
             dispatch(setActiveOverlayInterval());
-        }else{
+        }else if(dayjs(timeboxRecording[2]).isBefore(dayjs(), 'date')){
             dispatch({type:"activeOverlayHeight/set", payload: 0});
+            dispatch(resetActiveOverlayInterval());
+        }else{
             dispatch(resetActiveOverlayInterval());
         }
         

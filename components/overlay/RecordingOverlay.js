@@ -13,7 +13,7 @@ export default function RecordingOverlay(props) {
     const {wakeupTime, boxSizeUnit, boxSizeNumber} = useSelector(state => state.scheduleEssentials.value);
     const overlayDimensions = useSelector(state => state.overlayDimensions.value);
     const activeOverlayHeight = useSelector(state => state.activeOverlayHeight.value);
-    const [marginFromTop, setMarginFromTop] = useState(activeOverlayHeight); 
+    const [marginFromTop, setMarginFromTop] = useState(overlayDimensions[3]+activeOverlayHeight); 
 
     let recordingOverlayStyle = {
         backgroundColor: 'red',
@@ -27,6 +27,8 @@ export default function RecordingOverlay(props) {
     }
     let currentDate = dayjs().date(props.day.date).month(props.day.month-1);
     let startDate = timeboxRecording[2];
+
+    console.log(recordingOverlayHeight);
 
     useEffect(() => {
         if(timeboxRecording[0] != -1 && dayjs(timeboxRecording[2]).isSameOrBefore(currentDate)) {

@@ -151,15 +151,16 @@ export function calculatePixelsFromTopOfGridBasedOnTime(wakeupTime, boxSizeUnit,
 
     const pixelsPerBox = overlayDimensions[2];
 
-    let wakeupDateTime = convertToDateTime(wakeupTime, time.getDate()+"/"+time.getMonth()+1);
-    console.log(wakeupTime, time.getDate()+"/"+time.getMonth());
+    let wakeupDateTime = convertToDateTime(wakeupTime, time.getDate()+"/"+(time.getMonth()+1));
+    console.log(wakeupTime, time.getDate()+"/"+(time.getMonth()+1));
+    console.log(wakeupDateTime, time);
     let boxesBetween = calculateBoxesBetweenTwoDateTimes(wakeupDateTime, time, boxSizeUnit, boxSizeNumber);
     let remainderTime = calculateRemainderTimeBetweenTwoDateTimes(wakeupDateTime, time, boxSizeUnit, boxSizeNumber);
 
     if(remainderTime < 0) { //if negative remainder e.g. time is behind number of boxes
         remainderTime = boxSizeNumber + remainderTime; 
     }
-    
+    console.log(remainderTime, boxesBetween);
     const justBoxesHeight = pixelsPerBox * boxesBetween;
     const inBetweenHeight = (pixelsPerBox / boxSizeNumber) * remainderTime;
     

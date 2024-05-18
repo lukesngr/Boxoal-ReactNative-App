@@ -22,9 +22,14 @@ export default function RecordedTimeBoxOverlay(props) {
             data.forEach(element => {
                 let fieldsForCalculation = [wakeupTime, boxSizeUnit, boxSizeNumber, overlayDimensions];
                 let marginFromTop = calculatePixelsFromTopOfGridBasedOnTime(...fieldsForCalculation, dayjs(element.recordedStartTime));
+                if(marginFromTop < 0) {
+                    marginFromTop = 0;
+                }
                 let heightForBox = calculatePixelsFromTopOfGridBasedOnTime(...fieldsForCalculation, dayjs(element.recordedEndTime)) - marginFromTop;
                 if(heightForBox < 30) {
                     heightForBox = 30;
+                }else if(heightForBox > (overlayDimensions[1]-marginFromTop)) {
+                    heightForBox = (overlayDimensions[1]-marginFromTop);
                 }//reasonable value which alllows it is visible
                 let notEitherZero = !(marginFromTop == 0 || heightForBox == 0); //due to overlay dimensions not being set at right time
                 if(notEitherZero && !normalArrayFromState.some(item => item.id === element.id)) {

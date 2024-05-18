@@ -22,8 +22,8 @@ export default function RecordedTimeBoxOverlay(props) {
             data.forEach(element => {
                 let fieldsForCalculation = [wakeupTime, boxSizeUnit, boxSizeNumber, overlayDimensions];
                 let marginFromTop = calculatePixelsFromTopOfGridBasedOnTime(...fieldsForCalculation, dayjs(element.recordedStartTime));
-                if(marginFromTop < 0) {
-                    marginFromTop = 0;
+                if(marginFromTop < overlayDimensions[3]) {
+                    marginFromTop = overlayDimensions[3];
                 }
                 let heightForBox = calculatePixelsFromTopOfGridBasedOnTime(...fieldsForCalculation, dayjs(element.recordedEndTime)) - marginFromTop;
                 if(heightForBox < 30) {

@@ -4,14 +4,8 @@ import dayjs from "dayjs";
 export function convertToDateTime(time, date) {
     let timeSeparated = time.split(":").map(function(num) { return parseInt(num); });
     let dateSeparated = date.split("/").map(function(num) { return parseInt(num); });
-    let datetime = new Date();
-    datetime.setHours(timeSeparated[0]);
-    datetime.setMinutes(timeSeparated[1]);
-    datetime.setDate(dateSeparated[0]);
-    datetime.setMonth(dateSeparated[1]-1);
-    datetime.setSeconds(0);
-    datetime.setMilliseconds(0);
-    return datetime;
+    let datetime = dayjs().hour(timeSeparated[0]).minute(timeSeparated[1]).date(dateSeparated[0]).month(dateSeparated[1]-1).second(0).millisecond(0);
+    return datetime.toDate();
 }
 
 export function convertToTimeAndDate(input) {

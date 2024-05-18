@@ -14,7 +14,6 @@ export default function useActiveOverlay(schedule) {
         if(timeboxRecording[0] == -1) {
             dispatch({type:"activeOverlayHeight/set", payload: calculateOverlayHeightForNow(schedule.wakeupTime, schedule.boxSizeUnit, schedule.boxSizeNumber, overlayDimensions)});
             dispatch(setActiveOverlayInterval());
-            console.log(calculateOverlayHeightForNow(schedule.wakeupTime, schedule.boxSizeUnit, schedule.boxSizeNumber, overlayDimensions));
         }
         
         return () => { dispatch(resetActiveOverlayInterval()); };
@@ -24,7 +23,6 @@ export default function useActiveOverlay(schedule) {
         if(timeboxRecording[0] == -1) {
             dispatch({type:"activeOverlayHeight/set", payload: calculateOverlayHeightForNow(schedule.wakeupTime, schedule.boxSizeUnit, schedule.boxSizeNumber, overlayDimensions)});
             dispatch(setActiveOverlayInterval());
-            console.log(calculateOverlayHeightForNow(schedule.wakeupTime, schedule.boxSizeUnit, schedule.boxSizeNumber, overlayDimensions));
         }
         
         return () => { dispatch(resetActiveOverlayInterval()); };

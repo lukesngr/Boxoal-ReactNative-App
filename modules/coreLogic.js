@@ -155,7 +155,6 @@ export function calculatePixelsFromTopOfGridBasedOnTime(wakeupTime, boxSizeUnit,
     
     const justBoxesHeight = pixelsPerBox * boxesBetween;
     const inBetweenHeight = (pixelsPerBox / boxSizeNumber) * remainderTime;
-    console.log(remainderTime, boxesBetween, justBoxesHeight+inBetweenHeight);
 
     return justBoxesHeight+inBetweenHeight;
 }

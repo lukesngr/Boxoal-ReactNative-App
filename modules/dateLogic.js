@@ -17,18 +17,18 @@ export function getArrayOfDayDateDayNameAndMonthForHeaders(todaysDate) {
 
 export function ifCurrentDay(number, returnIfTrue, returnIfFalse) {
     const {wakeupTime} = useSelector(state => state.scheduleEssentials.value);
-    const dateObject = new Date();
-    let currentDay = dateObject.getDay();
-    let cutOffDateTime = convertToDateTime(wakeupTime, dateObject.getDate()+'/'+(dateObject.getMonth()+1));
+    const dateObject = dayjs();
+    let currentDay = dateObject.day();
+    let cutOffDateTime = dateObject.hour(wakeupTime.split(':')[0]).minute(wakeupTime.split(':')[1]);
 
     if(typeof number !== 'number') { 
         console.log("Non-number datatype given to comparison function");
         return returnIfFalse;
     }
 
-    if(number == currentDay && dateObject >= cutOffDateTime) {
+    if(number == currentDay &&  cutOffDateTime.isSameOrBefore(dateObject)) {
         return returnIfTrue;
-    }else if((number+1) == currentDay && dateObject < cutOffDateTime) {
+    }else if((number+1) == currentDay && dateObject.isBefore(cutOffDateTime)) {
         return returnIfTrue;
     }
     return returnIfFalse;
@@ -36,18 +36,18 @@ export function ifCurrentDay(number, returnIfTrue, returnIfFalse) {
 
 export function ifEqualOrBeyondCurrentDay(number, returnIfTrue, returnIfFalse) {
     const {wakeupTime} = useSelector(state => state.scheduleEssentials.value);
-    const dateObject = new Date();
-    let currentDay = dateObject.getDay();
-    let cutOffDateTime = convertToDateTime(wakeupTime, dateObject.getDate()+'/'+(dateObject.getMonth()+1));
+    const dateObject = dayjs();
+    let currentDay = dateObject.day();
+    let cutOffDateTime = dateObject.hour(wakeupTime.split(':')[0]).minute(wakeupTime.split(':')[1]);
 
     if(typeof number !== 'number') { 
         console.log("Non-number datatype given to comparison function");
         return returnIfFalse;
     }
     
-    if(number >= currentDay && dateObject >= cutOffDateTime) {
+    if(number >= currentDay && cutOffDateTime.isSameOrBefore(dateObject)) {
         return returnIfTrue;
-    }else if((number+1) >= currentDay && dateObject < cutOffDateTime) {
+    }else if((number+1) >= currentDay && dateObject.isBefore(cutOffDateTime)) {
         return returnIfTrue;
     }
     return returnIfFalse;

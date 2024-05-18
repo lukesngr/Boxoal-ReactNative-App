@@ -5,7 +5,7 @@ export function convertToDayjs(time, date) {
     let timeSeparated = time.split(":").map(function(num) { return parseInt(num); });
     let dateSeparated = date.split("/").map(function(num) { return parseInt(num); });
     let datetime = dayjs().hour(timeSeparated[0]).minute(timeSeparated[1]).date(dateSeparated[0]).month(dateSeparated[1]-1).second(0).millisecond(0);
-    return datetime.toDate();
+    return datetime;
 }
 
 export function convertToTimeAndDate(input) {
@@ -72,7 +72,7 @@ export function calculateBoxesBetweenTwoTimes(time1, time2, boxSizeUnit, boxSize
     let numberOfBoxes = 0;
 
     if(boxSizeUnit == "min") {
-        numberOfBoxes += Math.floor(((time2.hour() - time1.hours())*60) / boxSizeNumber);
+        numberOfBoxes += Math.floor(((time2.hour() - time1.hour())*60) / boxSizeNumber);
         numberOfBoxes += Math.floor((time2.minute() - time1.minute()) / boxSizeNumber);
     }else if(boxSizeUnit == "hr") {
         numberOfBoxes += Math.floor((time2.hour() - time1.hour()) / boxSizeNumber);
@@ -88,14 +88,14 @@ export function calculateBoxesBetweenTwoTimes(time1, time2, boxSizeUnit, boxSize
 export function calculateMaxNumberOfBoxes(wakeupTime, boxSizeUnit, boxSizeNumber, timeboxes, time, date) {
     let wakeUpTimeSeparated = wakeupTime.split(":").map(function(num) { return parseInt(num); });
     let timeSeparated = time.split(":").map(function(num) { return parseInt(num); });
-    let currentDateTime = convertToDateTime(time, date);
+    let currentTime = convertToDayjs(time, date);
     let maxNumberOfBoxes = 0;
 
     for(let i = 0; i < timeboxes.length; i++) { //for each time box
-        let timeboxStartTimeInDateTime = new Date(timeboxes[i].startTime);
+        let timeboxStartTime = dayjs(timeboxes[i].startTime);
 
-        if(currentDateTime < timeboxStartTimeInDateTime) { //if timebox occurs after the time of a timebox
-            maxNumberOfBoxes = calculateBoxesBetweenTwoDateTimes(currentDateTime, timeboxStartTimeInDateTime, boxSizeUnit, boxSizeNumber);
+        if(currentTime.isBefore(timeboxStartTimeInDateTime)) { //if timebox occurs after the time of a timebox
+            maxNumberOfBoxes = calculateBoxesBetweenTwoTimes(currentTime, timeboxStartTime, boxSizeUnit, boxSizeNumber);
             i = timeboxes.length;
         }else{
             i++;

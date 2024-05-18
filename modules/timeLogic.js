@@ -79,30 +79,15 @@ export function returnTimesSeperatedForSchedule(schedule) {
     return listOfTimes;
 }
 
-export function calculateRemainderTimeBetweenTwoDateTimes(dateTime1, dateTime2, boxSizeUnit, boxSizeNumber) {
+export function calculateRemainderTimeBetweenTwoTimes(time1, time2, boxSizeUnit, boxSizeNumber) {
     let remainderTime = 0;
 
-    if(!(dateTime1 instanceof Date && dateTime2 instanceof Date)) {
-        console.log("Datetimes passed aren't datetimes");
-        return 0;
-    }
-
-    if(typeof boxSizeNumber != 'number') {
-        console.log("Box size number isn't a number");
-        return 0;
-    }
-
-    if(!Number.isInteger(boxSizeNumber)) {
-        boxSizeNumber = Math.floor(boxSizeNumber);
-        console.log("Beware decimal passed as box size number, was ignored");
-    }
-
     if(boxSizeUnit == "min") {
-        remainderTime += ((dateTime2.getHours() - dateTime1.getHours())*60) % boxSizeNumber;
-        remainderTime += (dateTime2.getMinutes() - dateTime1.getMinutes()) % boxSizeNumber;
+        remainderTime += ((time2.hour() - time1.hour())*60) % boxSizeNumber;
+        remainderTime += (time2.minute() - time1.minute()) % boxSizeNumber;
     }else if(boxSizeUnit == "hr") {
-        remainderTime += (dateTime2.getHours() - dateTime1.getHours()) / boxSizeNumber;
-        remainderTime += (dateTime2.getMinutes() - dateTime1.getMinutes()) / (boxSizeNumber*60);
+        remainderTime += (time2.hour() - time1.hour()) / boxSizeNumber;
+        remainderTime += (time2.minute() - time1.minute()) / (boxSizeNumber*60);
     }
 
     return remainderTime;

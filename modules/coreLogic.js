@@ -4,8 +4,8 @@ import dayjs from "dayjs";
 export function convertToDayjs(time, date) {
     let timeSeparated = time.split(":").map(function(num) { return parseInt(num); });
     let dateSeparated = date.split("/").map(function(num) { return parseInt(num); });
-    let datetime = dayjs().hour(timeSeparated[0]).minute(timeSeparated[1]).date(dateSeparated[0]).month(dateSeparated[1]-1).second(0).millisecond(0);
-    return datetime;
+    let dayjsInstance = dayjs().hour(timeSeparated[0]).minute(timeSeparated[1]).date(dateSeparated[0]).month(dateSeparated[1]-1).second(0).millisecond(0);
+    return dayjsInstance;
 }
 
 export function convertToTimeAndDate(input) {
@@ -145,11 +145,9 @@ export function calculatePixelsFromTopOfGridBasedOnTime(wakeupTime, boxSizeUnit,
 
     const pixelsPerBox = overlayDimensions[2];
 
-    let wakeupDateTime = convertToDateTime(wakeupTime, time.getDate()+"/"+(time.getMonth()+1));
-    console.log(wakeupTime, time.getDate()+"/"+(time.getMonth()+1));
-    console.log(wakeupDateTime, time);
-    let boxesBetween = calculateBoxesBetweenTwoDateTimes(wakeupDateTime, time, boxSizeUnit, boxSizeNumber);
-    let remainderTime = calculateRemainderTimeBetweenTwoDateTimes(wakeupDateTime, time, boxSizeUnit, boxSizeNumber);
+    let wakeupDateTime = time.hour(wakeupTime.split(":")[0]).minute(wakeupTime.split(":")[1]);
+    let boxesBetween = calculateBoxesBetweenTwoTimes(wakeupDateTime, time, boxSizeUnit, boxSizeNumber);
+    let remainderTime = calculateRemainderTimeBetweenTwoTimes(wakeupDateTime, time, boxSizeUnit, boxSizeNumber);
 
     if(remainderTime < 0) { //if negative remainder e.g. time is behind number of boxes
         remainderTime = boxSizeNumber + remainderTime; 
@@ -162,19 +160,19 @@ export function calculatePixelsFromTopOfGridBasedOnTime(wakeupTime, boxSizeUnit,
 }
 
 export function calculateOverlayHeightForNow(wakeupTime, boxSizeUnit, boxSizeNumber, overlayDimensions) {
-    const currentDate = new Date();
+    const currentDate = dayjs();
 
     return calculatePixelsFromTopOfGridBasedOnTime(wakeupTime, boxSizeUnit, boxSizeNumber, overlayDimensions, currentDate);
 }
 
 export function calculateSizeOfRecordingOverlay(wakeupTime, boxSizeUnit, boxSizeNumber, overlayDimensions, originalOverlayHeight, day, recordedStartTime) {
     //could do much more math but choosing easy route
-    const currentDate = new Date();
-    let recordedStartDatetime = new Date(recordedStartTime);
-    if(recordedStartDatetime.getDate() < currentDate.getDate() && recordedStartDatetime.getMonth() == currentDate.getMonth() && recordedStartDatetime.getFullYear() == currentDate.getFullYear()) {
-        if(day.date < currentDate.getDate()) {
+    const currentDate = dayjs();
+    let recordedStartDate = dayjs(recordedStartTime);
+    if(recordedStartDate.isBefore(currentDate, 'date')) {
+        if(day.date < currentDate.date()) {
             return [overlayDimensions[1], overlayDimensions[3]];
-        }else if(day.date == currentDate.getDate()) {
+        }else if(day.date == currentDate.date()) {
             let overlayTotalHeight = calculatePixelsFromTopOfGridBasedOnTime(wakeupTime, boxSizeUnit, boxSizeNumber, overlayDimensions, currentDate)
             return [overlayTotalHeight, overlayDimensions[3]];
         }
@@ -191,10 +189,10 @@ export function thereIsNoRecording(recordedBoxes, reoccuring, date, time) {
         return true;
     }else if(reoccuring != null) {
         if(reoccuring.reoccurFrequency == "daily") {
-            let timeboxDateTime = convertToDateTime(time, date);
+            let timeboxTime = convertToDayjs(time, date);
             let result = true
             recordedBoxes.forEach(element => {
-                if(dayjs(timeboxDateTime).isSame(dayjs(element.recordedStartTime), 'date')) {
+                if(timeboxTime.isSame(dayjs(element.recordedStartTime), 'date')) {
                     result = false;
                     
                 }

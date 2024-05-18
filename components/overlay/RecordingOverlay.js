@@ -34,6 +34,7 @@ export default function RecordingOverlay(props) {
         if(timeboxRecording[0] != -1 && dayjs(timeboxRecording[2]).isSameOrBefore(currentDate)) {
             let recordingOverlayInterval = setInterval(() => {
                 const recordingOverlayArray = calculateSizeOfRecordingOverlay(wakeupTime, boxSizeUnit, boxSizeNumber, overlayDimensions, activeOverlayHeight, props.day, startDate);
+                console.log(recordingOverlayArray);
                 setRecordingOverlayHeight(recordingOverlayArray[0]);
                 setMarginFromTop(recordingOverlayArray[1]);
             }, 5000);

@@ -1,7 +1,7 @@
 import { calculateRemainderTimeBetweenTwoDateTimes } from "./timeLogic";
 import dayjs from "dayjs";
 
-export function convertToDateTime(time, date) {
+export function convertToDayjs(time, date) {
     let timeSeparated = time.split(":").map(function(num) { return parseInt(num); });
     let dateSeparated = date.split("/").map(function(num) { return parseInt(num); });
     let datetime = dayjs().hour(timeSeparated[0]).minute(timeSeparated[1]).date(dateSeparated[0]).month(dateSeparated[1]-1).second(0).millisecond(0);
@@ -68,17 +68,17 @@ export function calculateMaxNumberOfBoxesAfterTimeIfEmpty(boxSizeUnit, boxSizeNu
     }
 }
 
-export function calculateBoxesBetweenTwoDateTimes(dateTime1, dateTime2, boxSizeUnit, boxSizeNumber) {
+export function calculateBoxesBetweenTwoTimes(time1, time2, boxSizeUnit, boxSizeNumber) {
     let numberOfBoxes = 0;
 
     if(boxSizeUnit == "min") {
-        numberOfBoxes += Math.floor(((dateTime2.getHours() - dateTime1.getHours())*60) / boxSizeNumber);
-        numberOfBoxes += Math.floor((dateTime2.getMinutes() - dateTime1.getMinutes()) / boxSizeNumber);
+        numberOfBoxes += Math.floor(((time2.hour() - time1.hours())*60) / boxSizeNumber);
+        numberOfBoxes += Math.floor((time2.minute() - time1.minute()) / boxSizeNumber);
     }else if(boxSizeUnit == "hr") {
-        numberOfBoxes += Math.floor((dateTime2.getHours() - dateTime1.getHours()) / boxSizeNumber);
+        numberOfBoxes += Math.floor((time2.hour() - time1.hour()) / boxSizeNumber);
     }
 
-    if(dateTime1 > dateTime2) {
+    if(time1 > time2) {
         return -numberOfBoxes;
     }else{
         return numberOfBoxes;

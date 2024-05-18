@@ -1,4 +1,4 @@
-import { calculateRemainderTimeBetweenTwoDateTimes } from "./timeLogic";
+import { calculateRemainderTimeBetweenTwoTimes } from "./timeLogic";
 import dayjs from "dayjs";
 
 export function convertToDayjs(time, date) {
@@ -152,10 +152,11 @@ export function calculatePixelsFromTopOfGridBasedOnTime(wakeupTime, boxSizeUnit,
     if(remainderTime < 0) { //if negative remainder e.g. time is behind number of boxes
         remainderTime = boxSizeNumber + remainderTime; 
     }
-    console.log(remainderTime, boxesBetween);
+    
     const justBoxesHeight = pixelsPerBox * boxesBetween;
     const inBetweenHeight = (pixelsPerBox / boxSizeNumber) * remainderTime;
-    
+    console.log(remainderTime, boxesBetween, justBoxesHeight+inBetweenHeight);
+
     return justBoxesHeight+inBetweenHeight;
 }
 

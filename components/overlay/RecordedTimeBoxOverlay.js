@@ -35,7 +35,6 @@ export default function RecordedTimeBoxOverlay(props) {
     }, [recordedTimeboxes]);
     
     return <>{recordedBoxes.map((recordedBoxes, index) => (
-        <>
         <View key={index} style={{width: overlayDimensions[0], 
             height: recordedBoxes.heightForBox, 
             transform: [{translateY: recordedBoxes.marginFromTop}, {translateX: overlayDimensions[0]*props.index}],
@@ -43,7 +42,7 @@ export default function RecordedTimeBoxOverlay(props) {
             opacity: 0.7,
             zIndex: 999,
             position: 'absolute'}}>
-        <Text>{recordedBoxes.title}</Text></View>
-        </>
+            <Text>{recordedBoxes.title}</Text>
+        </View>
     ))}</>
 }

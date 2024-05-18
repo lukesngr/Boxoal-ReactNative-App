@@ -94,7 +94,7 @@ export function calculateMaxNumberOfBoxes(wakeupTime, boxSizeUnit, boxSizeNumber
     for(let i = 0; i < timeboxes.length; i++) { //for each time box
         let timeboxStartTime = dayjs(timeboxes[i].startTime);
 
-        if(currentTime.isBefore(timeboxStartTimeInDateTime)) { //if timebox occurs after the time of a timebox
+        if(currentTime.isBefore(timeboxStartTime)) { //if timebox occurs after the time of a timebox
             maxNumberOfBoxes = calculateBoxesBetweenTwoTimes(currentTime, timeboxStartTime, boxSizeUnit, boxSizeNumber);
             i = timeboxes.length;
         }else{

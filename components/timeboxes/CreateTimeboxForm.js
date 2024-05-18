@@ -1,6 +1,6 @@
 import {useState, useEffect} from 'react';
 import {useSelector} from 'react-redux';
-import {convertToDateTime, addBoxesToTime, calculateMaxNumberOfBoxes} from '../../modules/coreLogic';
+import {convertToDateTime, addBoxesToTime, calculateMaxNumberOfBoxes, convertToDayjs} from '../../modules/coreLogic';
 import { Alert, TextInput, View, Text, Pressable } from 'react-native';
 import {Picker} from '@react-native-picker/picker';
 import { StyleSheet } from 'react-native';
@@ -87,8 +87,8 @@ export default function CreateTimeboxForm(props) {
     let maxNumberOfBoxes = calculateMaxNumberOfBoxes(wakeupTime, boxSizeUnit, boxSizeNumber, timeboxes, time, date);
     
     function handleSubmit() {
-        let startTime = convertToDateTime(time, date);
-        let endTime = convertToDateTime(addBoxesToTime(boxSizeUnit, boxSizeNumber, time, numberOfBoxes), date); //add boxes to start time to get end time
+        let startTime = convertToDayjs(time, date).toDate();
+        let endTime = convertToDayjs(addBoxesToTime(boxSizeUnit, boxSizeNumber, time, numberOfBoxes), date).toDate(); //add boxes to start time to get end time
         let color = listOfColors[Math.floor(Math.random() * listOfColors.length)]; //randomly pick a box color     
         let data = {
             title, 

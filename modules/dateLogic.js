@@ -26,8 +26,6 @@ export function ifCurrentDay(number, returnIfTrue, returnIfFalse) {
         return returnIfFalse;
     }
 
-    console.log(number, currentDay, dateObject, cutOffDateTime);
-
     if(number == currentDay && dateObject >= cutOffDateTime) {
         return returnIfTrue;
     }else if((number+1) == currentDay && dateObject < cutOffDateTime) {

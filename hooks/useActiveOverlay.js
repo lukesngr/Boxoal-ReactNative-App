@@ -15,6 +15,7 @@ export default function useActiveOverlay(schedule) {
             dispatch({type:"activeOverlayHeight/set", payload: calculateOverlayHeightForNow(schedule.wakeupTime, schedule.boxSizeUnit, schedule.boxSizeNumber, overlayDimensions)});
             dispatch(setActiveOverlayInterval());
         }else{
+            dispatch({type:"activeOverlayHeight/set", payload: 0});
             dispatch(resetActiveOverlayInterval());
         }
         

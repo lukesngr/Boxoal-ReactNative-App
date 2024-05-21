@@ -88,8 +88,6 @@ export default function EditTimeboxForm(props) {
         });
     }
 
-    console.log(props.data);
-
     return (
     <View style={styles.overallModal}>
             <View style={styles.titleBarContainer}>  

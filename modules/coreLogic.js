@@ -172,7 +172,7 @@ export function calculateSizeOfRecordingOverlay(wakeupTime, boxSizeUnit, boxSize
     const currentDate = dayjs();
     let recordedStartDate = dayjs(recordedStartTime);
     console.log(recordedStartDate, currentDate, day.date);
-    if(recordedStartDate.isSameOrBefore(currentDate, 'date')) {
+    if(recordedStartDate.isBefore(currentDate, 'date')) {
         if(day.date < currentDate.date()) {
             return [overlayDimensions[1], overlayDimensions[3]];
         }else if(day.date == currentDate.date()) {
@@ -182,7 +182,7 @@ export function calculateSizeOfRecordingOverlay(wakeupTime, boxSizeUnit, boxSize
             //console.log(day.date)
             return [0, 0];
         }
-    }else{
+    }else if(recordedStartDate.isSame(currentDate, 'date')) {
         let overlaysTotalHeight = calculatePixelsFromTopOfGridBasedOnTime(wakeupTime, boxSizeUnit, boxSizeNumber, overlayDimensions, currentDate);
         let recordingOverlayHeight = overlaysTotalHeight - originalOverlayHeight;
         return [recordingOverlayHeight, originalOverlayHeight+overlayDimensions[3]];

@@ -42,7 +42,6 @@ export default function TimeboxGrid(props) {
     useScheduleSetter(schedule); //set schedule data to redux store (timeboxes, recordedTimeboxes, goals
     useOverlayDimensions(headerHeight, headerWidth); //calculate overlay dimensions
     useActiveOverlay(schedule);
-    const overlayDimensions = useSelector(state => state.overlayDimensions.value);
     return (
     <ScrollView>
         <View style={styles.overallView}>

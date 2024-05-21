@@ -175,13 +175,14 @@ export function calculateSizeOfRecordingOverlay(wakeupTime, boxSizeUnit, boxSize
         }else if(day.date == currentDate.date()) {
             let overlayTotalHeight = calculatePixelsFromTopOfGridBasedOnTime(wakeupTime, boxSizeUnit, boxSizeNumber, overlayDimensions, currentDate)
             return [overlayTotalHeight, overlayDimensions[3]];
-        }else{
+        }else if(day.date > currentDate.date()){
+            console.log(day.date)
             return [0, 0];
         }
     }else{
         let overlaysTotalHeight = calculatePixelsFromTopOfGridBasedOnTime(wakeupTime, boxSizeUnit, boxSizeNumber, overlayDimensions, currentDate);
         let recordingOverlayHeight = overlaysTotalHeight - originalOverlayHeight;
-        return [recordingOverlayHeight, originalOverlayHeight];
+        return [recordingOverlayHeight, originalOverlayHeight+overlayDimensions[3]];
     }
 }
 

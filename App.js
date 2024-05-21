@@ -1,10 +1,9 @@
-import {NavigationContainer} from '@react-navigation/native';
+import {NavigationContainer, DefaultTheme} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import SplashScreen from './pages/SplashScreen';
 import { Text } from 'react-native';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import Timeboxes from './pages/Timeboxes';
 import FinalView from './pages/FinalView';
 import { Provider } from 'react-redux';
 import {store, persistor} from './redux/store';
@@ -13,6 +12,14 @@ import { PersistGate } from 'redux-persist/integration/react';
 
 const Stack = createNativeStackNavigator();
 export const queryClient = new QueryClient();
+
+const MyTheme = {
+  ...DefaultTheme,
+  colors: {
+    ...DefaultTheme.colors,
+    primary: '#7FFFD4',
+  },
+};
 
 export const linking = {
   prefixes: ['boxoal://'],
@@ -50,7 +57,7 @@ export default function App() {
     <QueryClientProvider client={queryClient}>
       <Provider store={store}>
         <PersistGate persistor={persistor} loading={null}>
-          <NavigationContainer linking={linking} fallback={<Text>Loading</Text>}>
+          <NavigationContainer theme={MyTheme} linking={linking} fallback={<Text>Loading</Text>}>
             <Stack.Navigator>
               <Stack.Screen
                 name="SplashScreen"

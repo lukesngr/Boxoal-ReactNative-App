@@ -1,5 +1,7 @@
 import { calculateRemainderTimeBetweenTwoTimes } from "./timeLogic";
 import dayjs from "dayjs";
+var isSameOrBefore = require('dayjs/plugin/isSameOrBefore')
+dayjs.extend(isSameOrBefore)
 
 export function convertToDayjs(time, date) {
     let timeSeparated = time.split(":").map(function(num) { return parseInt(num); });
@@ -169,14 +171,15 @@ export function calculateSizeOfRecordingOverlay(wakeupTime, boxSizeUnit, boxSize
     //could do much more math but choosing easy route
     const currentDate = dayjs();
     let recordedStartDate = dayjs(recordedStartTime);
-    if(recordedStartDate.isBefore(currentDate, 'date')) {
+    console.log(recordedStartDate, currentDate, day.date);
+    if(recordedStartDate.isSameOrBefore(currentDate, 'date')) {
         if(day.date < currentDate.date()) {
             return [overlayDimensions[1], overlayDimensions[3]];
         }else if(day.date == currentDate.date()) {
             let overlayTotalHeight = calculatePixelsFromTopOfGridBasedOnTime(wakeupTime, boxSizeUnit, boxSizeNumber, overlayDimensions, currentDate)
             return [overlayTotalHeight, overlayDimensions[3]];
         }else if(day.date > currentDate.date()){
-            console.log(day.date)
+            //console.log(day.date)
             return [0, 0];
         }
     }else{

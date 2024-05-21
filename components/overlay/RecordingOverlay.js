@@ -43,7 +43,7 @@ export default function RecordingOverlay(props) {
         setMarginFromTop(recordingOverlayArray[1]);
     }
 
-    console.log(recordingOverlayHeight, marginFromTop);
+    //console.log(props.day, recordingOverlayHeight, marginFromTop);
 
     useEffect(() => {
         if(timeboxRecording[0] != -1 && dayjs(startDate).isSameOrBefore(currentDate)) {

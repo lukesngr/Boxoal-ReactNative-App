@@ -2,6 +2,7 @@ import dayjs from "dayjs";
 import { useSelector } from "react-redux";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
+import ScheduleAccordion from "../components/schedules/ScheduleAccordion";
 
 export default function Schedules() {
     const username = useSelector(state => state.username.value);
@@ -22,7 +23,7 @@ export default function Schedules() {
     return (
         <>
             <Text style={{fontSize: 28, color: 'black', textAlign: 'center', marginTop: 4}}>My Schedules</Text>
-
+            <ScheduleAccordion data={data}></ScheduleAccordion>
         </>
     )
 }

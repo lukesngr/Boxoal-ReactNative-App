@@ -1,11 +1,12 @@
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
-import { StyleSheet, View, Text, Pressable, TextInput, Button } from "react-native";
+import { StyleSheet, View, Text, Pressable, TextInput } from "react-native";
 import axios from "axios";
 import { useState } from "react";
 import { Alert } from "react-native";
 import serverIP from "../../modules/serverIP";
 import { queryClient } from "../../App";
+import Button from "./Button";
 
 const styles = StyleSheet.create({
     overallModal: {

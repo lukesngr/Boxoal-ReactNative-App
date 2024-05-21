@@ -171,7 +171,6 @@ export function calculateSizeOfRecordingOverlay(wakeupTime, boxSizeUnit, boxSize
     //could do much more math but choosing easy route
     const currentDate = dayjs();
     let recordedStartDate = dayjs(recordedStartTime);
-    console.log(recordedStartDate, currentDate, day.date);
     if(recordedStartDate.isBefore(currentDate, 'date')) {
         if(day.date < currentDate.date()) {
             return [overlayDimensions[1], overlayDimensions[3]];

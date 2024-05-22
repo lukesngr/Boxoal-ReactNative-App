@@ -23,11 +23,9 @@ export default function Timebox(props) {
 
     const [modalVisible, setModalVisible] = useState(false);
     const timeboxGrid = useSelector(state => state.timeboxGrid.value);
-    const dispatch = useDispatch();
 
     let date = props.day.date+"/"+props.day.month;
     let dayName = props.day.name;
-    let active = ifEqualOrBeyondCurrentDay(props.index, true, false)
     let data;
 
     if(timeboxGrid) { 

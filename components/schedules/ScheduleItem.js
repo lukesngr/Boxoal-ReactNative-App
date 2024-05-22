@@ -18,7 +18,9 @@ export default function ScheduleItem(props) {
                         <FontAwesomeIcon icon={accordionOpen ? faChevronDown : faChevronUp} size={30} color="black" />
                     </View>
                 </View>
-                {accordionOpen && <GoalAccordion data={schedule.goals}></GoalAccordion>}
+                {accordionOpen && props.schedule.goals.map((goal, index) => {
+                    return <GoalAccordion key={index} goal={goal}></GoalAccordion>
+                })}
             </View>
         </Pressable>
     )

@@ -2,6 +2,8 @@ import { faChevronDown, faChevronUp, faGear } from "@fortawesome/free-solid-svg-
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome"
 import { Pressable } from "react-native";
 import GoalAccordion from "./GoalAccordion";
+import { Text, View } from "react-native";
+import { useState } from "react";
 
 export default function ScheduleAccordion(props) {
     const [accordionOpen, setAccordionOpen] = useState(false);

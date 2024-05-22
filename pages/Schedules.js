@@ -3,6 +3,7 @@ import { useSelector } from "react-redux";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import ScheduleAccordion from "../components/schedules/ScheduleAccordion";
+import { Text } from "react-native";
 
 export default function Schedules() {
     const username = useSelector(state => state.username.value);

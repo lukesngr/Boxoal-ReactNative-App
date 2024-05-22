@@ -1,4 +1,5 @@
 import ScheduleItem from "./ScheduleItem"
+import { ScrollView } from "react-native"
 
 export default function ScheduleAccordion(props) {
 

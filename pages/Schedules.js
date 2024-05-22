@@ -23,7 +23,7 @@ export default function Schedules() {
 
     return (
         <>
-            <Text style={{fontSize: 28, color: 'black', textAlign: 'center', marginTop: 4}}>My Schedules</Text>
+            <Text style={{fontSize: 28, color: 'black', textAlign: 'left', marginTop: 4, paddingLeft: 10}}>My Schedules</Text>
             <ScheduleAccordion data={data}></ScheduleAccordion>
         </>
     )

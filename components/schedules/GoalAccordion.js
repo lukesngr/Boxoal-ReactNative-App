@@ -9,7 +9,7 @@ export default function GoalAccordion(props) {
 
     return (
         <Pressable onPress={() => setAccordionOpen(!accordionOpen)}>
-            <View key={index} style={{backgroundColor: 'white', padding: 10, margin: 10}}>
+            <View style={{backgroundColor: 'white', padding: 10, margin: 10}}>
                 <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
                     <Text style={{color: 'black', fontSize: 20, flexShrink: 1}}>{props.goal.name}</Text>
                     <View style={{flexDirection: 'row'}}>

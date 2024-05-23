@@ -58,7 +58,7 @@ export default function EditTimeboxForm(props) {
     const [description, setDescription] = useState(props.data.description);
 
     function updateTimeBox() {
-        axios.post(serverIP+'/updateTimebox', {
+        axios.put(serverIP+'/updateTimeBox', {
             title,
             description, 
             id: props.data.id

@@ -7,6 +7,7 @@ import { Alert } from "react-native";
 import serverIP from "../../modules/serverIP";
 import { queryClient } from "../../App";
 import Button from "./Button";
+import { refetchFunction } from "../../pages/Schedules";
 
 const styles = StyleSheet.create({
     overallModal: {
@@ -65,7 +66,7 @@ export default function EditTimeboxForm(props) {
         },
         {headers: { 'Origin': 'http://localhost:3000' }}
         ).then(function() {
-            queryClient.refetchQueries();
+            refetchFunction();
             Alert.alert("Updated timebox!");
         }).catch(function(error) {
             Alert.alert("Error occurred please try again or contact developer");
@@ -80,7 +81,7 @@ export default function EditTimeboxForm(props) {
         },
         {headers: { 'Origin': 'http://localhost:3000' }}
         ).then(() => {        
-            queryClient.refetchQueries();
+            queryClient.refetchQueries("schedule");
             Alert.alert("Deleted timebox!");
             
         }).catch(function(error) {

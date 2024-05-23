@@ -47,7 +47,6 @@ const styles = StyleSheet.create({
 
 export default function TimeboxActionsForm(props) {
     const {data, date, time} = props;
-    console.log(data, date, time)
     const [showEditTimeboxForm, setShowEditTimeboxForm] = useState(false);
     const timeboxRecording = useSelector(state => state.timeboxRecording.value);
     const {id, boxSizeUnit, boxSizeNumber} = useSelector(state => state.scheduleEssentials.value);

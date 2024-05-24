@@ -56,7 +56,7 @@ const styles = StyleSheet.create({
 export default function EditGoalForm(props) {
     const [name, setName] = useState(props.data.name);
     const [priority, setPriority] = useState(""+props.data.prioirty);
-    const [targetDate, setTargetDate] = useState(new Date(props.goal.targetDate));
+    const [targetDate, setTargetDate] = useState(new Date(props.data.targetDate));
     const [visible, setVisible] = useState(false);
 
     function updateTimeBox() {

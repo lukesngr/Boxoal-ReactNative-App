@@ -64,7 +64,7 @@ export default function EditGoalForm(props) {
         axios.put(serverIP+'/updateGoal', {
             name,
             priority: parseInt(priority), //damn thing won't convert auto even with number input
-            targetDate: targetDate.toUTCString(), 
+            targetDate: targetDate.toISOString(), 
             id: props.data.id
         },
         {headers: { 'Origin': 'http://localhost:3000' }}

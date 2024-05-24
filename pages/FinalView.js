@@ -28,9 +28,9 @@ export default function FinalView() {
     
   return (
         <Tab.Navigator>
-          <Tab.Screen name="Timeboxes" component={Timeboxes} 
+          <Tab.Screen name="Timeboxes" children={() => <Timeboxes data={data}></Timeboxes>} 
           options={{headerShown: false}}/>
-          <Tab.Screen name="Schedules" component={() => <Schedules data={data}></Schedules>} 
+          <Tab.Screen name="Schedules" children={() => <Schedules data={data}></Schedules>} 
           options={{headerShown: false}}/>
           <Tab.Screen name="Settings" component={Areas} 
           options={{headerShown: false}}/>

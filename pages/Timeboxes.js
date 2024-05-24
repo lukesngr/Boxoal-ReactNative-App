@@ -11,7 +11,6 @@ import { useSelector } from 'react-redux';
 import axios from 'axios';
 
 export default function Timeboxes(props) {
-  console.log(props);
 
   return (
     <>

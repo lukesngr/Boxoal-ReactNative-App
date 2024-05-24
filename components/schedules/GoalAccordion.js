@@ -5,6 +5,7 @@ import { Text, View } from "react-native";
 import { useState } from "react";
 import TimeboxAccordion from "./TimeboxAccordion";
 import EditGoalForm from "../goals/EditGoalForm";
+import { Modal } from "react-native";
 
 const styles = {
     modalContainer: {

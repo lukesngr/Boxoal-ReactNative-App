@@ -5,7 +5,7 @@ import axios from "axios";
 import { useState } from "react";
 import { Alert } from "react-native";
 import serverIP from "../../modules/serverIP";
-import Button from "./Button";
+import Button from "../timeboxes/Button";
 import { queryClient } from "../../App";
 
 const styles = StyleSheet.create({

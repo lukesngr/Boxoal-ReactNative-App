@@ -107,10 +107,10 @@ export default function CreateTimeboxForm(props) {
             data["reoccuring"] = {create: {reoccurFrequency: "daily"}};
         }
         //post to api
-        axios.post(serverIP+'/createTimebox', data, {headers: { 'Origin': 'http://localhost:3000' }}).then(() => {
+        axios.post(serverIP+'/createTimebox', data, {headers: { 'Origin': 'http://localhost:3000' }}).then(async () => {
             //reset the form
-            queryClient.refetchQueries();
             Alert.alert("Added timebox");
+            await queryClient.refetchQueries();
         }).catch(function(error) {
             console.log(error);
             Alert.alert("Error please contact developer");

@@ -5,8 +5,6 @@ import axios from "axios";
 import ScheduleAccordion from "../components/schedules/ScheduleAccordion";
 import { Text } from "react-native";
 
-let refetchFunction;
-
 export default function Schedules() {
     const username = useSelector(state => state.username.value);
     const selectedDate = useSelector(state => state.selectedDate.value);
@@ -21,10 +19,6 @@ export default function Schedules() {
         enabled: true
     })
 
-    console.log(data);
-
-    refetchFunction = refetch;
-
     if(status === 'pending') return <Loading />
 
     return (
@@ -34,5 +28,3 @@ export default function Schedules() {
         </>
     )
 }
-
-export {refetchFunction};

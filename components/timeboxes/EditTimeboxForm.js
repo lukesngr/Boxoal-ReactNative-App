@@ -5,9 +5,8 @@ import axios from "axios";
 import { useState } from "react";
 import { Alert } from "react-native";
 import serverIP from "../../modules/serverIP";
-import { queryClient } from "../../App";
 import Button from "./Button";
-import { refetchFunction } from "../../pages/Schedules";
+import { queryClient } from "../../App";
 
 const styles = StyleSheet.create({
     overallModal: {
@@ -65,9 +64,9 @@ export default function EditTimeboxForm(props) {
             id: props.data.id
         },
         {headers: { 'Origin': 'http://localhost:3000' }}
-        ).then(function() {
-            refetchFunction();
+        ).then(async () => {
             Alert.alert("Updated timebox!");
+            await queryClient.refetchQueries();
         }).catch(function(error) {
             Alert.alert("Error occurred please try again or contact developer");
             console.log(error); 
@@ -80,10 +79,9 @@ export default function EditTimeboxForm(props) {
             id: props.data.id
         },
         {headers: { 'Origin': 'http://localhost:3000' }}
-        ).then(() => {        
-            queryClient.refetchQueries("schedule");
+        ).then(async () => {   
             Alert.alert("Deleted timebox!");
-            
+            await queryClient.refetchQueries();
         }).catch(function(error) {
             Alert.alert("Error occurred please try again or contact developer");
             console.log(error); 

@@ -7,6 +7,8 @@ import { useSelector } from "react-redux";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import Loading from "../components/Loading";
+import { Text } from "react-native";
+import serverIP from '../modules/serverIP';
 
 const Tab = createBottomTabNavigator();
 
@@ -25,6 +27,7 @@ export default function FinalView() {
     })
 
     if(status === 'pending') return <Loading />
+    if(status === 'error') return <Text>Error: {error.message}</Text>
     
   return (
         <Tab.Navigator>

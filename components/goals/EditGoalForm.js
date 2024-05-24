@@ -1,4 +1,4 @@
-import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
+import { faArrowLeft, faCalendar, faXmark } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { StyleSheet, View, Text, Pressable, TextInput } from "react-native";
 import axios from "axios";
@@ -7,6 +7,7 @@ import { Alert } from "react-native";
 import serverIP from "../../modules/serverIP";
 import Button from "../timeboxes/Button";
 import { queryClient } from "../../App";
+import DatePicker from "react-native-date-picker";
 
 const styles = StyleSheet.create({
     overallModal: {
@@ -55,7 +56,7 @@ const styles = StyleSheet.create({
 
 export default function EditGoalForm(props) {
     const [name, setName] = useState(props.data.name);
-    const [priority, setPriority] = useState(""+props.data.prioirty);
+    const [priority, setPriority] = useState(""+props.data.priority);
     const [targetDate, setTargetDate] = useState(new Date(props.data.targetDate));
     const [visible, setVisible] = useState(false);
 

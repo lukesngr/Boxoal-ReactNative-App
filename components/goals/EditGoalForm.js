@@ -60,7 +60,7 @@ export default function EditGoalForm(props) {
     const [targetDate, setTargetDate] = useState(new Date(props.data.targetDate));
     const [visible, setVisible] = useState(false);
 
-    function updateTimeBox() {
+    function updateGoal() {
         axios.put(serverIP+'/updateGoal', {
             name,
             priority: parseInt(priority), //damn thing won't convert auto even with number input
@@ -69,7 +69,7 @@ export default function EditGoalForm(props) {
         },
         {headers: { 'Origin': 'http://localhost:3000' }}
         ).then(async () => {
-            Alert.alert("Updated timebox!");
+            Alert.alert("Updated goal!");
             await queryClient.refetchQueries();
         }).catch(function(error) {
             Alert.alert("Error occurred please try again or contact developer");
@@ -110,7 +110,7 @@ export default function EditGoalForm(props) {
                     <FontAwesomeIcon icon={faCalendar} size={20}/>
                 </Pressable>
                 <Button textStyle={styles.buttonTextStyle} outlineStyle={styles.buttonOutlineStyle} title="Delete" onPress={deleteGoal} />
-                <Button textStyle={styles.buttonTextStyle} outlineStyle={styles.buttonOutlineStyle} title="Update" onPress={updateTimeBox} />
+                <Button textStyle={styles.buttonTextStyle} outlineStyle={styles.buttonOutlineStyle} title="Update" onPress={updateGoal} />
         </View>
         <DatePicker modal mode="date" date={targetDate} onDateChange={(date) => setTargetDate(date)} open={visible} 
         onConfirm={(date) => { setTargetDate(date); setVisible(false); }} onCancel={() => setVisible(false)}></DatePicker>

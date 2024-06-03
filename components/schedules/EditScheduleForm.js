@@ -70,9 +70,9 @@ const styles = StyleSheet.create({
 
 
 export default function EditScheduleForm(props) {
-    const [name, setName] = useState(props.data.title);
-    const [boxSizeNumber, setBoxSizeNumber] = useState(props.data.boxSizeNumber);
-    const [boxSizeUnit, setBoxSizeUnit] = useState(props.data.boxSizeNumber);
+    const [name, setName] = useState(props.data.name);
+    const [boxSizeNumber, setBoxSizeNumber] = useState(props.data.boxSizeNumber.toString());
+    const [boxSizeUnit, setBoxSizeUnit] = useState(props.data.boxSizeUnit);
     const [endDate, setEndDate] = useState(props.data.endDate == undefined ? (new Date()) : (new Date(props.data.endDate)));
     const [endDateNeeded, setEndDateNeeded] = useState(props.data.endDate === undefined ? (false) : (true));
     let wakeupTimeDate = new Date();
@@ -81,9 +81,9 @@ export default function EditScheduleForm(props) {
     const [wakeupTime, setWakeupTime] = useState(wakeupTimeDate);
     const [endDateModalVisible, setEndDateModalVisible] = useState(false);
     const [wakeupTimeModalVisible, setWakeupTimeModalVisible] = useState(false);
-    
 
-    function updateGoal() {
+    function updateSchedule() {
+        console.log(boxSizeUnit);
         axios.put(serverIP+'/updateSchedule', {
             name,
             boxSizeNumber: parseInt(boxSizeNumber),
@@ -94,7 +94,7 @@ export default function EditScheduleForm(props) {
         },
         {headers: { 'Origin': 'http://localhost:3000' }}
         ).then(async () => {
-            Alert.alert("Updated goal!");
+            Alert.alert("Updated schedule!");
             await queryClient.refetchQueries();
         }).catch(function(error) {
             Alert.alert("Error occurred please try again or contact developer");
@@ -102,14 +102,14 @@ export default function EditScheduleForm(props) {
         })
     }
     
-    function deleteGoal() {
+    function deleteSchedule() {
         
         axios.post(serverIP+'/deleteSchedule', {
             id: props.data.id
         },
         {headers: { 'Origin': 'http://localhost:3000' }}
         ).then(async () => {   
-            Alert.alert("Deleted goal!");
+            Alert.alert("Deleted schedule!");
             await queryClient.refetchQueries();
         }).catch(function(error) {
             Alert.alert("Error occurred please try again or contact developer");
@@ -128,15 +128,16 @@ export default function EditScheduleForm(props) {
                 </View>
                 <Text style={styles.label}>Name</Text>
                 <TextInput style={styles.textInput} onChangeText={setName} value={name}></TextInput>
-                <Text style={styles.label}>Timebox duration and unit</Text>
+                <Text style={styles.label}>Timebox duration</Text>
                 <TextInput style={styles.textInput} keyboardType="numeric" onChangeText={setBoxSizeNumber} value={boxSizeNumber}></TextInput>
+                <Text style={styles.label}>Timebox unit</Text>
                 <View style={styles.pickerBorder}>
                     <Picker style={styles.picker} itemStyle={styles.pickerItem} selectedValue={boxSizeUnit} onValueChange={setBoxSizeUnit}>
                         <Picker.Item label="Min" value="min" />
                         <Picker.Item label="Hour" value="hr" />
                     </Picker>
                 </View>
-                <Text style={styles.label}>End Date Needed: </Text>
+                <Text style={styles.label}>End Date Needed? </Text>
                 <View style={styles.pickerBorder}>
                     <Picker style={styles.picker} itemStyle={styles.pickerItem} selectedValue={endDateNeeded} onValueChange={setEndDateNeeded}>
                         <Picker.Item label="None" value={false} />
@@ -145,6 +146,7 @@ export default function EditScheduleForm(props) {
                 </View>
                 {endDateNeeded && 
                     <>
+                    <Text style={styles.label}>End Date: </Text>
                     <Pressable onPress={() => setEndDateModalVisible(true)}>
                         <FontAwesomeIcon icon={faCalendar} size={20}/>
                     </Pressable>
@@ -154,8 +156,8 @@ export default function EditScheduleForm(props) {
                 <Pressable onPress={() => setWakeupTimeModalVisible(true)}>
                         <FontAwesomeIcon icon={faCalendar} size={20}/>
                 </Pressable>
-                <Button textStyle={styles.buttonTextStyle} outlineStyle={styles.buttonOutlineStyle} title="Delete" onPress={deleteGoal} />
-                <Button textStyle={styles.buttonTextStyle} outlineStyle={styles.buttonOutlineStyle} title="Update" onPress={updateGoal} />
+                <Button textStyle={styles.buttonTextStyle} outlineStyle={styles.buttonOutlineStyle} title="Delete" onPress={deleteSchedule} />
+                <Button textStyle={styles.buttonTextStyle} outlineStyle={styles.buttonOutlineStyle} title="Update" onPress={updateSchedule} />
         </View>
         <DatePicker 
             modal 
@@ -168,9 +170,9 @@ export default function EditScheduleForm(props) {
         <DatePicker 
             modal 
             mode="time" 
-            date={} 
-            onDateChange={(date) => setEndDate(date)} open={wakeupTimeModalVisible} 
-            onConfirm={(date) => { setEndDate(date); setWakeupTimeModalVisible(false); }} 
+            date={wakeupTime} 
+            onDateChange={(date) => setWakeupTime(date)} open={wakeupTimeModalVisible} 
+            onConfirm={(date) => { setWakeupTime(date); setWakeupTimeModalVisible(false); }} 
             onCancel={() => setWakeupTimeModalVisible(false)}>
         </DatePicker>
     </>)

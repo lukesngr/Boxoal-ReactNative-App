@@ -26,9 +26,8 @@ export default function FinalView() {
         enabled: true
     })
 
-    console.log(status);
-    if(status === 'pending') {return <Loading />}
-    if(status === 'error') {return <Text>Error: {error.message}</Text> }
+    if(status === 'pending') return <Loading />
+    if(status === 'error') return <Text>Error: {error.message}</Text>
     
     return (
           <Tab.Navigator>

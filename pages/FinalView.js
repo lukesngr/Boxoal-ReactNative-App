@@ -26,17 +26,18 @@ export default function FinalView() {
         enabled: true
     })
 
-    if(status === 'pending') return <Loading />
-    if(status === 'error') return <Text>Error: {error.message}</Text>
+    console.log(status);
+    if(status === 'pending') {return <Loading />}
+    if(status === 'error') {return <Text>Error: {error.message}</Text> }
     
-  return (
-        <Tab.Navigator>
-          <Tab.Screen name="Timeboxes" children={() => <Timeboxes data={data}></Timeboxes>} 
-          options={{headerShown: false}}/>
-          <Tab.Screen name="Schedules" children={() => <Schedules data={data}></Schedules>} 
-          options={{headerShown: false}}/>
-          <Tab.Screen name="Settings" component={Areas} 
-          options={{headerShown: false}}/>
-        </Tab.Navigator>
-  )
+    return (
+          <Tab.Navigator>
+            <Tab.Screen name="Timeboxes" children={() => <Timeboxes data={data}></Timeboxes>} 
+            options={{headerShown: false}}/>
+            <Tab.Screen name="Schedules" children={() => <Schedules data={data}></Schedules>} 
+            options={{headerShown: false}}/>
+            <Tab.Screen name="Settings" component={Areas} 
+            options={{headerShown: false}}/>
+          </Tab.Navigator>
+    )
 }

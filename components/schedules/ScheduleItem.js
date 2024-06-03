@@ -5,7 +5,17 @@ import GoalAccordion from "./GoalAccordion";
 import { Text, View } from "react-native";
 import { useState } from "react";
 import EditScheduleForm from "./EditScheduleForm";
+import { Modal } from "react-native";
 
+const styles = {
+    modalContainer: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: 'rgba(128, 128, 128, 0.2)',
+    }
+}
+ 
 export default function ScheduleItem(props) {
     const [accordionOpen, setAccordionOpen] = useState(false);
     const [modalVisible, setModalVisible] = useState(false);

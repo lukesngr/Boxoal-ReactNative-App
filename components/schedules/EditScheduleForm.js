@@ -8,6 +8,7 @@ import serverIP from "../../modules/serverIP";
 import Button from "../timeboxes/Button";
 import { queryClient } from "../../App";
 import DatePicker from "react-native-date-picker";
+import { Picker } from "@react-native-picker/picker";
 
 const styles = StyleSheet.create({
     overallModal: {
@@ -72,11 +73,15 @@ export default function EditScheduleForm(props) {
     const [name, setName] = useState(props.data.title);
     const [boxSizeNumber, setBoxSizeNumber] = useState(props.data.boxSizeNumber);
     const [boxSizeUnit, setBoxSizeUnit] = useState(props.data.boxSizeNumber);
-    const [endDate, setEndDate] = useState(props.data.endDate);
+    const [endDate, setEndDate] = useState(props.data.endDate == undefined ? (new Date()) : (new Date(props.data.endDate)));
     const [endDateNeeded, setEndDateNeeded] = useState(props.data.endDate === undefined ? (false) : (true));
-    const [wakeupTime, setWakeupTime] = useState(props.data.wakeupTime);
+    let wakeupTimeDate = new Date();
+    wakeupTimeDate.setHours(props.data.wakeupTime.split(':')[0])
+    wakeupTimeDate.setMinutes(props.data.wakeupTime.split(':')[1])
+    const [wakeupTime, setWakeupTime] = useState(wakeupTimeDate);
     const [endDateModalVisible, setEndDateModalVisible] = useState(false);
     const [wakeupTimeModalVisible, setWakeupTimeModalVisible] = useState(false);
+    
 
     function updateGoal() {
         axios.put(serverIP+'/updateSchedule', {
@@ -163,7 +168,7 @@ export default function EditScheduleForm(props) {
         <DatePicker 
             modal 
             mode="time" 
-            date={wakeupTime} 
+            date={} 
             onDateChange={(date) => setEndDate(date)} open={wakeupTimeModalVisible} 
             onConfirm={(date) => { setEndDate(date); setWakeupTimeModalVisible(false); }} 
             onCancel={() => setWakeupTimeModalVisible(false)}>

@@ -68,7 +68,7 @@ const styles = StyleSheet.create({
 
 
 
-export default function EditGoalForm(props) {
+export default function EditScheduleForm(props) {
     const [name, setName] = useState(props.data.title);
     const [boxSizeNumber, setBoxSizeNumber] = useState(props.data.boxSizeNumber);
     const [boxSizeUnit, setBoxSizeUnit] = useState(props.data.boxSizeNumber);

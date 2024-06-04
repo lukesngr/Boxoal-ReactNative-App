@@ -138,21 +138,6 @@ export default function EditScheduleForm(props) {
                         <Picker.Item label="Hour" value="hr" />
                     </Picker>
                 </View>
-                <Text style={styles.label}>End Date Needed? </Text>
-                <View style={styles.pickerBorder}>
-                    <Picker style={styles.picker} itemStyle={styles.pickerItem} selectedValue={endDateNeeded} onValueChange={setEndDateNeeded}>
-                        <Picker.Item label="None" value={false} />
-                        <Picker.Item label="Choose" value={true} />
-                    </Picker>
-                </View>
-                {endDateNeeded && 
-                    <>
-                    <Text style={styles.label}>End Date: </Text>
-                    <Pressable onPress={() => setEndDateModalVisible(true)}>
-                        <FontAwesomeIcon icon={faCalendar} size={20}/>
-                    </Pressable>
-                    </>
-                }
                 <Text style={styles.label}>Wakeup Time: </Text>
                 <Pressable onPress={() => setWakeupTimeModalVisible(true)}>
                         <FontAwesomeIcon icon={faCalendar} size={20}/>
@@ -160,14 +145,6 @@ export default function EditScheduleForm(props) {
                 <Button textStyle={styles.buttonTextStyle} outlineStyle={styles.buttonOutlineStyle} title="Delete" onPress={deleteSchedule} />
                 <Button textStyle={styles.buttonTextStyle} outlineStyle={styles.buttonOutlineStyle} title="Update" onPress={updateSchedule} />
         </View>
-        <DatePicker 
-            modal 
-            mode="date" 
-            date={endDate} 
-            onDateChange={(date) => setEndDate(date)} open={endDateModalVisible} 
-            onConfirm={(date) => { setEndDate(date); setEndDateModalVisible(false); }} 
-            onCancel={() => setEndDateModalVisible(false)}>
-        </DatePicker>
         <DatePicker 
             modal 
             mode="time" 

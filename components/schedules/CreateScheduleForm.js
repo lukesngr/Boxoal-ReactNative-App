@@ -72,12 +72,12 @@ const styles = StyleSheet.create({
 
 export default function CreateScheduleForm(props) {
     const [name, setName] = useState("");
-    const [boxSizeNumber, setBoxSizeNumber] = useState(30);
+    const [boxSizeNumber, setBoxSizeNumber] = useState("30");
     const [boxSizeUnit, setBoxSizeUnit] = useState("min");
-    const [endDate, setEndDate] = useState(new Date());
-    const [endDateNeeded, setEndDateNeeded] = useState(false);
-    const [wakeupTime, setWakeupTime] = useState('7:00');
-    const [endDateModalVisible, setEndDateModalVisible] = useState(false);
+    let wakeupDateTime = new Date();
+    wakeupDateTime.setHours(7);
+    wakeupDateTime.setMinutes(0);
+    const [wakeupTime, setWakeupTime] = useState(wakeupDateTime);
     const [wakeupTimeModalVisible, setWakeupTimeModalVisible] = useState(false);
 
     function createSchedule() {
@@ -119,35 +119,12 @@ export default function CreateScheduleForm(props) {
                         <Picker.Item label="Hour" value="hr" />
                     </Picker>
                 </View>
-                <Text style={styles.label}>End Date Needed? </Text>
-                <View style={styles.pickerBorder}>
-                    <Picker style={styles.picker} itemStyle={styles.pickerItem} selectedValue={endDateNeeded} onValueChange={setEndDateNeeded}>
-                        <Picker.Item label="None" value={false} />
-                        <Picker.Item label="Choose" value={true} />
-                    </Picker>
-                </View>
-                {endDateNeeded && 
-                    <>
-                    <Text style={styles.label}>End Date: </Text>
-                    <Pressable onPress={() => setEndDateModalVisible(true)}>
-                        <FontAwesomeIcon icon={faCalendar} size={20}/>
-                    </Pressable>
-                    </>
-                }
                 <Text style={styles.label}>Wakeup Time: </Text>
                 <Pressable onPress={() => setWakeupTimeModalVisible(true)}>
                         <FontAwesomeIcon icon={faCalendar} size={20}/>
                 </Pressable>
                 <Button textStyle={styles.buttonTextStyle} outlineStyle={styles.buttonOutlineStyle} title="Create" onPress={createSchedule} />
         </View>
-        <DatePicker 
-            modal 
-            mode="date" 
-            date={endDate} 
-            onDateChange={(date) => setEndDate(date)} open={endDateModalVisible} 
-            onConfirm={(date) => { setEndDate(date); setEndDateModalVisible(false); }} 
-            onCancel={() => setEndDateModalVisible(false)}>
-        </DatePicker>
         <DatePicker 
             modal 
             mode="time" 

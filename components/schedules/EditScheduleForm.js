@@ -9,6 +9,7 @@ import Button from "../timeboxes/Button";
 import { queryClient } from "../../App";
 import DatePicker from "react-native-date-picker";
 import { Picker } from "@react-native-picker/picker";
+import { convertToTimeAndDate } from "../../modules/coreLogic";
 
 const styles = StyleSheet.create({
     overallModal: {
@@ -89,7 +90,7 @@ export default function EditScheduleForm(props) {
             boxSizeNumber: parseInt(boxSizeNumber),
             boxSizeUnit,
             endDate,
-            wakeupTime,
+            wakeupTime: convertToTimeAndDate(wakeupTime)[0],
             id: props.data.id,
         },
         {headers: { 'Origin': 'http://localhost:3000' }}

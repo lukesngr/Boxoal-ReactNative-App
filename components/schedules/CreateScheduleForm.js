@@ -10,6 +10,7 @@ import { queryClient } from "../../App";
 import DatePicker from "react-native-date-picker";
 import { Picker } from "@react-native-picker/picker";
 import { convertToTimeAndDate } from "../../modules/coreLogic";
+import { useSelector } from "react-redux";
 
 const styles = StyleSheet.create({
     overallModal: {
@@ -20,7 +21,7 @@ const styles = StyleSheet.create({
     },
     title: {
         color: 'black',
-        fontSize: 22,
+        fontSize: 28,
         padding: 0,
         margin: 0,
     },
@@ -79,15 +80,15 @@ export default function CreateScheduleForm(props) {
     wakeupDateTime.setMinutes(0);
     const [wakeupTime, setWakeupTime] = useState(wakeupDateTime);
     const [wakeupTimeModalVisible, setWakeupTimeModalVisible] = useState(false);
+    const username = useSelector(state => state.username);
 
     function createSchedule() {
         axios.post(serverIP+'/createSchedule', {
             name,
             boxSizeNumber: parseInt(boxSizeNumber),
             boxSizeUnit,
-            endDate,
             wakeupTime,
-            userEmail, 
+            userEmail: username, 
         },
         {headers: { 'Origin': 'http://localhost:3000' }}
         ).then(async () => {
@@ -103,23 +104,23 @@ export default function CreateScheduleForm(props) {
     <>
         <View style={styles.overallModal}>
                 <View style={styles.titleBarContainer}>  
-                    <Text style={styles.title}>Edit Schedule</Text>
+                    <Text style={styles.title}>Create Schedule</Text>
                     <Pressable onPress={props.close}>
                         <FontAwesomeIcon icon={faXmark} size={25}/>
                     </Pressable>
                 </View>
                 <Text style={styles.label}>Name</Text>
                 <TextInput style={styles.textInput} onChangeText={setName} value={name}></TextInput>
-                <Text style={styles.label}>Timebox duration</Text>
+                <Text style={styles.label}>Timebox Duration</Text>
                 <TextInput style={styles.textInput} keyboardType="numeric" onChangeText={setBoxSizeNumber} value={boxSizeNumber}></TextInput>
-                <Text style={styles.label}>Timebox unit</Text>
+                <Text style={styles.label}>Timebox Unit</Text>
                 <View style={styles.pickerBorder}>
                     <Picker style={styles.picker} itemStyle={styles.pickerItem} selectedValue={boxSizeUnit} onValueChange={setBoxSizeUnit}>
                         <Picker.Item label="Min" value="min" />
                         <Picker.Item label="Hour" value="hr" />
                     </Picker>
                 </View>
-                <Text style={styles.label}>Wakeup Time: </Text>
+                <Text style={styles.label}>Wakeup Time </Text>
                 <Pressable onPress={() => setWakeupTimeModalVisible(true)}>
                         <FontAwesomeIcon icon={faCalendar} size={20}/>
                 </Pressable>

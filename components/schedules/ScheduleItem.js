@@ -22,7 +22,7 @@ export default function ScheduleItem(props) {
 
     return (
         <>
-            <View style={{backgroundColor: 'white', padding: 10, margin: 10}}>
+            <View style={{backgroundColor: 'white', padding: 10, margin: 10, marginBottom: 0}}>
                 <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
                     <Text style={{color: 'black', fontSize: 25}}>{props.schedule.name}</Text>
                     <View style={{flexDirection: 'row'}}>

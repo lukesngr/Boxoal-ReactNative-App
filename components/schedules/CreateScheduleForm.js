@@ -80,7 +80,7 @@ export default function CreateScheduleForm(props) {
     wakeupDateTime.setMinutes(0);
     const [wakeupTime, setWakeupTime] = useState(wakeupDateTime);
     const [wakeupTimeModalVisible, setWakeupTimeModalVisible] = useState(false);
-    const username = useSelector(state => state.username);
+    const username = useSelector(state => state.username.value);
 
     function createSchedule() {
         axios.post(serverIP+'/createSchedule', {

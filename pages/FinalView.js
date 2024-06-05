@@ -12,6 +12,8 @@ import serverIP from '../modules/serverIP';
 import CreateScheduleForm from '../components/schedules/CreateScheduleForm';
 import Welcome from '../components/Welcome';
 import { initialNotificationSetup } from '../modules/coreLogic';
+import { useEffect } from 'react';
+import notifee, { EventType } from '@notifee/react-native';
 
 const Tab = createBottomTabNavigator();
 
@@ -29,7 +31,11 @@ export default function FinalView() {
         enabled: true
     })
 
-    initialNotificationSetup().then();
+    useEffect(() => {
+        initialNotificationSetup().then();
+        notifee.onForegroundEvent();
+    }, [])
+    
 
     if(status === 'pending') return <Loading />
     if(status === 'error') return <Text>Error: {error.message}</Text>

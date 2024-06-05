@@ -57,6 +57,19 @@ export default function TimeboxActionsForm(props) {
     const timeboxIsRecording = timeboxRecording[0] == data.id && timeboxRecording[1] == date;
 
     async function startRecording() {
+        await notifee.displayNotification({
+            title: 'Boxoal - timebox recording started',
+            body: 'Recording for '+data.title+' started...',
+            android: {
+              channelId: 'boxoal',
+              actions: [{
+                pressAction: {
+                    id: 'stopRecording',
+                    launchActivity: 'default',
+                },
+                title: 'Stop',}],
+            },
+        });
         dispatch({type: 'timeboxRecording/set', payload: [data.id, date, new Date().toISOString()]});
         dispatch(resetActiveOverlayInterval());
     }

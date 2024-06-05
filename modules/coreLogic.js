@@ -1,5 +1,5 @@
 import { calculateRemainderTimeBetweenTwoTimes } from "./timeLogic";
-import notifee from '@notifee/react-native';
+import notifee, {EventType} from '@notifee/react-native';
 import dayjs from "dayjs";
 var isSameOrBefore = require('dayjs/plugin/isSameOrBefore')
 dayjs.extend(isSameOrBefore)
@@ -246,4 +246,12 @@ export async function initialNotificationSetup() {
       name: 'boxoal notification channel',
     });
     console.log(channelId)
+}
+
+export function recordIfNotificationPressed() {
+    notifee.onForegroundEvent(({ type, detail }) => {
+        if (type === EventType.ACTION_PRESS && detail.pressAction.id) {
+            console.log('User pressed an action with the id: ', detail.pressAction.id);
+        }
+    });
 }

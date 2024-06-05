@@ -8,6 +8,7 @@ import EditScheduleForm from "./EditScheduleForm";
 import { Modal } from "react-native";
 import Button from "../timeboxes/Button";
 import CreateScheduleForm from "./CreateScheduleForm";
+import CreateGoalForm from "../goals/CreateGoalForm";
 
 const styles = {
     buttonOutlineStyle: {
@@ -54,7 +55,7 @@ export default function ScheduleItem(props) {
                 <Button textStyle={styles.buttonTextStyle} outlineStyle={styles.buttonOutlineStyle} title="Create Goal" onPress={() => setCreateModalVisible(true)} />
                 <Modal animationType="slide" transparent={true} visible={createModalVisible} onRequestClose={() => {setCreateModalVisible(!createModalVisible);}}>
                     <View style={styles.modalContainer}>
-                        <CreateScheduleForm close={() => setCreateModalVisible(false)}></CreateScheduleForm>
+                        <CreateGoalForm id={props.schedule.id} close={() => setCreateModalVisible(false)}></CreateGoal>
                     </View>
                 </Modal>
             </View>

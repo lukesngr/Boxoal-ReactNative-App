@@ -64,7 +64,7 @@ export default function TimeboxActionsForm(props) {
               channelId: 'boxoal',
               actions: [{
                 pressAction: {
-                    id: 'stopRecording',
+                    id: `stopRecording-${data.id}-${id}`,
                     launchActivity: 'default',
                 },
                 title: 'Stop',}],

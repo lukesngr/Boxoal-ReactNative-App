@@ -11,7 +11,7 @@ import { Text } from "react-native";
 import serverIP from '../modules/serverIP';
 import CreateScheduleForm from '../components/schedules/CreateScheduleForm';
 import Welcome from '../components/Welcome';
-import { initialNotificationSetup } from '../modules/coreLogic';
+import { initialNotificationSetup, recordIfNotificationPressed } from '../modules/coreLogic';
 import { useEffect } from 'react';
 import notifee, { EventType } from '@notifee/react-native';
 
@@ -33,7 +33,7 @@ export default function FinalView() {
 
     useEffect(() => {
         initialNotificationSetup().then();
-        notifee.onForegroundEvent();
+        notifee.onForegroundEvent(recordIfNotificationPressed);
     }, [])
     
 

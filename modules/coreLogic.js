@@ -1,5 +1,10 @@
 import { calculateRemainderTimeBetweenTwoTimes } from "./timeLogic";
 import notifee, {EventType} from '@notifee/react-native';
+import { Alert } from "react-native";
+import { useDispatch, useSelector } from "react-redux";
+import { setActiveOverlayInterval, resetActiveOverlayInterval } from "../../redux/activeOverlayInterval";
+import axios from 'axios';
+import { queryClient } from '../../App';
 import dayjs from "dayjs";
 var isSameOrBefore = require('dayjs/plugin/isSameOrBefore')
 dayjs.extend(isSameOrBefore)
@@ -248,10 +253,22 @@ export async function initialNotificationSetup() {
     console.log(channelId)
 }
 
-export function recordIfNotificationPressed() {
-    notifee.onForegroundEvent(({ type, detail }) => {
-        if (type === EventType.ACTION_PRESS && detail.pressAction.id) {
-            console.log('User pressed an action with the id: ', detail.pressAction.id);
-        }
-    });
+export function recordIfNotificationPressed(type, detail) {
+    const dispatch = useDispatch();
+    if (type === EventType.ACTION_PRESS && detail.pressAction.id) {
+        let ids = detail.pressAction.id.split("-");
+        let recordedStartTime = new Date(timeboxRecording[2]);
+        dispatch({type: 'timeboxRecording/set', payload: [-1, 0, 0]});
+        dispatch(setActiveOverlayInterval());
+        axios.post(serverIP+'/createRecordedTimebox', 
+            {recordedStartTime: recordedStartTime, recordedEndTime: new Date(), timeBox: {connect: {id: ids[1]}}, schedule: {connect: {id: ids[2]}}},
+            {headers: { 'Origin': 'http://localhost:3000' }}
+        ).then(() => {
+            queryClient.refetchQueries();
+            Alert.alert("Added recorded timebox");
+        }).catch(function(error) {
+            Alert.alert("Error contact developer");
+            console.log(error); 
+        })  
+    }
 }

@@ -9,6 +9,8 @@ import axios from "axios";
 import Loading from "../components/Loading";
 import { Text } from "react-native";
 import serverIP from '../modules/serverIP';
+import CreateScheduleForm from '../components/schedules/CreateScheduleForm';
+import Welcome from '../components/Welcome';
 
 const Tab = createBottomTabNavigator();
 
@@ -28,6 +30,7 @@ export default function FinalView() {
 
     if(status === 'pending') return <Loading />
     if(status === 'error') return <Text>Error: {error.message}</Text>
+    if(data.length == 0) return <Welcome />
     
     return (
           <Tab.Navigator>

@@ -32,9 +32,9 @@ export default function ScheduleAccordion(props) {
         })}
         <Button textStyle={styles.buttonTextStyle} outlineStyle={styles.buttonOutlineStyle} title="Create Schedule" onPress={() => setModalVisible(true)} />
         <Modal animationType="slide" transparent={true} visible={modalVisible} onRequestClose={() => {setModalVisible(!modalVisible);}}>
-                <View style={styles.modalContainer}>
-                    <CreateScheduleForm close={setModalVisible}></CreateScheduleForm>
-                </View>
-            </Modal>
+            <View style={styles.modalContainer}>
+                <CreateScheduleForm close={() => setModalVisible(false)}></CreateScheduleForm>
+            </View>
+        </Modal>
     </ScrollView>
 }

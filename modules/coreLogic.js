@@ -2,9 +2,10 @@ import { calculateRemainderTimeBetweenTwoTimes } from "./timeLogic";
 import notifee, {EventType} from '@notifee/react-native';
 import { Alert } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
-import { setActiveOverlayInterval, resetActiveOverlayInterval } from "../../redux/activeOverlayInterval";
+import { setActiveOverlayInterval, resetActiveOverlayInterval } from "../redux/activeOverlayInterval";
 import axios from 'axios';
-import { queryClient } from '../../App';
+import { queryClient } from '../App';
+import serverIP from "./serverIP";
 import dayjs from "dayjs";
 var isSameOrBefore = require('dayjs/plugin/isSameOrBefore')
 dayjs.extend(isSameOrBefore)
@@ -253,10 +254,10 @@ export async function initialNotificationSetup() {
     console.log(channelId)
 }
 
-export function recordIfNotificationPressed(type, detail) {
-    const dispatch = useDispatch();
+export function recordIfNotificationPressed(type, detail, dispatch, timeboxRecording) {
     if (type === EventType.ACTION_PRESS && detail.pressAction.id) {
         let ids = detail.pressAction.id.split("-");
+        console.log(ids)
         let recordedStartTime = new Date(timeboxRecording[2]);
         dispatch({type: 'timeboxRecording/set', payload: [-1, 0, 0]});
         dispatch(setActiveOverlayInterval());

@@ -3,7 +3,7 @@ import Schedules from './Schedules';
 import Timeboxes from './Timeboxes';
 import Areas from './Areas';
 import dayjs from "dayjs";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import Loading from "../components/Loading";
@@ -18,8 +18,11 @@ import notifee, { EventType } from '@notifee/react-native';
 const Tab = createBottomTabNavigator();
 
 export default function FinalView() {
+    const dispatch = useDispatch();
     const username = useSelector(state => state.username.value);
     const selectedDate = useSelector(state => state.selectedDate.value);
+    const timeboxRecording = useSelector(state => state.timeboxRecording.value);
+
     let startOfWeek = dayjs(selectedDate).startOf('week').hour(0).minute(0).toDate();
     let endOfWeek = dayjs(selectedDate).endOf('week').add(1, 'day').hour(23).minute(59).toDate(); //another day as sometimes timeboxes will go into next week
     const {status, data, error, refetch} = useQuery({
@@ -33,7 +36,7 @@ export default function FinalView() {
 
     useEffect(() => {
         initialNotificationSetup().then();
-        notifee.onForegroundEvent(recordIfNotificationPressed);
+        notifee.onForegroundEvent(({type, detail}) => recordIfNotificationPressed(type, detail, dispatch, timeboxRecording));
     }, [])
     
 

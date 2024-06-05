@@ -11,6 +11,7 @@ import { Text } from "react-native";
 import serverIP from '../modules/serverIP';
 import CreateScheduleForm from '../components/schedules/CreateScheduleForm';
 import Welcome from '../components/Welcome';
+import { initialNotificationSetup } from '../modules/coreLogic';
 
 const Tab = createBottomTabNavigator();
 
@@ -27,6 +28,8 @@ export default function FinalView() {
         },
         enabled: true
     })
+
+    initialNotificationSetup().then();
 
     if(status === 'pending') return <Loading />
     if(status === 'error') return <Text>Error: {error.message}</Text>

@@ -1,4 +1,5 @@
 import { calculateRemainderTimeBetweenTwoTimes } from "./timeLogic";
+import notifee from '@notifee/react-native';
 import dayjs from "dayjs";
 var isSameOrBefore = require('dayjs/plugin/isSameOrBefore')
 dayjs.extend(isSameOrBefore)
@@ -236,4 +237,13 @@ export function generateTimeBoxGrid(schedule, selectedDate) {
 
 export function getHeightForBoxes(numberOfBoxes) { return `calc(${(numberOfBoxes * 100)}% + ${(numberOfBoxes - 1) * 2}px)` }
 
-    
+export async function initialNotificationSetup() {
+    await notifee.requestPermission()
+
+    // Create a channel (required for Android)
+    const channelId = await notifee.createChannel({
+      id: 'boxoal',
+      name: 'boxoal notification channel',
+    });
+    console.log(channelId)
+}

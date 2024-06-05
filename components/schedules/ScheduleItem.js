@@ -15,7 +15,7 @@ const styles = {
         backgroundColor: '#7FFFD4',
         padding: 5,
         marginLeft: 10,
-        marginRight: 0,
+        marginRight: 10,
     },
     buttonTextStyle: {
         color: 'black',
@@ -52,13 +52,14 @@ export default function ScheduleItem(props) {
                 {accordionOpen && props.schedule.goals.map((goal, index) => {
                     return <GoalAccordion key={index} goal={goal}></GoalAccordion>
                 })}
-                <Button textStyle={styles.buttonTextStyle} outlineStyle={styles.buttonOutlineStyle} title="Create Goal" onPress={() => setCreateModalVisible(true)} />
-                <Modal animationType="slide" transparent={true} visible={createModalVisible} onRequestClose={() => {setCreateModalVisible(!createModalVisible);}}>
-                    <View style={styles.modalContainer}>
-                        <CreateGoalForm id={props.schedule.id} close={() => setCreateModalVisible(false)}></CreateGoal>
-                    </View>
-                </Modal>
+                
             </View>
+            <Button textStyle={styles.buttonTextStyle} outlineStyle={styles.buttonOutlineStyle} title="Create Goal" onPress={() => setCreateModalVisible(true)} />
+            <Modal animationType="slide" transparent={true} visible={createModalVisible} onRequestClose={() => {setCreateModalVisible(!createModalVisible);}}>
+                <View style={styles.modalContainer}>
+                    <CreateGoalForm id={props.schedule.id} close={() => setCreateModalVisible(false)}></CreateGoalForm>
+                </View>
+            </Modal>
             <Modal animationType="slide" transparent={true} visible={modalVisible} onRequestClose={() => {setModalVisible(!modalVisible);}}>
                 <View style={styles.modalContainer}>
                     <EditScheduleForm data={props.schedule} close={() => setModalVisible(false)}></EditScheduleForm>

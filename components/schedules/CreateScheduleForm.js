@@ -87,7 +87,7 @@ export default function CreateScheduleForm(props) {
             name,
             boxSizeNumber: parseInt(boxSizeNumber),
             boxSizeUnit,
-            wakeupTime,
+            wakeupTime: convertToTimeAndDate(wakeupTime)[0],
             userEmail: username, 
         },
         {headers: { 'Origin': 'http://localhost:3000' }}

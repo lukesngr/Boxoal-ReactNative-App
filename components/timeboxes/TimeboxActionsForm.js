@@ -58,7 +58,7 @@ export default function TimeboxActionsForm(props) {
 
     async function startRecording() {
         await notifee.displayNotification({
-            title: 'Boxoal - timebox recording started',
+            title: 'Boxoal',
             body: 'Recording for '+data.title+' started...',
             android: {
               channelId: 'boxoal',

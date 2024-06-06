@@ -251,13 +251,11 @@ export async function initialNotificationSetup() {
       id: 'boxoal',
       name: 'boxoal notification channel',
     });
-    console.log(channelId)
 }
 
 export function recordIfNotificationPressed(type, detail, dispatch, timeboxRecording) {
     if (type === EventType.ACTION_PRESS && detail.pressAction.id) {
         let ids = detail.pressAction.id.split("-");
-        console.log(ids)
         let recordedStartTime = new Date(timeboxRecording[2]);
         dispatch({type: 'timeboxRecording/set', payload: [-1, 0, 0]});
         dispatch(setActiveOverlayInterval());

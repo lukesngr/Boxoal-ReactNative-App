@@ -1,2 +1,2 @@
-let serverIP = "http://3.106.210.129:3000";
+let serverIP = "http://3.25.123.14:3000";
 export default serverIP;

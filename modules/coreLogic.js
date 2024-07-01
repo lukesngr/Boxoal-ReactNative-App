@@ -284,13 +284,14 @@ export async function recordingNotificationsSetup(timebox, schedule) {
                 title: 'Boxoal',
                 body: 'Recording for '+timebox.title+' started...',
                 android: {
-                  channelId: 'boxoal',
-                  actions: [{
-                    pressAction: {
-                        id: `stopRecording-${timebox.id}-${schedule.id}`,
-                        launchActivity: 'default',
-                    },
-                    title: 'Stop'}],
+                    channelId: 'boxoal',
+                    actions: [{
+                        pressAction: {
+                            id: `stopRecording-${timebox.id}-${schedule.id}`,
+                            launchActivity: 'default',
+                        },
+                        title: 'Stop'
+                    }],
                     progress: {
                         max: 100,
                         current: totalPercentage,

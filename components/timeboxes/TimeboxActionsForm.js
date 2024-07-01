@@ -1,4 +1,4 @@
-import { addBoxesToTime, convertToDateTime, thereIsNoRecording } from "../../modules/coreLogic";
+import { addBoxesToTime, convertToDateTime, recordingNotificationsSetup, thereIsNoRecording } from "../../modules/coreLogic";
 import axios from 'axios';
 import { queryClient } from '../../App';
 import { useState } from "react";
@@ -49,7 +49,7 @@ export default function TimeboxActionsForm(props) {
     const {data, date, time} = props;
     const [showEditTimeboxForm, setShowEditTimeboxForm] = useState(false);
     const timeboxRecording = useSelector(state => state.timeboxRecording.value);
-    const {id, boxSizeUnit, boxSizeNumber} = useSelector(state => state.scheduleEssentials.value);
+    const schedule = useSelector(state => state.scheduleEssentials.value);
     const dispatch = useDispatch();
     
     const noPreviousRecording = thereIsNoRecording(data.recordedTimeBoxes, data.reoccuring, date, time);
@@ -57,19 +57,7 @@ export default function TimeboxActionsForm(props) {
     const timeboxIsRecording = timeboxRecording[0] == data.id && timeboxRecording[1] == date;
 
     async function startRecording() {
-        await notifee.displayNotification({
-            title: 'Boxoal',
-            body: 'Recording for '+data.title+' started...',
-            android: {
-              channelId: 'boxoal',
-              actions: [{
-                pressAction: {
-                    id: `stopRecording-${data.id}-${id}`,
-                    launchActivity: 'default',
-                },
-                title: 'Stop',}],
-            },
-        });
+        recordingNotificationsSetup(data, schedule);
         dispatch({type: 'timeboxRecording/set', payload: [data.id, date, new Date().toISOString()]});
         dispatch(resetActiveOverlayInterval());
     }

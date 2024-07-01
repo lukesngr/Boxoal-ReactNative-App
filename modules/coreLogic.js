@@ -275,11 +275,11 @@ export function recordIfNotificationPressed(type, detail, dispatch, timeboxRecor
 export async function recordingNotificationsSetup(timebox, schedule) {
 
     notifee.registerForegroundService((notification) => {
-        return new Promise(async (resolve, reject) => {
+        return new Promise((resolve, reject) => {
             let currentTime = new Date();
             let totalPercentage = ((currentTime.getHours() * 60 + currentTime.getMinutes()) / (timebox.endTime.getHours() * 60 + timebox.endTime.getMinutes())) * 100;
             
-            await notifee.displayNotification({
+            notifee.displayNotification({
                 id: 'recordingNotification',
                 title: 'Boxoal',
                 body: 'Recording for '+timebox.title+' started...',
@@ -303,7 +303,7 @@ export async function recordingNotificationsSetup(timebox, schedule) {
                     currentTime = new Date();
                     totalPercentage = ((currentTime.getHours() * 60 + currentTime.getMinutes()) / (timebox.endTime.getHours() * 60 + timebox.endTime.getMinutes())) * 100;
             
-                    await notifee.displayNotification({
+                    notifee.displayNotification({
                         id: 'recordingNotification',
                         title: 'Boxoal',
                         body: 'Recording for '+timebox.title+' started...',

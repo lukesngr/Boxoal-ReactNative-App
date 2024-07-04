@@ -67,7 +67,7 @@ export default function TimeboxActionsForm(props) {
         dispatch({type: 'timeboxRecording/set', payload: [-1, 0, 0]});
         dispatch(setActiveOverlayInterval());
         axios.post(serverIP+'/createRecordedTimebox', 
-            {recordedStartTime: recordedStartTime, recordedEndTime: new Date(), timeBox: {connect: {id: data.id}}, schedule: {connect: {id}}},
+            {recordedStartTime: recordedStartTime, recordedEndTime: new Date(), timeBox: {connect: {id: data.id}}, schedule: {connect: {id: schedule.id}}},
             {headers: { 'Origin': 'http://localhost:3000' }}
         ).then(() => {
             queryClient.refetchQueries();
@@ -82,7 +82,7 @@ export default function TimeboxActionsForm(props) {
         axios.post(serverIP+'/createRecordedTimebox', 
             {recordedStartTime: convertToDateTime(time, date), 
                 recordedEndTime: convertToDateTime(addBoxesToTime(boxSizeUnit, boxSizeNumber, time, data.numberOfBoxes), date),
-                 timeBox: {connect: {id: data.id}}, schedule: {connect: {id}}},
+                 timeBox: {connect: {id: data.id}}, schedule: {connect: {id: schedule.id}}},
             {headers: { 'Origin': 'http://localhost:3000' }}
         ).then(() => {
             queryClient.refetchQueries();

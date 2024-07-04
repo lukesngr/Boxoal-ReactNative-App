@@ -276,54 +276,38 @@ export async function recordingNotificationsSetup(timebox, schedule) {
 
     notifee.registerForegroundService((notification) => {
         return new Promise((resolve, reject) => {
-            let currentTime = new Date();
-            let totalPercentage = ((currentTime.getHours() * 60 + currentTime.getMinutes()) / (timebox.endTime.getHours() * 60 + timebox.endTime.getMinutes())) * 100;
-            
-            notifee.displayNotification({
-                id: 'recordingNotification',
-                title: 'Boxoal',
-                body: 'Recording for '+timebox.title+' started...',
-                android: {
-                    channelId: 'boxoal',
-                    actions: [{
-                        pressAction: {
-                            id: `stopRecording-${timebox.id}-${schedule.id}`,
-                            launchActivity: 'default',
-                        },
-                        title: 'Stop'
-                    }],
-                    progress: {
-                        max: 100,
-                        current: totalPercentage,
-                    },
-                },
-            });
-            
-            while(totalPercentage < 100) {
-                setTimeout(() => {
-                    currentTime = new Date();
-                    totalPercentage = ((currentTime.getHours() * 60 + currentTime.getMinutes()) / (timebox.endTime.getHours() * 60 + timebox.endTime.getMinutes())) * 100;
-            
-                    notifee.displayNotification({
-                        id: 'recordingNotification',
-                        title: 'Boxoal',
-                        body: 'Recording for '+timebox.title+' started...',
-                        android: {
+            const updateNotification = () => {
+                let currentTime = new Date();
+                let totalMinutes = currentTime.getHours() * 60 + currentTime.getMinutes();
+                let endMinutes = timebox.endTime.getHours() * 60 + timebox.endTime.getMinutes();
+                let totalPercentage = (totalMinutes / endMinutes) * 100;
+    
+                notifee.displayNotification({
+                    id: 'recordingNotification',
+                    title: 'Boxoal',
+                    body: `Recording for ${timebox.title} started...`,
+                    android: {
                         channelId: 'boxoal',
                         actions: [{
                             pressAction: {
                                 id: `stopRecording-${timebox.id}-${schedule.id}`,
                                 launchActivity: 'default',
                             },
-                            title: 'Stop'}],
-                            progress: {
-                                max: 100,
-                                current: totalPercentage,
-                            },
+                            title: 'Stop'
+                        }],
+                        progress: {
+                            max: 100,
+                            current: totalPercentage,
                         },
-                    });
-                }, 2000);
-            }
+                    },
+                });
+    
+                if (totalPercentage < 100) {
+                    setTimeout(updateNotification, 2000);
+                }
+            };
+    
+            updateNotification();
             resolve();
         });
     });

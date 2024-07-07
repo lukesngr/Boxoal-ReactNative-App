@@ -308,7 +308,7 @@ export async function recordingNotificationsSetup(timebox, schedule) {
         title: 'Foreground service',
         body: 'This notification will exist for the lifetime of the service runner',
         android: {
-          channelId,
+          channelId: 'boxoal',
           asForegroundService: true,
           color: AndroidColor.RED,
           colorized: true,

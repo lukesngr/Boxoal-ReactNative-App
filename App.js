@@ -41,11 +41,11 @@ export function Login({ navigation, route }) {
       Authorization: `token ${accessToken}`
     }
   }).then(response => {
-      return AsyncStorage.setItem(
-        'username',
-        response.data[0].email,
-      );
-      navigation.navigate('SplashScreen')
+    navigation.navigate('SplashScreen')
+    return AsyncStorage.setItem(
+      'username',
+      response.data[0].email,
+    );
   }).catch(err => {
     console.log(err);
   });

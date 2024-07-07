@@ -9,9 +9,6 @@ import notifee from '@notifee/react-native';
 
 notifee.registerForegroundService((notification) => {
     return new Promise((resolve, reject) => {
-        while(true) {
-            console.log('Foreground service is running');
-        }
     });
 });
 

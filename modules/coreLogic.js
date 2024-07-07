@@ -310,8 +310,6 @@ export async function recordingNotificationsSetup(timebox, schedule) {
         android: {
           channelId: 'boxoal',
           asForegroundService: true,
-          color: AndroidColor.RED,
-          colorized: true,
         },
       });
     /*

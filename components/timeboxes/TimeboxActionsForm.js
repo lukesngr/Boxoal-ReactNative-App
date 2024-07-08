@@ -57,18 +57,7 @@ export default function TimeboxActionsForm(props) {
     const timeboxIsRecording = timeboxRecording[0] == data.id && timeboxRecording[1] == date;
 
     async function startRecording() {
-        try {
-        await notifee.displayNotification({
-            title: 'Foreground service',
-            body: 'This notification will exist for the lifetime of the service runner',
-            android: {
-              channelId: 'boxoal',
-              asForegroundService: true,
-            },
-          });
-        } catch (error) {
-            console.log(error);
-        }
+        displayOngoingRecordingNotification(timebox, schedule);
         dispatch({type: 'timeboxRecording/set', payload: [data.id, date, new Date().toISOString()]});
         dispatch(resetActiveOverlayInterval());
     }

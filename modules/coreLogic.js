@@ -303,7 +303,7 @@ async function updateNotification(timebox, schedule) {
     }
 };
 
-export async function recordingNotificationsSetup(timebox, schedule) {
+export async function displayOngoingRecordingNotification(timebox, schedule) {
     await notifee.displayNotification({
         title: 'Foreground service',
         body: 'This notification will exist for the lifetime of the service runner',
@@ -312,12 +312,4 @@ export async function recordingNotificationsSetup(timebox, schedule) {
           asForegroundService: true,
         },
       });
-    /*
-    notifee.registerForegroundService((notification) => {
-        return new Promise((resolve, reject) => {
-            console.log('Foreground service started');
-            updateNotification(timebox, schedule);
-            resolve();
-        });
-    });*/
 }

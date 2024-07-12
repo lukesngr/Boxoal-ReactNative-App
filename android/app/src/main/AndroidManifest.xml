@@ -13,5 +13,6 @@
         <data android:scheme="boxoal"/>
       </intent-filter>
     </activity>
+    <service android:name="com.boxoalnative2.BackgroundHeadlessTaskService" />
   </application>
 </manifest>

@@ -57,13 +57,13 @@ export default function TimeboxActionsForm(props) {
     const timeboxIsRecording = timeboxRecording[0] == data.id && timeboxRecording[1] == date;
 
     async function startRecording() {
-        NativeModules.BackgroundHeadlessTask.startBackgroundWork();
+        NativeModules.BackgroundWorkManager.startBackgroundWork();
         dispatch({type: 'timeboxRecording/set', payload: [data.id, date, new Date().toISOString()]});
         dispatch(resetActiveOverlayInterval());
     }
 
     function stopRecording() {
-        NativeModules.BackgroundHeadlessTask.startBackgroundWork();
+        NativeModules.BackgroundWorkManager.startBackgroundWork();
         let recordedStartTime = new Date(timeboxRecording[2]);
         dispatch({type: 'timeboxRecording/set', payload: [-1, 0, 0]});
         dispatch(setActiveOverlayInterval());

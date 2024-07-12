@@ -13,6 +13,11 @@ import { PersistGate } from 'redux-persist/integration/react';
 const Stack = createNativeStackNavigator();
 export const queryClient = new QueryClient();
 
+import {AppRegistry} from 'react-native';
+AppRegistry.registerHeadlessTask('BackgroundHeadlessTask', () =>
+  require('./modules/BackgroundHeadlessTask.js'),
+);
+
 const MyTheme = {
   ...DefaultTheme,
   colors: {

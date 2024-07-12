@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setActiveOverlayInterval, resetActiveOverlayInterval } from "../../redux/activeOverlayInterval";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
-import { StyleSheet, Text, View, Pressable } from "react-native";
+import { StyleSheet, Text, View, Pressable, NativeModules } from "react-native";
 import serverIP from "../../modules/serverIP";
 import Button from "./Button";
 import EditTimeboxForm from "./EditTimeboxForm";
@@ -57,12 +57,13 @@ export default function TimeboxActionsForm(props) {
     const timeboxIsRecording = timeboxRecording[0] == data.id && timeboxRecording[1] == date;
 
     async function startRecording() {
-        displayOngoingRecordingNotification(timebox, schedule);
+        NativeModules.BackgroundHeadlessTask.startBackgroundWork();
         dispatch({type: 'timeboxRecording/set', payload: [data.id, date, new Date().toISOString()]});
         dispatch(resetActiveOverlayInterval());
     }
 
     function stopRecording() {
+        NativeModules.BackgroundHeadlessTask.startBackgroundWork();
         let recordedStartTime = new Date(timeboxRecording[2]);
         dispatch({type: 'timeboxRecording/set', payload: [-1, 0, 0]});
         dispatch(setActiveOverlayInterval());

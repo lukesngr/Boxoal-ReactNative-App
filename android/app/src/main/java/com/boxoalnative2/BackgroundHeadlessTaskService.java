@@ -5,6 +5,12 @@ import com.facebook.react.jstasks.HeadlessJsTaskConfig;
 import android.content.Intent;
 import android.os.Bundle;
 import javax.annotation.Nullable;
+import android.os.Build;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.NotificationChannel;
+import androidx.core.app.NotificationCompat; 
+import androidx.annotation.RequiresApi;
 
 public class BackgroundHeadlessTaskService extends HeadlessJsTaskService {
     @Override

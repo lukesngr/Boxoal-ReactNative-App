@@ -14,9 +14,12 @@ import android.os.Build;
 
 public class BackgroundWorker extends Worker {
     private final Context context;
+    private Data inputData;
 
     public BackgroundWorker(@NonNull Context context, @NonNull WorkerParameters workerParams) {
         super(context, workerParams);
+        Log.w("bg", workerParams.toString());
+        this.inputData = workerParams.getInputData();
         this.context = context;
     }
 
@@ -25,10 +28,10 @@ public class BackgroundWorker extends Worker {
     public Result doWork() {
 
         // background work will take place here
-        
     
         Bundle extras = new Bundle();
-        extras.putString("foo", "bar");
+        extras.putString("timebox", inputData.getString("timebox"));
+        extras.putString("scheduleID", inputData.getString("scheduleID"));
         Intent service = new Intent(this.context, BackgroundHeadlessTaskService.class);
         service.putExtras(extras);
 

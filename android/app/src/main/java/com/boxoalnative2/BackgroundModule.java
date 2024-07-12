@@ -10,6 +10,8 @@ import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import java.util.concurrent.TimeUnit;
 import javax.annotation.Nonnull;
+import javax.xml.crypto.Data;
+
 import androidx.work.ExistingPeriodicWorkPolicy;
 import android.util.Log;
 
@@ -22,11 +24,12 @@ public class BackgroundModule extends ReactContextBaseJavaModule {
     BackgroundModule(@Nonnull ReactApplicationContext reactContext) {
         super(reactContext);
         mContext = reactContext;
-        workRequest = new PeriodicWorkRequest.Builder(BackgroundWorker.class, 2, TimeUnit.MINUTES).build();
     }
 
     @ReactMethod
-    public void startBackgroundWork(String timebox, String schedule) {
+    public void startBackgroundWork(String timebox, String scheduleID) {
+        Data serviceInput = Data.builder().putString("timebox", timebox).putString("scheduleID", scheduleID).build();
+        workRequest = new PeriodicWorkRequest.Builder(BackgroundWorker.class, 2, TimeUnit.MINUTES).setInputData(serviceInput).build();
         WorkManager.getInstance(mContext).enqueueUniquePeriodicWork("recordingUpdate", ExistingPeriodicWorkPolicy.REPLACE, workRequest);
     }
 

@@ -12,10 +12,10 @@ export default function useActiveOverlay(schedule) {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        if(timeboxRecording[0] == -1) {
+        if(timeboxRecording.timebox.id == -1) {
             dispatch({type:"activeOverlayHeight/set", payload: calculateOverlayHeightForNow(schedule.wakeupTime, schedule.boxSizeUnit, schedule.boxSizeNumber, overlayDimensions)});
             dispatch(setActiveOverlayInterval());
-        }else if(dayjs(timeboxRecording[2]).isBefore(dayjs(), 'date')){
+        }else if(dayjs(timeboxRecording.timeboxDate).isBefore(dayjs(), 'date')){
             dispatch({type:"activeOverlayHeight/set", payload: 0});
             dispatch(resetActiveOverlayInterval());
         }else{

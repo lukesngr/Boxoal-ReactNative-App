@@ -26,7 +26,7 @@ public class BackgroundModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void startBackgroundWork() {
+    public void startBackgroundWork(String timebox, String schedule) {
         WorkManager.getInstance(mContext).enqueueUniquePeriodicWork("recordingUpdate", ExistingPeriodicWorkPolicy.REPLACE, workRequest);
     }
 

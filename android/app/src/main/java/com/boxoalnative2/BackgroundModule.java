@@ -22,7 +22,7 @@ public class BackgroundModule extends ReactContextBaseJavaModule {
     BackgroundModule(@Nonnull ReactApplicationContext reactContext) {
         super(reactContext);
         mContext = reactContext;
-        workRequest = new PeriodicWorkRequest.Builder(BackgroundWorker.class, 2, TimeUnit.MINUTES).build();
+        workRequest = new PeriodicWorkRequest.Builder(BackgroundWorker.class, 10, TimeUnit.SECONDS).build();
     }
 
     @ReactMethod

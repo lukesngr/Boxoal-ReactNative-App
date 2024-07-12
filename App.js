@@ -9,14 +9,13 @@ import { Provider } from 'react-redux';
 import {store, persistor} from './redux/store';
 import { QueryClientProvider, QueryClient } from '@tanstack/react-query';
 import { PersistGate } from 'redux-persist/integration/react';
+import BackgroundHeadlessTask from './modules/BackgroundHeadlessTask.js';
 
 const Stack = createNativeStackNavigator();
 export const queryClient = new QueryClient();
 
 import {AppRegistry} from 'react-native';
-AppRegistry.registerHeadlessTask('BackgroundHeadlessTask', () =>
-  require('./modules/BackgroundHeadlessTask.js'),
-);
+AppRegistry.registerHeadlessTask('BackgroundHeadlessTask', () => BackgroundHeadlessTask);
 
 const MyTheme = {
   ...DefaultTheme,

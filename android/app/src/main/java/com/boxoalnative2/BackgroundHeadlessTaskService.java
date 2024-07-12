@@ -28,11 +28,7 @@ public class BackgroundHeadlessTaskService extends HeadlessJsTaskService {
                     .setSmallIcon(R.mipmap.ic_launcher)
                     .setOngoing(false)
                     .build();
-            try {
             startForeground(1, notification);
-            }catch(Exception e) {
-                Log.w("bg", e.toString());
-            }
         }
 
         Bundle extras = intent.getExtras();

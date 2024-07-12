@@ -88,6 +88,22 @@ export default function EditTimeboxForm(props) {
         });
     }
 
+    function clearRecording() {
+        
+        axios.post(serverIP+'/clearRecording', {
+            id: props.data.id
+        },
+        {headers: { 'Origin': 'http://localhost:3000' }}
+        ).then(async () => {   
+            Alert.alert("Cleared recording!");
+            await queryClient.refetchQueries();
+        }).catch(function(error) {
+            Alert.alert("Error occurred please try again or contact developer");
+            console.log(error); 
+        });
+    }
+
+
     return (
     <View style={styles.overallModal}>
             <View style={styles.titleBarContainer}>  
@@ -100,7 +116,8 @@ export default function EditTimeboxForm(props) {
             <TextInput style={styles.textInput} onChangeText={setTitle} value={title}></TextInput>
             <Text style={styles.label}>Description</Text>
             <TextInput style={styles.textInput} placeholderTextColor={"black"} onChangeText={setDescription} value={description}></TextInput>
-            <Button textStyle={styles.buttonTextStyle} outlineStyle={styles.buttonOutlineStyle} title="Delete" onPress={deleteTimeBox} />
             <Button textStyle={styles.buttonTextStyle} outlineStyle={styles.buttonOutlineStyle} title="Update" onPress={updateTimeBox} />
+            {props.previousRecording && <Button textStyle={styles.buttonTextStyle} outlineStyle={styles.buttonOutlineStyle} title="Clear Recording" onPress={clearRecording} />}
+            <Button textStyle={styles.buttonTextStyle} outlineStyle={styles.buttonOutlineStyle} title="Delete" onPress={deleteTimeBox} />
     </View>)
 }

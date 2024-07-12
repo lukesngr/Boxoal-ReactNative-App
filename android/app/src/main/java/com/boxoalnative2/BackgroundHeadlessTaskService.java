@@ -11,11 +11,15 @@ import android.app.NotificationManager;
 import android.app.NotificationChannel;
 import androidx.core.app.NotificationCompat; 
 import androidx.annotation.RequiresApi;
+import android.util.Log;
+import androidx.core.app.ServiceCompat;
+import android.content.pm.ServiceInfo;
 
 public class BackgroundHeadlessTaskService extends HeadlessJsTaskService {
     @Override
     protected @Nullable
     HeadlessJsTaskConfig getTaskConfig(Intent intent) {
+        
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             createChannel();
             Notification notification = new NotificationCompat.Builder(getApplicationContext(), "foregroundServiceNotification")
@@ -24,7 +28,11 @@ public class BackgroundHeadlessTaskService extends HeadlessJsTaskService {
                     .setSmallIcon(R.mipmap.ic_launcher)
                     .setOngoing(false)
                     .build();
+            try {
             startForeground(1, notification);
+            }catch(Exception e) {
+                Log.w("bg", e.toString());
+            }
         }
 
         Bundle extras = intent.getExtras();

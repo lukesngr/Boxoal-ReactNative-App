@@ -25,7 +25,8 @@ public class BackgroundWorker extends Worker {
     public Result doWork() {
 
         // background work will take place here
-        Log.w("bg", "Worker do work");
+        
+    
         Bundle extras = new Bundle();
         extras.putString("foo", "bar");
         Intent service = new Intent(this.context, BackgroundHeadlessTaskService.class);
@@ -36,7 +37,9 @@ public class BackgroundWorker extends Worker {
         } else {
             this.context.startService(service);
         }
+        
         return Result.success();
+
 
     }
 }

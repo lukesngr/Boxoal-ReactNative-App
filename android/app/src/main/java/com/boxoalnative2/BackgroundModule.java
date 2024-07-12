@@ -10,8 +10,8 @@ import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import java.util.concurrent.TimeUnit;
 import javax.annotation.Nonnull;
-import com.boxoalnative2.BackgroundWorker;
 import androidx.work.ExistingPeriodicWorkPolicy;
+import android.util.Log;
 
 public class BackgroundModule extends ReactContextBaseJavaModule {
     private static final String MODULE_NAME = "BackgroundWorkManager";
@@ -27,7 +27,7 @@ public class BackgroundModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void startBackgroundWork() {
-        WorkManager.getInstance(mContext).enqueueUniquePeriodicWork("recordingUpdate", ExistingPeriodicWorkPolicy.KEEP, workRequest);
+        WorkManager.getInstance(mContext).enqueueUniquePeriodicWork("recordingUpdate", ExistingPeriodicWorkPolicy.REPLACE, workRequest);
     }
 
     @ReactMethod

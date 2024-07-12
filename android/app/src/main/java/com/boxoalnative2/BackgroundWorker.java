@@ -22,6 +22,16 @@ public class BackgroundWorker extends Worker {
 
         // background work will take place here
         Log.w("bg", "Worker do work");
+        Bundle extras = bundleExtras();
+        Intent service = new Intent(this.context, BackgroundHeadlessTaskService.class);
+        service.putExtras(extras);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            createChannel();
+            this.context.startForegroundService(service);
+        } else {
+            this.context.startService(service);
+        }
         return Result.success();
 
     }

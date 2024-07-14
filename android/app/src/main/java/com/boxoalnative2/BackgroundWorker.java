@@ -33,6 +33,7 @@ public class BackgroundWorker extends Worker {
         Bundle extras = new Bundle();
         extras.putString("timebox", inputData.getString("timebox"));
         extras.putString("scheduleID", inputData.getString("scheduleID"));
+        extras.putString("recordingStartTime", inputData.getString("recordingStartTime"));
         Intent service = new Intent(this.context, BackgroundHeadlessTaskService.class);
         service.putExtras(extras);
 

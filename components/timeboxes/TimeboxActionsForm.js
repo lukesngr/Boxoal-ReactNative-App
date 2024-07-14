@@ -57,7 +57,7 @@ export default function TimeboxActionsForm(props) {
     const timeboxIsRecording = timeboxRecording.timebox.id == data.id && timeboxRecording.timeboxDate == date;
 
     async function startRecording() {
-        NativeModules.BackgroundWorkManager.startBackgroundWork(timebox, schedule.id);
+        NativeModules.BackgroundWorkManager.startBackgroundWork(JSON.stringify(data), schedule.id.toString());
         dispatch({type: 'timeboxRecording/set', payload: {timebox: data, timeboxDate: date, recordingStartTime: new Date().toISOString()}});
         dispatch(resetActiveOverlayInterval());
     }

@@ -272,44 +272,20 @@ export function recordIfNotificationPressed(type, detail, dispatch, timeboxRecor
     }
 }
 
-async function updateNotification(timebox, schedule) {
-    let currentTime = new Date();
-    let totalMinutes = currentTime.getHours() * 60 + currentTime.getMinutes();
-    let endMinutes = timebox.endTime.getHours() * 60 + timebox.endTime.getMinutes();
-    let totalPercentage = (totalMinutes / endMinutes) * 100;
+export function updateNotification(timebox, schedule, recordingStartTime) {
+    timebox = JSON.parse(timebox);
+    schedule = JSON.parse(schedule);
+    let recordingStartTimeInMinutes = new Date(recordingStartTime).getHours() * 60 + new Date(recordingStartTime).getMinutes();
+    let currentTimeInMinutes = new Date().getHours() * 60 + new Date().getMinutes();
+    let timeboxSizeInMinutes;
 
-    await notifee.displayNotification({
-        id: 'recordingNotification',
-        title: 'Boxoal',
-        body: `Recording for ${timebox.title} started...`,
-        android: {
-            channelId: 'boxoal',
-            actions: [{
-                pressAction: {
-                    id: `stopRecording-${timebox.id}-${schedule.id}`,
-                    launchActivity: 'default',
-                },
-                title: 'Stop'
-            }],
-            progress: {
-                max: 100,
-                current: totalPercentage,
-            },
-        },
-    });
-
-    if (totalPercentage < 100) {
-        setTimeout(updateNotification, 2000);
+    if(schedule.boxSizeUnit == "min") {
+        timeboxSizeInMinutes = schedule.boxSizeNumber;
+    }else if(schedule.boxSizeUnit == "hr") {
+        timeboxSizeInMinutes = schedule.boxSizeNumber * 60;
     }
-};
 
-export async function displayOngoingRecordingNotification(timebox, schedule) {
-    await notifee.displayNotification({
-        title: 'Foreground service',
-        body: 'This notification will exist for the lifetime of the service runner',
-        android: {
-          channelId: 'boxoal',
-          asForegroundService: true,
-        },
-      });
-}
+    let differenceInMinutes = currentTimeInMinutes - recordingStartTimeInMinutes;
+    let totalPercentage = (differenceInMinutes / timeboxSizeInMinutes) * 100;
+    console.log(totalPercentage);
+};

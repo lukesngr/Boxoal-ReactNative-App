@@ -19,7 +19,6 @@ public class BackgroundWorker extends Worker {
 
     public BackgroundWorker(@NonNull Context context, @NonNull WorkerParameters workerParams) {
         super(context, workerParams);
-        Log.w("bg", workerParams.toString());
         this.inputData = workerParams.getInputData();
         this.context = context;
     }
@@ -32,7 +31,7 @@ public class BackgroundWorker extends Worker {
     
         Bundle extras = new Bundle();
         extras.putString("timebox", inputData.getString("timebox"));
-        extras.putString("scheduleID", inputData.getString("scheduleID"));
+        extras.putString("schedule", inputData.getString("schedule"));
         extras.putString("recordingStartTime", inputData.getString("recordingStartTime"));
         Intent service = new Intent(this.context, BackgroundHeadlessTaskService.class);
         service.putExtras(extras);

@@ -12,7 +12,7 @@ import java.util.concurrent.TimeUnit;
 import javax.annotation.Nonnull;
 import androidx.work.Data;
 
-import androidx.work.ExistingPeriodicWorkPolicy;
+import androidx.work.ExistingWorkPolicy;
 import android.util.Log;
 import androidx.work.OneTimeWorkRequest;
 
@@ -31,7 +31,7 @@ public class BackgroundModule extends ReactContextBaseJavaModule {
     public void startBackgroundWork(String timebox, String schedule, String recordingStartTime) {
         Data serviceInput = new Data.Builder().putString("timebox", timebox).putString("schedule", schedule).putString("recordingStartTime", recordingStartTime).build();
         workRequest = new OneTimeWorkRequest.Builder(BackgroundWorker.class).setInputData(serviceInput).build();
-        WorkManager.getInstance(mContext).enqueueUniqueWork("recordingUpdate", ExistingPeriodicWorkPolicy.REPLACE, workRequest);
+        WorkManager.getInstance(mContext).enqueueUniqueWork("recordingUpdate", ExistingWorkPolicy.REPLACE, workRequest);
     }
 
     @ReactMethod

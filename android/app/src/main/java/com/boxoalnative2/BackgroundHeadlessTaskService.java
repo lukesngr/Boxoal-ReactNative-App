@@ -36,7 +36,7 @@ public class BackgroundHeadlessTaskService extends HeadlessJsTaskService {
             return new HeadlessJsTaskConfig(
                     "BackgroundHeadlessTask",
                     Arguments.fromBundle(extras),
-                    20000, 
+                    0, 
                     true 
             );
         }

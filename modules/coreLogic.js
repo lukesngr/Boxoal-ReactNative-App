@@ -271,7 +271,7 @@ export function recordIfNotificationPressed(type, detail, dispatch) {
             Alert.alert("Error contact developer");
             console.log(error); 
         })
-        NativeModules.BackgroundWorkManager.stopBackgroundWork();  
+        NativeModules.BackgroundWorkManager.stopBackgroundWork(); 
     }
 }
 

@@ -23,7 +23,7 @@ public class BackgroundHeadlessTaskService extends HeadlessJsTaskService {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             createChannel();
             Notification notification = new NotificationCompat.Builder(getApplicationContext(), "foregroundServiceNotification")
-                    .setContentTitle("Boxoal started recording")
+                    .setContentTitle("Recording...")
                     .setTicker("runn")
                     .setSmallIcon(R.mipmap.ic_launcher)
                     .setOngoing(false)

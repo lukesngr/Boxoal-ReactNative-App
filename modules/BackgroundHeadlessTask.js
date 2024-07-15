@@ -23,27 +23,46 @@ module.exports = async (taskData) => {
 
         let differenceInMinutes = currentTimeInMinutes - recordingStartTimeInMinutes;
         totalPercentage = (differenceInMinutes / timeboxSizeInMinutes) * 100;
-        console.log(totalPercentage);
-        await notifee.displayNotification({
-            id: 'recordingNotification',
-            title: 'Boxoal',
-            body: 'Recording for '+timebox.title+' started...',
-            android: {
-                channelId: 'boxoal',
-                actions: [{
-                    pressAction: {
-                        id: `stopRecording-${timebox.id}-${schedule.id}`,
-                        launchActivity: 'default',
-                    },
-                    title: 'Stop'}
-                ],
-                progress: {
-                    max: 100,
-                    current: totalPercentage,
+        
+        if(totalPercentage >= 100) {
+            await notifee.displayNotification({
+                id: 'recordingNotification',
+                title: 'Boxoal',
+                body: timebox.title+' has gone over number of boxes...',
+                android: {
+                    channelId: 'boxoal',
+                    actions: [{
+                        pressAction: {
+                            id: `stopRecording-${timebox.id}-${schedule.id}`,
+                            launchActivity: 'default',
+                        },
+                        title: 'Stop'}
+                    ],
                 },
-            },
-        });
-        await delay(60000);
+            });
+            break;
+        }else{
+            await notifee.displayNotification({
+                id: 'recordingNotification',
+                title: 'Boxoal',
+                body: 'Recording for '+timebox.title+' started...',
+                android: {
+                    channelId: 'boxoal',
+                    actions: [{
+                        pressAction: {
+                            id: `stopRecording-${timebox.id}-${schedule.id}`,
+                            launchActivity: 'default',
+                        },
+                        title: 'Stop'}
+                    ],
+                    progress: {
+                        max: 100,
+                        current: totalPercentage,
+                    },
+                },
+            });
+            await delay(60000);
+        }
     }
     
     return Promise.resolve();

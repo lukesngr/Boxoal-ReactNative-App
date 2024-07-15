@@ -49,6 +49,7 @@ export function Login({ navigation, route }) {
       'username',
       response.data[0].email,
     );
+    console.log(response.data[0].email);
     navigation.navigate('SplashScreen')
   }).catch(err => {
     console.log(err);

@@ -33,7 +33,7 @@ module.exports = async (taskData) => {
                     channelId: 'boxoal',
                     actions: [{
                         pressAction: {
-                            id: `stopRecording-${timebox.id}-${schedule.id}`,
+                            id: `stopRecording+${timebox.id}+${schedule.id}+${recordingStartTime}`,
                             launchActivity: 'default',
                         },
                         title: 'Stop'}
@@ -50,7 +50,7 @@ module.exports = async (taskData) => {
                     channelId: 'boxoal',
                     actions: [{
                         pressAction: {
-                            id: `stopRecording-${timebox.id}-${schedule.id}`,
+                            id: `stopRecording+${timebox.id}+${schedule.id}+${recordingStartTime}`,
                             launchActivity: 'default',
                         },
                         title: 'Stop'}

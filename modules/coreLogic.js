@@ -1,6 +1,6 @@
 import { calculateRemainderTimeBetweenTwoTimes } from "./timeLogic";
 import notifee, {EventType} from '@notifee/react-native';
-import { Alert } from "react-native";
+import { Alert, NativeModules } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import { setActiveOverlayInterval, resetActiveOverlayInterval } from "../redux/activeOverlayInterval";
 import axios from 'axios';
@@ -253,10 +253,11 @@ export async function initialNotificationSetup() {
     });
 }
 
-export function recordIfNotificationPressed(type, detail, dispatch, timeboxRecording) {
+export function recordIfNotificationPressed(type, detail, dispatch) {
+    NativeModules.BackgroundWorkManager.stopBackgroundWork();
     if (type === EventType.ACTION_PRESS && detail.pressAction.id) {
-        let ids = detail.pressAction.id.split("-");
-        let recordedStartTime = new Date(timeboxRecording.timeboxDate);
+        let ids = detail.pressAction.id.split("+");
+        let recordedStartTime = new Date(ids[3]);
         dispatch({type: 'timeboxRecording/set', payload: {timeboxID: -1, timeboxDate: 0, recordingStartTime: 0}});
         dispatch(setActiveOverlayInterval());
         axios.post(serverIP+'/createRecordedTimebox', 

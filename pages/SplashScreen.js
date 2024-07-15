@@ -120,10 +120,10 @@ export default function SplashScreen({navigation}) {
     ]).start();
   });
 
-  if(username === '') {
+  if(username != '') {
     navigation.navigate('FinalView');
   }
-  
+
   return (
   <View style={styles.container}>
     <Animated.View style={[styles.textContainer, {width: firstLineDisplayed.interpolate({inputRange: [0, 100], outputRange: ['0%', '100%']}),

@@ -2,8 +2,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import { Animated, Easing } from 'react-native';
 import { useEffect, useRef } from 'react';
 import SignInButton from '../components/SignInButton';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import {useDispatch, useSelector} from 'react-redux';
+import {useSelector} from 'react-redux';
 
 const styles = StyleSheet.create({
     container: {

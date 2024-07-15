@@ -46,6 +46,9 @@ export default function SplashScreen({navigation}) {
   const blinkingCaretThree = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
+    if(username != '') {
+      navigation.navigate('FinalView');
+    }
     Animated.sequence([
       Animated.timing(firstLineDisplayed, {
         toValue: 100,
@@ -118,10 +121,6 @@ export default function SplashScreen({navigation}) {
       )
     ]).start();
   });
-
-  if(username != '') {
-    navigation.navigate('FinalView');
-  }
 
   return (
   <View style={styles.container}>

@@ -47,7 +47,6 @@ export function Login({ navigation, route }) {
     }
   }).then(response => {
     dispatch({type: 'username/set', payload: response.data[0].email});
-    console.log(response.data[0].email);
     navigation.navigate('FinalView');
   }).catch(err => {
     console.log(err);

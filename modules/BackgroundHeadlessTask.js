@@ -26,7 +26,7 @@ module.exports = async (taskData) => {
         
         if(totalPercentage >= 100) {
             await notifee.displayNotification({
-                id: 'recordingNotification',
+                id: '1',
                 title: 'Boxoal',
                 body: timebox.title+' has gone over number of boxes...',
                 android: {
@@ -43,7 +43,7 @@ module.exports = async (taskData) => {
             break;
         }else{
             await notifee.displayNotification({
-                id: 'recordingNotification',
+                id: '1',
                 title: 'Boxoal',
                 body: 'Recording for '+timebox.title+' started...',
                 android: {

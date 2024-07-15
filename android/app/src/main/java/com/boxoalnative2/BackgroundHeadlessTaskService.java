@@ -21,8 +21,7 @@ public class BackgroundHeadlessTaskService extends HeadlessJsTaskService {
     HeadlessJsTaskConfig getTaskConfig(Intent intent) {
         
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            createChannel();
-            Notification notification = new NotificationCompat.Builder(getApplicationContext(), "foregroundServiceNotification")
+            Notification notification = new NotificationCompat.Builder(getApplicationContext(), "boxoal")
                     .setContentTitle("Recording...")
                     .setTicker("runn")
                     .setSmallIcon(R.mipmap.ic_launcher)
@@ -42,17 +41,5 @@ public class BackgroundHeadlessTaskService extends HeadlessJsTaskService {
         }
         return null;
     }
-
-    @RequiresApi(Build.VERSION_CODES.O)
-    private void createChannel() {
-        String description = "Initial notification, to be ignored";
-        int importance = NotificationManager.IMPORTANCE_DEFAULT;
-        NotificationChannel channel = new NotificationChannel("foregroundServiceNotification", "foregroundServiceNotification", importance);
-        channel.setDescription(description);
-        NotificationManager notificationManager =
-                (NotificationManager) getApplicationContext().getSystemService(NOTIFICATION_SERVICE);
-
-        notificationManager.createNotificationChannel(channel);
-
-    } 
+    
 }

@@ -254,7 +254,6 @@ export async function initialNotificationSetup() {
 }
 
 export function recordIfNotificationPressed(type, detail, dispatch) {
-    NativeModules.BackgroundWorkManager.stopBackgroundWork();
     if (type === EventType.ACTION_PRESS && detail.pressAction.id) {
         let ids = detail.pressAction.id.split("+");
         let recordedStartTime = new Date(ids[3]);
@@ -271,7 +270,8 @@ export function recordIfNotificationPressed(type, detail, dispatch) {
         }).catch(function(error) {
             Alert.alert("Error contact developer");
             console.log(error); 
-        })  
+        })
+        NativeModules.BackgroundWorkManager.stopBackgroundWork();  
     }
 }
 

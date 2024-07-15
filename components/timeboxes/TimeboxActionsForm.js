@@ -53,19 +53,19 @@ export default function TimeboxActionsForm(props) {
     const dispatch = useDispatch();
     
     const noPreviousRecording = thereIsNoRecording(data.recordedTimeBoxes, data.reoccuring, date, time);
-    const timeboxIsntRecording = timeboxRecording.timebox.id == -1;
-    const timeboxIsRecording = timeboxRecording.timebox.id == data.id && timeboxRecording.timeboxDate == date;
+    const timeboxIsntRecording = timeboxRecording.timeboxID == -1;
+    const timeboxIsRecording = timeboxRecording.timeboxID == data.id && timeboxRecording.timeboxDate == date;
 
     async function startRecording() {
         NativeModules.BackgroundWorkManager.startBackgroundWork(JSON.stringify(data), JSON.stringify(schedule), new Date().toISOString());
-        dispatch({type: 'timeboxRecording/set', payload: {timebox: data, timeboxDate: date, recordingStartTime: new Date().toISOString()}});
+        dispatch({type: 'timeboxRecording/set', payload: {timeboxID: data.id, timeboxDate: date, recordingStartTime: new Date().toISOString()}});
         dispatch(resetActiveOverlayInterval());
     }
 
     function stopRecording() {
         NativeModules.BackgroundWorkManager.stopBackgroundWork();
         let recordedStartTime = new Date(timeboxRecording.recordingStartTime);
-        dispatch({type: 'timeboxRecording/set', payload: {timebox: {id: -1}, timeboxDate: 0, recordingStartTime: 0}});
+        dispatch({type: 'timeboxRecording/set', payload: {timeboxID: -1, timeboxDate: 0, recordingStartTime: 0}});
         dispatch(setActiveOverlayInterval());
         axios.post(serverIP+'/createRecordedTimebox', 
             {recordedStartTime: recordedStartTime, recordedEndTime: new Date(), timeBox: {connect: {id: data.id}}, schedule: {connect: {id: schedule.id}}},

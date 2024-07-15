@@ -256,8 +256,8 @@ export async function initialNotificationSetup() {
 export function recordIfNotificationPressed(type, detail, dispatch, timeboxRecording) {
     if (type === EventType.ACTION_PRESS && detail.pressAction.id) {
         let ids = detail.pressAction.id.split("-");
-        let recordedStartTime = new Date(timeboxRecording[2]);
-        dispatch({type: 'timeboxRecording/set', payload: [-1, 0, 0]});
+        let recordedStartTime = new Date(timeboxRecording.timeboxDate);
+        dispatch({type: 'timeboxRecording/set', payload: {timeboxID: -1, timeboxDate: 0, recordingStartTime: 0}});
         dispatch(setActiveOverlayInterval());
         axios.post(serverIP+'/createRecordedTimebox', 
             {recordedStartTime: recordedStartTime, recordedEndTime: new Date(), timeBox: {connect: {id: ids[1]}}, schedule: {connect: {id: ids[2]}}},

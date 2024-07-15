@@ -8,7 +8,7 @@ module.exports = async (taskData) => {
         return new Promise(resolve => setTimeout(resolve, microseconds));
     }
 
-    for(let i = 0; i < 8; i++) {    
+    for(let i = 0; i < 9; i++) {    
         let recordingStartTimeInMinutes = new Date(recordingStartTime).getHours() * 60 + new Date(recordingStartTime).getMinutes();
         let currentTimeInMinutes = new Date().getHours() * 60 + new Date().getMinutes();
         let timeboxSizeInMinutes;

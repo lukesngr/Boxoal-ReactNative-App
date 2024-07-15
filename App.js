@@ -5,7 +5,7 @@ import { Text } from 'react-native';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import FinalView from './pages/FinalView';
-import { Provider } from 'react-redux';
+import { Provider, useDispatch } from 'react-redux';
 import {store, persistor} from './redux/store';
 import { QueryClientProvider, QueryClient } from '@tanstack/react-query';
 import { PersistGate } from 'redux-persist/integration/react';
@@ -40,17 +40,15 @@ export const linking = {
 
 export function Login({ navigation, route }) {
   const { accessToken } = route.params;
+  const dispatch = useDispatch();
   axios.get('https://api.github.com/user/emails', {
     headers: {
       Authorization: `token ${accessToken}`
     }
   }).then(response => {
-    AsyncStorage.setItem(
-      'username',
-      response.data[0].email,
-    );
+    dispatch({type: 'username/set', payload: response.data[0].email});
     console.log(response.data[0].email);
-    navigation.navigate('SplashScreen')
+    navigation.navigate('FinalView');
   }).catch(err => {
     console.log(err);
   });

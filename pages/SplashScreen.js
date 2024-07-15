@@ -3,7 +3,7 @@ import { Animated, Easing } from 'react-native';
 import { useEffect, useRef } from 'react';
 import SignInButton from '../components/SignInButton';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 
 const styles = StyleSheet.create({
     container: {
@@ -36,7 +36,7 @@ const thirdStepFunction = (t) => stepFunction(16.0, t);
 
 export default function SplashScreen({navigation}) {
 
-  const dispatch = useDispatch();
+  const username = useSelector(state => state.username.value);
 
   const firstLineDisplayed = useRef(new Animated.Value(0)).current;
   const secondLineDisplayed = useRef(new Animated.Value(0)).current;
@@ -120,12 +120,10 @@ export default function SplashScreen({navigation}) {
     ]).start();
   });
 
-  AsyncStorage.getItem('username').then((value) => {
-    if(value !== null) {
-      dispatch({type: 'username/set', payload: value});
-      navigation.navigate('FinalView');
-    }
-  })
+  if(username === '') {
+    navigation.navigate('FinalView');
+  }
+  
   return (
   <View style={styles.container}>
     <Animated.View style={[styles.textContainer, {width: firstLineDisplayed.interpolate({inputRange: [0, 100], outputRange: ['0%', '100%']}),

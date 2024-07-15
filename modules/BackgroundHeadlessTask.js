@@ -8,7 +8,7 @@ module.exports = async (taskData) => {
         return new Promise(resolve => setTimeout(resolve, microseconds));
     }
 
-    for(let i = 0; i < 9; i++) {    
+    for(let i = 0; i < 17; i++) {    
         let recordingStartTimeInMinutes = new Date(recordingStartTime).getHours() * 60 + new Date(recordingStartTime).getMinutes();
         let currentTimeInMinutes = new Date().getHours() * 60 + new Date().getMinutes();
         let timeboxSizeInMinutes;
@@ -22,7 +22,7 @@ module.exports = async (taskData) => {
         let differenceInMinutes = currentTimeInMinutes - recordingStartTimeInMinutes;
         totalPercentage = (differenceInMinutes / timeboxSizeInMinutes) * 100;
         console.log(totalPercentage);
-        await delay(120000);
+        await delay(60000);
     }
     
     return Promise.resolve();

@@ -1,3 +1,5 @@
+import notifee from '@notifee/react-native';
+
 module.exports = async (taskData) => {
     let {timebox, schedule, recordingStartTime} = taskData;
     let totalPercentage = 0;
@@ -22,6 +24,25 @@ module.exports = async (taskData) => {
         let differenceInMinutes = currentTimeInMinutes - recordingStartTimeInMinutes;
         totalPercentage = (differenceInMinutes / timeboxSizeInMinutes) * 100;
         console.log(totalPercentage);
+        await notifee.displayNotification({
+            id: 'recordingNotification',
+            title: 'Boxoal',
+            body: 'Recording for '+timebox.title+' started...',
+            android: {
+                channelId: 'boxoal',
+                actions: [{
+                    pressAction: {
+                        id: `stopRecording-${timebox.id}-${schedule.id}`,
+                        launchActivity: 'default',
+                    },
+                    title: 'Stop'}
+                ],
+                progress: {
+                    max: 100,
+                    current: totalPercentage,
+                },
+            },
+        });
         await delay(60000);
     }
     

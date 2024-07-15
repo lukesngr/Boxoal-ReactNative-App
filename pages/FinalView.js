@@ -37,6 +37,7 @@ export default function FinalView() {
     useEffect(() => {
         initialNotificationSetup().then();
         notifee.onForegroundEvent(({type, detail}) => recordIfNotificationPressed(type, detail, dispatch, timeboxRecording));
+        notifee.onBackgroundEvent(({type, detail}) => recordIfNotificationPressed(type, detail, dispatch, timeboxRecording));
     }, [])
     
 

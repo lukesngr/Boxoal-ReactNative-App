@@ -1,7 +1,7 @@
 import notifee from '@notifee/react-native';
 
 module.exports = async (taskData) => {
-    let {notStopped, timebox, schedule, recordingStartTime} = taskData;
+    let {timebox, schedule, recordingStartTime} = taskData;
     let totalPercentage = 0;
     timebox = JSON.parse(timebox);
     schedule = JSON.parse(schedule);
@@ -10,61 +10,58 @@ module.exports = async (taskData) => {
         return new Promise(resolve => setTimeout(resolve, microseconds));
     }
 
-    if(notStopped) {
+    for(let i = 0; i < 17; i++) {    
+        let recordingStartTimeInMinutes = new Date(recordingStartTime).getHours() * 60 + new Date(recordingStartTime).getMinutes();
+        let currentTimeInMinutes = new Date().getHours() * 60 + new Date().getMinutes();
+        let timeboxSizeInMinutes;
 
-        for(let i = 0; i < 17; i++) {    
-            let recordingStartTimeInMinutes = new Date(recordingStartTime).getHours() * 60 + new Date(recordingStartTime).getMinutes();
-            let currentTimeInMinutes = new Date().getHours() * 60 + new Date().getMinutes();
-            let timeboxSizeInMinutes;
+        if(schedule.boxSizeUnit == "min") {
+            timeboxSizeInMinutes = schedule.boxSizeNumber;
+        }else if(schedule.boxSizeUnit == "hr") {
+            timeboxSizeInMinutes = schedule.boxSizeNumber * 60;
+        }
 
-            if(schedule.boxSizeUnit == "min") {
-                timeboxSizeInMinutes = schedule.boxSizeNumber;
-            }else if(schedule.boxSizeUnit == "hr") {
-                timeboxSizeInMinutes = schedule.boxSizeNumber * 60;
-            }
-
-            let differenceInMinutes = currentTimeInMinutes - recordingStartTimeInMinutes;
-            totalPercentage = (differenceInMinutes / timeboxSizeInMinutes) * 100;
-            
-            if(totalPercentage >= 100) {
-                await notifee.displayNotification({
-                    id: '1',
-                    title: 'Recording...',
-                    body: timebox.title+' has gone over number of boxes...',
-                    android: {
-                        channelId: 'boxoal',
-                        actions: [{
-                            pressAction: {
-                                id: `stopRecording+${timebox.id}+${schedule.id}+${recordingStartTime}`,
-                                launchActivity: 'default',
-                            },
-                            title: 'Stop'}
-                        ],
-                    },
-                });
-                break;
-            }else{
-                await notifee.displayNotification({
-                    id: '1',
-                    title: 'Recording...',
-                    body: 'for '+timebox.title,
-                    android: {
-                        channelId: 'boxoal',
-                        actions: [{
-                            pressAction: {
-                                id: `stopRecording+${timebox.id}+${schedule.id}+${recordingStartTime}`,
-                                launchActivity: 'default',
-                            },
-                            title: 'Stop'}
-                        ],
-                        progress: {
-                            max: 100,
-                            current: totalPercentage,
+        let differenceInMinutes = currentTimeInMinutes - recordingStartTimeInMinutes;
+        totalPercentage = (differenceInMinutes / timeboxSizeInMinutes) * 100;
+        
+        if(totalPercentage >= 100) {
+            await notifee.displayNotification({
+                id: '1',
+                title: 'Recording...',
+                body: timebox.title+' has gone over number of boxes...',
+                android: {
+                    channelId: 'boxoal',
+                    actions: [{
+                        pressAction: {
+                            id: `stopRecording+${timebox.id}+${schedule.id}+${recordingStartTime}`,
+                            launchActivity: 'default',
                         },
+                        title: 'Stop'}
+                    ],
+                },
+            });
+            break;
+        }else{
+            await notifee.displayNotification({
+                id: '1',
+                title: 'Recording...',
+                body: 'for '+timebox.title,
+                android: {
+                    channelId: 'boxoal',
+                    actions: [{
+                        pressAction: {
+                            id: `stopRecording+${timebox.id}+${schedule.id}+${recordingStartTime}`,
+                            launchActivity: 'default',
+                        },
+                        title: 'Stop'}
+                    ],
+                    progress: {
+                        max: 100,
+                        current: totalPercentage,
                     },
-                });
-                await delay(60000);
-            }
+                },
+            });
+            await delay(60000);
         }
     }
     

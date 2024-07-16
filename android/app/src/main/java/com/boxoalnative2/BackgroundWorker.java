@@ -28,8 +28,8 @@ public class BackgroundWorker extends Worker {
     public Result doWork() {
 
         // background work will take place here
-    
         Bundle extras = new Bundle();
+        extras.putBoolean("notStopped", inputData.getBoolean("notStopped", true));
         extras.putString("timebox", inputData.getString("timebox"));
         extras.putString("schedule", inputData.getString("schedule"));
         extras.putString("recordingStartTime", inputData.getString("recordingStartTime"));
@@ -43,7 +43,5 @@ public class BackgroundWorker extends Worker {
         }
         
         return Result.success();
-
-
     }
 }

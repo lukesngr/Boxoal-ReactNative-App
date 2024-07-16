@@ -30,16 +30,13 @@ public class BackgroundModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void startBackgroundWork(String timebox, String schedule, String recordingStartTime) {
-        Data serviceInput = new Data.Builder().putBoolean("notStopped", true).putString("timebox", timebox).putString("schedule", schedule).putString("recordingStartTime", recordingStartTime).build();
+        Data serviceInput = new Data.Builder().putString("timebox", timebox).putString("schedule", schedule).putString("recordingStartTime", recordingStartTime).build();
         workRequest = new PeriodicWorkRequest.Builder(BackgroundWorker.class, 16, TimeUnit.MINUTES).setInputData(serviceInput).build();
         WorkManager.getInstance(mContext).enqueueUniquePeriodicWork("recordingUpdate", ExistingPeriodicWorkPolicy.REPLACE, workRequest);
     }
 
     @ReactMethod
     public void stopBackgroundWork() {
-        Data serviceInput = new Data.Builder().putBoolean("notStopped", false).putString("timebox", "").putString("schedule", "").putString("recordingStartTime", "").build();
-        workRequest = new PeriodicWorkRequest.Builder(BackgroundWorker.class, 16, TimeUnit.MINUTES).setInputData(serviceInput).build();
-        WorkManager.getInstance(mContext).enqueueUniquePeriodicWork("recordingUpdate", ExistingPeriodicWorkPolicy.REPLACE, workRequest);
         WorkManager.getInstance(mContext).cancelUniqueWork("recordingUpdate");
     }
 

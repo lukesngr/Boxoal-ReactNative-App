@@ -5,6 +5,7 @@ module.exports = async (taskData) => {
     let {totalPercentage, recordingStartTime, schedule, timebox} = taskData;
     timebox = JSON.parse(timebox);
     schedule = JSON.parse(schedule);
+    console.log(totalPercentage)
     if(totalPercentage >= 100){
             await notifee.displayNotification({
                 id: '1',

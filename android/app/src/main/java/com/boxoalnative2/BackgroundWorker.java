@@ -27,6 +27,9 @@ import java.util.Date;
 import java.util.TimeZone;
 import android.app.PendingIntent;
 import android.app.NotificationManager;
+import com.facebook.react.HeadlessJsTaskService;
+import com.facebook.react.bridge.Arguments;
+import com.facebook.react.jstasks.HeadlessJsTaskConfig;
 
 public class BackgroundWorker extends Worker {
     private final Context context;
@@ -65,13 +68,16 @@ public class BackgroundWorker extends Worker {
 
                 int differenceInMinutes = currentTimeInMinutes - recordingStartTimeInMinutes;
                 totalPercentage = (differenceInMinutes / timeboxSizeInMinutes) * 100;
+                Log.w("bg", "Total percentage: " + totalPercentage);
 
-                Intent intent = new Intent(getApplicationContext(), BackgroundHeadlessTaskService.class);
+                /*Intent intent = new Intent(getApplicationContext(), BackgroundHeadlessTaskService.class);
                 intent.putExtra("timebox", timebox);
                 intent.putExtra("schedule", schedule);
                 intent.putExtra("recordingStartTime", inputData.getString("recordingStartTime"));
                 intent.putExtra("totalPercentage", totalPercentage);
-                getApplicationContext().startService(intent);
+                getApplicationContext().startForegroundService(intent);*/
+                HeadlessJsTaskConfig taskConfig = new HeadlessJsTaskConfig("BackgroundHeadlessTask", Arguments.createMap(), 0, true);
+                HeadlessJsTaskService.start(context, taskConfig);
                 Thread.sleep(120000);
                 
             }

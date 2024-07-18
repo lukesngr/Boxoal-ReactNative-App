@@ -2,8 +2,9 @@ import notifee from '@notifee/react-native';
 
 module.exports = async (taskData) => {
     
-    console.log("yo g");
     let {totalPercentage, recordingStartTime, schedule, timebox} = taskData;
+    timebox = JSON.parse(timebox);
+    schedule = JSON.parse(schedule);
     if(totalPercentage >= 100){
             await notifee.displayNotification({
                 id: '1',

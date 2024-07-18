@@ -72,7 +72,7 @@ public class BackgroundWorker extends Worker {
                 intent.putExtra("recordingStartTime", inputData.getString("recordingStartTime"));
                 intent.putExtra("totalPercentage", totalPercentage);
                 getApplicationContext().startService(intent);
-                Thread.sleep(10000);
+                Thread.sleep(120000);
                 
             }
         } catch (Exception e) {

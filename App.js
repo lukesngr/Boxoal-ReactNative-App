@@ -10,12 +10,18 @@ import {store, persistor} from './redux/store';
 import { QueryClientProvider, QueryClient } from '@tanstack/react-query';
 import { PersistGate } from 'redux-persist/integration/react';
 import BackgroundHeadlessTask from './modules/BackgroundHeadlessTask.js';
+import { DeviceEventEmitter } from 'react-native';
+
 
 const Stack = createNativeStackNavigator();
 export const queryClient = new QueryClient();
 
 import {AppRegistry} from 'react-native';
 AppRegistry.registerHeadlessTask('BackgroundHeadlessTask', () => BackgroundHeadlessTask);
+
+DeviceEventEmitter.addListener('notificationOpened', (e) => {
+  console.log('Event Received'+e);
+});
 
 const MyTheme = {
   ...DefaultTheme,

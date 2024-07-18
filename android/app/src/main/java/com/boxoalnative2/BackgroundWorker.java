@@ -25,6 +25,8 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.TimeZone;
+import android.app.PendingIntent;
+import android.app.NotificationManager;
 
 public class BackgroundWorker extends Worker {
     private final Context context;
@@ -46,16 +48,12 @@ public class BackgroundWorker extends Worker {
             String schedule = inputData.getString("schedule");
             Date recordingStartTime = this.convertISOToDate(inputData.getString("recordingStartTime"));
             int totalPercentage = 0;
-            Log.w("bg", recordingStartTime.toString());
             long recordingTimeInMillis = recordingStartTime.getTime();
-            Log.w("bg", "running2");
             int recordingStartTimeInMinutes = this.getTimeInMinutes(recordingTimeInMillis);
-            Log.w("bg", "running3");
             JSONObject timeboxObj = new JSONObject(timebox);
             JSONObject scheduleObj = new JSONObject(schedule);
 
             while(!isStopped()) {
-                Log.w("bg", "running");
                 int currentTimeInMinutes = getTimeInMinutes(System.currentTimeMillis());
                 int timeboxSizeInMinutes = 0;
 
@@ -69,10 +67,10 @@ public class BackgroundWorker extends Worker {
                 totalPercentage = (differenceInMinutes / timeboxSizeInMinutes) * 100;
 
                 if (totalPercentage >= 100) {
-                    displayNotification(timeboxObj.getString("title") + " has gone over number of boxes...", totalPercentage, false);
+                    displayNotification(timeboxObj.getString("title") + " has gone over number of boxes...", totalPercentage, false, timeboxObj);
                     break;
                 } else {
-                    displayNotification("for " + timeboxObj.getString("title"), totalPercentage, true);
+                    displayNotification("for " + timeboxObj.getString("title"), totalPercentage, true, timeboxObj);
                 }
                 Thread.sleep(10000);
                 
@@ -87,17 +85,14 @@ public class BackgroundWorker extends Worker {
     }
 
     private int getTimeInMinutes(long timeInMillis) {
-        Log.w("bg", "running");
         Calendar calendar = Calendar.getInstance();
-        Log.w("bg", "running");
         calendar.setTimeInMillis(timeInMillis);
-        Log.w("bg", "running");
         int hours = calendar.get(Calendar.HOUR_OF_DAY);
         int minutes = calendar.get(Calendar.MINUTE);
         return hours * 60 + minutes;
     }
 
-    private void displayNotification(String message, int progress, boolean showProgress) {
+    private void displayNotification(String message, int progress, boolean showProgress, JSONObject timebox ) {
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         String channelId = "boxoal";
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -105,11 +100,23 @@ public class BackgroundWorker extends Worker {
             notificationManager.createNotificationChannel(channel);
         }
 
+        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        try {
+            intent.putExtra("params", "stopRecording+"+timebox.getString("id")+"+"+timebox.getString("id")+"+"+this.inputData.getString("recordingStartTime"));
+        } catch (JSONException e) {
+            Log.w("bg", e.getMessage());
+            e.printStackTrace();
+        }
+
+        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, channelId)
                 .setSmallIcon(android.R.drawable.ic_dialog_info)
                 .setContentTitle("Recording...")
                 .setContentText(message)
-                .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                .addAction(android.R.drawable.ic_menu_close_clear_cancel, "Stop", pendingIntent);
 
         if (showProgress) {
             builder.setProgress(100, progress, false);

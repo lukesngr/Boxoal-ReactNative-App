@@ -19,10 +19,6 @@ export const queryClient = new QueryClient();
 import {AppRegistry} from 'react-native';
 AppRegistry.registerHeadlessTask('BackgroundHeadlessTask', () => BackgroundHeadlessTask);
 
-DeviceEventEmitter.addListener('notificationOpened', (e) => {
-  console.log('Event Received'+e);
-});
-
 const MyTheme = {
   ...DefaultTheme,
   colors: {

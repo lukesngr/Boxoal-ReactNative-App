@@ -11,33 +11,6 @@ import com.facebook.react.bridge.WritableMap
 import com.facebook.react.modules.core.DeviceEventManagerModule
 
 class MainActivity : ReactActivity() {
-
-  override fun onCreate(savedInstanceState: Bundle?) {
-      super.onCreate(savedInstanceState)
-      handleIntent(intent)
-  }
-
-  override fun onNewIntent(intent: Intent?) {
-      super.onNewIntent(intent)
-      setIntent(intent)
-      handleIntent(intent)
-  }
-
-  private fun handleIntent(intent: Intent?) {
-      intent?.extras?.let { extras ->
-          val params: WritableMap = Arguments.createMap()
-          for (key in extras.keySet()) {
-              when (val value = extras.get(key)) {
-                  is String -> params.putString(key, value)
-                  is Int -> params.putInt(key, value)
-                  // Add other types as needed
-              }
-          }
-          reactInstanceManager.currentReactContext
-              ?.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter::class.java)
-              ?.emit("notificationOpened", params)
-      }
-  }
   /**
    * Returns the name of the main component registered from JavaScript. This is used to schedule
    * rendering of the component.

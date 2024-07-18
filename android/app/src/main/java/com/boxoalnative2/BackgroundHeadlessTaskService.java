@@ -19,16 +19,6 @@ public class BackgroundHeadlessTaskService extends HeadlessJsTaskService {
     @Override
     protected @Nullable
     HeadlessJsTaskConfig getTaskConfig(Intent intent) {
-        
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            Notification notification = new NotificationCompat.Builder(getApplicationContext(), "boxoal")
-                    .setContentTitle("Recording started")
-                    .setTicker("runn")
-                    .setSmallIcon(R.mipmap.ic_launcher)
-                    .setOngoing(false)
-                    .build();
-            startForeground(1, notification);
-        }
 
         Bundle extras = intent.getExtras();
         if (extras != null) {

@@ -1,22 +1,19 @@
 import {NavigationContainer, DefaultTheme} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import SplashScreen from './pages/SplashScreen';
-import { Text } from 'react-native';
-import axios from 'axios';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import FinalView from './pages/FinalView';
-import { Provider, useDispatch } from 'react-redux';
+import { Provider } from 'react-redux';
 import {store, persistor} from './redux/store';
 import { QueryClientProvider, QueryClient } from '@tanstack/react-query';
 import { PersistGate } from 'redux-persist/integration/react';
 import BackgroundHeadlessTask from './modules/BackgroundHeadlessTask.js';
-import { DeviceEventEmitter } from 'react-native';
-
+import Login from './pages/Login';
 
 const Stack = createNativeStackNavigator();
 export const queryClient = new QueryClient();
 
 import {AppRegistry} from 'react-native';
+import Loading from './components/Loading.js';
 AppRegistry.registerHeadlessTask('BackgroundHeadlessTask', () => BackgroundHeadlessTask);
 
 const MyTheme = {
@@ -40,28 +37,14 @@ export const linking = {
 };
 
 
-export function Login({ navigation, route }) {
-  const { accessToken } = route.params;
-  const dispatch = useDispatch();
-  axios.get('https://api.github.com/user/emails', {
-    headers: {
-      Authorization: `token ${accessToken}`
-    }
-  }).then(response => {
-    dispatch({type: 'username/set', payload: response.data[0].email});
-    navigation.navigate('FinalView');
-  }).catch(err => {
-    console.log(err);
-  });
-  return <><Text>Login Successful!</Text></>
-}
+
 
 export default function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <Provider store={store}>
         <PersistGate persistor={persistor} loading={null}>
-          <NavigationContainer theme={MyTheme} linking={linking} fallback={<Text>Loading</Text>}>
+          <NavigationContainer theme={MyTheme} linking={linking} fallback={<Loading></Loading>}>
             <Stack.Navigator>
               <Stack.Screen
                 name="SplashScreen"

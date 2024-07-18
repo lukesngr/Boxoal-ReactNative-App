@@ -66,12 +66,12 @@ public class BackgroundWorker extends Worker {
                 int differenceInMinutes = currentTimeInMinutes - recordingStartTimeInMinutes;
                 totalPercentage = (differenceInMinutes / timeboxSizeInMinutes) * 100;
 
-                if (totalPercentage >= 100) {
-                    displayNotification(timeboxObj.getString("title") + " has gone over number of boxes...", totalPercentage, false, timeboxObj);
-                    break;
-                } else {
-                    displayNotification("for " + timeboxObj.getString("title"), totalPercentage, true, timeboxObj);
-                }
+                Intent intent = new Intent(getApplicationContext(), BackgroundHeadlessTaskService.class);
+                intent.putExtra("timebox", timebox);
+                intent.putExtra("schedule", schedule);
+                intent.putExtra("recordingStartTime", inputData.getString("recordingStartTime"));
+                intent.putExtra("totalPercentage", totalPercentage);
+                getApplicationContext().startService(intent);
                 Thread.sleep(10000);
                 
             }

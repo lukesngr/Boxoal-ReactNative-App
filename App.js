@@ -6,16 +6,12 @@ import { Provider } from 'react-redux';
 import {store, persistor} from './redux/store';
 import { QueryClientProvider, QueryClient } from '@tanstack/react-query';
 import { PersistGate } from 'redux-persist/integration/react';
-import BackgroundHeadlessTask from './modules/BackgroundHeadlessTask.js';
-import Login from './pages/Login';
+import Loading from './components/Loading.js';
 
 const Stack = createNativeStackNavigator();
 export const queryClient = new QueryClient();
 
-import {AppRegistry} from 'react-native';
-import Loading from './components/Loading.js';
-import StopRecording from './pages/StopRecording.js';
-AppRegistry.registerHeadlessTask('BackgroundHeadlessTask', () => BackgroundHeadlessTask);
+
 
 const MyTheme = {
   ...DefaultTheme,
@@ -47,7 +43,7 @@ export default function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <Provider store={store}>
-        <PersistGate persistor={persistor} loading={null}>
+        <PersistGate persistor={persistor} loading={<Loading></Loading>}>
           <NavigationContainer theme={MyTheme} linking={linking} fallback={<Loading></Loading>}>
             <Stack.Navigator>
               <Stack.Screen

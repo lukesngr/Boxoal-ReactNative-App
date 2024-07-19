@@ -14,6 +14,7 @@ export const queryClient = new QueryClient();
 
 import {AppRegistry} from 'react-native';
 import Loading from './components/Loading.js';
+import StopRecording from './pages/StopRecording.js';
 AppRegistry.registerHeadlessTask('BackgroundHeadlessTask', () => BackgroundHeadlessTask);
 
 const MyTheme = {
@@ -31,6 +32,9 @@ export const linking = {
     screens: {
       Login: {
         path: 'login/:accessToken'
+      },
+      StopRecording: {
+        path: 'stopRecording/:timeboxID/:scheduleID/:recordingStartTime'
       }
     },
   }
@@ -55,6 +59,10 @@ export default function App() {
                 name="Login"
                 component={Login}
                 options={{headerShown: false}}></Stack.Screen>
+              <Stack.Screen
+              name="StopRecording"
+              component={StopRecording}
+              options={{headerShown: false}}></Stack.Screen>
               <Stack.Screen
                 name="FinalView"
                 component={FinalView}

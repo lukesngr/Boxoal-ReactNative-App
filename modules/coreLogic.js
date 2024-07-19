@@ -253,26 +253,20 @@ export async function initialNotificationSetup() {
     });
 }
 
-export function recordIfNotificationPressed(type, detail, dispatch) {
-    if (type === EventType.ACTION_PRESS && detail.pressAction.id) {
-        let ids = detail.pressAction.id.split("+");
-        let recordedStartTime = new Date(ids[3]);
-        let timeboxID = parseInt(ids[1]);
-        let scheduleID = parseInt(ids[2]);
-        dispatch({type: 'timeboxRecording/set', payload: {timeboxID: -1, timeboxDate: 0, recordingStartTime: 0}});
-        dispatch(setActiveOverlayInterval());
-        axios.post(serverIP+'/createRecordedTimebox', 
-            {recordedStartTime: recordedStartTime, recordedEndTime: new Date(), timeBox: {connect: {id: timeboxID}}, schedule: {connect: {id: scheduleID}}},
-            {headers: { 'Origin': 'http://localhost:3000' }}
-        ).then(() => {
-            queryClient.refetchQueries();
-            Alert.alert("Added recorded timebox");
-        }).catch(function(error) {
-            Alert.alert("Error contact developer");
-            console.log(error); 
-        })
-        NativeModules.BackgroundWorkManager.stopBackgroundWork(); 
-    }
+export function recordIfNotificationPressed(timeboxID, scheduleID, recordingStartTime, dispatch) {
+    dispatch({type: 'timeboxRecording/set', payload: {timeboxID: -1, timeboxDate: 0, recordingStartTime: 0}});
+    dispatch(setActiveOverlayInterval());
+    axios.post(serverIP+'/createRecordedTimebox', 
+        {recordedStartTime: recordingStartTime, recordedEndTime: new Date(), timeBox: {connect: {id: timeboxID}}, schedule: {connect: {id: scheduleID}}},
+        {headers: { 'Origin': 'http://localhost:3000' }}
+    ).then(() => {
+        queryClient.refetchQueries();
+        Alert.alert("Added recorded timebox");
+    }).catch(function(error) {
+        Alert.alert("Error contact developer");
+        console.log(error); 
+    })
+    NativeModules.BackgroundWorkManager.stopBackgroundWork(); 
 }
 
 export function updateNotification(timebox, schedule, recordingStartTime) {

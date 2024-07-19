@@ -29,7 +29,12 @@ import android.app.PendingIntent;
 import android.app.NotificationManager;
 import com.facebook.react.HeadlessJsTaskService;
 import com.facebook.react.bridge.Arguments;
+import com.facebook.react.jstasks.HeadlessJsTaskContext;
+import com.facebook.react.ReactApplication;
+import com.facebook.react.ReactInstanceManager;
+import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.jstasks.HeadlessJsTaskConfig;
+import android.net.Uri;
 
 public class BackgroundWorker extends Worker {
     private final Context context;
@@ -70,14 +75,12 @@ public class BackgroundWorker extends Worker {
                 totalPercentage = (differenceInMinutes / timeboxSizeInMinutes) * 100;
                 Log.w("bg", "Total percentage: " + totalPercentage);
 
-                /*Intent intent = new Intent(getApplicationContext(), BackgroundHeadlessTaskService.class);
-                intent.putExtra("timebox", timebox);
-                intent.putExtra("schedule", schedule);
-                intent.putExtra("recordingStartTime", inputData.getString("recordingStartTime"));
-                intent.putExtra("totalPercentage", totalPercentage);
-                getApplicationContext().startForegroundService(intent);*/
-                HeadlessJsTaskConfig taskConfig = new HeadlessJsTaskConfig("BackgroundHeadlessTask", Arguments.createMap(), 0, true);
-                HeadlessJsTaskService.start(context, taskConfig);
+                if(totalPercentage >= 100) {
+                    displayNotification(timeboxObj.getString("title")+" has gone over number of boxes...", differenceInMinutes, false, timeboxObj.getString("id"), scheduleObj.getString("id"));
+                }else{
+                    displayNotification("For "+timeboxObj.getString("title"), totalPercentage, true, timeboxObj.getString("id"), scheduleObj.getString("id"));
+                }
+                
                 Thread.sleep(120000);
                 
             }
@@ -98,7 +101,7 @@ public class BackgroundWorker extends Worker {
         return hours * 60 + minutes;
     }
 
-    private void displayNotification(String message, int progress, boolean showProgress, JSONObject timebox ) {
+    private void displayNotification(String message, int progress, boolean showProgress, String timeboxID, String scheduleID ) {
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         String channelId = "boxoal";
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -106,16 +109,10 @@ public class BackgroundWorker extends Worker {
             notificationManager.createNotificationChannel(channel);
         }
 
-        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        try {
-            intent.putExtra("params", "stopRecording+"+timebox.getString("id")+"+"+timebox.getString("id")+"+"+this.inputData.getString("recordingStartTime"));
-        } catch (JSONException e) {
-            Log.w("bg", e.getMessage());
-            e.printStackTrace();
-        }
+        String uri = "boxoal://stopRecording/"+timeboxID+'/'+scheduleID+'/'+this.inputData.getString("recordingStartTime");
+        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
 
-        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_IMMUTABLE);
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, channelId)
                 .setSmallIcon(android.R.drawable.ic_dialog_info)

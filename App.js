@@ -30,7 +30,7 @@ export const linking = {
   config: {
     initialRouteName: 'SplashScreen',
     screens: {
-      Login: {
+      FinalView: {
         path: 'login/:accessToken'
       },
       FinalView: {
@@ -55,14 +55,6 @@ export default function App() {
                 component={SplashScreen}
                 options={ {headerShown: false} }
               />
-              <Stack.Screen
-                name="Login"
-                component={Login}
-                options={{headerShown: false}}></Stack.Screen>
-              <Stack.Screen
-              name="StopRecording"
-              component={StopRecording}
-              options={{headerShown: false}}></Stack.Screen>
               <Stack.Screen
                 name="FinalView"
                 component={FinalView}

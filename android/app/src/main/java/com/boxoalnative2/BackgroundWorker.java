@@ -55,7 +55,7 @@ public class BackgroundWorker extends Worker {
             String timebox = inputData.getString("timebox");
             String schedule = inputData.getString("schedule");
             Date recordingStartTime = this.convertISOToDate(inputData.getString("recordingStartTime"));
-            int totalPercentage = 0;
+            Double totalPercentage = 0.0;
             long recordingTimeInMillis = recordingStartTime.getTime();
             int recordingStartTimeInMinutes = this.getTimeInMinutes(recordingTimeInMillis);
             JSONObject timeboxObj = new JSONObject(timebox);
@@ -71,9 +71,8 @@ public class BackgroundWorker extends Worker {
                     timeboxSizeInMinutes = scheduleObj.getInt("boxSizeNumber") * 60;
                 }
 
-                int differenceInMinutes = currentTimeInMinutes - recordingStartTimeInMinutes;
-                totalPercentage = (differenceInMinutes / timeboxSizeInMinutes) * 100;
-                Log.w("bg", "Total percentage: " + totalPercentage);
+                Double differenceInMinutes = Double.valueOf(currentTimeInMinutes) - Double.valueOf(recordingStartTimeInMinutes);
+                totalPercentage = (differenceInMinutes / Double.valueOf(timeboxSizeInMinutes)) * 100.0;
 
                 if(totalPercentage >= 100) {
                     displayNotification(timeboxObj.getString("title")+" has gone over number of boxes...", differenceInMinutes, false, timeboxObj.getString("id"), scheduleObj.getString("id"));
@@ -101,7 +100,7 @@ public class BackgroundWorker extends Worker {
         return hours * 60 + minutes;
     }
 
-    private void displayNotification(String message, int progress, boolean showProgress, String timeboxID, String scheduleID ) {
+    private void displayNotification(String message, Double progress, boolean showProgress, String timeboxID, String scheduleID ) {
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         String channelId = "boxoal";
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -122,7 +121,7 @@ public class BackgroundWorker extends Worker {
                 .addAction(android.R.drawable.ic_menu_close_clear_cancel, "Stop", pendingIntent);
 
         if (showProgress) {
-            builder.setProgress(100, progress, false);
+            builder.setProgress(100, progress.intValue(), false);
         }
 
         notificationManager.notify(1, builder.build());

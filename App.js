@@ -11,8 +11,6 @@ import Loading from './components/Loading.js';
 const Stack = createNativeStackNavigator();
 export const queryClient = new QueryClient();
 
-
-
 const MyTheme = {
   ...DefaultTheme,
   colors: {
@@ -35,9 +33,6 @@ export const linking = {
     },
   }
 };
-
-
-
 
 export default function App() {
   return (

@@ -17,7 +17,8 @@ import notifee, { EventType } from '@notifee/react-native';
 
 const Tab = createBottomTabNavigator();
 
-export default function FinalView() {
+export default function FinalView({ navigation, route }) {
+    console.log(route);
     const dispatch = useDispatch();
     const username = useSelector(state => state.username.value);
     const selectedDate = useSelector(state => state.selectedDate.value);

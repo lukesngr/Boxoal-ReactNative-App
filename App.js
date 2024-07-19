@@ -33,7 +33,7 @@ export const linking = {
       Login: {
         path: 'login/:accessToken'
       },
-      StopRecording: {
+      FinalView: {
         path: 'stopRecording/:timeboxID/:scheduleID/:recordingStartTime'
       }
     },

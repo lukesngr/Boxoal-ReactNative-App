@@ -13,7 +13,6 @@ import CreateScheduleForm from '../components/schedules/CreateScheduleForm';
 import Welcome from '../components/Welcome';
 import { initialNotificationSetup, recordIfNotificationPressed, setUserNameUsingGithubAccessCode } from '../modules/coreLogic';
 import { useEffect } from 'react';
-import notifee, { EventType } from '@notifee/react-native';
 
 const Tab = createBottomTabNavigator();
 
@@ -36,9 +35,16 @@ export default function FinalView({ navigation, route }) {
 
     useEffect(() => {
         initialNotificationSetup().then();
-        recordIfNotificationPressed(dispatch, route.params);
-        setUserNameUsingGithubAccessCode(dispatch, route.params);
-    }, [])
+    }, []);
+
+    useEffect(() => {
+        if(route.params != undefined) {
+            recordIfNotificationPressed(dispatch, route.params);
+            setUserNameUsingGithubAccessCode(dispatch, route.params);
+        }
+    }, [route.params]);
+
+    
     
 
     if(status === 'pending') return <Loading />

@@ -253,18 +253,36 @@ export async function initialNotificationSetup() {
     });
 }
 
-export function recordIfNotificationPressed(timeboxID, scheduleID, recordingStartTime, dispatch) {
-    dispatch({type: 'timeboxRecording/set', payload: {timeboxID: -1, timeboxDate: 0, recordingStartTime: 0}});
-    dispatch(setActiveOverlayInterval());
-    axios.post(serverIP+'/createRecordedTimebox', 
-        {recordedStartTime: recordingStartTime, recordedEndTime: new Date(), timeBox: {connect: {id: timeboxID}}, schedule: {connect: {id: scheduleID}}},
-        {headers: { 'Origin': 'http://localhost:3000' }}
-    ).then(() => {
-        queryClient.refetchQueries();
-        Alert.alert("Added recorded timebox");
-    }).catch(function(error) {
-        Alert.alert("Error contact developer");
-        console.log(error); 
-    })
-    NativeModules.BackgroundWorkManager.stopBackgroundWork(); 
+export function recordIfNotificationPressed(dispatch, routeParams) {
+    if(routeParams.hasOwn('timeboxID')) {
+        const { timeboxID, scheduleID, recordingStartTime } = routeParams;
+        dispatch({type: 'timeboxRecording/set', payload: {timeboxID: -1, timeboxDate: 0, recordingStartTime: 0}});
+        dispatch(setActiveOverlayInterval());
+        axios.post(serverIP+'/createRecordedTimebox', 
+            {recordedStartTime: recordingStartTime, recordedEndTime: new Date(), timeBox: {connect: {id: timeboxID}}, schedule: {connect: {id: scheduleID}}},
+            {headers: { 'Origin': 'http://localhost:3000' }}
+        ).then(() => {
+            queryClient.refetchQueries();
+            Alert.alert("Added recorded timebox");
+        }).catch(function(error) {
+            Alert.alert("Error contact developer");
+            console.log(error); 
+        })
+        NativeModules.BackgroundWorkManager.stopBackgroundWork(); 
+    }
+}
+
+export function setUserNameUsingGithubAccessCode(dispatch, routeParams) {
+    if(routeParams.hasOwn('accessToken')) {
+        const { accessToken } = routeParams;
+        axios.get('https://api.github.com/user/emails', {
+        headers: {
+            Authorization: `token ${accessToken}`
+        }
+        }).then(response => {
+        dispatch({type: 'username/set', payload: response.data[0].email});
+        }).catch(err => {
+        console.log(err);
+        });
+    }
 }

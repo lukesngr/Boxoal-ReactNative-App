@@ -11,14 +11,13 @@ import { Text } from "react-native";
 import serverIP from '../modules/serverIP';
 import CreateScheduleForm from '../components/schedules/CreateScheduleForm';
 import Welcome from '../components/Welcome';
-import { initialNotificationSetup, recordIfNotificationPressed } from '../modules/coreLogic';
+import { initialNotificationSetup, recordIfNotificationPressed, setUserNameUsingGithubAccessCode } from '../modules/coreLogic';
 import { useEffect } from 'react';
 import notifee, { EventType } from '@notifee/react-native';
 
 const Tab = createBottomTabNavigator();
 
 export default function FinalView({ navigation, route }) {
-    console.log(route);
     const dispatch = useDispatch();
     const username = useSelector(state => state.username.value);
     const selectedDate = useSelector(state => state.selectedDate.value);
@@ -37,8 +36,8 @@ export default function FinalView({ navigation, route }) {
 
     useEffect(() => {
         initialNotificationSetup().then();
-        notifee.onForegroundEvent(({type, detail}) => recordIfNotificationPressed(type, detail, dispatch));
-        notifee.onBackgroundEvent(({type, detail}) => recordIfNotificationPressed(type, detail, dispatch));
+        recordIfNotificationPressed(dispatch, route.params);
+        setUserNameUsingGithubAccessCode(dispatch, route.params);
     }, [])
     
 

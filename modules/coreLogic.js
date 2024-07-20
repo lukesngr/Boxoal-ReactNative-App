@@ -148,11 +148,11 @@ export function addBoxesToTime(boxSizeUnit, boxSizeNumber, time, numberOfBoxes) 
 
 export function calculatePixelsFromTopOfGridBasedOnTime(wakeupTime, boxSizeUnit, boxSizeNumber, overlayDimensions, time) {
 
-    if(overlayDimensions[0] == 0 ) { //hasn't been set yet
+    if(overlayDimensions.headerWidth == 0 ) { //hasn't been set yet
         return 0;
     }
 
-    const pixelsPerBox = overlayDimensions[2];
+    const pixelsPerBox = overlayDimensions.timeboxHeight;
 
     let wakeupDateTime = time.hour(wakeupTime.split(":")[0]).minute(wakeupTime.split(":")[1]);
 
@@ -185,18 +185,17 @@ export function calculateSizeOfRecordingOverlay(wakeupTime, boxSizeUnit, boxSize
     let recordedStartDate = dayjs(recordedStartTime);
     if(recordedStartDate.isBefore(currentDate, 'date')) {
         if(day.date < currentDate.date()) {
-            return [overlayDimensions[1], overlayDimensions[3]];
+            return [overlayDimensions.overlayHeight, overlayDimensions.headerHeight];
         }else if(day.date == currentDate.date()) {
             let overlayTotalHeight = calculatePixelsFromTopOfGridBasedOnTime(wakeupTime, boxSizeUnit, boxSizeNumber, overlayDimensions, currentDate)
-            return [overlayTotalHeight, overlayDimensions[3]];
+            return [overlayTotalHeight, overlayDimensions.headerHeight];
         }else if(day.date > currentDate.date()){
-            //console.log(day.date)
             return [0, 0];
         }
     }else if(recordedStartDate.isSame(currentDate, 'date')) {
         let overlaysTotalHeight = calculatePixelsFromTopOfGridBasedOnTime(wakeupTime, boxSizeUnit, boxSizeNumber, overlayDimensions, currentDate);
         let recordingOverlayHeight = overlaysTotalHeight - originalOverlayHeight;
-        return [recordingOverlayHeight, originalOverlayHeight+overlayDimensions[3]];
+        return [recordingOverlayHeight, originalOverlayHeight+overlayDimensions.headerHeight];
     }
 }
 

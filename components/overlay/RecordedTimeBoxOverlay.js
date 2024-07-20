@@ -23,14 +23,14 @@ export default function RecordedTimeBoxOverlay(props) {
             let malleableBoxes = [...recordedBoxes];
             data.forEach(element => {
                 let marginFromTop = calculatePixelsFromTopOfGridBasedOnTime(...boxoalInfo, dayjs(element.recordedStartTime));
-                if(marginFromTop < overlayDimensions[3]) {
-                    marginFromTop = overlayDimensions[3];
+                if(marginFromTop < overlayDimensions.headerHeight) {
+                    marginFromTop = overlayDimensions.headerHeight;
                 }
                 let heightForBox = calculatePixelsFromTopOfGridBasedOnTime(...boxoalInfo, dayjs(element.recordedEndTime)) - marginFromTop;
                 if(heightForBox < 30) {
                     heightForBox = 30;
-                }else if(heightForBox > (overlayDimensions[1]-marginFromTop)) {
-                    heightForBox = (overlayDimensions[1]-marginFromTop);
+                }else if(heightForBox > (overlayDimensions.overlayHeight-marginFromTop)) {
+                    heightForBox = (overlayDimensions.overlayHeight-marginFromTop);
                 }//reasonable value which alllows it is visible
                 let notEitherZero = !(marginFromTop == 0 || heightForBox == 0); //due to overlay dimensions not being set at right time
                 if(notEitherZero && !malleableBoxes.some(item => item.id === element.id)) {

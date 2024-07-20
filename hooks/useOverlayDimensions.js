@@ -17,7 +17,7 @@ export default function useOverlayDimensions(headerHeight, headerWidth) {
                 overlayHeight = Math.floor(24 / boxSizeNumber) * 30;
             }
 
-            dispatch({type: 'overlayDimensions/set', payload: [headerWidth, overlayHeight, 30, headerHeight]});
+            dispatch({type: 'overlayDimensions/set', payload: {headerWidth: headerWidth, overlayHeight: overlayHeight, timeboxHeight: 30, headerHeight: headerHeight}});
         }
         
     };

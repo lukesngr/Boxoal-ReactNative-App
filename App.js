@@ -30,7 +30,7 @@ export const linking = {
       FinalView: {
         path: 'stopRecording/:timeboxID/:scheduleID/:recordingStartTime'
       }
-    },
+    }, 
   }
 };
 

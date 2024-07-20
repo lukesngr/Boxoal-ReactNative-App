@@ -13,14 +13,14 @@ export default function RecordingOverlay(props) {
     const {wakeupTime, boxSizeUnit, boxSizeNumber} = useSelector(state => state.scheduleEssentials.value);
     const overlayDimensions = useSelector(state => state.overlayDimensions.value);
     const activeOverlayHeight = useSelector(state => state.activeOverlayHeight.value);
-    const [marginFromTop, setMarginFromTop] = useState(overlayDimensions[3]+activeOverlayHeight); 
-
+    const [marginFromTop, setMarginFromTop] = useState(overlayDimensions.headerHeight+activeOverlayHeight); 
+    console.log(overlayDimensions.headerHeight, activeOverlayHeight);
     let recordingOverlayStyle = {
         backgroundColor: 'red',
         opacity: 0.7,
         zIndex: 999,
         position: 'absolute',
-        width: overlayDimensions[0], 
+        width: overlayDimensions.headerWidth, 
         height: recordingOverlayHeight,
         top: 0,
         transform: [{translateY: marginFromTop}]

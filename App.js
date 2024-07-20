@@ -27,7 +27,7 @@ export const linking = {
       FinalView: {
         path: 'login/:accessToken'
       },
-      FinalView: {
+      FinalViewTwo: { //this is a hack but other ways are far too complex
         path: 'stopRecording/:timeboxID/:scheduleID/:recordingStartTime'
       }
     }, 
@@ -50,6 +50,10 @@ export default function App() {
                 name="FinalView"
                 component={FinalView}
                 options={{headerShown: false}}></Stack.Screen>
+              <Stack.Screen
+              name="FinalViewTwo"
+              component={FinalView}
+              options={{headerShown: false}}></Stack.Screen>
             </Stack.Navigator>
           </NavigationContainer>
         </PersistGate>

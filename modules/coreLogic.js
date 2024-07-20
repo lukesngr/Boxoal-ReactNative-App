@@ -279,6 +279,7 @@ export function recordIfNotificationPressed(dispatch, routeParams) {
 }
 
 export function setUserNameUsingGithubAccessCode(dispatch, routeParams) {
+    console.log("this route is working");
     if(Object.hasOwn(routeParams, 'accessToken')) {
         const { accessToken } = routeParams;
         axios.get('https://api.github.com/user/emails', {headers: { Authorization: `token ${accessToken}`}}).then(response => {

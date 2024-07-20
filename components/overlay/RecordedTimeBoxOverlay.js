@@ -24,13 +24,16 @@ export default function RecordedTimeBoxOverlay(props) {
             data.forEach(element => {
                 let marginFromTop = calculatePixelsFromTopOfGridBasedOnTime(...boxoalInfo, dayjs(element.recordedStartTime))+overlayDimensions.headerHeight;
                 let heightForBox = calculatePixelsFromTopOfGridBasedOnTime(...boxoalInfo, dayjs(element.recordedEndTime)) - marginFromTop;
-                if(heightForBox < overlayDimensions.timeboxHeight) {
+
+                if(heightForBox < overlayDimensions.timeboxHeight) { // if smaller than a timebox e.g. unreadable make it big enough
                     heightForBox = timeboxHeight;
-                }else if(heightForBox > (overlayDimensions.overlayHeight-marginFromTop)) {
+                }else if(heightForBox > (overlayDimensions.overlayHeight-marginFromTop)) { // if bigger than available space make it smaller 
                     heightForBox = (overlayDimensions.overlayHeight-marginFromTop);
                 }//reasonable value which alllows it is visible
-                let notEitherZero = !(marginFromTop == 0 || heightForBox == 0); //due to overlay dimensions not being set at right time
-                if(notEitherZero && !malleableBoxes.some(item => item.id === element.id)) {
+
+                let eitherIsNotZero = !(marginFromTop == 0 || heightForBox == 0); //due to overlay dimensions not being set at right time
+
+                if(eitherIsNotZero && !malleableBoxes.some(item => item.id === element.id)) { //if not already in malleableBoxes push it to it
                     malleableBoxes.push({timeBox: element.timeBox, id: element.id, heightForBox, marginFromTop, title: element.timeBox.title});
                 }
             });
@@ -39,13 +42,15 @@ export default function RecordedTimeBoxOverlay(props) {
     }, [recordedTimeboxes]);
     
     return <>{recordedBoxes.map((recordedBoxes, index) => (
-        <View key={index} style={{width: overlayDimensions.headerWidth, 
+        <View key={index} style={{
+            width: overlayDimensions.headerWidth, 
             height: recordedBoxes.heightForBox, 
             transform: [{translateY: recordedBoxes.marginFromTop}, {translateX: overlayDimensions.headerWidth*props.index}],
             backgroundColor: 'red',
             opacity: 0.7,
             zIndex: 999,
-            position: 'absolute'}}>
+            position: 'absolute'
+        }}>
             <Text>{recordedBoxes.title}</Text>
         </View>
     ))}</>

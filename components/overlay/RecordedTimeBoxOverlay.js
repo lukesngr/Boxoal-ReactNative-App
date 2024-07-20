@@ -9,6 +9,8 @@ export default function RecordedTimeBoxOverlay(props) {
     const {wakeupTime, boxSizeUnit, boxSizeNumber} = useSelector(state => state.scheduleEssentials.value);
     const overlayDimensions = useSelector(state => state.overlayDimensions.value);
     const {recordedTimeboxes} = useSelector(state => state.scheduleData.value);
+    let boxoalInfo = [wakeupTime, boxSizeUnit, boxSizeNumber, overlayDimensions];
+    
 
     let data = recordedTimeboxes.filter(function(obj) {
         let recordedStartTime = dayjs(obj.recordedStartTime);
@@ -18,25 +20,24 @@ export default function RecordedTimeBoxOverlay(props) {
     useEffect(() => {
         setRecordedBoxes([]) //so deleted recordings don't get stuck
         if(data.length > 0) {
-            let normalArrayFromState = [...recordedBoxes];
+            let malleableBoxes = [...recordedBoxes];
             data.forEach(element => {
-                let fieldsForCalculation = [wakeupTime, boxSizeUnit, boxSizeNumber, overlayDimensions];
-                let marginFromTop = calculatePixelsFromTopOfGridBasedOnTime(...fieldsForCalculation, dayjs(element.recordedStartTime));
+                let marginFromTop = calculatePixelsFromTopOfGridBasedOnTime(...boxoalInfo, dayjs(element.recordedStartTime));
                 if(marginFromTop < overlayDimensions[3]) {
                     marginFromTop = overlayDimensions[3];
                 }
-                let heightForBox = calculatePixelsFromTopOfGridBasedOnTime(...fieldsForCalculation, dayjs(element.recordedEndTime)) - marginFromTop;
+                let heightForBox = calculatePixelsFromTopOfGridBasedOnTime(...boxoalInfo, dayjs(element.recordedEndTime)) - marginFromTop;
                 if(heightForBox < 30) {
                     heightForBox = 30;
                 }else if(heightForBox > (overlayDimensions[1]-marginFromTop)) {
                     heightForBox = (overlayDimensions[1]-marginFromTop);
                 }//reasonable value which alllows it is visible
                 let notEitherZero = !(marginFromTop == 0 || heightForBox == 0); //due to overlay dimensions not being set at right time
-                if(notEitherZero && !normalArrayFromState.some(item => item.id === element.id)) {
-                    normalArrayFromState.push({timeBox: element.timeBox, id: element.id, heightForBox, marginFromTop, title: element.timeBox.title});
+                if(notEitherZero && !malleableBoxes.some(item => item.id === element.id)) {
+                    malleableBoxes.push({timeBox: element.timeBox, id: element.id, heightForBox, marginFromTop, title: element.timeBox.title});
                 }
             });
-            setRecordedBoxes(normalArrayFromState);
+            setRecordedBoxes(malleableBoxes);
         }
     }, [recordedTimeboxes]);
     

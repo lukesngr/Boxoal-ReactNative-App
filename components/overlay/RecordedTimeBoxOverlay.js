@@ -42,9 +42,9 @@ export default function RecordedTimeBoxOverlay(props) {
     }, [recordedTimeboxes]);
     
     return <>{recordedBoxes.map((recordedBoxes, index) => (
-        <View key={index} style={{width: overlayDimensions[0], 
+        <View key={index} style={{width: overlayDimensions.headerWidth, 
             height: recordedBoxes.heightForBox, 
-            transform: [{translateY: recordedBoxes.marginFromTop}, {translateX: overlayDimensions[0]*props.index}],
+            transform: [{translateY: recordedBoxes.marginFromTop}, {translateX: overlayDimensions.headerWidth*props.index}],
             backgroundColor: 'red',
             opacity: 0.7,
             zIndex: 999,

@@ -20,7 +20,6 @@ export default function FinalView({ navigation, route }) {
     const dispatch = useDispatch();
     const username = useSelector(state => state.username.value);
     const selectedDate = useSelector(state => state.selectedDate.value);
-    const timeboxRecording = useSelector(state => state.timeboxRecording.value);
 
     let startOfWeek = dayjs(selectedDate).startOf('week').hour(0).minute(0).toDate();
     let endOfWeek = dayjs(selectedDate).endOf('week').add(1, 'day').hour(23).minute(59).toDate(); //another day as sometimes timeboxes will go into next week

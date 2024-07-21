@@ -26,7 +26,7 @@ export default function RecordedTimeBoxOverlay(props) {
                 let heightForBox = calculatePixelsFromTopOfGridBasedOnTime(...boxoalInfo, dayjs(element.recordedEndTime)) - marginFromTop;
 
                 if(heightForBox < overlayDimensions.timeboxHeight) { // if smaller than a timebox e.g. unreadable make it big enough
-                    heightForBox = timeboxHeight;
+                    heightForBox = overlayDimensions.timeboxHeight;
                 }else if(heightForBox > (overlayDimensions.overlayHeight-marginFromTop)) { // if bigger than available space make it smaller 
                     heightForBox = (overlayDimensions.overlayHeight-marginFromTop);
                 }//reasonable value which alllows it is visible

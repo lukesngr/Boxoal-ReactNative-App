@@ -84,7 +84,6 @@ export default function EditScheduleForm(props) {
     const [wakeupTimeModalVisible, setWakeupTimeModalVisible] = useState(false);
 
     function updateSchedule() {
-        console.log(boxSizeUnit);
         axios.put(serverIP+'/updateSchedule', {
             name,
             boxSizeNumber: parseInt(boxSizeNumber),

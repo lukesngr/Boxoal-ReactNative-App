@@ -14,7 +14,7 @@ export default function RecordingOverlay(props) {
     const overlayDimensions = useSelector(state => state.overlayDimensions.value);
     const activeOverlayHeight = useSelector(state => state.activeOverlayHeight.value);
     const [marginFromTop, setMarginFromTop] = useState(overlayDimensions.headerHeight+activeOverlayHeight); 
-    console.log(overlayDimensions.headerHeight, activeOverlayHeight);
+
     let recordingOverlayStyle = {
         backgroundColor: 'red',
         opacity: 0.7,
@@ -28,7 +28,7 @@ export default function RecordingOverlay(props) {
 
     let overlayDate = dayjs().date(props.day.date).month(props.day.month-1);
     let currentDate = dayjs();
-    let startDate = timeboxRecording.timeboxDate;
+    let startDate = timeboxRecording.recordingStartTime;
 
     function setRecordingOverlay() {
         const recordingOverlayArray = calculateSizeOfRecordingOverlay(
@@ -40,6 +40,8 @@ export default function RecordingOverlay(props) {
             props.day, 
             startDate
         );
+
+        console.log(recordingOverlayArray);
 
         setRecordingOverlayHeight(recordingOverlayArray[0]);
         setMarginFromTop(recordingOverlayArray[1]);

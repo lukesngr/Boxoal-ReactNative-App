@@ -41,8 +41,6 @@ export default function RecordingOverlay(props) {
             startDate
         );
 
-        console.log(recordingOverlayArray);
-
         setRecordingOverlayHeight(recordingOverlayArray[0]);
         setMarginFromTop(recordingOverlayArray[1]);
     }

@@ -1,20 +1,10 @@
 import { Pressable, View, Text, Modal } from "react-native"
 import NormalTimebox from "./NormalTimebox";
 import { useState } from "react";
-import {useSelector, useDispatch} from 'react-redux';
-import { ifEqualOrBeyondCurrentDay } from "../../modules/dateLogic";
+import { useSelector } from 'react-redux';
 import CreateTimeboxForm from "./CreateTimeboxForm";
-import EditTimeboxForm from "./TimeboxActionsForm";
 import TimeboxActionsForm from "./TimeboxActionsForm";
-
-const styles = {
-    modalContainer: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: 'rgba(128, 128, 128, 0.2)',
-    }
-}
+import { styles } from "../../styles/styles";
 
 export default function Timebox(props) {
     function onPress() {

@@ -11,39 +11,7 @@ import serverIP from "../../modules/serverIP";
 import Button from "./Button";
 import EditTimeboxForm from "./EditTimeboxForm";
 import { Alert } from "react-native";
-import notifee from '@notifee/react-native';
-
-const styles = StyleSheet.create({
-    overallModal: {
-        backgroundColor: 'white',
-        padding: 10,
-        width: '80%',
-        height: 'auto',
-    },
-    title: {
-        color: 'black',
-        fontSize: 22,
-        padding: 0,
-        margin: 0,
-    },
-    buttonOutlineStyle: {
-        backgroundColor: '#7FFFD4',
-        padding: 5,
-        marginTop: 10,
-    },
-    buttonTextStyle: {
-        color: 'black',
-        fontSize: 20,
-        textAlign: 'center',
-    },
-    titleBarContainer: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        height: 'auto',
-        margin: 0,
-        padding: 0,
-    },
-});
+import { styles } from "../../styles/styles";
 
 export default function TimeboxActionsForm(props) {
     const {data, date, time} = props;

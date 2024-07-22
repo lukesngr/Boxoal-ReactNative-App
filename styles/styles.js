@@ -162,6 +162,8 @@ export const styles = {
         borderWidth: 1,
         borderColor: 'black',
         padding: 1,
+        marginLeft: 10,
         fontSize: 20,
+        width: '90%',
     },
 };

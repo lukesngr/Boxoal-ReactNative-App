@@ -6,15 +6,7 @@ import { useState } from "react";
 import TimeboxAccordion from "./TimeboxAccordion";
 import EditGoalForm from "../goals/EditGoalForm";
 import { Modal } from "react-native";
-
-const styles = {
-    modalContainer: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: 'rgba(128, 128, 128, 0.2)',
-    }
-}
+import { styles } from "../../styles/styles";
 
 export default function GoalAccordion(props) {
     const [accordionOpen, setAccordionOpen] = useState(false);

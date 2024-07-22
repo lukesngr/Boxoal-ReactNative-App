@@ -125,4 +125,24 @@ export const styles = {
         marginLeft: 10,
         marginRight: 10,
     },
+    createScheduleTitle: {
+        color: 'black',
+        fontSize: 28,
+        padding: 0,
+        margin: 0,
+    },
+    pickerItem: {
+        color: 'black',
+        fontSize: 20,
+    },
+    pickerBorder: {
+        borderWidth: 1,
+        borderColor: 'black',
+    },
+    picker: {
+        padding: 1,
+        fontSize: 20,
+        color: 'black',
+        marginBottom: 0
+    },
 };

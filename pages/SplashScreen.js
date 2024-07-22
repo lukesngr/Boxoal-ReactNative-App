@@ -23,17 +23,6 @@ const styles = StyleSheet.create({
       fontFamily: 'BlueScreen',
       color: 'black'
     },
-    signInButton: {
-        backgroundColor: '#7FFFD4',
-        borderColor: 'black',
-        borderWidth: 1,
-        marginTop: 80,
-    },
-    signInButtonText: {
-        color: 'black',
-        fontSize: 25,
-        textAlign: 'center',
-    }
 });
 
 function stepFunction(steps, t) {
@@ -148,9 +137,7 @@ export default function SplashScreen({navigation}) {
     borderRightColor: blinkingCaretThree.interpolate({inputRange: [0, 0.5, 0.6, 1], outputRange: ['transparent', 'transparent', '#7FFFD4', '#7FFFD4']})}]}>
       <Text numberOfLines={1} style={styles.splashText}>Everyman</Text>
     </Animated.View>
-    <Pressable style={styles.signInButton} onPress={() =>  navigation.navigate('Login')}>
-      <Text style={styles.signInButtonText}>Login</Text>
-    </Pressable>
+    <SignInButton signIn={() => navigation.navigate('Login')}></SignInButton>
   </View>
   );
 }

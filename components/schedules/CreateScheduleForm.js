@@ -11,6 +11,7 @@ import DatePicker from "react-native-date-picker";
 import { Picker } from "@react-native-picker/picker";
 import { convertToTimeAndDate } from "../../modules/coreLogic";
 import { useSelector } from "react-redux";
+import { styles } from "../../styles/styles";
 
 export default function CreateScheduleForm(props) {
     const [name, setName] = useState("");
@@ -45,7 +46,7 @@ export default function CreateScheduleForm(props) {
     <>
         <View style={styles.overallModal}>
                 <View style={styles.titleBarContainer}>  
-                    <Text style={styles.title}>Create Schedule</Text>
+                    <Text style={styles.createScheduleTitle}>Create Schedule</Text>
                     <Pressable onPress={props.close}>
                         <FontAwesomeIcon icon={faXmark} size={25}/>
                     </Pressable>

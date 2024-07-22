@@ -7,51 +7,7 @@ import { Alert } from "react-native";
 import serverIP from "../../modules/serverIP";
 import Button from "./Button";
 import { queryClient } from "../../App";
-
-const styles = StyleSheet.create({
-    overallModal: {
-        backgroundColor: 'white',
-        padding: 10,
-        width: '80%',
-        height: 'auto',
-    },
-    title: {
-        color: 'black',
-        fontSize: 22,
-        padding: 0,
-        margin: 0,
-    },
-    label: {
-        color: 'black',
-        fontSize: 20,
-    },
-    textInput: {
-        color: 'black',
-        borderWidth: 1,
-        borderColor: 'black',
-        padding: 1,
-        fontSize: 20,
-    },
-    buttonOutlineStyle: {
-        backgroundColor: '#7FFFD4',
-        padding: 5,
-        marginTop: 10,
-    },
-    buttonTextStyle: {
-        color: 'black',
-        fontSize: 20,
-        textAlign: 'center',
-    },
-    titleBarContainer: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        height: 'auto',
-        margin: 0,
-        padding: 0,
-    },
-});
-
-
+import { styles } from '../../styles/styles';
 
 export default function EditTimeboxForm(props) {
     const [title, setTitle] = useState(props.data.title);

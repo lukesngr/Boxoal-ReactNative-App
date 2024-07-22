@@ -1,19 +1,5 @@
 import { Pressable, StyleSheet, Text, Linking } from "react-native";
-import { useEffect } from "react";
-
-const styles = StyleSheet.create({
-    signInButton: {
-        backgroundColor: '#7FFFD4',
-        borderColor: 'black',
-        borderWidth: 1,
-        marginTop: 80,
-    },
-    signInButtonText: {
-        color: 'black',
-        fontSize: 25,
-        textAlign: 'center',
-    }
-});
+import { styles } from "../styles/styles";
 
 export default function SignInButton(props) {
 

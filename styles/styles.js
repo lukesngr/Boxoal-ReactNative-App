@@ -107,4 +107,16 @@ export const styles = {
       fontFamily: 'BlueScreen',
       color: 'black'
     },
+    overallView: {
+        marginLeft: 4, 
+        marginRight: 4
+    },
+    timeboxCell: {
+        flex: 1, 
+        justifyContent: 'center', 
+        alignItems: 'center', 
+        borderColor: 'black', 
+        borderWidth: 1, 
+        padding: 1
+    }
 };

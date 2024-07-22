@@ -13,22 +13,7 @@ import ActiveOverlay from "../overlay/ActiveOverlay";
 import useActiveOverlay from "../../hooks/useActiveOverlay";
 import RecordingOverlay from "../overlay/RecordingOverlay";
 import RecordedTimeBoxOverlay from "../overlay/RecordedTimeBoxOverlay";
-import { StyleSheet } from "react-native";
-
-const styles = StyleSheet.create({
-    overallView: {
-        marginLeft: 4, 
-        marginRight: 4
-    },
-    timeboxCell: {
-        flex: 1, 
-        justifyContent: 'center', 
-        alignItems: 'center', 
-        borderColor: 'black', 
-        borderWidth: 1, 
-        padding: 1
-    }
-});
+import { styles } from "../../styles/styles";
 
 export default function TimeboxGrid(props) {
     const [headerHeight, setHeaderHeight] = useState(0);

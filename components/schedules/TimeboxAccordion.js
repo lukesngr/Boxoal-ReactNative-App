@@ -6,15 +6,7 @@ import { useState } from "react";
 import { convertToTimeAndDate } from "../../modules/coreLogic";
 import { Modal } from "react-native";
 import TimeboxActionsForm from "../timeboxes/TimeboxActionsForm";
-
-const styles = {
-    modalContainer: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: 'rgba(128, 128, 128, 0.2)',
-    }
-}
+import { styles } from "../../styles/styles";
 
 export default function TimeboxAccordion(props) {
 

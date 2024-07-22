@@ -118,5 +118,11 @@ export const styles = {
         borderColor: 'black', 
         borderWidth: 1, 
         padding: 1
-    }
+    },
+    scheduleButtonOutlineStyle: {
+        backgroundColor: '#7FFFD4',
+        padding: 5,
+        marginLeft: 10,
+        marginRight: 10,
+    },
 };

@@ -3,6 +3,7 @@ import { Animated, Easing } from 'react-native';
 import { useEffect, useRef } from 'react';
 import SignInButton from '../components/SignInButton';
 import {useSelector} from 'react-redux';
+import { Pressable } from 'react-native';
 
 const styles = StyleSheet.create({
     container: {
@@ -147,9 +148,8 @@ export default function SplashScreen({navigation}) {
     borderRightColor: blinkingCaretThree.interpolate({inputRange: [0, 0.5, 0.6, 1], outputRange: ['transparent', 'transparent', '#7FFFD4', '#7FFFD4']})}]}>
       <Text numberOfLines={1} style={styles.splashText}>Everyman</Text>
     </Animated.View>
-    <SignInButton />
     <Pressable style={styles.signInButton} onPress={() =>  navigation.navigate('Login')}>
-      <Text style={styles.signInButtonText}>Join Us</Text>
+      <Text style={styles.signInButtonText}>Login</Text>
     </Pressable>
   </View>
   );

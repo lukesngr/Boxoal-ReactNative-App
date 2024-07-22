@@ -4,26 +4,7 @@ import { useEffect, useRef } from 'react';
 import SignInButton from '../components/SignInButton';
 import {useSelector} from 'react-redux';
 import { Pressable } from 'react-native';
-
-const styles = StyleSheet.create({
-    container: {
-        width: '100%',
-        height: '100%',
-        paddingTop: 200,
-        backgroundColor: '#fff',
-        paddingLeft: 40,
-        paddingRight: 40,
-    },
-    textContainer: {
-      overflow: 'hidden',
-      borderRightWidth: 8,
-    },
-    splashText: {
-      fontSize: 50,
-      fontFamily: 'BlueScreen',
-      color: 'black'
-    },
-});
+import { styles } from '../styles/styles';
 
 function stepFunction(steps, t) {
     let stepSize = 1 / 20.0;
@@ -124,16 +105,16 @@ export default function SplashScreen({navigation}) {
   });
 
   return (
-  <View style={styles.container}>
-    <Animated.View style={[styles.textContainer, {width: firstLineDisplayed.interpolate({inputRange: [0, 100], outputRange: ['0%', '100%']}),
+  <View style={styles.splashScreenContainer}>
+    <Animated.View style={[styles.splashTextContainer, {width: firstLineDisplayed.interpolate({inputRange: [0, 100], outputRange: ['0%', '100%']}),
     borderRightColor: blinkingCaretOne.interpolate({inputRange: [0, 0.5, 0.6, 1], outputRange: ['transparent', 'transparent', '#7FFFD4', '#7FFFD4']})}]}>
       <Text numberOfLines={1} style={styles.splashText}>Timeboxing</Text>
     </Animated.View>
-    <Animated.View style={[styles.textContainer, {width: secondLineDisplayed.interpolate({inputRange: [0, 100], outputRange: ['0%', '100%']}),
+    <Animated.View style={[styles.splashTextContainer, {width: secondLineDisplayed.interpolate({inputRange: [0, 100], outputRange: ['0%', '100%']}),
     borderRightColor: blinkingCaretTwo.interpolate({inputRange: [0, 0.5, 0.6, 1], outputRange: ['transparent', 'transparent', '#7FFFD4', '#7FFFD4']})}]}>
       <Text  numberOfLines={1} style={styles.splashText}>For The</Text>
     </Animated.View>
-    <Animated.View style={[styles.textContainer, {width: thirdLineDisplayed.interpolate({inputRange: [0, 100], outputRange: ['0%', '100%']}),
+    <Animated.View style={[styles.splashTextContainer, {width: thirdLineDisplayed.interpolate({inputRange: [0, 100], outputRange: ['0%', '100%']}),
     borderRightColor: blinkingCaretThree.interpolate({inputRange: [0, 0.5, 0.6, 1], outputRange: ['transparent', 'transparent', '#7FFFD4', '#7FFFD4']})}]}>
       <Text numberOfLines={1} style={styles.splashText}>Everyman</Text>
     </Animated.View>

@@ -90,4 +90,21 @@ export const styles = {
         marginLeft: 10,
         marginRight: 10,
     },
+    splashScreenContainer: {
+        width: '100%',
+        height: '100%',
+        paddingTop: 200,
+        backgroundColor: '#fff',
+        paddingLeft: 40,
+        paddingRight: 40,
+    },
+    splashTextContainer: {
+      overflow: 'hidden',
+      borderRightWidth: 8,
+    },
+    splashText: {
+      fontSize: 50,
+      fontFamily: 'BlueScreen',
+      color: 'black'
+    },
 };

@@ -145,4 +145,23 @@ export const styles = {
         color: 'black',
         marginBottom: 0
     },
+    signInTitle: {
+        color: 'black',
+        fontSize: 28,
+        textAlign: 'left',
+        marginTop: 10,
+        padding: 10,
+    },
+    signInLabel: {
+        color: 'black',
+        fontSize: 20,
+        marginLeft: 10,
+    },
+    signInTextInput: {
+        color: 'black',
+        borderWidth: 1,
+        borderColor: 'black',
+        padding: 1,
+        fontSize: 20,
+    },
 };

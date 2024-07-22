@@ -1,4 +1,4 @@
-package com.boxoalnative2;
+package com.boxoalnative;
 import android.content.Context;
 import androidx.annotation.NonNull;
 import androidx.work.PeriodicWorkRequest;

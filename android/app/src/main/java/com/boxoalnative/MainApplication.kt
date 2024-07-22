@@ -1,4 +1,4 @@
-package com.boxoalnative2
+package com.boxoalnative
 
 import android.app.Application
 import com.facebook.react.PackageList
@@ -11,7 +11,7 @@ import com.facebook.react.defaults.DefaultReactHost.getDefaultReactHost
 import com.facebook.react.defaults.DefaultReactNativeHost
 import com.facebook.react.flipper.ReactNativeFlipper
 import com.facebook.soloader.SoLoader
-import com.boxoalnative2.BackgroundPackage
+import com.boxoalnative.BackgroundPackage
 
 class MainApplication : Application(), ReactApplication {
 

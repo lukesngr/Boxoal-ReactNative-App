@@ -74,9 +74,9 @@ android {
     buildToolsVersion rootProject.ext.buildToolsVersion
     compileSdk rootProject.ext.compileSdkVersion
 
-    namespace "com.boxoalnative2"
+    namespace "com.boxoalnative"
     defaultConfig {
-        applicationId "com.boxoalnative2"
+        applicationId "com.boxoalnative"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1

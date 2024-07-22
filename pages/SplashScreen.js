@@ -21,6 +21,17 @@ const styles = StyleSheet.create({
       fontSize: 50,
       fontFamily: 'BlueScreen',
       color: 'black'
+    },
+    signInButton: {
+        backgroundColor: '#7FFFD4',
+        borderColor: 'black',
+        borderWidth: 1,
+        marginTop: 80,
+    },
+    signInButtonText: {
+        color: 'black',
+        fontSize: 25,
+        textAlign: 'center',
     }
 });
 
@@ -137,6 +148,9 @@ export default function SplashScreen({navigation}) {
       <Text numberOfLines={1} style={styles.splashText}>Everyman</Text>
     </Animated.View>
     <SignInButton />
+    <Pressable style={styles.signInButton} onPress={() =>  navigation.navigate('Login')}>
+      <Text style={styles.signInButtonText}>Join Us</Text>
+    </Pressable>
   </View>
   );
 }

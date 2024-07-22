@@ -1,4 +1,4 @@
-package com.boxoalnative2;
+package com.boxoalnative;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.bridge.NativeModule;
 import com.facebook.react.bridge.ReactApplicationContext;
@@ -6,7 +6,7 @@ import com.facebook.react.uimanager.ViewManager;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import com.boxoalnative2.BackgroundModule;
+import com.boxoalnative.BackgroundModule;
 import javax.annotation.Nonnull;
 
 public class BackgroundPackage implements ReactPackage {

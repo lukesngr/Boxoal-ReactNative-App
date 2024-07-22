@@ -7,6 +7,7 @@ import {store, persistor} from './redux/store';
 import { QueryClientProvider, QueryClient } from '@tanstack/react-query';
 import { PersistGate } from 'redux-persist/integration/react';
 import Loading from './components/Loading.js';
+import Login from './pages/Login.js';
 
 const Stack = createNativeStackNavigator();
 export const queryClient = new QueryClient();
@@ -44,6 +45,11 @@ export default function App() {
               <Stack.Screen
                 name="SplashScreen"
                 component={SplashScreen}
+                options={ {headerShown: false} }
+              />
+              <Stack.Screen
+                name="Login"
+                component={Login}
                 options={ {headerShown: false} }
               />
               <Stack.Screen

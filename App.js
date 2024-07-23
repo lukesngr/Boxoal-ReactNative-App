@@ -9,6 +9,7 @@ import { PersistGate } from 'redux-persist/integration/react';
 import Loading from './components/Loading.js';
 import { Login } from './components/login/Login.js';
 import { ResetPassword } from './components/login/ResetPassword.js';
+import { SignUp } from './components/login/SignUp.js';
 
 const Stack = createNativeStackNavigator();
 export const queryClient = new QueryClient();
@@ -57,6 +58,11 @@ export default function App() {
               <Stack.Screen
                 name="ResetPassword"
                 component={ResetPassword}
+                options={ {headerShown: false} }
+              />
+              <Stack.Screen
+                name="SignUp"
+                component={SignUp}
                 options={ {headerShown: false} }
               />
               <Stack.Screen

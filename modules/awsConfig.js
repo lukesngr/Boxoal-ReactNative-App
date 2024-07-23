@@ -6,7 +6,7 @@ export function configureAmplify() {
         Auth: {
             Cognito: {
             userPoolId: "ap-southeast-2_ECFGGKxov",
-            userPoolClientId: "2eu8i9mj20p0lrn5rv5bi8vuhi",
+            userPoolClientId: "1oq1itjolj43u1o4ipfg5s22f0",
             loginWith: {
                 email: true,
                 username: true

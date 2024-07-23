@@ -27,7 +27,9 @@ export function Login({ navigation }) {
         console.log(result.nextStep?.signInStep);
     }
 
-    function createAccount() {}
+    function createAccount() {
+        navigation.navigate('SignUp')
+    }
 
     function forgetPassword() {
         navigation.navigate('ResetPassword');

@@ -33,6 +33,8 @@ export function SignUp({navigation}) {
             }
         });
 
+        console.log(nextStep, isSignUpComplete);
+
         if(isSignUpComplete) {
             Alert.alert("sign")
             navigation.navigate('Login');

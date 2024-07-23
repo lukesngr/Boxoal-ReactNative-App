@@ -10,8 +10,7 @@ export function Login({ navigation }) {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
 
-    function login() {
-    }
+    function login() {}
 
     function createAccount() {}
 

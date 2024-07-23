@@ -1,4 +1,4 @@
-import {Pressable, Text, TextInput, View} from 'react-native';
+import {Alert, Pressable, Text, TextInput, View} from 'react-native';
 import {styles} from '../../styles/styles';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
@@ -9,14 +9,17 @@ import Button from '../timeboxes/Button';
 export function ResetPassword() {
     const [confirmPasswordHidden, setConfirmPasswordHidden] = useState(true);
     const [passwordHidden, setPasswordHidden] = useState(true);
-    const [username, setUsername] = useState("");
+    const [code, setCode] = useState("");
     const [password, setPassword] = useState("");
+    const [confirmPassword, setConfirmPassword] = useState("");
     const [enteredCode, setEnteredCode] = useState(false);
 
     function sendCodeToEmail() {
+        Alert.alert("Code Sent", "Check your email for the code");
+        
     }
 
-    function createAccount() {}
+    function verifyCode() {}
 
     function forgetPassword() {}
 
@@ -35,7 +38,8 @@ export function ResetPassword() {
             </>) : (<>
                 <Button textStyle={styles.buttonTextStyle} outlineStyle={styles.signInButtonOutlineStyle} title="Send Code to Email" onPress={sendCodeToEmail} />
                 <Text style={styles.signInLabel}>Enter your Code: </Text>
-                <TextInput style={styles.signInTextInput} onChangeText={setUsername} value={username}></TextInput>
+                <TextInput style={styles.signInTextInput} onChangeText={setCode} value={code}></TextInput>
+                <Button textStyle={styles.buttonTextStyle} outlineStyle={styles.signInButtonOutlineStyle} title="Verify Code" onPress={verifyCode} />
             </>)
             }
         </>

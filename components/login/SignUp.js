@@ -3,7 +3,7 @@ import {styles} from '../../styles/styles';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import { useState } from 'react';
-import { signUp } from 'aws-amplify/auth';
+import { signUp, confirmSignUp } from 'aws-amplify/auth';
 import Button from '../timeboxes/Button';
 
 export function SignUp({navigation}) {
@@ -17,12 +17,19 @@ export function SignUp({navigation}) {
     const [enteredDetails, setEnteredDetails] = useState(false);
     
 
-    function sendCodeToEmail() {
-        Alert.alert("Code Sent", "Check your email for the code");
-        
+    async function verifyCode() {
+        const { isSignUpComplete, nextStep } = await confirmSignUp({
+            username: username,
+            confirmationCode: code,
+        });
+
+        if(isSignUpComplete) {
+            Alert.alert("Signed up, please login")
+            navigation.navigate('Login');
+        }
     }
 
-    async function signUp() {
+    async function createAccount() {
         const { isSignUpComplete, userId, nextStep } = await signUp({
             username: username,
             password: password,
@@ -33,13 +40,14 @@ export function SignUp({navigation}) {
             }
         });
 
-        console.log(nextStep, isSignUpComplete);
-
         if(isSignUpComplete) {
-            Alert.alert("sign")
+            Alert.alert("Signed up")
             navigation.navigate('Login');
         }
-        setEnteredDetails(true);
+
+        if(nextStep?.signUpStep === 'CONFIRM_SIGN_UP') {
+            setEnteredDetails(true);
+        }
     }
 
     function resetPassword() {}
@@ -71,7 +79,7 @@ export function SignUp({navigation}) {
                         <FontAwesomeIcon style={{ transform: [{translateX: -35}]}} icon={confirmPasswordHidden ? faEye : faEyeSlash} size={30} ></FontAwesomeIcon>
                     </Pressable>
                 </View>
-                <Button textStyle={styles.buttonTextStyle} outlineStyle={styles.signInButtonOutlineStyle} title="Sign Up" onPress={signUp} />
+                <Button textStyle={styles.buttonTextStyle} outlineStyle={styles.signInButtonOutlineStyle} title="Sign Up" onPress={createAccount} />
                 
             </>)
             }

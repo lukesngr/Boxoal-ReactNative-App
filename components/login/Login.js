@@ -5,8 +5,6 @@ import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import { useState } from 'react';
 import Button from '../timeboxes/Button';
 import { signIn } from 'aws-amplify/auth';
-import { configureAmplify } from '../../modules/awsConfig';
-configureAmplify();
 
 export function Login({ navigation }) {
     const [passwordHidden, setPasswordHidden] = useState(true);
@@ -24,7 +22,9 @@ export function Login({ navigation }) {
             console.log(error.underlyingError)
         }
 
-        console.log(result.nextStep?.signInStep);
+        if(result.nextStep?.signInStep === 'DONE') {
+            navigation.navigate('FinalView');
+        }
     }
 
     function createAccount() {

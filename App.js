@@ -10,6 +10,8 @@ import Loading from './components/Loading.js';
 import { Login } from './components/login/Login.js';
 import { ResetPassword } from './components/login/ResetPassword.js';
 import { SignUp } from './components/login/SignUp.js';
+import { configureAmplify } from './modules/awsConfig';
+configureAmplify();
 
 const Stack = createNativeStackNavigator();
 export const queryClient = new QueryClient();

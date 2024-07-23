@@ -9,9 +9,17 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useQuery } from '@tanstack/react-query';
 import { useSelector } from 'react-redux';
 import axios from 'axios';
+import { getCurrentUser } from 'aws-amplify/auth';
+
+
 
 export default function Timeboxes(props) {
+  async function getInfo() {
+    const { username, userId, signInDetails } = await getCurrentUser();
+    console.log(userId, username, signInDetails);
+  }
 
+  getInfo();
   return (
     <>
       <TimeboxHeading />

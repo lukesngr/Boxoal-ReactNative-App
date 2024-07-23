@@ -4,13 +4,28 @@ import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import { useState } from 'react';
 import Button from '../timeboxes/Button';
+import { signIn } from 'aws-amplify/auth';
+import { configureAmplify } from '../../modules/awsConfig';
+configureAmplify();
 
 export function Login({ navigation }) {
     const [passwordHidden, setPasswordHidden] = useState(true);
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
 
-    function login() {}
+    async function login() {
+        let result;
+        try {
+            result = await signIn({
+                username: username,
+                password: password,
+            })
+        } catch (error) {
+            console.log(error.underlyingError)
+        }
+
+        console.log(result.nextStep?.signInStep);
+    }
 
     function createAccount() {}
 

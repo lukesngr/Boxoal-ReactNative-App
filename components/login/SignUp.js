@@ -3,33 +3,58 @@ import {styles} from '../../styles/styles';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import { useState } from 'react';
-import { signIn } from 'aws-amplify/auth';
+import { signUp } from 'aws-amplify/auth';
 import Button from '../timeboxes/Button';
 
-export function ResetPassword({navigation}) {
-    const [confirmPasswordHidden, setConfirmPasswordHidden] = useState(true);
-    const [passwordHidden, setPasswordHidden] = useState(true);
-    const [code, setCode] = useState("");
+export function SignUp({navigation}) {
+    const [email, setEmail] = useState("");
+    const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
-    const [enteredCode, setEnteredCode] = useState(false);
-    const [email, setEmail] = useState("");
+    const [passwordHidden, setPasswordHidden] = useState(true);
+    const [confirmPasswordHidden, setConfirmPasswordHidden] = useState(true);
+    const [code, setCode] = useState("")
+    const [enteredDetails, setEnteredDetails] = useState(false);
+    
 
     function sendCodeToEmail() {
         Alert.alert("Code Sent", "Check your email for the code");
         
     }
 
-    function verifyCode() {
-        setEnteredCode(true);
+    async function signUp() {
+        const { isSignUpComplete, userId, nextStep } = await signUp({
+            username: username,
+            password: password,
+            options: {
+              userAttributes: {
+                email: email,
+              },
+            }
+        });
+
+        if(isSignUpComplete) {
+            Alert.alert("sign")
+            navigation.navigate('Login');
+        }
+        setEnteredDetails(true);
     }
 
     function resetPassword() {}
 
     return (
         <>
-            <Text style={styles.signInTitle}>Reset Password</Text>
-            {enteredCode ? ( <>
+            <Text style={styles.signInTitle}>Sign Up</Text>
+            {enteredDetails ? ( <>
+                
+                <Text style={styles.signInLabel}>Code </Text>
+                <TextInput style={styles.signInTextInput} onChangeText={setCode} value={code}></TextInput>
+                <Button textStyle={styles.buttonTextStyle} outlineStyle={styles.signInButtonOutlineStyle} title="Verify Code" onPress={verifyCode} />
+            </>) : (<>
+                <Text style={styles.signInLabel}>Email</Text>
+                <TextInput style={styles.signInTextInput} onChangeText={setEmail} value={email}></TextInput>
+                <Text style={styles.signInLabel}>Username</Text>
+                <TextInput style={styles.signInTextInput} onChangeText={setUsername} value={username}></TextInput>
                 <Text style={styles.signInLabel}>Password</Text>
                 <View style={{flexDirection: 'row'}}>
                     <TextInput secureTextEntry={passwordHidden} style={styles.signInTextInput} onChangeText={setPassword} value={password}></TextInput>
@@ -44,14 +69,8 @@ export function ResetPassword({navigation}) {
                         <FontAwesomeIcon style={{ transform: [{translateX: -35}]}} icon={confirmPasswordHidden ? faEye : faEyeSlash} size={30} ></FontAwesomeIcon>
                     </Pressable>
                 </View>
-                <Button textStyle={styles.buttonTextStyle} outlineStyle={styles.signInButtonOutlineStyle} title="Reset Password" onPress={resetPassword} />
-            </>) : (<>
-                <Text style={styles.signInLabel}>Email</Text>
-                <TextInput style={styles.signInTextInput} onChangeText={setEmail} value={email}></TextInput>
-                <Button textStyle={styles.buttonTextStyle} outlineStyle={styles.signInButtonOutlineStyle} title="Send Code to Email" onPress={sendCodeToEmail} />
-                <Text style={styles.signInLabel}>Code </Text>
-                <TextInput style={styles.signInTextInput} onChangeText={setCode} value={code}></TextInput>
-                <Button textStyle={styles.buttonTextStyle} outlineStyle={styles.signInButtonOutlineStyle} title="Verify Code" onPress={verifyCode} />
+                <Button textStyle={styles.buttonTextStyle} outlineStyle={styles.signInButtonOutlineStyle} title="Sign Up" onPress={signUp} />
+                
             </>)
             }
         </>

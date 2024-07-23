@@ -5,7 +5,7 @@ import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import { useState } from 'react';
 import Button from '../timeboxes/Button';
 
-export function SignIn() {
+export function Login({ navigation }) {
     const [passwordHidden, setPasswordHidden] = useState(true);
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
@@ -15,7 +15,9 @@ export function SignIn() {
 
     function createAccount() {}
 
-    function forgetPassword() {}
+    function forgetPassword() {
+        navigation.navigate('ResetPassword');
+    }
 
     return (
         <>

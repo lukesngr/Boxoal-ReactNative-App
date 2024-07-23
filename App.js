@@ -7,7 +7,8 @@ import {store, persistor} from './redux/store';
 import { QueryClientProvider, QueryClient } from '@tanstack/react-query';
 import { PersistGate } from 'redux-persist/integration/react';
 import Loading from './components/Loading.js';
-import Login from './pages/Login.js';
+import { Login } from './components/login/Login.js';
+import { ResetPassword } from './components/login/ResetPassword.js';
 
 const Stack = createNativeStackNavigator();
 export const queryClient = new QueryClient();
@@ -51,6 +52,11 @@ export default function App() {
               <Stack.Screen
                 name="Login"
                 component={Login}
+                options={ {headerShown: false} }
+              />
+              <Stack.Screen
+                name="ResetPassword"
+                component={ResetPassword}
                 options={ {headerShown: false} }
               />
               <Stack.Screen

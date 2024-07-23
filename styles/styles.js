@@ -149,7 +149,7 @@ export const styles = {
         color: 'black',
         fontSize: 28,
         textAlign: 'left',
-        marginTop: 10,
+        marginTop: 20,
         padding: 10,
     },
     signInLabel: {
@@ -166,4 +166,18 @@ export const styles = {
         fontSize: 20,
         width: '90%',
     },
+    signInButtonOutlineStyle: {
+        backgroundColor: '#7FFFD4',
+        padding: 5,
+        marginTop: 10,
+        width: '90%',
+        marginLeft: 10,
+    },
+    signInUnderText: {
+        color: 'black',
+        fontSize: 16,
+        marginLeft: 10,
+        marginTop: 10,
+        textAlign: 'left',
+    }
 };

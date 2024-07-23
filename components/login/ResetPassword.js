@@ -3,14 +3,16 @@ import {styles} from '../../styles/styles';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import { useState } from 'react';
+import { signIn } from 'aws-amplify/auth';
 import Button from '../timeboxes/Button';
 
 export function SignIn() {
+    const [confirmPasswordHidden, setConfirmPasswordHidden] = useState(true);
     const [passwordHidden, setPasswordHidden] = useState(true);
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
 
-    function login() {
+    function sendCodeToEmail() {
     }
 
     function createAccount() {}
@@ -19,8 +21,9 @@ export function SignIn() {
 
     return (
         <>
-            <Text style={styles.signInTitle}>Sign In</Text>
-            <Text style={styles.signInLabel}>Username</Text>
+            <Text style={styles.signInTitle}>Reset Password</Text>
+            <Button textStyle={styles.buttonTextStyle} outlineStyle={styles.signInButtonOutlineStyle} title="Send Code to Email" onPress={sendCodeToEmail} />
+            <Text style={styles.signInLabel}>Enter your code: </Text>
             <TextInput style={styles.signInTextInput} onChangeText={setUsername} value={username}></TextInput>
             <Text style={styles.signInLabel}>Password</Text>
             <View style={{flexDirection: 'row'}}>

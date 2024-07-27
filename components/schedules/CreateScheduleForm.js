@@ -10,8 +10,8 @@ import { queryClient } from "../../App";
 import DatePicker from "react-native-date-picker";
 import { Picker } from "@react-native-picker/picker";
 import { convertToTimeAndDate } from "../../modules/coreLogic";
-import { useSelector } from "react-redux";
 import { styles } from "../../styles/styles";
+import { getCurrentUser } from "aws-amplify/auth";
 
 export default function CreateScheduleForm(props) {
     const [name, setName] = useState("");
@@ -22,15 +22,16 @@ export default function CreateScheduleForm(props) {
     wakeupDateTime.setMinutes(0);
     const [wakeupTime, setWakeupTime] = useState(wakeupDateTime);
     const [wakeupTimeModalVisible, setWakeupTimeModalVisible] = useState(false);
-    const username = useSelector(state => state.username.value);
+    
 
-    function createSchedule() {
+    async function createSchedule() {
+        const { userId } = await getCurrentUser();
         axios.post(serverIP+'/createSchedule', {
             name,
             boxSizeNumber: parseInt(boxSizeNumber),
             boxSizeUnit,
             wakeupTime: convertToTimeAndDate(wakeupTime)[0],
-            userEmail: username, 
+            userUUID: userId, 
         },
         {headers: { 'Origin': 'http://localhost:3000' }}
         ).then(async () => {

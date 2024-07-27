@@ -2,8 +2,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import { Animated, Easing } from 'react-native';
 import { useEffect, useRef } from 'react';
 import SignInButton from '../components/SignInButton';
-import {useSelector} from 'react-redux';
-import { Pressable } from 'react-native';
+import { getCurrentUser } from 'aws-amplify/auth';
 import { styles } from '../styles/styles';
 
 function stepFunction(steps, t) {
@@ -11,13 +10,22 @@ function stepFunction(steps, t) {
     return Math.floor(t / stepSize)*stepSize;
 }
 
+
+
 const firstStepFunction = (t) => stepFunction(20.0, t);
 const secondStepFunction = (t) => stepFunction(14.0, t);
 const thirdStepFunction = (t) => stepFunction(16.0, t);
 
 export default function SplashScreen({navigation}) {
 
-  const username = useSelector(state => state.username.value);
+  async function checkIfSignedIn() {
+    try {
+      const { userId } = await getCurrentUser();
+      navigation.navigate('FinalView');
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   const firstLineDisplayed = useRef(new Animated.Value(0)).current;
   const secondLineDisplayed = useRef(new Animated.Value(0)).current;
@@ -28,9 +36,8 @@ export default function SplashScreen({navigation}) {
   const blinkingCaretThree = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
-    if(username != '') {
-      navigation.navigate('FinalView');
-    }
+    
+    checkIfSignedIn();
     Animated.sequence([
       Animated.timing(firstLineDisplayed, {
         toValue: 100,

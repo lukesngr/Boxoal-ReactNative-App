@@ -1,3 +1,4 @@
+import { getCurrentUser } from "aws-amplify/auth";
 export default function useCurrentUser() {
     async function getUser() {
         const { userID } = await getCurrentUser();

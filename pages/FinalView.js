@@ -9,11 +9,9 @@ import axios from "axios";
 import Loading from "../components/Loading";
 import { Text } from "react-native";
 import serverIP from '../modules/serverIP';
-import CreateScheduleForm from '../components/schedules/CreateScheduleForm';
 import Welcome from '../components/Welcome';
-import { initialNotificationSetup, recordIfNotificationPressed, setUserNameUsingGithubAccessCode } from '../modules/coreLogic';
+import { initialNotificationSetup, recordIfNotificationPressed} from '../modules/coreLogic';
 import { useEffect } from 'react';
-import { getCurrentUser } from 'aws-amplify/auth';
 import useCurrentUser from '../hooks/useCurrentUser';
 
 const Tab = createBottomTabNavigator();

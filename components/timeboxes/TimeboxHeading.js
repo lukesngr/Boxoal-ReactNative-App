@@ -4,6 +4,7 @@ import { useState, useContext } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faCalendar } from "@fortawesome/free-regular-svg-icons";
 import { useDispatch, useSelector } from "react-redux";
+import { IconButton, MD2Colors } from "react-native-paper";
 
 export default function TimeboxHeading() {
     const [visible, setVisible] = useState(false);
@@ -12,12 +13,14 @@ export default function TimeboxHeading() {
 
     return (
         <View>
-            <Text style={{fontSize: 28, color: 'black', textAlign: 'center', marginTop: 4}}>
-                My Timeboxes 
-                <Pressable onPress={() => setVisible(true)}>
-                    <FontAwesomeIcon icon={faCalendar} size={32}/>
-                </Pressable>
-            </Text>
+            <View style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}> 
+                <Text style={{fontSize: 28, color: 'black', textAlign: 'center', marginTop: 10, marginRight: 5}}> Timeboxes</Text>
+                <View style={{flexDirection: 'row', justifyContent: 'start', }}>
+                <IconButton icon="cog" size={36} onPress={() => console.log("Settings")}></IconButton>
+                <IconButton icon="calendar-cursor" size={36} onPress={() => setVisible(true)}></IconButton>
+                </View>
+            </View>
+            
             
             
             <DatePicker

@@ -21,6 +21,7 @@ export default function SplashScreen({navigation}) {
   async function checkIfSignedIn() {
     try {
       const { userId } = await getCurrentUser();
+      console.log(userId);
       navigation.navigate('FinalView');
     } catch (error) {
       console.log(error);

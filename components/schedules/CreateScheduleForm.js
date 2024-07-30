@@ -22,7 +22,6 @@ export default function CreateScheduleForm(props) {
     const [wakeupTimeModalVisible, setWakeupTimeModalVisible] = useState(false);
     const [alert, setAlert] = useState({shown: false, title: "", message: ""});
     
-
     async function createSchedule() {
         const { userId } = await getCurrentUser();
         axios.post(serverIP+'/createSchedule', {
@@ -31,9 +30,7 @@ export default function CreateScheduleForm(props) {
             boxSizeUnit,
             wakeupTime: wakeupTimeText,
             userUUID: userId, 
-        },
-        {headers: { 'Origin': 'http://localhost:3000' }}
-        ).then(async () => {
+        }).then(async () => {
             props.close();
             setAlert({shown: true, title: "Timebox", message: "Created schedule!"});
             await queryClient.refetchQueries();

@@ -1,4 +1,4 @@
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createMaterialBottomTabNavigator } from 'react-native-paper/react-navigation';
 import Schedules from './Schedules';
 import Timeboxes from './Timeboxes';
 import Areas from './Areas';
@@ -13,8 +13,21 @@ import Welcome from '../components/Welcome';
 import { initialNotificationSetup, recordIfNotificationPressed} from '../modules/coreLogic';
 import { useEffect } from 'react';
 import useCurrentUser from '../hooks/useCurrentUser';
+import { MD3LightTheme } from 'react-native-paper';
 
-const Tab = createBottomTabNavigator();
+let theme = {
+    ...MD3LightTheme,
+    colors: {
+      ...MD3LightTheme.colors,
+      primary: '#C5C27C',
+      secondary: '#C5C27C',
+      background: '#FFFFFF',
+      secondaryContainer: '#D4D28F',
+      elevation: {...MD3LightTheme.colors.elevation, 'level2': '#FFFFFF'},
+    },
+  };
+
+const Tab = createMaterialBottomTabNavigator();
 
 export default function FinalView({ navigation, route }) {
     const dispatch = useDispatch();
@@ -48,7 +61,7 @@ export default function FinalView({ navigation, route }) {
     if(data.length == 0) return <Welcome />
     
     return (
-          <Tab.Navigator>
+          <Tab.Navigator theme={theme}>
             <Tab.Screen name="Timeboxes" children={() => <Timeboxes navigation={navigation} data={data}></Timeboxes>} 
             options={{headerShown: false}}/>
             <Tab.Screen name="Schedules" children={() => <Schedules data={data}></Schedules>} 

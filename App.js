@@ -17,17 +17,18 @@ configureAmplify();
 const Stack = createNativeStackNavigator();
 export const queryClient = new QueryClient();
 
-const theme = {
+export let theme = {
   ...MD3LightTheme,
   colors: {
     ...MD3LightTheme.colors,
     primary: '#C5C27C',
     secondary: '#C5C27C',
-    background: '#C5C27C',
+    background: '#FFFFFF',
     secondaryContainer: '#D9D9D9',
     onSecondaryContainer: '#1D1B20',
   },
 };
+console.log(theme.colors);
 const MyTheme = {
   ...DefaultTheme,
   colors: {

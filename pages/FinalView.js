@@ -13,7 +13,8 @@ import Welcome from '../components/Welcome';
 import { initialNotificationSetup, recordIfNotificationPressed} from '../modules/coreLogic';
 import { useEffect } from 'react';
 import useCurrentUser from '../hooks/useCurrentUser';
-import { MD3LightTheme } from 'react-native-paper';
+import { MD3LightTheme, Icon } from 'react-native-paper';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 let theme = {
     ...MD3LightTheme,
@@ -62,12 +63,25 @@ export default function FinalView({ navigation, route }) {
     
     return (
           <Tab.Navigator theme={theme}>
-            <Tab.Screen name="Timeboxes" children={() => <Timeboxes navigation={navigation} data={data}></Timeboxes>} 
-            options={{headerShown: false}}/>
-            <Tab.Screen name="Schedules" children={() => <Schedules data={data}></Schedules>} 
-            options={{headerShown: false}}/>
-            <Tab.Screen name="Settings" component={Areas} 
-            options={{headerShown: false}}/>
+            <Tab.Screen 
+                name="Timeboxes" 
+                children={() => <Timeboxes navigation={navigation} data={data}></Timeboxes>} 
+                options={{headerShown: false, tabBarIcon: ({color}) => (
+                    <MaterialCommunityIcons name="circle-outline" size={20} color='black' />
+                )}}/>
+            <Tab.Screen 
+                name="Schedules" 
+                children={() => <Schedules data={data}></Schedules>} 
+                options={{headerShown: false, tabBarIcon: ({color}) => (
+                    <MaterialCommunityIcons name="checkbox-blank-outline" size={20} color='black' />
+                )}}/>
+            <Tab.Screen 
+                name="Settings" 
+                component={Areas} 
+                options={{headerShown: false, tabBarIcon: ({color}) => (
+                    <MaterialCommunityIcons name="menu" size={20} color='black' />
+                )}}
+            />
           </Tab.Navigator>
     )
 }

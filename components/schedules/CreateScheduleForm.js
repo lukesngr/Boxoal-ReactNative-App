@@ -31,7 +31,7 @@ export default function CreateScheduleForm(props) {
             title,
             boxSizeNumber: parseInt(boxSizeNumber),
             boxSizeUnit,
-            wakeupTime: convertToTimeAndDate(wakeupTime)[0],
+            wakeupTime: wakeupTimeText,
             userUUID: userId, 
         },
         {headers: { 'Origin': 'http://localhost:3000' }}
@@ -48,7 +48,7 @@ export default function CreateScheduleForm(props) {
     <>
         <Portal>
           <Dialog style={{backgroundColor: '#C5C27C'}} visible={props.visible} onDismiss={props.close}>
-            <Dialog.Title>Create Schedule</Dialog.Title>
+            <Dialog.Title style={{color: 'white'}}>Create Schedule</Dialog.Title>
             <Dialog.Content>
                 <TextInput label="Title" value={title} onChangeText={setTitle} style={{backgroundColor: 'white'}} selectionColor="black" textColor="black"/>
                 <TextInput label="Timebox Duration" value={boxSizeNumber} onChangeText={setBoxSizeNumber} style={{backgroundColor: 'white'}} selectionColor="black" textColor="black"/>
@@ -72,8 +72,8 @@ export default function CreateScheduleForm(props) {
                 </Pressable>
             </Dialog.Content>
             <Dialog.Actions>
-                <Button textColor="white" buttonColor="#49454F" mode="contained" onPress={props.close}>Close</Button>
-                <Button textColor='white' onPress={createSchedule}>Done</Button>
+                <Button textColor="white" onPress={props.close}>Close</Button>
+                <Button textColor="black"  buttonColor="white" mode="contained" onPress={createSchedule}>Done</Button>
             </Dialog.Actions>
           </Dialog>
         </Portal>

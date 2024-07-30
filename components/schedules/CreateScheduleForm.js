@@ -1,20 +1,20 @@
 import { faArrowLeft, faCalendar, faXmark } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
-import { StyleSheet, View, Text, Pressable, TextInput } from "react-native";
+import { StyleSheet, View, Text, Pressable,  } from "react-native";
 import axios from "axios";
 import { useState } from "react";
 import { Alert } from "react-native";
 import serverIP from "../../modules/serverIP";
-import Button from "../timeboxes/Button";
 import { queryClient } from "../../App";
 import DatePicker from "react-native-date-picker";
 import { Picker } from "@react-native-picker/picker";
 import { convertToTimeAndDate } from "../../modules/coreLogic";
 import { styles } from "../../styles/styles";
 import { getCurrentUser } from "aws-amplify/auth";
+import { Dialog, Portal, TextInput, Button } from "react-native-paper";
 
 export default function CreateScheduleForm(props) {
-    const [name, setName] = useState("");
+    const [title, setTitle] = useState("");
     const [boxSizeNumber, setBoxSizeNumber] = useState("30");
     const [boxSizeUnit, setBoxSizeUnit] = useState("min");
     let wakeupDateTime = new Date();
@@ -27,7 +27,7 @@ export default function CreateScheduleForm(props) {
     async function createSchedule() {
         const { userId } = await getCurrentUser();
         axios.post(serverIP+'/createSchedule', {
-            name,
+            title,
             boxSizeNumber: parseInt(boxSizeNumber),
             boxSizeUnit,
             wakeupTime: convertToTimeAndDate(wakeupTime)[0],
@@ -45,30 +45,36 @@ export default function CreateScheduleForm(props) {
 
     return (
     <>
-        <View style={styles.overallModal}>
-                <View style={styles.titleBarContainer}>  
-                    <Text style={styles.createScheduleTitle}>Create Schedule</Text>
-                    <Pressable onPress={props.close}>
-                        <FontAwesomeIcon icon={faXmark} size={25}/>
-                    </Pressable>
-                </View>
-                <Text style={styles.label}>Name</Text>
-                <TextInput style={styles.textInput} onChangeText={setName} value={name}></TextInput>
-                <Text style={styles.label}>Timebox Duration</Text>
-                <TextInput style={styles.textInput} keyboardType="numeric" onChangeText={setBoxSizeNumber} value={boxSizeNumber}></TextInput>
-                <Text style={styles.label}>Timebox Unit</Text>
-                <View style={styles.pickerBorder}>
-                    <Picker style={styles.picker} itemStyle={styles.pickerItem} selectedValue={boxSizeUnit} onValueChange={setBoxSizeUnit}>
-                        <Picker.Item label="Min" value="min" />
-                        <Picker.Item label="Hour" value="hr" />
-                    </Picker>
-                </View>
-                <Text style={styles.label}>Wakeup Time </Text>
+        <Portal>
+          <Dialog style={{backgroundColor: '#C5C27C'}} visible={props.visible} onDismiss={props.close}>
+            <Dialog.Title>Create Schedule</Dialog.Title>
+            <Dialog.Content>
+                <TextInput label="Title" value={title} onChangeText={setTitle} style={{backgroundColor: 'white'}} selectionColor="black" textColor="black"/>
+                <TextInput label="Timebox Duration" value={boxSizeNumber} onChangeText={setBoxSizeNumber} style={{backgroundColor: 'white'}} selectionColor="black" textColor="black"/>
+                <TextInput label="Timebox Unit"  value={boxSizeUnit} style={{backgroundColor: 'white'}} selectionColor="black" textColor="black"
+	                render={(props) => (
+                        <Picker style={{color: 'black', marginTop: 5}} dropdownIconColor='black' selectedValue={boxSizeUnit} onValueChange={setBoxSizeUnit}>
+                            <Picker.Item label="Min" value="min" />
+                            <Picker.Item label="Hour" value="hr" />
+                        </Picker>
+	                )}
+                />
                 <Pressable onPress={() => setWakeupTimeModalVisible(true)}>
-                        <FontAwesomeIcon icon={faCalendar} size={20}/>
+                    <TextInput 
+                    label="Wakeup time" 
+                    right={<TextInput.Icon onPress={() => setWakeupTimeModalVisible(true)} icon="clock-edit" />} 
+                    editable={false} 
+                    style={{backgroundColor: 'white'}} 
+                    selectionColor="black" 
+                    textColor="black"/>
                 </Pressable>
-                <Button textStyle={styles.buttonTextStyle} outlineStyle={styles.buttonOutlineStyle} title="Create" onPress={createSchedule} />
-        </View>
+            </Dialog.Content>
+            <Dialog.Actions>
+                <Button textColor="white" buttonColor="#49454F" mode="contained" onPress={props.close}>Close</Button>
+                <Button textColor='white' onPress={createSchedule}>Done</Button>
+            </Dialog.Actions>
+          </Dialog>
+        </Portal>
         <DatePicker 
             modal 
             mode="time" 

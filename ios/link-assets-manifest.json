@@ -4,6 +4,10 @@
     {
       "path": "assets/fonts/BlueScreen.ttf",
       "sha1": "10a6e7b941a0763454845e2609a55ee5996e491a"
+    },
+    {
+      "path": "assets/fonts/KameronRegular.ttf",
+      "sha1": "93b8001b11cbc8fe9bddfbb9d171cf2ae7f5eb19"
     }
   ]
 }

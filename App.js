@@ -28,7 +28,7 @@ export let theme = {
     onSecondaryContainer: '#1D1B20',
   },
 };
-console.log(theme.colors);
+
 const MyTheme = {
   ...DefaultTheme,
   colors: {

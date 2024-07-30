@@ -16,7 +16,7 @@ export default function TimeboxHeading(props) {
     return (
         <View>
             <View style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}> 
-                <Text style={{fontSize: 28, color: 'black', textAlign: 'center', marginTop: 5}}> Timeboxes</Text>
+                <Text style={{fontFamily: 'KameronRegular', fontSize: 28, color: 'black', textAlign: 'center', marginTop: 5}}> Timeboxes</Text>
                 <View style={{flexDirection: 'row', justifyContent: 'space-between', gap: -25}}>
                     <IconButton icon="cog" size={36} onPress={() => setDialogVisible(true)}></IconButton>
                     <IconButton icon="calendar-cursor" size={36} onPress={() => setDatePickerVisible(true)}></IconButton>

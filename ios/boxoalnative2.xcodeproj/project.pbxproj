@@ -15,6 +15,7 @@
 		7699B88040F8A987B510C191 /* libPods-boxoalnative2-boxoalnative2Tests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 19F6CBCC0A4E27FBF8BF4A61 /* libPods-boxoalnative2-boxoalnative2Tests.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		FD29E046F97D49E7B3CF4145 /* BlueScreen.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 58FD497F5818458E9AFA17B3 /* BlueScreen.ttf */; };
+		5C4A8E311416410487EC3E6D /* KameronRegular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 074497A8846E4E7088895483 /* KameronRegular.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -46,6 +47,7 @@
 		89C6BE57DB24E9ADA2F236DE /* Pods-boxoalnative2-boxoalnative2Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-boxoalnative2-boxoalnative2Tests.release.xcconfig"; path = "Target Support Files/Pods-boxoalnative2-boxoalnative2Tests/Pods-boxoalnative2-boxoalnative2Tests.release.xcconfig"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		58FD497F5818458E9AFA17B3 /* BlueScreen.ttf */ = {isa = PBXFileReference; name = "BlueScreen.ttf"; path = "../assets/fonts/BlueScreen.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		074497A8846E4E7088895483 /* KameronRegular.ttf */ = {isa = PBXFileReference; name = "KameronRegular.ttf"; path = "../assets/fonts/KameronRegular.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -155,6 +157,7 @@
 			isa = "PBXGroup";
 			children = (
 				58FD497F5818458E9AFA17B3 /* BlueScreen.ttf */,
+				074497A8846E4E7088895483 /* KameronRegular.ttf */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -256,6 +259,7 @@
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				FD29E046F97D49E7B3CF4145 /* BlueScreen.ttf in Resources */,
+				5C4A8E311416410487EC3E6D /* KameronRegular.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

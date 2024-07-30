@@ -25,7 +25,7 @@ export default function FinalView({ navigation, route }) {
     const {status, data, error, refetch} = useQuery({
         queryKey: ["schedule", selectedDate], 
         queryFn: async () => {
-            const response = await axios.get(serverIP+"/getSchedules", { params: {userUUID: userID, startOfWeek, endOfWeek}, headers: { 'Origin': 'http://localhost:3000' }});
+            const response = await axios.get(serverIP+"/getSchedules", { params: {userUUID: userID, startOfWeek, endOfWeek}});
             return response.data;
         },
         enabled: true

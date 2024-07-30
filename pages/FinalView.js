@@ -1,5 +1,5 @@
 import { createMaterialBottomTabNavigator } from 'react-native-paper/react-navigation';
-import Schedules from './Schedules';
+import Goals from './Goals';
 import Timeboxes from './Timeboxes';
 import Areas from './Areas';
 import dayjs from "dayjs";
@@ -70,8 +70,8 @@ export default function FinalView({ navigation, route }) {
                     <MaterialCommunityIcons name="circle-outline" size={20} color='black' />
                 )}}/>
             <Tab.Screen 
-                name="Schedules" 
-                children={() => <Schedules data={data}></Schedules>} 
+                name="Goals" 
+                children={() => <Goals data={data}></Goals>} 
                 options={{headerShown: false, tabBarIcon: ({color}) => (
                     <MaterialCommunityIcons name="checkbox-blank-outline" size={20} color='black' />
                 )}}/>

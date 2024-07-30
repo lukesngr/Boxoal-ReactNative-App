@@ -18,9 +18,8 @@ const Tab = createBottomTabNavigator();
 
 export default function FinalView({ navigation, route }) {
     const dispatch = useDispatch();
-    const selectedDate = useSelector(state => state.selectedDate.value);
     let userID = useCurrentUser();
-
+    const selectedDate = useSelector(state => state.selectedDate.value);
     let startOfWeek = dayjs(selectedDate).startOf('week').hour(0).minute(0).toDate();
     let endOfWeek = dayjs(selectedDate).endOf('week').add(1, 'day').hour(23).minute(59).toDate(); //another day as sometimes timeboxes will go into next week
     const {status, data, error, refetch} = useQuery({
@@ -42,16 +41,13 @@ export default function FinalView({ navigation, route }) {
         }
     }, [route.params]);
 
-    
-    
-
     if(status === 'pending') return <Loading />
     if(status === 'error') return <Text>Error: {error.message}</Text>
     if(data.length == 0) return <Welcome />
     
     return (
           <Tab.Navigator>
-            <Tab.Screen name="Timeboxes" children={() => <Timeboxes data={data}></Timeboxes>} 
+            <Tab.Screen name="Timeboxes" children={() => <Timeboxes navigation={navigation} data={data}></Timeboxes>} 
             options={{headerShown: false}}/>
             <Tab.Screen name="Schedules" children={() => <Schedules data={data}></Schedules>} 
             options={{headerShown: false}}/>

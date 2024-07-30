@@ -25,10 +25,6 @@ export default function Welcome() {
                 </Card.Actions>
             </Card>
         </View>
-        <Modal animationType="slide" transparent={true} visible={modalVisible} onRequestClose={() => {setModalVisible(!modalVisible);}}>
-            <View style={styles.modalContainer}>
-                <CreateScheduleForm close={setModalVisible}></CreateScheduleForm>
-            </View>
-        </Modal>
+        <CreateScheduleForm visible={modalVisible} close={setModalVisible}></CreateScheduleForm>
         </>)
 }

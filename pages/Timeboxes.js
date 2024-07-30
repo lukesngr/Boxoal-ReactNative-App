@@ -4,7 +4,7 @@ import TimeboxGrid from '../components/timeboxes/TimeboxGrid';
 export default function Timeboxes(props) {
   return (
     <>
-      <TimeboxHeading />
+      <TimeboxHeading data={props.data} />
       <TimeboxGrid data={props.data}></TimeboxGrid>
     </>
   )

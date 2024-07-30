@@ -11,17 +11,28 @@ import { Login } from './components/login/Login.js';
 import { ResetPassword } from './components/login/ResetPassword.js';
 import { SignUp } from './components/login/SignUp.js';
 import { configureAmplify } from './modules/awsConfig';
-import { PaperProvider } from 'react-native-paper';
+import { PaperProvider, MD3LightTheme  } from 'react-native-paper';
 configureAmplify();
 
 const Stack = createNativeStackNavigator();
 export const queryClient = new QueryClient();
 
+const theme = {
+  ...MD3LightTheme,
+  colors: {
+    ...MD3LightTheme.colors,
+    primary: '#C5C27C',
+    secondary: '#C5C27C',
+    background: '#C5C27C',
+    secondaryContainer: '#D9D9D9',
+    onSecondaryContainer: '#1D1B20',
+  },
+};
 const MyTheme = {
   ...DefaultTheme,
   colors: {
     ...DefaultTheme.colors,
-    primary: '#7FFFD4',
+    primary: '#C5C27C',
   },
 };
 
@@ -42,7 +53,7 @@ export const linking = {
 
 export default function App() {
   return (
-    <PaperProvider>
+    <PaperProvider theme={theme}>
     <QueryClientProvider client={queryClient}>
       <Provider store={store}>
         <PersistGate persistor={persistor} loading={<Loading></Loading>}>

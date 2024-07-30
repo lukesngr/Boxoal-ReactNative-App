@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { IconButton, MD2Colors } from "react-native-paper";
 import SettingsDialog from "../SettingsDialog";
 
-export default function TimeboxHeading() {
+export default function TimeboxHeading(props) {
     const [datePickerVisible, setDatePickerVisible] = useState(false);
     const [dialogVisible, setDialogVisible] = useState(false);
     const selectedDate = useSelector(state => state.selectedDate.value);
@@ -35,7 +35,7 @@ export default function TimeboxHeading() {
                 onCancel={() => setDatePickerVisible(false)}>
             </DatePicker>
 
-            <SettingsDialog visible={dialogVisible} hideDialog={() => setDialogVisible(false)}></SettingsDialog>
+            <SettingsDialog data={props.data} visible={dialogVisible} hideDialog={() => setDialogVisible(false)}></SettingsDialog>
 
             
         </View>

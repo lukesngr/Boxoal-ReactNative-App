@@ -3,7 +3,7 @@ import { createSlice } from '@reduxjs/toolkit'
 export const settings = createSlice({
   name: 'settings',
   initialState: {
-    value: {viewType: 'week', selectedSchedule: 0},
+    value: {viewType: 'week', selectedSchedule: '0'},
   },
   reducers: {
     set: (state, action) => {

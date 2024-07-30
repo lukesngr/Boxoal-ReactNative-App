@@ -4,10 +4,12 @@ import { IconButton } from "react-native-paper";
 import CreateScheduleForm from "../components/schedules/CreateScheduleForm";
 import { useSelector } from "react-redux";
 import { useState } from "react";
+import EditScheduleForm from "../components/schedules/EditScheduleForm";
 
 export default function Goals(props) {
     const {selectedSchedule} = useSelector(state => state.settings.value);
     const [createScheduleVisible, setCreateScheduleVisible] = useState(false);
+    const [editScheduleVisible, setEditScheduleVisible] = useState(false);
     let schedule = props.data[Number(selectedSchedule)];
 
     return (<>
@@ -17,13 +19,13 @@ export default function Goals(props) {
                 <View style={{flexDirection: 'row', alignItems: 'center', marginLeft: 40}}> 
                     <Text style={{fontSize: 25, color: 'black', textAlign: 'left', marginTop: 5, marginRight: 180}}>{schedule.title}</Text>
                     <View style={{flexDirection: 'row', justifyContent: 'space-between', gap: -25}}>
-                        <IconButton icon="cog" size={36}></IconButton>
+                        <IconButton icon="cog" size={36} onPress={() => setEditScheduleVisible(true)}></IconButton>
                         <IconButton icon="plus" size={36} onPress={() => setCreateScheduleVisible(true)}></IconButton>
                     </View>
                 </View>
             </View>
-            
         </View>
+        <EditScheduleForm data={schedule} visible={editScheduleVisible} close={() => setEditScheduleVisible(false)}></EditScheduleForm>
         <CreateScheduleForm visible={createScheduleVisible} close={() => setCreateScheduleVisible(false)}></CreateScheduleForm>
         </>
     )

@@ -1,97 +1,113 @@
-import { faArrowLeft, faCalendar, faXmark } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
-import { StyleSheet, View, Text, Pressable, TextInput } from "react-native";
+import { Pressable } from "react-native";
 import axios from "axios";
 import { useState } from "react";
-import { Alert } from "react-native";
 import serverIP from "../../modules/serverIP";
-import Button from "../timeboxes/Button";
 import { queryClient } from "../../App";
 import DatePicker from "react-native-date-picker";
 import { Picker } from "@react-native-picker/picker";
 import { convertToTimeAndDate } from "../../modules/coreLogic";
-import { styles } from "../../styles/styles";
+import { getCurrentUser } from "aws-amplify/auth";
+import { Dialog, Portal, TextInput, Button, Text } from "react-native-paper";
+import Alert from "../Alert";
 
 export default function EditScheduleForm(props) {
-    const [name, setName] = useState(props.data.name);
+    const [title, setTitle] = useState(props.data.title);
     const [boxSizeNumber, setBoxSizeNumber] = useState(props.data.boxSizeNumber.toString());
     const [boxSizeUnit, setBoxSizeUnit] = useState(props.data.boxSizeUnit);
-    const [endDate, setEndDate] = useState(props.data.endDate == undefined ? (new Date()) : (new Date(props.data.endDate)));
-    const [endDateNeeded, setEndDateNeeded] = useState(props.data.endDate === undefined ? (false) : (true));
-    let wakeupTimeDate = new Date();
-    wakeupTimeDate.setHours(props.data.wakeupTime.split(':')[0])
-    wakeupTimeDate.setMinutes(props.data.wakeupTime.split(':')[1])
-    const [wakeupTime, setWakeupTime] = useState(wakeupTimeDate);
-    const [endDateModalVisible, setEndDateModalVisible] = useState(false);
+    let wakeupDateTime = new Date();
+    wakeupDateTime.setHours(props.data.wakeupTime.split(':')[0]);
+    wakeupDateTime.setMinutes(props.data.wakeupTime.split(':')[1]);
+    const [wakeupTime, setWakeupTime] = useState(wakeupDateTime);
+    const [wakeupTimeText, setWakeupTimeText] = useState(props.data.wakeupTime);
     const [wakeupTimeModalVisible, setWakeupTimeModalVisible] = useState(false);
-
-    function updateSchedule() {
+    const [alert, setAlert] = useState({shown: false, title: "", message: ""});
+    
+    async function updateSchedule() {
         axios.put(serverIP+'/updateSchedule', {
-            name,
+            title,
             boxSizeNumber: parseInt(boxSizeNumber),
             boxSizeUnit,
-            endDate,
-            wakeupTime: convertToTimeAndDate(wakeupTime)[0],
-            id: props.data.id,
-        },
-        {headers: { 'Origin': 'http://localhost:3000' }}
-        ).then(async () => {
-            Alert.alert("Updated schedule!");
+            wakeupTime: wakeupTimeText,
+            id: props.data.id, 
+        }).then(async () => {
+            props.close();
+            setAlert({shown: true, title: "Timebox", message: "Updated schedule!"});
             await queryClient.refetchQueries();
         }).catch(function(error) {
-            Alert.alert("Error occurred please try again or contact developer");
+            props.close();
+            setAlert({shown: true, title: "Error", message: "An error occurred, please try again or contact the developer"});
             console.log(error); 
         })
     }
-    
-    function deleteSchedule() {
-        
+
+    async function deleteSchedule() {
         axios.post(serverIP+'/deleteSchedule', {
             id: props.data.id
-        },
-        {headers: { 'Origin': 'http://localhost:3000' }}
-        ).then(async () => {   
-            Alert.alert("Deleted schedule!");
+        },).then(async () => {
+            props.close();
+            setAlert({shown: true, title: "Timebox", message: "Deleted schedule!"});
             await queryClient.refetchQueries();
         }).catch(function(error) {
-            Alert.alert("Error occurred please try again or contact developer");
+            props.close();
+            setAlert({shown: true, title: "Error", message: "An error occurred, please try again or contact the developer"});
             console.log(error); 
-        });
+        })
     }
 
     return (
     <>
-        <View style={styles.overallModal}>
-                <View style={styles.titleBarContainer}>  
-                    <Text style={styles.title}>Edit Schedule</Text>
-                    <Pressable onPress={props.close}>
-                        <FontAwesomeIcon icon={faXmark} size={25}/>
-                    </Pressable>
-                </View>
-                <Text style={styles.label}>Name</Text>
-                <TextInput style={styles.textInput} onChangeText={setName} value={name}></TextInput>
-                <Text style={styles.label}>Timebox duration</Text>
-                <TextInput style={styles.textInput} keyboardType="numeric" onChangeText={setBoxSizeNumber} value={boxSizeNumber}></TextInput>
-                <Text style={styles.label}>Timebox unit</Text>
-                <View style={styles.pickerBorder}>
-                    <Picker style={styles.picker} itemStyle={styles.pickerItem} selectedValue={boxSizeUnit} onValueChange={setBoxSizeUnit}>
-                        <Picker.Item label="Min" value="min" />
-                        <Picker.Item label="Hour" value="hr" />
-                    </Picker>
-                </View>
-                <Text style={styles.label}>Wakeup Time: </Text>
+        <Portal>
+          <Dialog style={{backgroundColor: '#C5C27C'}} visible={props.visible} onDismiss={props.close}>
+            <Dialog.Title style={{color: 'white'}}>Edit Schedule</Dialog.Title>
+            <Dialog.Content>
+                <TextInput label="Title" value={title} onChangeText={setTitle} style={{backgroundColor: 'white', marginBottom: 2}} selectionColor="black" textColor="black"/>
+                <TextInput label="Timebox Duration" value={boxSizeNumber} onChangeText={setBoxSizeNumber} 
+                style={{backgroundColor: 'white', marginBottom: 2}} 
+                selectionColor="black" 
+                textColor="black"/>
+                <TextInput label="Timebox Unit"  value={boxSizeUnit} style={{backgroundColor: 'white', marginBottom: 2 }} selectionColor="black" textColor="black"
+	                render={(props) => (
+                        <Picker style={{color: 'black', marginTop: 5}} dropdownIconColor='black' selectedValue={boxSizeUnit} onValueChange={setBoxSizeUnit}>
+                            <Picker.Item label="Min" value="min" />
+                            <Picker.Item label="Hour" value="hr" />
+                        </Picker>
+	                )}
+                />
                 <Pressable onPress={() => setWakeupTimeModalVisible(true)}>
-                        <FontAwesomeIcon icon={faCalendar} size={20}/>
+                    <TextInput 
+                    label="Wakeup time" 
+                    value={wakeupTimeText}
+                    right={<TextInput.Icon onPress={() => setWakeupTimeModalVisible(true)} icon="clock-edit" />} 
+                    editable={false} 
+                    style={{backgroundColor: 'white', marginBottom: 2}} 
+                    selectionColor="black" 
+                    textColor="black"/>
                 </Pressable>
-                <Button textStyle={styles.buttonTextStyle} outlineStyle={styles.buttonOutlineStyle} title="Delete" onPress={deleteSchedule} />
-                <Button textStyle={styles.buttonTextStyle} outlineStyle={styles.buttonOutlineStyle} title="Update" onPress={updateSchedule} />
-        </View>
+            </Dialog.Content>
+            <Dialog.Actions>
+                <Button textColor="white" onPress={props.close}>Close</Button>
+                <Button textColor="white" onPress={deleteSchedule}>Delete</Button>
+                <Button textColor="black" buttonColor="white" mode="contained" onPress={updateSchedule}>Update</Button>
+            </Dialog.Actions>
+          </Dialog>
+            {alert.shown && <Alert visible={alert.shown} close={() => setAlert({...alert, shown: false})} title={alert.title} message={alert.message}/> }
+        </Portal>
         <DatePicker 
             modal 
             mode="time" 
             date={wakeupTime} 
-            onDateChange={(date) => setWakeupTime(date)} open={wakeupTimeModalVisible} 
-            onConfirm={(date) => { setWakeupTime(date); setWakeupTimeModalVisible(false); }} 
+            onDateChange={
+                (date) => {
+                    setWakeupTime(date);
+                    setWakeupTimeText(convertToTimeAndDate(date)[0]);
+                }
+            } 
+            open={wakeupTimeModalVisible} 
+            onConfirm={(date) => { 
+                setWakeupTime(date); 
+                setWakeupTimeModalVisible(false);
+                setWakeupTimeText(convertToTimeAndDate(date)[0]);
+            }} 
             onCancel={() => setWakeupTimeModalVisible(false)}>
         </DatePicker>
     </>)

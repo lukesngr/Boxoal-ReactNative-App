@@ -28,6 +28,18 @@ export function convertToTimeAndDate(input) {
         minutes = "00";
     }
 
+    if(minutes < 10) {
+        minutes = "0"+minutes;
+    }
+
+    if(hours < 10) {
+        hours = "0"+hours;
+    }
+
+    if(hours == 0) {
+        hours = "00";
+    }
+
     return [hours+':'+minutes, date+'/'+month];
 }
 

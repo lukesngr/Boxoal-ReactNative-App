@@ -21,6 +21,7 @@ export default function CreateScheduleForm(props) {
     wakeupDateTime.setHours(7);
     wakeupDateTime.setMinutes(0);
     const [wakeupTime, setWakeupTime] = useState(wakeupDateTime);
+    const [wakeupTimeText, setWakeupTimeText] = useState("07:00");
     const [wakeupTimeModalVisible, setWakeupTimeModalVisible] = useState(false);
     
 
@@ -62,6 +63,7 @@ export default function CreateScheduleForm(props) {
                 <Pressable onPress={() => setWakeupTimeModalVisible(true)}>
                     <TextInput 
                     label="Wakeup time" 
+                    value={wakeupTimeText}
                     right={<TextInput.Icon onPress={() => setWakeupTimeModalVisible(true)} icon="clock-edit" />} 
                     editable={false} 
                     style={{backgroundColor: 'white'}} 
@@ -79,8 +81,18 @@ export default function CreateScheduleForm(props) {
             modal 
             mode="time" 
             date={wakeupTime} 
-            onDateChange={(date) => setWakeupTime(date)} open={wakeupTimeModalVisible} 
-            onConfirm={(date) => { setWakeupTime(date); setWakeupTimeModalVisible(false); }} 
+            onDateChange={
+                (date) => {
+                    setWakeupTime(date);
+                    setWakeupTimeText(convertToTimeAndDate(date)[0]);
+                }
+            } 
+            open={wakeupTimeModalVisible} 
+            onConfirm={(date) => { 
+                setWakeupTime(date); 
+                setWakeupTimeModalVisible(false);
+                setWakeupTimeText(convertToTimeAndDate(date)[0]);
+            }} 
             onCancel={() => setWakeupTimeModalVisible(false)}>
         </DatePicker>
     </>)

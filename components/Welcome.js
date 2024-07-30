@@ -12,7 +12,7 @@ export default function Welcome() {
     return (<>
         <View style={{backgroundColor: '#D9D9D9', width: '100%', height: '100%'}}>
             <Card style={{backgroundColor: 'white', margin: 10, marginTop: 100}} mode={'elevated'}>
-                <Card.Title title="Welcome to Boxoal" subtitle="Tutorial video" left={(props) => <Avatar.Icon {...props} icon="folder" />}/>
+                <Card.Title title="Welcome to Boxoal" subtitle="Tutorial video" left={(props) => <Avatar.Icon {...props} icon="information" />}/>
                 <Card.Cover style={{borderRadius: 0}}/>
                 <Card.Title title="Instructions" subtitle="How to get started"/>
                 <Card.Content style={{marginTop: 30}}>

@@ -1,14 +1,14 @@
 import { Pressable } from "react-native";
 import axios from "axios";
 import { useState } from "react";
-import { Alert } from "react-native";
 import serverIP from "../../modules/serverIP";
 import { queryClient } from "../../App";
 import DatePicker from "react-native-date-picker";
 import { Picker } from "@react-native-picker/picker";
 import { convertToTimeAndDate } from "../../modules/coreLogic";
 import { getCurrentUser } from "aws-amplify/auth";
-import { Dialog, Portal, TextInput, Button } from "react-native-paper";
+import { Dialog, Portal, TextInput, Button, Text } from "react-native-paper";
+import Alert from "../Alert";
 
 export default function CreateScheduleForm(props) {
     const [title, setTitle] = useState("");
@@ -34,11 +34,11 @@ export default function CreateScheduleForm(props) {
         },
         {headers: { 'Origin': 'http://localhost:3000' }}
         ).then(async () => {
-            setWakeupTimeModalVisible(false);
+            props.close();
             setAlert({shown: true, title: "Timebox", message: "Created schedule!"});
             await queryClient.refetchQueries();
         }).catch(function(error) {
-            setWakeupTimeModalVisible(false);
+            props.close();
             setAlert({shown: true, title: "Error", message: "An error occurred, please try again or contact the developer"});
             console.log(error); 
         })
@@ -79,7 +79,7 @@ export default function CreateScheduleForm(props) {
                 <Button textColor="black"  buttonColor="white" mode="contained" onPress={createSchedule}>Create</Button>
             </Dialog.Actions>
           </Dialog>
-            <Alert visible={alert.shown} close={setAlert({...alert, shown: false})} title={alert.title} message={alert.message}/>
+            {alert.shown && <Alert visible={alert.shown} close={() => setAlert({...alert, shown: false})} title={alert.title} message={alert.message}/> }
         </Portal>
         <DatePicker 
             modal 

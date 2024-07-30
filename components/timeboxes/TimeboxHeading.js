@@ -14,10 +14,10 @@ export default function TimeboxHeading() {
     return (
         <View>
             <View style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}> 
-                <Text style={{fontSize: 28, color: 'black', textAlign: 'center', marginTop: 10, marginRight: 5}}> Timeboxes</Text>
-                <View style={{flexDirection: 'row', justifyContent: 'start', }}>
-                <IconButton icon="cog" size={36} onPress={() => console.log("Settings")}></IconButton>
-                <IconButton icon="calendar-cursor" size={36} onPress={() => setVisible(true)}></IconButton>
+                <Text style={{fontSize: 28, color: 'black', textAlign: 'center', marginTop: 5}}> Timeboxes</Text>
+                <View style={{flexDirection: 'row', justifyContent: 'space-between', gap: -25}}>
+                    <IconButton icon="cog" size={36} onPress={() => console.log("Settings")}></IconButton>
+                    <IconButton icon="calendar-cursor" size={36} onPress={() => setVisible(true)}></IconButton>
                 </View>
             </View>
             

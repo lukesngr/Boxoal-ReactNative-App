@@ -13,6 +13,7 @@ import selectedScheduleReducer from './selectedSchedule'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { persistStore, persistReducer } from 'redux-persist';
 import { combineReducers } from '@reduxjs/toolkit'
+import settingsReducer from './settings'
 
 const rootReducer = combineReducers({
   scheduleEssentials: scheduleEssentialsReducer,
@@ -26,6 +27,7 @@ const rootReducer = combineReducers({
   username: usernameReducer,
   selectedDate: selectedDateReducer,
   selectedSchedule: selectedScheduleReducer,
+  settings: settingsReducer,
 });
 
 const persistConfig = {

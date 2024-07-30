@@ -1,6 +1,4 @@
-import { faArrowLeft, faCalendar, faXmark } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
-import { StyleSheet, View, Text, Pressable,  } from "react-native";
+import { Pressable } from "react-native";
 import axios from "axios";
 import { useState } from "react";
 import { Alert } from "react-native";
@@ -9,7 +7,6 @@ import { queryClient } from "../../App";
 import DatePicker from "react-native-date-picker";
 import { Picker } from "@react-native-picker/picker";
 import { convertToTimeAndDate } from "../../modules/coreLogic";
-import { styles } from "../../styles/styles";
 import { getCurrentUser } from "aws-amplify/auth";
 import { Dialog, Portal, TextInput, Button } from "react-native-paper";
 
@@ -23,6 +20,7 @@ export default function CreateScheduleForm(props) {
     const [wakeupTime, setWakeupTime] = useState(wakeupDateTime);
     const [wakeupTimeText, setWakeupTimeText] = useState("07:00");
     const [wakeupTimeModalVisible, setWakeupTimeModalVisible] = useState(false);
+    const [alert, setAlert] = useState({shown: false, title: "", message: ""});
     
 
     async function createSchedule() {
@@ -36,10 +34,12 @@ export default function CreateScheduleForm(props) {
         },
         {headers: { 'Origin': 'http://localhost:3000' }}
         ).then(async () => {
-            Alert.alert("Created schedule!");
+            setWakeupTimeModalVisible(false);
+            setAlert({shown: true, title: "Timebox", message: "Created schedule!"});
             await queryClient.refetchQueries();
         }).catch(function(error) {
-            Alert.alert("Error occurred please try again or contact developer");
+            setWakeupTimeModalVisible(false);
+            setAlert({shown: true, title: "Error", message: "An error occurred, please try again or contact the developer"});
             console.log(error); 
         })
     }
@@ -50,9 +50,12 @@ export default function CreateScheduleForm(props) {
           <Dialog style={{backgroundColor: '#C5C27C'}} visible={props.visible} onDismiss={props.close}>
             <Dialog.Title style={{color: 'white'}}>Create Schedule</Dialog.Title>
             <Dialog.Content>
-                <TextInput label="Title" value={title} onChangeText={setTitle} style={{backgroundColor: 'white'}} selectionColor="black" textColor="black"/>
-                <TextInput label="Timebox Duration" value={boxSizeNumber} onChangeText={setBoxSizeNumber} style={{backgroundColor: 'white'}} selectionColor="black" textColor="black"/>
-                <TextInput label="Timebox Unit"  value={boxSizeUnit} style={{backgroundColor: 'white'}} selectionColor="black" textColor="black"
+                <TextInput label="Title" value={title} onChangeText={setTitle} style={{backgroundColor: 'white', marginBottom: 2}} selectionColor="black" textColor="black"/>
+                <TextInput label="Timebox Duration" value={boxSizeNumber} onChangeText={setBoxSizeNumber} 
+                style={{backgroundColor: 'white', marginBottom: 2}} 
+                selectionColor="black" 
+                textColor="black"/>
+                <TextInput label="Timebox Unit"  value={boxSizeUnit} style={{backgroundColor: 'white', marginBottom: 2 }} selectionColor="black" textColor="black"
 	                render={(props) => (
                         <Picker style={{color: 'black', marginTop: 5}} dropdownIconColor='black' selectedValue={boxSizeUnit} onValueChange={setBoxSizeUnit}>
                             <Picker.Item label="Min" value="min" />
@@ -66,16 +69,17 @@ export default function CreateScheduleForm(props) {
                     value={wakeupTimeText}
                     right={<TextInput.Icon onPress={() => setWakeupTimeModalVisible(true)} icon="clock-edit" />} 
                     editable={false} 
-                    style={{backgroundColor: 'white'}} 
+                    style={{backgroundColor: 'white', marginBottom: 2}} 
                     selectionColor="black" 
                     textColor="black"/>
                 </Pressable>
             </Dialog.Content>
             <Dialog.Actions>
                 <Button textColor="white" onPress={props.close}>Close</Button>
-                <Button textColor="black"  buttonColor="white" mode="contained" onPress={createSchedule}>Done</Button>
+                <Button textColor="black"  buttonColor="white" mode="contained" onPress={createSchedule}>Create</Button>
             </Dialog.Actions>
           </Dialog>
+            <Alert visible={alert.shown} close={setAlert({...alert, shown: false})} title={alert.title} message={alert.message}/>
         </Portal>
         <DatePicker 
             modal 

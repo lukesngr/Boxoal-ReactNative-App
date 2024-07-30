@@ -5,6 +5,7 @@ import CreateScheduleForm from "../components/schedules/CreateScheduleForm";
 import { useSelector } from "react-redux";
 import { useState } from "react";
 import EditScheduleForm from "../components/schedules/EditScheduleForm";
+import GoalExpandable from "../components/goals/GoalExpandable";
 
 export default function Goals(props) {
     const {selectedSchedule} = useSelector(state => state.settings.value);
@@ -22,6 +23,9 @@ export default function Goals(props) {
                         <IconButton icon="cog" size={36} onPress={() => setEditScheduleVisible(true)}></IconButton>
                         <IconButton icon="plus" size={36} onPress={() => setCreateScheduleVisible(true)}></IconButton>
                     </View>
+                    {schedule.goals.map((goal, index) => {
+                        return <GoalExpandable goal={goal}></GoalExpandable>
+                    })}
                 </View>
             </View>
         </View>

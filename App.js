@@ -11,6 +11,7 @@ import { Login } from './components/login/Login.js';
 import { ResetPassword } from './components/login/ResetPassword.js';
 import { SignUp } from './components/login/SignUp.js';
 import { configureAmplify } from './modules/awsConfig';
+import { PaperProvider } from 'react-native-paper';
 configureAmplify();
 
 const Stack = createNativeStackNavigator();
@@ -41,7 +42,7 @@ export const linking = {
 
 export default function App() {
   return (
-    
+    <PaperProvider>
     <QueryClientProvider client={queryClient}>
       <Provider store={store}>
         <PersistGate persistor={persistor} loading={<Loading></Loading>}>
@@ -80,5 +81,6 @@ export default function App() {
         </PersistGate>
       </Provider>
     </QueryClientProvider>
+    </PaperProvider>
   );
 }

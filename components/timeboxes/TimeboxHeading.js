@@ -21,12 +21,7 @@ export default function TimeboxHeading() {
                 </View>
             </View>
             
-            
-            
-            <DatePicker
-                modal
-                mode="date"
-                date={new Date(selectedDate)}
+            <DatePicker modal mode="date" date={new Date(selectedDate)}
                 onDateChange={(date) => dispatch({type: 'selectedDate/set', payload: date.toUTCString()})}
                 open={visible}
                 onConfirm={(date) => 
@@ -35,7 +30,8 @@ export default function TimeboxHeading() {
                         setVisible(false);
                     }
                 }
-                onCancel={() => setVisible(false)}></DatePicker>
+                onCancel={() => setVisible(false)}>
+            </DatePicker>
         </View>
     )
 }

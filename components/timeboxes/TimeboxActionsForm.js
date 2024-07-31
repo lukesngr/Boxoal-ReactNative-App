@@ -65,11 +65,11 @@ export default function TimeboxActionsForm(props) {
             setAlert({shown: true, title: "Error", message: "An error occurred, please try again or contact the developer"});
             console.log(error); 
         })  
-    }// data={data} previousRecording={!noPreviousRecording}
+    }
     
     return (
     <>
-        {showEditTimeboxForm ? ( <Pressable onPress={() => setShowEditTimeboxForm(false)}></Pressable>) : (
+        {showEditTimeboxForm ? ( <EditTimeboxForm data={data} previousRecording={!noPreviousRecording} close={() => setShowEditTimeboxForm(false)}></EditTimeboxForm>) : (
         <Portal>
             <Dialog style={{backgroundColor: '#C5C27C'}} visible={props.visible} onDismiss={props.close}>
                 <Dialog.Title style={{color: 'white'}}>{data.title}</Dialog.Title>

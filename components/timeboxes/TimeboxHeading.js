@@ -1,8 +1,6 @@
 import { Text, View, Button, Pressable, Settings } from "react-native";
 import DatePicker from "react-native-date-picker";
 import { useState, useContext } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
-import { faCalendar } from "@fortawesome/free-regular-svg-icons";
 import { useDispatch, useSelector } from "react-redux";
 import { IconButton, MD2Colors } from "react-native-paper";
 import SettingsDialog from "../SettingsDialog";
@@ -22,7 +20,6 @@ export default function TimeboxHeading(props) {
                     <IconButton icon="calendar-cursor" size={36} onPress={() => setDatePickerVisible(true)}></IconButton>
                 </View>
             </View>
-            
             <DatePicker modal mode="date" date={new Date(selectedDate)}
                 onDateChange={(date) => dispatch({type: 'selectedDate/set', payload: date.toUTCString()})}
                 open={datePickerVisible}
@@ -34,10 +31,7 @@ export default function TimeboxHeading(props) {
                 }
                 onCancel={() => setDatePickerVisible(false)}>
             </DatePicker>
-
             <SettingsDialog navigation={props.navigation} data={props.data} visible={dialogVisible} hideDialog={() => setDialogVisible(false)}></SettingsDialog>
-
-            
         </View>
     )
 }

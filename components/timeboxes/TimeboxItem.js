@@ -3,6 +3,7 @@ import axios from "axios";
 import { queryClient } from "../../App";
 import serverIP from "../../modules/serverIP";
 import { set } from "../../redux/activeOverlayInterval";
+import { useState } from "react";
 
 export default function TimeboxItem(props) {
     const [checked, setChecked] = useState(props.timebox.recordedTimeBoxes.length > 0);
@@ -20,9 +21,8 @@ export default function TimeboxItem(props) {
         })  
     }
 
-    function deleteTimebox() {
-        
-        axios.post(serverIP+'/deleteTimebox', {id: props.timebox.id}).then(
+    function clearRecording() {
+        axios.post(serverIP+'/clearRecording', {id: props.timebox.id}).then(
             async () => { await queryClient.refetchQueries();}
         ).catch(function(error) {
             console.log(error); 
@@ -37,7 +37,7 @@ export default function TimeboxItem(props) {
             status={checked ? 'checked' : 'unchecked'}
             onPress={() => {
                 if(checked) {
-                    deleteTimebox();
+                    clearRecording();
                     setChecked(false);
                 } else {
                     completeTimebox();

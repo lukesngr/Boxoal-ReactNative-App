@@ -19,7 +19,7 @@ export default function GoalExpandable(props) {
             </View>
         </Surface>
         {accordionOpen && props.goal.timeboxes.map((timebox, index) => {
-            return <TimeboxItem key={index} timebox={timebox}></TimeboxItem>
+            return <TimeboxItem scheduleID={props.scheduleID} key={index} timebox={timebox}></TimeboxItem>
         })}   
         <EditGoalForm data={props.goal} visible={editGoalFormVisible} close={() => setEditGoalFormVisible(false)}></EditGoalForm>
     </>

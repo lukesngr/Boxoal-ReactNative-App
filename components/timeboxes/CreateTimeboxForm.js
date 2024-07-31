@@ -1,20 +1,15 @@
 import {useState, useEffect} from 'react';
-import {useSelector} from 'react-redux';
 import {convertToDateTime, addBoxesToTime, calculateMaxNumberOfBoxes, convertToDayjs} from '../../modules/coreLogic';
-import { Alert, TextInput, View, Text, Pressable } from 'react-native';
-import {Picker} from '@react-native-picker/picker';
-import { StyleSheet } from 'react-native';
-import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { faCalendar } from '@fortawesome/free-regular-svg-icons';
-import Button from './Button';
-import { faXmark } from '@fortawesome/free-solid-svg-icons';
-import DatePicker from 'react-native-date-picker';
+import {Picker} from '@react-native-picker/picker';;
 import axios from 'axios';
 import { queryClient } from '../../App';
 import serverIP from '../../modules/serverIP';
 import { styles } from '../../styles/styles';
 import { dayToName } from '../../modules/dateLogic';
 import { listOfColors } from '../../styles/styles';
+import { Dialog, Portal, TextInput, Button, Alert } from 'react-native-paper';
+import { useSelector } from 'react-redux';
+
 
 export default function CreateTimeboxForm(props) {
     
@@ -71,11 +66,18 @@ export default function CreateTimeboxForm(props) {
 
     }
 
-    function sanitizedSetNumberOfBoxes(number) {
-        if(number > maxNumberOfBoxes) {
+    function safeSetNumberOfBoxes(number) {
+        let amountOfBoxes;
+        try {
+            amountOfBoxes = Number(number)
+        }catch(e){
+            amountOfBoxes = 1;
+        }
+
+        if(amountOfBoxes > maxNumberOfBoxes) {
             setNumberOfBoxes(1);
         }else {
-            setNumberOfBoxes(number);
+            setNumberOfBoxes(amountOfBoxes);
         }
     }
 
@@ -86,7 +88,7 @@ export default function CreateTimeboxForm(props) {
             <Dialog.Content>
                 <TextInput label="Title" value={title} onChangeText={setTitle} style={{backgroundColor: 'white', marginBottom: 2}} selectionColor="black" textColor="black"/>
                 <TextInput label="Description" value={description} onChangeText={setDescription} style={{backgroundColor: 'white', marginBottom: 2}} selectionColor="black" textColor="black"/>
-                <TextInput label="Number of Boxes" value={numberOfBoxes} onChangeText={setNumberOfBoxes} style={{backgroundColor: 'white', marginBottom: 2}} selectionColor="black" textColor="black"/>
+                <TextInput label="Number of Boxes" value={numberOfBoxes} onChangeText={safeSetNumberOfBoxes} style={{backgroundColor: 'white', marginBottom: 2}} selectionColor="black" textColor="black"/>
                 <TextInput label="Goal" value={goalSelected} style={{backgroundColor: 'white', marginTop: 10}} selectionColor="black" textColor="black"
                     render={(props) => (
                         <Picker style={{color: 'black', marginTop: 5}} dropdownIconColor='black' selectedValue={goalSelected} onValueChange={setGoalSelected}>

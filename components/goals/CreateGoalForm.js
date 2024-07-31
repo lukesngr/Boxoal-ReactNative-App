@@ -14,47 +14,73 @@ export default function CreateGoalForm(props) {
     const [name, setName] = useState("");
     const [priority, setPriority] = useState("1");
     const [targetDate, setTargetDate] = useState(new Date());
-    const [visible, setVisible] = useState(false);
+    const [targetDateText, setTargetDateText] = useState(targetDate.toISOString());
+    const [datePickerVisible, setDatePickerVisible] = useState(false);
+    const [alert, setAlert] = useState(false);
+    
 
     function createGoal() {
         axios.post(serverIP+'/createGoal', {
             name,
             priority: parseInt(priority), //damn thing won't convert auto even with number input
             targetDate: new Date(targetDate).toISOString(),
-            schedule: {
-                connect: {id: props.id}
-            } 
+            schedule: {connect: {id: props.id}} 
         },
-        {headers: { 'Origin': 'http://localhost:3000' }}
         ).then(async () => {
-            Alert.alert("Created goal!");
+            props.close();
+            setAlert({shown: true, title: "Timebox", message: "Created goal!"});
             await queryClient.refetchQueries();
         }).catch(function(error) {
-            Alert.alert("Error occurred please try again or contact developer");
-            console.log(error); 
+            props.close();
+            setAlert({shown: true, title: "Error", message: "An error occurred, please try again or contact the developer"});
+            console.log(error);
         })
     }
 
     return (
     <>
-        <View style={styles.overallModal}>
-                <View style={styles.titleBarContainer}>  
-                    <Text style={styles.title}>Create Goal</Text>
-                    <Pressable onPress={props.close}>
-                        <FontAwesomeIcon icon={faXmark} size={25}/>
-                    </Pressable>
-                </View>
-                <Text style={styles.label}>Name</Text>
-                <TextInput style={styles.textInput} onChangeText={setName} value={name}></TextInput>
-                <Text style={styles.label}>Priority</Text>
-                <TextInput style={styles.textInput} keyboardType="numeric" onChangeText={setPriority} value={priority}></TextInput>
-                <Text style={styles.label}>Target Date</Text>
-                <Pressable onPress={() => setVisible(true)}>
-                    <FontAwesomeIcon icon={faCalendar} size={20}/>
+        <Portal>
+          <Dialog style={{backgroundColor: '#C5C27C'}} visible={props.visible} onDismiss={props.close}>
+            <Dialog.Title style={{color: 'white'}}>Create Goal</Dialog.Title>
+            <Dialog.Content>
+                <TextInput label="Name" value={name} onChangeText={setName} style={{backgroundColor: 'white', marginBottom: 2}} selectionColor="black" textColor="black"/>
+                <TextInput label="Priority(1-10)" value={priority} onChangeText={setPriority} style={{backgroundColor: 'white', marginBottom: 2}} 
+                selectionColor="black" textColor="black"/>
+                <Pressable onPress={() => setDatePickerVisible(true)}>
+                    <TextInput 
+                    label="Target date" 
+                    value={targetDateText}
+                    right={<TextInput.Icon onPress={() => setDatePickerVisible(true)} icon="calendar-edit" />} 
+                    editable={false} 
+                    style={{backgroundColor: 'white', marginBottom: 2}} 
+                    selectionColor="black" 
+                    textColor="black"/>
                 </Pressable>
-                <Button textStyle={styles.buttonTextStyle} outlineStyle={styles.buttonOutlineStyle} title="Create" onPress={createGoal} />
-        </View>
-        <DatePicker modal mode="date" date={targetDate} onDateChange={(date) => setTargetDate(date)} open={visible} 
-        onConfirm={(date) => { setTargetDate(date); setVisible(false); }} onCancel={() => setVisible(false)}></DatePicker>
+            </Dialog.Content>
+            <Dialog.Actions>
+                <Button textColor="white" onPress={props.close}>Close</Button>
+                <Button textColor="black"  buttonColor="white" mode="contained" onPress={createGoal}>Create</Button>
+            </Dialog.Actions>
+          </Dialog>
+            {alert.shown && <Alert visible={alert.shown} close={() => setAlert({...alert, shown: false})} title={alert.title} message={alert.message}/> }
+        </Portal>
+        <DatePicker 
+            modal 
+            mode="date" 
+            date={targetDate} 
+            onDateChange={
+                (date) => {
+                    setTargetDate(date);
+                    setTargetDateText(date.toISOString());
+                }
+            } 
+            open={datePickerVisible} 
+            onConfirm={(date) => { 
+                setTargetDate(date); 
+                setDatePickerVisible(false);
+                setTargetDateText(date.toISOString());
+            }} 
+            onCancel={() => setDatePickerVisible(false)}>
+        </DatePicker>
     </>)
 }

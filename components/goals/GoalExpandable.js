@@ -1,19 +1,22 @@
-import { IconButton, List } from "react-native-paper";
+import { IconButton, List, Text, TouchableRipple } from "react-native-paper";
 import EditGoalForm from "./EditGoalForm";
 import { useState } from "react";
+import { View } from "react-native";
 
 export default function GoalExpandable(props) {
     const [editGoalFormVisible, setEditGoalFormVisible] = useState(false);
+    const [accordionOpen, setAccordionOpen] = useState(false);
     return (
     <>
-        <IconButton {...props} icon="cog" onPress={() => setEditGoalFormVisible(true)} />
-        <List.Accordion titleStyle={{fontSize: 20}} 
-        title={props.goal.title} 
-        left={props => <List.Icon {...props} icon="folder" />}
-        >
-            <List.Item title="List item 1" />
-            <List.Item title="List item 2" />
-        </List.Accordion>
+        <View style={{marginLeft: 40, flexDirection: 'row'}}>
+            <TouchableRipple onPress={() => setAccordionOpen(!accordionOpen)}>
+            <Text style={{color: 'black', fontSize: 23, paddingRight: 180, paddingTop: 15}}>{props.goal.title}</Text>
+            </TouchableRipple>
+            <View style={{flexDirection: 'row', justifyContent: 'space-between', gap: -25}}>
+                <IconButton size={35} icon="cog" onPress={() => setEditGoalFormVisible(true)} />
+                <IconButton size={35} icon={accordionOpen ? 'chevron-down' : 'chevron-up'} onPress={() => setAccordionOpen(!accordionOpen)} />
+            </View>
+        </View>   
         <EditGoalForm data={props.goal} visible={editGoalFormVisible} close={() => setEditGoalFormVisible(false)}></EditGoalForm>
     </>
     )

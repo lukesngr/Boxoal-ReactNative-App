@@ -75,21 +75,21 @@ export default function CreateTimeboxForm(props) {
         }
 
         if(amountOfBoxes > maxNumberOfBoxes) {
-            setNumberOfBoxes(1);
+            setNumberOfBoxes('1');
         }else {
-            setNumberOfBoxes(amountOfBoxes);
+            setNumberOfBoxes(String(amountOfBoxes));
         }
     }
 
     return (
     <Portal>
         <Dialog style={{backgroundColor: '#C5C27C'}} visible={props.visible} onDismiss={props.close}>
-            <Dialog.Title style={{color: 'white'}}>Create Schedule</Dialog.Title>
+            <Dialog.Title style={{color: 'white'}}>Create Timebox</Dialog.Title>
             <Dialog.Content>
                 <TextInput label="Title" value={title} onChangeText={setTitle} style={{backgroundColor: 'white', marginBottom: 2}} selectionColor="black" textColor="black"/>
                 <TextInput label="Description" value={description} onChangeText={setDescription} style={{backgroundColor: 'white', marginBottom: 2}} selectionColor="black" textColor="black"/>
                 <TextInput label="Number of Boxes" value={numberOfBoxes} onChangeText={safeSetNumberOfBoxes} style={{backgroundColor: 'white', marginBottom: 2}} selectionColor="black" textColor="black"/>
-                <TextInput label="Goal" value={goalSelected} style={{backgroundColor: 'white', marginTop: 10}} selectionColor="black" textColor="black"
+                <TextInput label="Goal" value={goalSelected} style={{backgroundColor: 'white', marginBottom: 2}} selectionColor="black" textColor="black"
                     render={(props) => (
                         <Picker style={{color: 'black', marginTop: 5}} dropdownIconColor='black' selectedValue={goalSelected} onValueChange={setGoalSelected}>
                             {goals.map((goal, index) => {
@@ -122,8 +122,8 @@ export default function CreateTimeboxForm(props) {
             </Dialog.Content>
             <Dialog.Actions>
                 <Button textColor="white" onPress={props.close}>Close</Button>
-                {!moreOptionsVisible && <Button textColor="black" buttonColor="white" onPress={() => setMoreOptionsVisible(true)}>More Options</Button>}
-                {moreOptionsVisible && <Button textColor="black" buttonColor="white" onPress={() => setMoreOptionsVisible(false)}>Less Options</Button>}
+                {!moreOptionsVisible && <Button textColor="white" onPress={() => setMoreOptionsVisible(true)}>More Options</Button>}
+                {moreOptionsVisible && <Button textColor="white" onPress={() => setMoreOptionsVisible(false)}>Less Options</Button>}
                 <Button textColor="black"  buttonColor="white" mode="contained" onPress={handleSubmit}>Create</Button>
             </Dialog.Actions>
         </Dialog>

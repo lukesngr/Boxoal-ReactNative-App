@@ -30,8 +30,10 @@ export default function Timebox(props) {
             {data ? (<NormalTimebox data={data}></NormalTimebox>) : (<Text></Text>)}
         </Pressable>
         {data ? (
-            <></>) : (
-            <CreateTimeboxForm time={props.time} dayName={dayName} date={date} visible={modalVisible} close={() => setModalVisible(false)}></CreateTimeboxForm>)
+            <TimeboxActionsForm data={data} date={date} time={props.time} visible={modalVisible} close={() => setModalVisible(false)}></TimeboxActionsForm>
+        ) : (
+            <CreateTimeboxForm time={props.time} dayName={dayName} date={date} visible={modalVisible} close={() => setModalVisible(false)}></CreateTimeboxForm>
+        )
         }
     </View>
     )

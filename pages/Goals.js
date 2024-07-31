@@ -6,11 +6,13 @@ import { useSelector } from "react-redux";
 import { useState } from "react";
 import EditScheduleForm from "../components/schedules/EditScheduleForm";
 import GoalExpandable from "../components/goals/GoalExpandable";
+import CreateGoalForm from "../components/goals/CreateGoalForm";
 
 export default function Goals(props) {
     const {selectedSchedule} = useSelector(state => state.settings.value);
     const [createScheduleVisible, setCreateScheduleVisible] = useState(false);
     const [editScheduleVisible, setEditScheduleVisible] = useState(false);
+    const [createGoalVisible, setCreateGoalVisible] = useState(false);
     let schedule = props.data[Number(selectedSchedule)];
 
     return (<>
@@ -27,9 +29,10 @@ export default function Goals(props) {
                 {schedule.goals.map((goal, index) => {
                     return <GoalExpandable goal={goal}></GoalExpandable>
                 })}
-                <FAB icon="plus" style={{width: '80%', marginLeft: 40, backgroundColor: '#C5C27C', textAlign: 'center', paddingLeft: '30%'}} onPress={() => console.log('Pressed')}/>
+                <FAB icon="plus" style={{width: '80%', marginLeft: 40, backgroundColor: '#C5C27C', textAlign: 'center', paddingLeft: '30%'}} onPress={() => setCreateGoalVisible(true)}/>
             </View>
         </View>
+        <CreateGoalForm visible={createGoalVisible} close={() => setCreateGoalVisible(false)} id={schedule.id}></CreateGoalForm>
         <EditScheduleForm data={schedule} visible={editScheduleVisible} close={() => setEditScheduleVisible(false)}></EditScheduleForm>
         <CreateScheduleForm visible={createScheduleVisible} close={() => setCreateScheduleVisible(false)}></CreateScheduleForm>
         </>

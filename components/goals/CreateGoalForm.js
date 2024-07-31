@@ -1,27 +1,24 @@
-import { faArrowLeft, faCalendar, faXmark } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
-import { StyleSheet, View, Text, Pressable, TextInput } from "react-native";
+import {  Pressable  } from "react-native";
 import axios from "axios";
 import { useState } from "react";
-import { Alert } from "react-native";
 import serverIP from "../../modules/serverIP";
-import Button from "../timeboxes/Button";
 import { queryClient } from "../../App";
 import DatePicker from "react-native-date-picker";
 import { styles } from "../../styles/styles";
+import { Dialog, Portal, TextInput, Button } from "react-native-paper";
+import Alert from "../Alert";
 
 export default function CreateGoalForm(props) {
-    const [name, setName] = useState("");
+    const [title, setTitle] = useState("");
     const [priority, setPriority] = useState("1");
     const [targetDate, setTargetDate] = useState(new Date());
     const [targetDateText, setTargetDateText] = useState(targetDate.toISOString());
     const [datePickerVisible, setDatePickerVisible] = useState(false);
     const [alert, setAlert] = useState(false);
-    
 
     function createGoal() {
         axios.post(serverIP+'/createGoal', {
-            name,
+            title,
             priority: parseInt(priority), //damn thing won't convert auto even with number input
             targetDate: new Date(targetDate).toISOString(),
             schedule: {connect: {id: props.id}} 
@@ -43,7 +40,7 @@ export default function CreateGoalForm(props) {
           <Dialog style={{backgroundColor: '#C5C27C'}} visible={props.visible} onDismiss={props.close}>
             <Dialog.Title style={{color: 'white'}}>Create Goal</Dialog.Title>
             <Dialog.Content>
-                <TextInput label="Name" value={name} onChangeText={setName} style={{backgroundColor: 'white', marginBottom: 2}} selectionColor="black" textColor="black"/>
+                <TextInput label="Title" value={title} onChangeText={setTitle} style={{backgroundColor: 'white', marginBottom: 2}} selectionColor="black" textColor="black"/>
                 <TextInput label="Priority(1-10)" value={priority} onChangeText={setPriority} style={{backgroundColor: 'white', marginBottom: 2}} 
                 selectionColor="black" textColor="black"/>
                 <Pressable onPress={() => setDatePickerVisible(true)}>

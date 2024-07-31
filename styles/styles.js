@@ -179,6 +179,14 @@ export const styles = {
         marginLeft: 10,
         marginTop: 10,
         textAlign: 'left',
+    },
+    paperInput: {
+        style: {
+            backgroundColor: 'white',
+            marginBottom: 2,
+        },
+        selectionColor: 'black',
+        textColor: 'black',
     }
 };
 

@@ -5,20 +5,27 @@ import serverIP from "../../modules/serverIP";
 import { queryClient } from "../../App";
 import { Portal, Dialog, TextInput, Button } from "react-native-paper";
 import { Picker } from "@react-native-picker/picker";
+import { convertToTimeAndDate, calculateMaxNumberOfBoxes } from "../../modules/coreLogic";
+import { useSelector } from "react-redux";
+import { styles } from "../../styles/styles";
 
 export default function EditTimeboxForm(props) {
-    console.log(props.data.timeBox);
     const [title, setTitle] = useState(props.data.title);
     const [description, setDescription] = useState(props.data.description);
     const [numberOfBoxes, setNumberOfBoxes] = useState(props.data.numberOfBoxes);
-    const [goalSelected, setGoalSelected] = useState(props.data.goalSelected);
+    const [goalSelected, setGoalSelected] = useState('1');
     
-    const [moreOptionsVisible, setMoreOptionsVisible] = useState(false);
     const [reoccurFrequency, setReoccurFrequency] = useState("no");
     const [weeklyDay, setWeeklyDay] = useState('0');
-    const [percentageOfGoal, setPercentageOfGoal] = useState(100);
+    const [percentageOfGoal, setPercentageOfGoal] = useState('100');
     
     const [alert, setAlert] = useState({shown: false, title: "", message: ""});
+
+    const {id, wakeupTime, boxSizeUnit, boxSizeNumber} = useSelector(state => state.scheduleEssentials.value);
+    const {timeboxes, goals} = useSelector(state => state.scheduleData.value);
+
+    let [time, date] = convertToTimeAndDate(props.data.startTime);
+    let maxNumberOfBoxes = calculateMaxNumberOfBoxes(wakeupTime, boxSizeUnit, boxSizeNumber, timeboxes, time, date);
 
     function updateTimeBox() {
         axios.put(serverIP+'/updateTimeBox', {
@@ -66,16 +73,31 @@ export default function EditTimeboxForm(props) {
         });
     }
 
+    function safeSetNumberOfBoxes(number) {
+        let amountOfBoxes;
+        try {
+            amountOfBoxes = Number(number)
+        }catch(e){
+            amountOfBoxes = 1;
+        }
+
+        if(amountOfBoxes > maxNumberOfBoxes) {
+            setNumberOfBoxes('1');
+        }else {
+            setNumberOfBoxes(String(amountOfBoxes));
+        }
+    }
+
 
     return (
     <Portal>
         <Dialog style={{backgroundColor: '#C5C27C'}} visible={true} onDismiss={props.close}>
             <Dialog.Title style={{color: 'white'}}>Edit Timebox</Dialog.Title>
             <Dialog.Content>
-                <TextInput label="Title" value={title} onChangeText={setTitle} style={{backgroundColor: 'white', marginBottom: 2}} selectionColor="black" textColor="black"/>
-                <TextInput label="Description" value={description} onChangeText={setDescription} style={{backgroundColor: 'white', marginBottom: 2}} selectionColor="black" textColor="black"/>
-                <TextInput label="Number of Boxes" value={numberOfBoxes} onChangeText={safeSetNumberOfBoxes} style={{backgroundColor: 'white', marginBottom: 2}} selectionColor="black" textColor="black"/>
-                <TextInput label="Goal" value={goalSelected} style={{backgroundColor: 'white', marginBottom: 2}} selectionColor="black" textColor="black"
+                <TextInput label="Title" value={title} onChangeText={setTitle} {...styles.paperInput}/>
+                <TextInput label="Description" value={description} onChangeText={setDescription} {...styles.paperInput}/>
+                <TextInput label="Number of Boxes" value={numberOfBoxes} onChangeText={safeSetNumberOfBoxes} {...styles.paperInput}/>
+                <TextInput label="Goal" value={goalSelected} {...styles.paperInput}
                     render={(props) => (
                         <Picker style={{color: 'black', marginTop: 5}} dropdownIconColor='black' selectedValue={goalSelected} onValueChange={setGoalSelected}>
                             {goals.map((goal, index) => {
@@ -84,27 +106,25 @@ export default function EditTimeboxForm(props) {
                         </Picker>
                     )}
                 ></TextInput>
-                {moreOptionsVisible && <>
-                    <TextInput label="Reoccurring"  value={reoccurFrequency} style={{backgroundColor: 'white', marginBottom: 2 }} selectionColor="black" textColor="black"
-                        render={(props) => (
-                            <Picker style={{color: 'black', marginTop: 5}} dropdownIconColor='black' selectedValue={reoccurFrequency} onValueChange={setReoccurFrequency}>
-                                <Picker.Item label="No" value="no" />
-                                <Picker.Item label="Daily" value="daily" />
-                                <Picker.Item label="Weekly" value="weekly" />
-                            </Picker>
-                        )}
-                    />
-                    {reoccurFrequency == 'weekly' && <TextInput label="Reoccurring Day"  value={weeklyDay} style={{backgroundColor: 'white', marginBottom: 2 }} selectionColor="black" textColor="black"
-                        render={(props) => (
-                            <Picker style={{color: 'black', marginTop: 5}} dropdownIconColor='black' selectedValue={weeklyDay} onValueChange={setWeeklyDay}>
-                                {dayToName.map((day, index) => {
-                                    return <Picker.Item key={index} label={day} value={index} />
-                                })}
-                            </Picker>
-                        )}
-                    />}
-                    <TextInput label="Percentage of Goal" value={percentageOfGoal} onChangeText={setPercentageOfGoal} style={{backgroundColor: 'white', marginBottom: 2}} selectionColor="black" textColor="black"/>
-                </>}
+                <TextInput label="Reoccurring"  value={reoccurFrequency} {...styles.paperInput}
+                    render={(props) => (
+                        <Picker style={{color: 'black', marginTop: 5}} dropdownIconColor='black' selectedValue={reoccurFrequency} onValueChange={setReoccurFrequency}>
+                            <Picker.Item label="No" value="no" />
+                            <Picker.Item label="Daily" value="daily" />
+                            <Picker.Item label="Weekly" value="weekly" />
+                        </Picker>
+                    )}
+                />
+                {reoccurFrequency == 'weekly' && <TextInput label="Reoccurring Day" value={weeklyDay} {...styles.paperInput}
+                    render={(props) => (
+                        <Picker style={{color: 'black', marginTop: 5}} dropdownIconColor='black' selectedValue={weeklyDay} onValueChange={setWeeklyDay}>
+                            {dayToName.map((day, index) => {
+                                return <Picker.Item key={index} label={day} value={index} />
+                            })}
+                        </Picker>
+                    )}
+                />}
+                <TextInput label="Percentage of Goal" value={percentageOfGoal} onChangeText={setPercentageOfGoal} {...styles.paperInput}/>
             </Dialog.Content>
             <Dialog.Actions>
                 <Button textColor="white" onPress={props.close}>Close</Button>

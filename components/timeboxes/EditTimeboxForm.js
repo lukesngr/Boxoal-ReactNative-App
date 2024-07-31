@@ -1,18 +1,17 @@
-import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
-import { StyleSheet, View, Text, Pressable, TextInput } from "react-native";
 import axios from "axios";
 import { useState } from "react";
 import { Alert } from "react-native";
 import serverIP from "../../modules/serverIP";
-import Button from "./Button";
 import { queryClient } from "../../App";
-import { styles } from '../../styles/styles';
+import { Portal, Dialog, TextInput, Button } from "react-native-paper";
+import { Picker } from "@react-native-picker/picker";
 
 export default function EditTimeboxForm(props) {
-    const [description, setDescription] = useState("");
-    const [numberOfBoxes, setNumberOfBoxes] = useState('1');
-    const [goalSelected, setGoalSelected] = useState(goals.length == 0 ? 1 : goals[0].id);
+    console.log(props.data.timeBox);
+    const [title, setTitle] = useState(props.data.title);
+    const [description, setDescription] = useState(props.data.description);
+    const [numberOfBoxes, setNumberOfBoxes] = useState(props.data.numberOfBoxes);
+    const [goalSelected, setGoalSelected] = useState(props.data.goalSelected);
     
     const [moreOptionsVisible, setMoreOptionsVisible] = useState(false);
     const [reoccurFrequency, setReoccurFrequency] = useState("no");

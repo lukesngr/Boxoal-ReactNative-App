@@ -11,7 +11,7 @@ export default function GoalExpandable(props) {
     <>
         <View style={{marginLeft: 40, flexDirection: 'row'}}>
             <TouchableRipple onPress={() => setAccordionOpen(!accordionOpen)}>
-                <Text style={{color: 'black', fontSize: 20, width: 215, paddingTop: 15}}>{props.goal.title}</Text>
+                <Text style={{color: accordionOpen ? '#C5C27C' : 'black', fontSize: 20, width: 215, paddingTop: 15}}>{props.goal.title}</Text>
             </TouchableRipple>
             <View style={{flexDirection: 'row', justifyContent: 'space-between', gap: -25}}>
                 <IconButton size={35} icon="cog" onPress={() => setEditGoalFormVisible(true)} />

@@ -1,6 +1,6 @@
 import { Text } from "react-native";
 import { View } from "react-native";
-import { IconButton } from "react-native-paper";
+import { IconButton, FAB } from "react-native-paper";
 import CreateScheduleForm from "../components/schedules/CreateScheduleForm";
 import { useSelector } from "react-redux";
 import { useState } from "react";
@@ -23,10 +23,11 @@ export default function Goals(props) {
                         <IconButton icon="cog" size={36} onPress={() => setEditScheduleVisible(true)}></IconButton>
                         <IconButton icon="plus" size={36} onPress={() => setCreateScheduleVisible(true)}></IconButton>
                     </View>
-                    {schedule.goals.map((goal, index) => {
-                        return <GoalExpandable goal={goal}></GoalExpandable>
-                    })}
                 </View>
+                {schedule.goals.map((goal, index) => {
+                    return <GoalExpandable goal={goal}></GoalExpandable>
+                })}
+                <FAB icon="plus" style={{width: '80%', marginLeft: 40, backgroundColor: '#C5C27C', textAlign: 'center', paddingLeft: '30%'}} onPress={() => console.log('Pressed')}/>
             </View>
         </View>
         <EditScheduleForm data={schedule} visible={editScheduleVisible} close={() => setEditScheduleVisible(false)}></EditScheduleForm>

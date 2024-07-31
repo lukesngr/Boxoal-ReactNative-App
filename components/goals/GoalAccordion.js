@@ -19,7 +19,7 @@ export default function GoalAccordion(props) {
             </View>
         </Surface>
         {accordionOpen && props.goal.timeboxes.map((timebox, index) => {
-            return <TimeboxAsListItem scheduleID={props.scheduleID} key={index} timebox={timebox}></TimeboxAsListItem>
+            return <TimeboxAsListItem key={index} timebox={timebox}></TimeboxAsListItem>
         })}   
         <EditGoalForm data={props.goal} visible={editGoalFormVisible} close={() => setEditGoalFormVisible(false)}></EditGoalForm>
     </>

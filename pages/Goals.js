@@ -28,7 +28,7 @@ export default function Goals(props) {
                     </View>
                 </Surface>
                 {schedule.goals.map((goal, index) => {
-                    return <GoalAccordion scheduleID={schedule.id} goal={goal}></GoalAccordion>
+                    return <GoalAccordion goal={goal}></GoalAccordion>
                 })}
                 <Surface style={{paddingLeft: 40, flexDirection: 'row', paddingBottom: 15, backgroundColor: 'white'}}>
                 <FAB icon="plus" mode='elevated' style={{width: '85%', marginTop: 10, backgroundColor: '#C5C27C', textAlign: 'center', paddingLeft: '30%'}} onPress={() => setCreateGoalVisible(true)}/>

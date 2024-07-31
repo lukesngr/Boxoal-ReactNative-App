@@ -6,13 +6,14 @@ import { useState } from "react";
 
 export default function TimeboxAsListItem(props) {
     const [checked, setChecked] = useState(props.timebox.recordedTimeBoxes.length > 0);
+    const {id, wakeupTime, boxSizeUnit, boxSizeNumber} = useSelector(state => state.scheduleEssentials.value);
 
     function completeTimebox() {
         axios.post(serverIP+'/createRecordedTimebox', {
             recordedStartTime: props.timebox.startTime, 
             recordedEndTime: props.timebox.endTime,
             timeBox: {connect: {id: props.timebox.id}}, 
-            schedule: {connect: {id: props.scheduleID}}
+            schedule: {connect: {id: id}}
         }).then(() => {
             queryClient.refetchQueries();
         }).catch(function(error) {

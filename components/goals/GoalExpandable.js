@@ -1,4 +1,4 @@
-import { IconButton, List, Text, TouchableRipple } from "react-native-paper";
+import { IconButton, List, Text, TouchableRipple, Surface } from "react-native-paper";
 import EditGoalForm from "./EditGoalForm";
 import { useState } from "react";
 import { View } from "react-native";
@@ -9,15 +9,15 @@ export default function GoalExpandable(props) {
     const [accordionOpen, setAccordionOpen] = useState(false);
     return (
     <>
-        <View style={{marginLeft: 40, flexDirection: 'row'}}>
+        <Surface style={{paddingLeft: 40, flexDirection: 'row', width: '100%', backgroundColor: 'white', borderRadius: 0}} elevation={accordionOpen ? 1 : 0}>
             <TouchableRipple onPress={() => setAccordionOpen(!accordionOpen)}>
-                <Text style={{color: accordionOpen ? '#C5C27C' : 'black', fontSize: 20, width: 215, paddingTop: 15}}>{props.goal.title}</Text>
+                <Text style={{color: 'black', fontSize: 20, width: 215, paddingTop: 15}}>{props.goal.title}</Text>
             </TouchableRipple>
             <View style={{flexDirection: 'row', justifyContent: 'space-between', gap: -25}}>
                 <IconButton size={35} icon="cog" onPress={() => setEditGoalFormVisible(true)} />
                 <IconButton size={35} icon={accordionOpen ? 'chevron-down' : 'chevron-up'} onPress={() => setAccordionOpen(!accordionOpen)} />
             </View>
-        </View>
+        </Surface>
         {accordionOpen && props.goal.timeboxes.map((timebox, index) => {
             return <TimeboxItem key={index} timebox={timebox}></TimeboxItem>
         })}   

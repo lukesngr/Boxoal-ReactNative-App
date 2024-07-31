@@ -87,10 +87,10 @@ export default function CreateTimeboxForm(props) {
         <Dialog style={{backgroundColor: '#C5C27C'}} visible={props.visible} onDismiss={props.close}>
             <Dialog.Title style={{color: 'white'}}>Create Timebox</Dialog.Title>
             <Dialog.Content>
-                <TextInput label="Title" value={title} onChangeText={setTitle} style={{backgroundColor: 'white', marginBottom: 2}} selectionColor="black" textColor="black"/>
-                <TextInput label="Description" value={description} onChangeText={setDescription} style={{backgroundColor: 'white', marginBottom: 2}} selectionColor="black" textColor="black"/>
-                <TextInput label="Number of Boxes" value={numberOfBoxes} onChangeText={safeSetNumberOfBoxes} style={{backgroundColor: 'white', marginBottom: 2}} selectionColor="black" textColor="black"/>
-                <TextInput label="Goal" value={goalSelected} style={{backgroundColor: 'white', marginBottom: 2}} selectionColor="black" textColor="black"
+                <TextInput label="Title" value={title} onChangeText={setTitle} {...styles.paperInput}/>
+                <TextInput label="Description" value={description} onChangeText={setDescription} {...styles.paperInput}/>
+                <TextInput label="Number of Boxes" value={numberOfBoxes} onChangeText={safeSetNumberOfBoxes} {...styles.paperInput}/>
+                <TextInput label="Goal" value={goalSelected} {...styles.paperInput}
                     render={(props) => (
                         <Picker style={{color: 'black', marginTop: 5}} dropdownIconColor='black' selectedValue={goalSelected} onValueChange={setGoalSelected}>
                             {goals.map((goal, index) => {
@@ -100,7 +100,7 @@ export default function CreateTimeboxForm(props) {
                     )}
                 ></TextInput>
                 {moreOptionsVisible && <>
-                    <TextInput label="Reoccurring"  value={reoccurFrequency} style={{backgroundColor: 'white', marginBottom: 2 }} selectionColor="black" textColor="black"
+                    <TextInput label="Reoccurring"  value={reoccurFrequency} {...styles.paperInput}
                         render={(props) => (
                             <Picker style={{color: 'black', marginTop: 5}} dropdownIconColor='black' selectedValue={reoccurFrequency} onValueChange={setReoccurFrequency}>
                                 <Picker.Item label="No" value="no" />
@@ -109,7 +109,7 @@ export default function CreateTimeboxForm(props) {
                             </Picker>
                         )}
                     />
-                    {reoccurFrequency == 'weekly' && <TextInput label="Reoccurring Day"  value={weeklyDay} style={{backgroundColor: 'white', marginBottom: 2 }} selectionColor="black" textColor="black"
+                    {reoccurFrequency == 'weekly' && <TextInput label="Reoccurring Day"  value={weeklyDay} {...styles.paperInput}
                         render={(props) => (
                             <Picker style={{color: 'black', marginTop: 5}} dropdownIconColor='black' selectedValue={weeklyDay} onValueChange={setWeeklyDay}>
                                 {dayToName.map((day, index) => {
@@ -118,7 +118,7 @@ export default function CreateTimeboxForm(props) {
                             </Picker>
                         )}
                     />}
-                    <TextInput label="Percentage of Goal" value={percentageOfGoal} onChangeText={setPercentageOfGoal} style={{backgroundColor: 'white', marginBottom: 2}} selectionColor="black" textColor="black"/>
+                    <TextInput label="Percentage of Goal" value={percentageOfGoal} onChangeText={setPercentageOfGoal} {...styles.paperInput}/>
                 </>}
             </Dialog.Content>
             <Dialog.Actions>

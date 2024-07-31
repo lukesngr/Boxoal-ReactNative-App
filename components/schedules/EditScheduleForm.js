@@ -60,12 +60,9 @@ export default function EditScheduleForm(props) {
           <Dialog style={{backgroundColor: '#C5C27C'}} visible={props.visible} onDismiss={props.close}>
             <Dialog.Title style={{color: 'white'}}>Edit Schedule</Dialog.Title>
             <Dialog.Content>
-                <TextInput label="Title" value={title} onChangeText={setTitle} style={{backgroundColor: 'white', marginBottom: 2}} selectionColor="black" textColor="black"/>
-                <TextInput label="Timebox Duration" value={boxSizeNumber} onChangeText={setBoxSizeNumber} 
-                style={{backgroundColor: 'white', marginBottom: 2}} 
-                selectionColor="black" 
-                textColor="black"/>
-                <TextInput label="Timebox Unit"  value={boxSizeUnit} style={{backgroundColor: 'white', marginBottom: 2 }} selectionColor="black" textColor="black"
+                <TextInput label="Title" value={title} onChangeText={setTitle} {...styles.paperInput}/>
+                <TextInput label="Timebox Duration" value={boxSizeNumber} onChangeText={setBoxSizeNumber} {...styles.paperInput}/>
+                <TextInput label="Timebox Unit"  value={boxSizeUnit} {...styles.paperInput}
 	                render={(props) => (
                         <Picker style={{color: 'black', marginTop: 5}} dropdownIconColor='black' selectedValue={boxSizeUnit} onValueChange={setBoxSizeUnit}>
                             <Picker.Item label="Min" value="min" />
@@ -79,9 +76,7 @@ export default function EditScheduleForm(props) {
                     value={wakeupTimeText}
                     right={<TextInput.Icon onPress={() => setWakeupTimeModalVisible(true)} icon="clock-edit" />} 
                     editable={false} 
-                    style={{backgroundColor: 'white', marginBottom: 2}} 
-                    selectionColor="black" 
-                    textColor="black"/>
+                    {...styles.paperInput}/>
                 </Pressable>
             </Dialog.Content>
             <Dialog.Actions>

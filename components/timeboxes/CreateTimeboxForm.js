@@ -7,8 +7,9 @@ import serverIP from '../../modules/serverIP';
 import { styles } from '../../styles/styles';
 import { dayToName } from '../../modules/dateLogic';
 import { listOfColors } from '../../styles/styles';
-import { Dialog, Portal, TextInput, Button, Alert } from 'react-native-paper';
+import { Dialog, Portal, TextInput, Button } from 'react-native-paper';
 import { useSelector } from 'react-redux';
+import Alert from '../Alert';
 
 
 export default function CreateTimeboxForm(props) {
@@ -23,7 +24,7 @@ export default function CreateTimeboxForm(props) {
     
     const [moreOptionsVisible, setMoreOptionsVisible] = useState(false);
     const [reoccurFrequency, setReoccurFrequency] = useState("no");
-    const [weeklyDay, setWeeklyDay] = useState(0);
+    const [weeklyDay, setWeeklyDay] = useState('0');
     const [percentageOfGoal, setPercentageOfGoal] = useState(100);
     
     const [alert, setAlert] = useState({shown: false, title: "", message: ""});

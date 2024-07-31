@@ -13,19 +13,27 @@ import axios from 'axios';
 import { queryClient } from '../../App';
 import serverIP from '../../modules/serverIP';
 import { styles } from '../../styles/styles';
+import { dayToName } from '../../modules/dateLogic';
+import { listOfColors } from '../../styles/styles';
 
 export default function CreateTimeboxForm(props) {
-    const listOfColors = ["#00E3DD", "#00C5E6", "#00A4E7", "#0081DC", "#1E5ABF", "#348D9D", "#67D6FF"];
-    let {time, date, dayName} = props;
-    const [visible, setVisible] = useState(false);
-    const [title, setTitle] = useState("");
-    const [description, setDescription] = useState("");
-    const [reoccurFrequency, setReoccurFrequency] = useState("no");
-    const [weeklyDate, setWeeklyDate] = useState(new Date());
-    const [numberOfBoxes, setNumberOfBoxes] = useState('1');
+    
     const {id, wakeupTime, boxSizeUnit, boxSizeNumber} = useSelector(state => state.scheduleEssentials.value);
     const {timeboxes, goals} = useSelector(state => state.scheduleData.value);
+
+    const [title, setTitle] = useState("");
+    const [description, setDescription] = useState("");
+    const [numberOfBoxes, setNumberOfBoxes] = useState('1');
     const [goalSelected, setGoalSelected] = useState(goals.length == 0 ? 1 : goals[0].id);
+    
+    const [moreOptionsVisible, setMoreOptionsVisible] = useState(false);
+    const [reoccurFrequency, setReoccurFrequency] = useState("no");
+    const [weeklyDay, setWeeklyDay] = useState(0);
+    const [percentageOfGoal, setPercentageOfGoal] = useState(100);
+    
+    const [alert, setAlert] = useState({shown: false, title: "", message: ""});
+    
+    let {time, date} = props;
 
 
     let maxNumberOfBoxes = calculateMaxNumberOfBoxes(wakeupTime, boxSizeUnit, boxSizeNumber, timeboxes, time, date);
@@ -46,25 +54,25 @@ export default function CreateTimeboxForm(props) {
         }
 
         if(reoccurFrequency == "weekly") {
-            data["reoccuring"] = {create: {reoccurFrequency: "weekly", weeklyDay: new Date(weeklyDate).getDay()}};
+            data["reoccuring"] = {create: {reoccurFrequency: "weekly", weeklyDay: weeklyDay}};
         }else if(reoccurFrequency == "daily") {
             data["reoccuring"] = {create: {reoccurFrequency: "daily"}};
         }
-        //post to api
-        axios.post(serverIP+'/createTimebox', data, {headers: { 'Origin': 'http://localhost:3000' }}).then(async () => {
-            //reset the form
-            Alert.alert("Added timebox");
+        
+        axios.post(serverIP+'/createTimebox', data).then(async () => {
+            props.close();
+            setAlert({shown: true, title: "Timebox", message: "Added timebox!"});
             await queryClient.refetchQueries();
         }).catch(function(error) {
-            console.log(error);
-            Alert.alert("Error please contact developer");
+            props.close();
+            setAlert({shown: true, title: "Error", message: "An error occurred, please try again or contact the developer"});
+            console.log(error); 
         })
 
     }
 
     function sanitizedSetNumberOfBoxes(number) {
         if(number > maxNumberOfBoxes) {
-            Alert.alert("Number of Boxes", `You can only add ${maxNumberOfBoxes} boxes to this timebox`);
             setNumberOfBoxes(1);
         }else {
             setNumberOfBoxes(number);
@@ -72,61 +80,52 @@ export default function CreateTimeboxForm(props) {
     }
 
     return (
-        <View style={styles.overallModal}>
-            <View style={styles.titleBarContainer}>  
-                <Text style={styles.title}>Add TimeBox</Text>
-                <Pressable onPress={() => props.close(false)}>
-                    <FontAwesomeIcon icon={faXmark} size={25}/>
-                </Pressable>
-            </View>
-            <Text style={styles.label}>Title</Text>
-            <TextInput style={styles.textInput} onChangeText={setTitle} value={title}></TextInput>
-            <Text style={styles.label}>Description</Text>
-            <TextInput style={styles.textInput} placeholderTextColor={"black"} onChangeText={setDescription} value={description}></TextInput>
-            <Text style={styles.label}>Boxes</Text>
-            <TextInput style={styles.textInput} keyboardType="numeric" onChangeText={sanitizedSetNumberOfBoxes} value={numberOfBoxes}></TextInput>
-            <Text style={styles.label}>Reoccuring?</Text>
-            <View style={styles.pickerBorder}>
-                <Picker style={styles.picker} itemStyle={styles.pickerItem} selectedValue={reoccurFrequency} onValueChange={setReoccurFrequency}>
-                    <Picker.Item label="No" value="no" />
-                    <Picker.Item label="Daily" value="daily" />
-                    <Picker.Item label="Weekly" value="weekly" />
-                </Picker>
-            </View>
-            {reoccurFrequency == 'weekly' && 
-                <>
-                    <Text style={styles.label}>Weekly Date</Text>
-                    <Pressable onPress={() => setVisible(true)}>
-                        <FontAwesomeIcon icon={faCalendar} size={25}/>
-                    </Pressable>
-                    <DatePicker
-                        modal
-                        mode="date"
-                        date={new Date(weeklyDate)}
-                        onDateChange={(date) => setWeeklyDate(date.toUTCString())}
-                        open={visible}
-                        onConfirm={(date) => 
-                            {
-                                setWeeklyDate(date.toUTCString());
-                                setVisible(false);
-                            }
-                        }
-                        onCancel={() => setVisible(false)}></DatePicker>
-                </>
-            }
-            {goals.length == 0 ? (<Text style={styles.label}>Need to make goal first</Text>) : (
-                <>
-                    <Text style={styles.label}>Goal</Text>
-                    <View style={styles.pickerBorder}>
-                        <Picker style={styles.picker} itemStyle={styles.pickerItem} selectedValue={goalSelected} onValueChange={setGoalSelected}>
-                            {goals.map((goal, index) => (
-                                <Picker.Item key={index} label={goal.name} value={String(goal.id)} />
-                            ))}
+    <Portal>
+        <Dialog style={{backgroundColor: '#C5C27C'}} visible={props.visible} onDismiss={props.close}>
+            <Dialog.Title style={{color: 'white'}}>Create Schedule</Dialog.Title>
+            <Dialog.Content>
+                <TextInput label="Title" value={title} onChangeText={setTitle} style={{backgroundColor: 'white', marginBottom: 2}} selectionColor="black" textColor="black"/>
+                <TextInput label="Description" value={description} onChangeText={setDescription} style={{backgroundColor: 'white', marginBottom: 2}} selectionColor="black" textColor="black"/>
+                <TextInput label="Number of Boxes" value={numberOfBoxes} onChangeText={setNumberOfBoxes} style={{backgroundColor: 'white', marginBottom: 2}} selectionColor="black" textColor="black"/>
+                <TextInput label="Goal" value={goalSelected} style={{backgroundColor: 'white', marginTop: 10}} selectionColor="black" textColor="black"
+                    render={(props) => (
+                        <Picker style={{color: 'black', marginTop: 5}} dropdownIconColor='black' selectedValue={goalSelected} onValueChange={setGoalSelected}>
+                            {goals.map((goal, index) => {
+                                return <Picker.Item key={index} label={goal.title} value={String(goal.id)} />
+                            })}
                         </Picker>
-                    </View>
-                </>
-            )}
-            <Button textStyle={styles.buttonTextStyle} outlineStyle={styles.buttonOutlineStyle} title="Create" disabled={goals.length == 0} onPress={handleSubmit} />
-        </View>
+                    )}
+                ></TextInput>
+                {moreOptionsVisible && <>
+                    <TextInput label="Reoccurring"  value={reoccurFrequency} style={{backgroundColor: 'white', marginBottom: 2 }} selectionColor="black" textColor="black"
+                        render={(props) => (
+                            <Picker style={{color: 'black', marginTop: 5}} dropdownIconColor='black' selectedValue={reoccurFrequency} onValueChange={setReoccurFrequency}>
+                                <Picker.Item label="No" value="no" />
+                                <Picker.Item label="Daily" value="daily" />
+                                <Picker.Item label="Weekly" value="weekly" />
+                            </Picker>
+                        )}
+                    />
+                    {reoccurFrequency == 'weekly' && <TextInput label="Reoccurring Day"  value={weeklyDay} style={{backgroundColor: 'white', marginBottom: 2 }} selectionColor="black" textColor="black"
+                        render={(props) => (
+                            <Picker style={{color: 'black', marginTop: 5}} dropdownIconColor='black' selectedValue={weeklyDay} onValueChange={setWeeklyDay}>
+                                {dayToName.map((day, index) => {
+                                    return <Picker.Item key={index} label={day} value={index} />
+                                })}
+                            </Picker>
+                        )}
+                    />}
+                    <TextInput label="Percentage of Goal" value={percentageOfGoal} onChangeText={setPercentageOfGoal} style={{backgroundColor: 'white', marginBottom: 2}} selectionColor="black" textColor="black"/>
+                </>}
+            </Dialog.Content>
+            <Dialog.Actions>
+                <Button textColor="white" onPress={props.close}>Close</Button>
+                {!moreOptionsVisible && <Button textColor="black" buttonColor="white" onPress={() => setMoreOptionsVisible(true)}>More Options</Button>}
+                {moreOptionsVisible && <Button textColor="black" buttonColor="white" onPress={() => setMoreOptionsVisible(false)}>Less Options</Button>}
+                <Button textColor="black"  buttonColor="white" mode="contained" onPress={handleSubmit}>Create</Button>
+            </Dialog.Actions>
+        </Dialog>
+        {alert.shown && <Alert visible={alert.shown} close={() => setAlert({...alert, shown: false})} title={alert.title} message={alert.message}/> }
+    </Portal>
     );
 }

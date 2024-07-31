@@ -2,8 +2,10 @@ import dayjs from "dayjs";
 import { useSelector } from "react-redux";
 import { convertToDateTime } from "./coreLogic";
 
+export const dayToName = ["Sun", "Mon", "Tue", "Wed", "Thur", "Fri", "Sat"];
+
 export function getArrayOfDayDateDayNameAndMonthForHeaders(todaysDate) {
-    let dayToName = ["Sun", "Mon", "Tue", "Wed", "Thur", "Fri", "Sat"]
+    
     let result = [];
 
     for(let i = 0; i < 7; i++) {

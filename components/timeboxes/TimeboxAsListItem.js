@@ -2,10 +2,9 @@ import { Text, Checkbox, Surface } from "react-native-paper";
 import axios from "axios";
 import { queryClient } from "../../App";
 import serverIP from "../../modules/serverIP";
-import { set } from "../../redux/activeOverlayInterval";
 import { useState } from "react";
 
-export default function TimeboxItem(props) {
+export default function TimeboxAsListItem(props) {
     const [checked, setChecked] = useState(props.timebox.recordedTimeBoxes.length > 0);
 
     function completeTimebox() {

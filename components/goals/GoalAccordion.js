@@ -2,9 +2,9 @@ import { IconButton, List, Text, TouchableRipple, Surface } from "react-native-p
 import EditGoalForm from "./EditGoalForm";
 import { useState } from "react";
 import { View } from "react-native";
-import TimeboxItem from "../timeboxes/TimeboxItem";
+import TimeboxAsListItem from "../timeboxes/TimeboxAsListItem";
 
-export default function GoalExpandable(props) {
+export default function GoalAccordion(props) {
     const [editGoalFormVisible, setEditGoalFormVisible] = useState(false);
     const [accordionOpen, setAccordionOpen] = useState(false);
     return (
@@ -19,7 +19,7 @@ export default function GoalExpandable(props) {
             </View>
         </Surface>
         {accordionOpen && props.goal.timeboxes.map((timebox, index) => {
-            return <TimeboxItem scheduleID={props.scheduleID} key={index} timebox={timebox}></TimeboxItem>
+            return <TimeboxAsListItem scheduleID={props.scheduleID} key={index} timebox={timebox}></TimeboxAsListItem>
         })}   
         <EditGoalForm data={props.goal} visible={editGoalFormVisible} close={() => setEditGoalFormVisible(false)}></EditGoalForm>
     </>

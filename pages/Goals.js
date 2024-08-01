@@ -10,11 +10,11 @@ import CreateGoalForm from "../components/goals/CreateGoalForm";
 import { styles } from "../styles/styles";
 
 export default function Goals(props) {
-    const {selectedSchedule} = useSelector(state => state.settings.value);
+    const selectedSchedule = useSelector(state => state.selectedSchedule.value);
     const [createScheduleVisible, setCreateScheduleVisible] = useState(false);
     const [editScheduleVisible, setEditScheduleVisible] = useState(false);
     const [createGoalVisible, setCreateGoalVisible] = useState(false);
-    let schedule = props.data[Number(selectedSchedule)];
+    let schedule = props.data[selectedSchedule];
 
     return (<>
         <View style={{backgroundColor: '#D9D9D9', width: '100%', height: '100%', padding: 20, paddingLeft: 15, paddingRight: 15}}>

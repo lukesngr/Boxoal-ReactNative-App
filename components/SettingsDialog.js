@@ -12,7 +12,8 @@ export default function SettingsDialog(props) {
     const {data} = props;
 
     useEffect(() => {
-        dispatch({type: 'settings/set', payload: {viewType: view, selectedSchedule: selectedSchedule}});
+        dispatch({type: 'selectedSchedule/set', payload: Number(scheduleIndex)});
+        dispatch({type: 'viewType/set', payload: view});
     }, [view, scheduleIndex]);
     
     async function logOut() {

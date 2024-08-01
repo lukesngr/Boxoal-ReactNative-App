@@ -77,8 +77,9 @@ export default function TimeboxActionsForm(props) {
                     <Paragraph style={{color: 'white'}}>Actions for "{data.title}" timebox</Paragraph>
                 </Dialog.Content>
                 <Dialog.Actions>
+                    <Button textColor="white" onPress={props.close}>Close</Button>
                     {noPreviousRecording && timeboxIsntRecording && <>
-                        <Button textColor="white" onPress={autoRecord}>Complete</Button> 
+                        <Button textColor="black"  buttonColor="white" mode="contained" onPress={autoRecord}>Complete</Button> 
                         <Button textColor="black"  buttonColor="white" mode="contained" onPress={startRecording}>Record</Button>
                     </>}
                     {noPreviousRecording && timeboxIsRecording && 

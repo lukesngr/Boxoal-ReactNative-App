@@ -87,11 +87,9 @@ export default function EditTimeboxForm(props) {
         axios.post(serverIP+'/clearRecording', {
             id: props.data.id
         }).then(async () => {   
-            props.close();
             setAlert({shown: true, title: "Timebox", message: "Cleared recording!"});
             await queryClient.refetchQueries();
         }).catch(function(error) {
-            props.close();
             setAlert({shown: true, title: "Error", message: "An error occurred, please try again or contact the developer"});
             console.log(error); 
         });

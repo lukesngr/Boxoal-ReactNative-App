@@ -83,7 +83,7 @@ export default function TimeboxActionsForm(props) {
                     </>}
                     {noPreviousRecording && timeboxIsRecording && 
                     <Button textColor="black"  buttonColor="white" mode="contained" onPress={stopRecording}>Stop Recording</Button>}
-                    {timeboxIsntRecording && <Button textColor="black"  buttonColor="white" mode="contained" onPress={() => setShowEditTimeboxForm(true)}>Edit</Button>}
+                    {timeboxIsntRecording && <Button textColor="black" style={{marginLeft: 2}} buttonColor="white" mode="contained" onPress={() => setShowEditTimeboxForm(true)}>Edit</Button>}
                     
                 </Dialog.Actions>
             </Dialog>

@@ -3,6 +3,7 @@ import EditGoalForm from "./EditGoalForm";
 import { useState } from "react";
 import { View } from "react-native";
 import TimeboxAsListItem from "../timeboxes/TimeboxAsListItem";
+import GoalProgressIndicator from "./GoalProgressIndicator";
 
 export default function GoalAccordion(props) {
     const [editGoalFormVisible, setEditGoalFormVisible] = useState(false);
@@ -21,10 +22,7 @@ export default function GoalAccordion(props) {
         {accordionOpen && props.goal.timeboxes.map((timebox, index) => {
             return <TimeboxAsListItem key={index} timebox={timebox}></TimeboxAsListItem>
         })}
-        <Surface style={{ backgroundColor: 'white', borderRadius: 25}} elevation={1}>
-            <Text style={{fontSize: 25, color: 'black', textAlign: 'center', marginTop: 10, marginBottom: 10}}>15th</Text>
-            <Text style={{fontSize: 20, color: 'black', textAlign: 'center', marginTop: 10, marginBottom: 10}}>Jul</Text>
-        </Surface>                   
+        <GoalProgressIndicator></GoalProgressIndicator>                   
         <EditGoalForm data={props.goal} visible={editGoalFormVisible} close={() => setEditGoalFormVisible(false)}></EditGoalForm>
     </>
     )

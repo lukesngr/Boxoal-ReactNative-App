@@ -187,6 +187,13 @@ export const styles = {
         },
         selectionColor: 'black',
         textColor: 'black',
+    },
+    addGoalFAB: {
+        width: '85%', 
+        marginTop: 10, 
+        backgroundColor: '#C5C27C', 
+        textAlign: 'center', 
+        paddingLeft: '30%'
     }
 };
 

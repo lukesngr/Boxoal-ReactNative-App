@@ -21,7 +21,7 @@ export default function Goals(props) {
             <View style={{backgroundColor: 'white', width: '100%', height: '100%'}}>
                 <Text style={{fontFamily: 'KameronRegular', fontSize: 35, color: 'black', textAlign: 'left', marginTop: 10, paddingLeft: 40}}>Goals</Text>
                 <Surface style={{flexDirection: 'row', alignItems: 'center', paddingLeft: 40, backgroundColor: 'white'}}> 
-                    <Text style={{fontSize: 25, color: 'black', textAlign: 'left', marginTop: 5, width: 180}}>{schedule.title}</Text>
+                    <Text style={{fontSize: 25, color: 'black', textAlign: 'left', marginTop: 5, width: 220}}>{schedule.title}</Text>
                     <View style={{flexDirection: 'row', justifyContent: 'space-between', gap: -25}}>
                         <IconButton icon="cog" size={36} onPress={() => setEditScheduleVisible(true)}></IconButton>
                         <IconButton icon="plus" size={36} onPress={() => setCreateScheduleVisible(true)}></IconButton>

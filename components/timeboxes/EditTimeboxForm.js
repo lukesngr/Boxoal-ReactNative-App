@@ -1,23 +1,32 @@
 import axios from "axios";
 import { useState } from "react";
-import { Alert } from "react-native";
 import serverIP from "../../modules/serverIP";
 import { queryClient } from "../../App";
 import { Portal, Dialog, TextInput, Button } from "react-native-paper";
 import { Picker } from "@react-native-picker/picker";
-import { convertToTimeAndDate, calculateMaxNumberOfBoxes } from "../../modules/coreLogic";
+import { convertToTimeAndDate, calculateMaxNumberOfBoxes, convertToDayjs, addBoxesToTime } from "../../modules/coreLogic";
 import { useSelector } from "react-redux";
 import { styles } from "../../styles/styles";
+import Alert from "../Alert";
+import { dayToName } from "../../modules/dateLogic";
 
 export default function EditTimeboxForm(props) {
     const [title, setTitle] = useState(props.data.title);
     const [description, setDescription] = useState(props.data.description);
-    const [numberOfBoxes, setNumberOfBoxes] = useState(props.data.numberOfBoxes);
+    const [numberOfBoxes, setNumberOfBoxes] = useState(String(props.data.numberOfBoxes));
     const [goalSelected, setGoalSelected] = useState(props.data.goalID);
-    
-    const [reoccurFrequency, setReoccurFrequency] = useState("no");
-    const [weeklyDay, setWeeklyDay] = useState('0');
-    const [percentageOfGoal, setPercentageOfGoal] = useState(props.data.percentageOfGoal);
+
+    let reoccurFreq = "no";
+    let weeklyDayIndex = "0";
+    if(props.data.reoccuring != null) {
+        reoccurFreq = props.data.reoccuring.reoccurFrequency
+        if(reoccurFreq == "weekly") {
+            weeklyDayIndex = String(props.data.reoccuring.weeklyDay);
+        }
+    }
+    const [reoccurFrequency, setReoccurFrequency] = useState(reoccurFreq);
+    const [weeklyDay, setWeeklyDay] = useState(weeklyDayIndex);
+    const [goalPercentage, setGoalPercentage] = useState(String(props.data.goalPercentage));
     
     const [alert, setAlert] = useState({shown: false, title: "", message: ""});
 
@@ -30,16 +39,31 @@ export default function EditTimeboxForm(props) {
     let maxNumberOfBoxes = calculateMaxNumberOfBoxes(wakeupTime, boxSizeUnit, boxSizeNumber, timeboxes, time, date);
 
     function updateTimeBox() {
-        axios.put(serverIP+'/updateTimeBox', {
-            title,
+        let endTime = convertToDayjs(addBoxesToTime(boxSizeUnit, boxSizeNumber, time, numberOfBoxes), date).toDate(); //add boxes to start time to get end time
+
+        let data = {
+            id: props.data.id,
+            title, 
             description, 
-            id: props.data.id
-        }).then(async () => {
-            props.close();
+            startTime: props.data.startTime, 
+            endTime, 
+            numberOfBoxes: parseInt(numberOfBoxes), 
+            goal: {connect: {id: parseInt(goalSelected)}},
+            goalPercentage: parseInt(goalPercentage)
+        }
+
+        if(reoccurFrequency == "weekly") {
+            data["reoccuring"] = {create: {reoccurFrequency: "weekly", weeklyDay: parseInt(weeklyDay)}};
+        }else if(reoccurFrequency == "daily") {
+            data["reoccuring"] = {create: {reoccurFrequency: "daily"}};
+        }else if(reoccurFrequency == "no") {
+            data["reoccuring"] = {delete: true};
+        }
+
+        axios.put(serverIP+'/updateTimeBox', data).then(async () => {
             setAlert({shown: true, title: "Timebox", message: "Updated timebox!"});
             await queryClient.refetchQueries();
         }).catch(function(error) {
-            props.close();
             setAlert({shown: true, title: "Error", message: "An error occurred, please try again or contact the developer"});
             console.log(error);  
         })
@@ -50,11 +74,9 @@ export default function EditTimeboxForm(props) {
         axios.post(serverIP+'/deleteTimebox', {
             id: props.data.id
         }).then(async () => {   
-            props.close();
             setAlert({shown: true, title: "Timebox", message: "Deleted timebox!"});
             await queryClient.refetchQueries();
         }).catch(function(error) {
-            props.close();
             setAlert({shown: true, title: "Error", message: "An error occurred, please try again or contact the developer"});
             console.log(error); 
         });
@@ -126,7 +148,7 @@ export default function EditTimeboxForm(props) {
                         </Picker>
                     )}
                 />}
-                <TextInput label="Percentage of Goal" value={percentageOfGoal} onChangeText={setPercentageOfGoal} {...styles.paperInput}/>
+                <TextInput label="Percentage of Goal" value={goalPercentage} onChangeText={setGoalPercentage} {...styles.paperInput}/>
             </Dialog.Content>
             <Dialog.Actions>
                 <Button textColor="white" onPress={props.close}>Close</Button>

@@ -304,13 +304,32 @@ export function setUserNameUsingGithubAccessCode(dispatch, routeParams) {
 export function getProgressWithGoal(timeboxes) {
     let percentage = 0.0;
 
+    if(timeboxes.length == 0) {
+        percentage = 100.0;
+    }
+
     timeboxes.forEach(element => {
-        if(element.goalPercentage == 0) {
-            percentage += (1/timeboxes.length);
-        }else{
-            percentage += element.goalPercentage;
+        if(element.recordedTimeBoxes.length > 0) {
+            if(element.goalPercentage == 0) {
+                percentage += (1/timeboxes.length);
+            }else{
+                percentage += element.goalPercentage;
+            }
         }
     });
 
     return Math.round(percentage);
 }
+
+export function getDateWithSuffix(date) {
+    if (date > 3 && date < 21) {
+        return `${date}th`
+    };
+
+    switch (date % 10) {
+      case 1: return `${date}st`;
+      case 2: return `${date}nd`;
+      case 3: return `${date}rd`;
+      default: return `${date}th`;
+    }
+};

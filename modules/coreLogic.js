@@ -300,3 +300,17 @@ export function setUserNameUsingGithubAccessCode(dispatch, routeParams) {
         });
     }
 }
+
+export function getProgressWithGoal(timeboxes) {
+    let percentage = 0.0;
+
+    timeboxes.forEach(element => {
+        if(element.goalPercentage == 0) {
+            percentage += (1/timeboxes.length);
+        }else{
+            percentage += element.goalPercentage;
+        }
+    });
+
+    return Math.round(percentage);
+}

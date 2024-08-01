@@ -25,12 +25,11 @@ export default function CreateTimeboxForm(props) {
     const [moreOptionsVisible, setMoreOptionsVisible] = useState(false);
     const [reoccurFrequency, setReoccurFrequency] = useState("no");
     const [weeklyDay, setWeeklyDay] = useState('0');
-    const [percentageOfGoal, setPercentageOfGoal] = useState(100);
+    const [goalPercentage, setGoalPercentage] = useState(100);
     
     const [alert, setAlert] = useState({shown: false, title: "", message: ""});
     
     let {time, date} = props;
-
 
     let maxNumberOfBoxes = calculateMaxNumberOfBoxes(wakeupTime, boxSizeUnit, boxSizeNumber, timeboxes, time, date);
     
@@ -47,7 +46,7 @@ export default function CreateTimeboxForm(props) {
             color, 
             schedule: {connect: {id}}, 
             goal: {connect: {id: parseInt(goalSelected)}},
-            percentageOfGoal: parseInt(percentageOfGoal)
+            goalPercentage: parseInt(goalPercentage)
         }
 
         if(reoccurFrequency == "weekly") {
@@ -119,7 +118,7 @@ export default function CreateTimeboxForm(props) {
                             </Picker>
                         )}
                     />}
-                    <TextInput label="Percentage of Goal" value={percentageOfGoal} onChangeText={setPercentageOfGoal} {...styles.paperInput}/>
+                    <TextInput label="Percentage of Goal" value={goalPercentage} onChangeText={setGoalPercentage} {...styles.paperInput}/>
                 </>}
             </Dialog.Content>
             <Dialog.Actions>

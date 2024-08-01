@@ -22,7 +22,7 @@ export default function GoalAccordion(props) {
         {accordionOpen && props.goal.timeboxes.map((timebox, index) => {
             return <TimeboxAsListItem key={index} timebox={timebox}></TimeboxAsListItem>
         })}
-        <GoalProgressIndicator></GoalProgressIndicator>                   
+        <GoalProgressIndicator goal={props.goal}></GoalProgressIndicator>                   
         <EditGoalForm data={props.goal} visible={editGoalFormVisible} close={() => setEditGoalFormVisible(false)}></EditGoalForm>
     </>
     )

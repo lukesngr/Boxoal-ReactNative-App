@@ -2,8 +2,8 @@ import { Surface, Text } from "react-native-paper";
 
 export default function GoalProgressIndicator(props) {
     return (
-    <Surface style={{ backgroundColor: 'white', borderRadius: 25}} elevation={1}>
-        <Text style={{fontSize: 25, color: 'black', textAlign: 'center', marginTop: 10, marginBottom: 10}}>15th</Text>
-        <Text style={{fontSize: 20, color: 'black', textAlign: 'center', marginTop: 10, marginBottom: 10}}>Jul</Text>
+    <Surface style={{ backgroundColor: '#D9D9D9', borderRadius: 100, width: 50, height: 50, paddingTop: 5}} elevation={1}>
+        <Text style={{fontSize: 13, color: 'black', textAlign: 'center'}}>15th</Text>
+        <Text style={{fontSize: 13, color: 'black', textAlign: 'center'}}>Jul</Text>
     </Surface>)
 }

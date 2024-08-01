@@ -25,7 +25,7 @@ export default function CreateTimeboxForm(props) {
     const [moreOptionsVisible, setMoreOptionsVisible] = useState(false);
     const [reoccurFrequency, setReoccurFrequency] = useState("no");
     const [weeklyDay, setWeeklyDay] = useState('0');
-    const [goalPercentage, setGoalPercentage] = useState(100);
+    const [goalPercentage, setGoalPercentage] = useState('0');
     
     const [alert, setAlert] = useState({shown: false, title: "", message: ""});
     

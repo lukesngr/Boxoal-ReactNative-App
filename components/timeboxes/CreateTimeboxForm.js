@@ -46,7 +46,8 @@ export default function CreateTimeboxForm(props) {
             numberOfBoxes: parseInt(numberOfBoxes), 
             color, 
             schedule: {connect: {id}}, 
-            goal: {connect: {id: parseInt(goalSelected)}}
+            goal: {connect: {id: parseInt(goalSelected)}},
+            percentageOfGoal: parseInt(percentageOfGoal)
         }
 
         if(reoccurFrequency == "weekly") {

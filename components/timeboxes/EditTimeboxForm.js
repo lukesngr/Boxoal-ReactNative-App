@@ -13,16 +13,18 @@ export default function EditTimeboxForm(props) {
     const [title, setTitle] = useState(props.data.title);
     const [description, setDescription] = useState(props.data.description);
     const [numberOfBoxes, setNumberOfBoxes] = useState(props.data.numberOfBoxes);
-    const [goalSelected, setGoalSelected] = useState('1');
+    const [goalSelected, setGoalSelected] = useState(props.data.goalID);
     
     const [reoccurFrequency, setReoccurFrequency] = useState("no");
     const [weeklyDay, setWeeklyDay] = useState('0');
-    const [percentageOfGoal, setPercentageOfGoal] = useState('100');
+    const [percentageOfGoal, setPercentageOfGoal] = useState(props.data.percentageOfGoal);
     
     const [alert, setAlert] = useState({shown: false, title: "", message: ""});
 
     const {id, wakeupTime, boxSizeUnit, boxSizeNumber} = useSelector(state => state.scheduleEssentials.value);
     const {timeboxes, goals} = useSelector(state => state.scheduleData.value);
+
+    console.log(props.data);
 
     let [time, date] = convertToTimeAndDate(props.data.startTime);
     let maxNumberOfBoxes = calculateMaxNumberOfBoxes(wakeupTime, boxSizeUnit, boxSizeNumber, timeboxes, time, date);

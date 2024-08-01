@@ -2,13 +2,8 @@ import { Surface } from "react-native-paper";
 import Svg, { Circle, Text } from "react-native-svg";
 import { getDateWithSuffix, getProgressWithGoal } from "../../modules/coreLogic";
 import dayjs from "dayjs";
-/*
-<Surface style={{ backgroundColor: '#D9D9D9', borderRadius: 100, width: 50, height: 50, paddingTop: 5}} elevation={1}>
-        <Text style={{fontSize: 13, color: 'black', textAlign: 'center'}}>15th</Text>
-        <Text style={{fontSize: 13, color: 'black', textAlign: 'center'}}>Jul</Text>
-    </Surface>
+import { View } from "react-native";
 
-*/
 export default function GoalProgressIndicator(props) {
     let goalDateInDayJS = dayjs(props.goal.targetDate);
     let dateWithSuffix = getDateWithSuffix(goalDateInDayJS.date())
@@ -20,6 +15,7 @@ export default function GoalProgressIndicator(props) {
     const circumference = 2 * Math.PI * radius;
     const strokeDashoffset = circumference - (circumference * progress) / 100;
     return (
+        <View style={{marginLeft: 10, marginRight: 10}}>
         <Svg width={size} height={size}>
             <Circle
                 stroke="#D9D9D9"
@@ -45,12 +41,21 @@ export default function GoalProgressIndicator(props) {
             />
             <Text
                 x={size / 2}
-                y={size / 2}
+                y={(size / 2)-8}
                 textAnchor="middle"
                 dy=".3em"
-                fontSize={20}
+                fontSize={15}
                 fill="black"
-            >{dateWithSuffix+" "+abbrievatedMonth}</Text>
+            >{dateWithSuffix}</Text>
+            <Text
+                x={size / 2}
+                y={(size / 2)+8}
+                textAnchor="middle"
+                dy=".3em"
+                fontSize={15}
+                fill="black"
+            >{abbrievatedMonth}</Text>
       </Svg>
+      </View>
     )
 }

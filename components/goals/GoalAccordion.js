@@ -20,7 +20,11 @@ export default function GoalAccordion(props) {
         </Surface>
         {accordionOpen && props.goal.timeboxes.map((timebox, index) => {
             return <TimeboxAsListItem key={index} timebox={timebox}></TimeboxAsListItem>
-        })}   
+        })}
+        <Surface style={{ backgroundColor: 'white', borderRadius: 25}} elevation={1}>
+            <Text style={{fontSize: 25, color: 'black', textAlign: 'center', marginTop: 10, marginBottom: 10}}>15th</Text>
+            <Text style={{fontSize: 20, color: 'black', textAlign: 'center', marginTop: 10, marginBottom: 10}}>Jul</Text>
+        </Surface>                   
         <EditGoalForm data={props.goal} visible={editGoalFormVisible} close={() => setEditGoalFormVisible(false)}></EditGoalForm>
     </>
     )

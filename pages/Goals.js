@@ -7,6 +7,7 @@ import { useState } from "react";
 import EditScheduleForm from "../components/schedules/EditScheduleForm";
 import GoalAccordion from "../components/goals/GoalAccordion";
 import CreateGoalForm from "../components/goals/CreateGoalForm";
+import { styles } from "../styles/styles";
 
 export default function Goals(props) {
     const {selectedSchedule} = useSelector(state => state.settings.value);
@@ -30,7 +31,7 @@ export default function Goals(props) {
                     return <GoalAccordion key={index} goal={goal}></GoalAccordion>
                 })}
                 <Surface style={{paddingLeft: 40, flexDirection: 'row', paddingBottom: 15, backgroundColor: 'white'}}>
-                <FAB icon="plus" mode='elevated' style={{width: '85%', marginTop: 10, backgroundColor: '#C5C27C', textAlign: 'center', paddingLeft: '30%'}} onPress={() => setCreateGoalVisible(true)}/>
+                <FAB icon="plus" mode='elevated' style={styles.addGoalFAB} onPress={() => setCreateGoalVisible(true)}/>
                 </Surface>
             </View>
         </View>

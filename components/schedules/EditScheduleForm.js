@@ -10,6 +10,7 @@ import { getCurrentUser } from "aws-amplify/auth";
 import { Dialog, Portal, TextInput, Button, Text } from "react-native-paper";
 import Alert from "../Alert";
 import { styles } from "../../styles/styles";
+import { useDispatch, useSelector } from "react-redux";
 
 export default function EditScheduleForm(props) {
     const dispatch = useDispatch();
@@ -36,9 +37,7 @@ export default function EditScheduleForm(props) {
             props.close();
             setAlert({shown: true, title: "Timebox", message: "Updated schedule!"});
             await queryClient.refetchQueries();
-            if(selectedSchedule > 0) {
-                dispatch({type: 'selectedSchedule/set', payload: selectedSchedule-1});
-            }
+            
         }).catch(function(error) {
             props.close();
             setAlert({shown: true, title: "Error", message: "An error occurred, please try again or contact the developer"});
@@ -51,6 +50,9 @@ export default function EditScheduleForm(props) {
             id: props.data.id
         },).then(async () => {
             props.close();
+            if(selectedSchedule > 0) {
+                dispatch({type: 'selectedSchedule/set', payload: selectedSchedule-1});
+            }
             setAlert({shown: true, title: "Timebox", message: "Deleted schedule!"});
             await queryClient.refetchQueries();
         }).catch(function(error) {

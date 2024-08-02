@@ -12,6 +12,7 @@ import Alert from "../Alert";
 import { styles } from "../../styles/styles";
 
 export default function EditScheduleForm(props) {
+    const dispatch = useDispatch();
     const [title, setTitle] = useState(props.data.title);
     const [boxSizeNumber, setBoxSizeNumber] = useState(props.data.boxSizeNumber.toString());
     const [boxSizeUnit, setBoxSizeUnit] = useState(props.data.boxSizeUnit);
@@ -22,6 +23,7 @@ export default function EditScheduleForm(props) {
     const [wakeupTimeText, setWakeupTimeText] = useState(props.data.wakeupTime);
     const [wakeupTimeModalVisible, setWakeupTimeModalVisible] = useState(false);
     const [alert, setAlert] = useState({shown: false, title: "", message: ""});
+    const selectedSchedule = useSelector(state => state.selectedSchedule.value);
     
     async function updateSchedule() {
         axios.put(serverIP+'/updateSchedule', {
@@ -34,6 +36,9 @@ export default function EditScheduleForm(props) {
             props.close();
             setAlert({shown: true, title: "Timebox", message: "Updated schedule!"});
             await queryClient.refetchQueries();
+            if(selectedSchedule > 0) {
+                dispatch({type: 'selectedSchedule/set', payload: selectedSchedule-1});
+            }
         }).catch(function(error) {
             props.close();
             setAlert({shown: true, title: "Error", message: "An error occurred, please try again or contact the developer"});

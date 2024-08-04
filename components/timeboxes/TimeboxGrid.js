@@ -33,19 +33,23 @@ export default function TimeboxGrid(props) {
     <ScrollView>
         <View style={styles.overallView}>
             <View style={{flexDirection: 'row'}}>
-                <View style={styles.timeboxCell}></View>
+                
                 {onDayView && (
+                <>   
+                    <View style={{width: 49}}></View>
                     <View style={{backgroundColor: 'black', ...styles.timeboxCell}}
                     onLayout={(event) => {
                             setHeaderHeight(event.nativeEvent.layout.height);
                             setHeaderWidth(event.nativeEvent.layout.width);
                     }}>
-                    <Text style={{fontSize: 16, color: 'white'}}>{currentDay.name+" ("+currentDay.date+"/"+currentDay.month+")"}</Text>
-                    <ActiveOverlay></ActiveOverlay>
-                    <RecordingOverlay day={currentDay}></RecordingOverlay>
-                </View>)}
+                        <Text style={{fontSize: 25, color: 'white'}}>{currentDay.name+" ("+currentDay.date+"/"+currentDay.month+")"}</Text>
+                        <ActiveOverlay></ActiveOverlay>
+                        <RecordingOverlay day={currentDay}></RecordingOverlay>
+                    </View>
+                </>)}
                 {!onDayView && dayToName.map((day, index) => {
-                    return (
+                    return (<>
+                    <View style={styles.timeboxCell}></View>
                     <View key={index} style={{backgroundColor: ifCurrentDay(index, 'black', 'white'), ...styles.timeboxCell}}
                                 onLayout={(event) => {
                                     if(index == 0) {
@@ -57,16 +61,17 @@ export default function TimeboxGrid(props) {
                         {ifCurrentDay(index, true, false) && <ActiveOverlay></ActiveOverlay>}
                         {ifEqualOrBeyondCurrentDay(index, false, true) && <Overlay></Overlay>}
                         <RecordingOverlay day={day}></RecordingOverlay>
-                    </View>)
+                    </View></>)
                 })}
             </View>
             <View style={{flexDirection: 'column'}}>
                 {listOfTimes.map((time, index) => {
                     return <View key={index} style={{flexDirection: 'row'}}>
-                        <View style={{borderWidth: 1, padding: 1}}>
+                        <View style={{borderWidth: 1, padding: 1, height: onDayView ? 60 : 30}}>
                             <Text style={{fontSize: 18, color: 'black', width: 46}}>{time}</Text>
                         </View>
-                        {dayToName.map((day, index) => {
+                        {onDayView && <Timebox day={currentDay} time={time} index={index}></Timebox>}
+                        {!onDayView && dayToName.map((day, index) => {
                             return <Timebox key={index} day={day} time={time} index={index}></Timebox>
                         })}
                     </View>

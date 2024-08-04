@@ -7,19 +7,18 @@ import { set } from "../redux/activeOverlayInterval";
 
 export default function SettingsDialog(props) {
     const selectedSchedule = useSelector(state => state.selectedSchedule.value);
-    const viewType = useSelector(state => state.viewType.value);
-    const [view, setView] = useState(viewType);
+    const onDayView = useSelector(state => state.onDayView.value);
+    const [dayView, setDayView] = useState(onDayView);
     const [scheduleIndex, setScheduleIndex] = useState(selectedSchedule+1);
     const dispatch = useDispatch();
     const {data} = props;
 
-    function setViewType(value) {
-        setView(value);
-        dispatch({type: 'viewType/set', payload: value});
+    function setOnDayView(value) {
+        setDayView(value);
+        dispatch({type: 'onDayView/set', payload: value});
     }
 
     function setSchedule(value) {
-        console.log(value-1);
         setScheduleIndex(value);
         dispatch({type: 'selectedSchedule/set', payload: value-1});
         
@@ -36,9 +35,9 @@ export default function SettingsDialog(props) {
           <Dialog style={{backgroundColor: '#C5C27C'}} visible={props.visible} onDismiss={props.hideDialog}>
             <Dialog.Title>Settings</Dialog.Title>
             <Dialog.Content>
-                <SegmentedButtons value={view} onValueChange={setViewType} buttons={[
-                    {value: 'day', label: 'Day', style: view != 'day' ? {backgroundColor: 'white'} : {}}, 
-                    {value: 'week', label: 'Week', style: view != 'week' ? {backgroundColor: 'white'} : {}}]}>
+                <SegmentedButtons value={dayView} onValueChange={setOnDayView} buttons={[
+                    {value: true, label: 'Day', style: !onDayView ? {backgroundColor: 'white'} : {}}, 
+                    {value: false, label: 'Week', style: onDayView ? {backgroundColor: 'white'} : {}}]}>
                 </SegmentedButtons>
                 <TextInput label="Schedule" value={String(scheduleIndex)} style={{backgroundColor: 'white', marginTop: 10}} selectionColor="black" textColor="black"
 	                render={(props) => (

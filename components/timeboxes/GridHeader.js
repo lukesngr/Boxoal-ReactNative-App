@@ -6,9 +6,12 @@ import Overlay from "../overlay/Overlay";
 import { getCurrentDay } from "../../modules/dateLogic";
 
 export default function GridHeader(props) {
+    const [headerHeight, setHeaderHeight] = useState(0);
+    const [headerWidth, setHeaderWidth] = useState(0);
     const onDayView = useSelector(state => state.onDayView.value);
     let dayToName = props.dayToName;
     let overridingStyles = [{}, {}];
+    useOverlayDimensions(headerHeight, headerWidth); //calculate overlay dimensions
 
     if(onDayView) {
         dayToName = [dayToName[getCurrentDay()]]; 

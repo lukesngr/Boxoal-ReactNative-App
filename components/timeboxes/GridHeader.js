@@ -4,6 +4,10 @@ import RecordingOverlay from "../overlay/RecordingOverlay";
 import { ifCurrentDay, ifEqualOrBeyondCurrentDay } from "../../modules/dateLogic";
 import Overlay from "../overlay/Overlay";
 import { getCurrentDay } from "../../modules/dateLogic";
+import { useState } from "react";
+import { useSelector } from "react-redux";
+import useOverlayDimensions from "../../hooks/useOverlayDimensions";
+import { styles } from "../../styles/styles";
 
 export default function GridHeader(props) {
     const [headerHeight, setHeaderHeight] = useState(0);

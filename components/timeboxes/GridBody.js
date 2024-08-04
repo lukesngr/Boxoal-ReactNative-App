@@ -1,8 +1,9 @@
 import { Text, View } from "react-native";
 import Timebox from "./Timebox";
 import { getCurrentDay } from "../../modules/dateLogic";
+import { useSelector } from "react-redux";
 
-export default function GridHeader(props) {
+export default function GridBody(props) {
     const onDayView = useSelector(state => state.onDayView.value);
     let {dayToName, time} = props;
     let height = 30;

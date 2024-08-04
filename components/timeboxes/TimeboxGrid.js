@@ -14,67 +14,27 @@ import useActiveOverlay from "../../hooks/useActiveOverlay";
 import RecordingOverlay from "../overlay/RecordingOverlay";
 import RecordedTimeBoxOverlay from "../overlay/RecordedTimeBoxOverlay";
 import { styles } from "../../styles/styles";
+import GridHeader from "./GridHeader";
+import GridBody from "./GridBody";
 
 export default function TimeboxGrid(props) {
-    const [headerHeight, setHeaderHeight] = useState(0);
-    const [headerWidth, setHeaderWidth] = useState(0);
     const selectedDate = useSelector(state => state.selectedDate.value);
     const selectedSchedule = useSelector(state => state.selectedSchedule.value);
-    const onDayView = useSelector(state => state.onDayView.value);
     const schedule = props.data[selectedSchedule];
     const dayToName = getArrayOfDayDateDayNameAndMonthForHeaders(selectedDate); //get all info to make headers look nice
     const listOfTimes = returnTimesSeperatedForSchedule(schedule); //get times that go down each row
-    const currentDay = dayToName[getCurrentDay()]; //get the current day
     useTimeboxGridRedux(schedule, selectedDate); //make a map for the timeboxes with another map inside it, makes lookup fast
     useScheduleSetter(schedule); //set schedule data to redux store (timeboxes, recordedTimeboxes, goals
-    useOverlayDimensions(headerHeight, headerWidth); //calculate overlay dimensions
     useActiveOverlay(schedule);
     return (
     <ScrollView>
         <View style={styles.overallView}>
             <View style={{flexDirection: 'row'}}>
-                
-                {onDayView && (
-                <>   
-                    <View style={{width: 49}}></View>
-                    <View style={{backgroundColor: 'black', ...styles.timeboxCell}}
-                    onLayout={(event) => {
-                            setHeaderHeight(event.nativeEvent.layout.height);
-                            setHeaderWidth(event.nativeEvent.layout.width);
-                    }}>
-                        <Text style={{fontSize: 25, color: 'white'}}>{currentDay.name+" ("+currentDay.date+"/"+currentDay.month+")"}</Text>
-                        <ActiveOverlay></ActiveOverlay>
-                        <RecordingOverlay day={currentDay}></RecordingOverlay>
-                    </View>
-                </>)}
-                {!onDayView && dayToName.map((day, index) => {
-                    return (<>
-                    <View style={styles.timeboxCell}></View>
-                    <View key={index} style={{backgroundColor: ifCurrentDay(index, 'black', 'white'), ...styles.timeboxCell}}
-                                onLayout={(event) => {
-                                    if(index == 0) {
-                                        setHeaderHeight(event.nativeEvent.layout.height);
-                                        setHeaderWidth(event.nativeEvent.layout.width);
-                                    }
-                                }}>
-                        <Text style={{fontSize: 16, color: ifCurrentDay(index, 'white', 'black')}}>{day.name+" ("+day.date+"/"+day.month+")"}</Text>
-                        {ifCurrentDay(index, true, false) && <ActiveOverlay></ActiveOverlay>}
-                        {ifEqualOrBeyondCurrentDay(index, false, true) && <Overlay></Overlay>}
-                        <RecordingOverlay day={day}></RecordingOverlay>
-                    </View></>)
-                })}
+                <GridHeader dayToName={dayToName}></GridHeader>
             </View>
             <View style={{flexDirection: 'column'}}>
                 {listOfTimes.map((time, index) => {
-                    return <View key={index} style={{flexDirection: 'row'}}>
-                        <View style={{borderWidth: 1, padding: 1, height: onDayView ? 60 : 30}}>
-                            <Text style={{fontSize: 18, color: 'black', width: 46}}>{time}</Text>
-                        </View>
-                        {onDayView && <Timebox day={currentDay} time={time} index={index}></Timebox>}
-                        {!onDayView && dayToName.map((day, index) => {
-                            return <Timebox key={index} day={day} time={time} index={index}></Timebox>
-                        })}
-                    </View>
+                    return <GridBody key={index} time={time} dayToName={dayToName}></GridBody>
                 })}
             </View>
             <View style={{position: 'absolute', transform: [{translateX: 50}], zIndex: 999}}>

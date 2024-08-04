@@ -35,12 +35,10 @@ export default function TimeboxGrid(props) {
             <View style={{flexDirection: 'row'}}>
                 <View style={styles.timeboxCell}></View>
                 {onDayView && (
-                    <View key={index} style={{backgroundColor: 'black', ...styles.timeboxCell}}
+                    <View style={{backgroundColor: 'black', ...styles.timeboxCell}}
                     onLayout={(event) => {
-                        if(index == 0) {
                             setHeaderHeight(event.nativeEvent.layout.height);
                             setHeaderWidth(event.nativeEvent.layout.width);
-                        }
                     }}>
                     <Text style={{fontSize: 16, color: 'white'}}>{currentDay.name+" ("+currentDay.date+"/"+currentDay.month+")"}</Text>
                     <ActiveOverlay></ActiveOverlay>

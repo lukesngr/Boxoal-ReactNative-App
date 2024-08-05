@@ -14,18 +14,20 @@ export default function GridHeader(props) {
     const [headerWidth, setHeaderWidth] = useState(0);
     const onDayView = useSelector(state => state.onDayView.value);
     let dayToName = props.dayToName;
+    let currentDay = getCurrentDay()
     let overridingStyles = [{}, {}];
     useOverlayDimensions(headerHeight, headerWidth); //calculate overlay dimensions
 
     if(onDayView) {
-        dayToName = [dayToName[getCurrentDay()]]; 
+        dayToName = [dayToName[currentDay]]; 
         overridingStyles = [{width: 49}, {fontSize: 25}];
     } 
 
     return (<>
+        <View style={{...styles.timeboxCell}}></View>
         {dayToName.map((day, index) => {
             return (<>
-            <View style={{...styles.timeboxCell, ...overridingStyles[0]}}></View>
+            
             <View key={day.day} style={{backgroundColor: ifCurrentDay(day.day, 'black', 'white'), ...styles.timeboxCell}}
                         onLayout={(event) => {
                             if(index == 0) {

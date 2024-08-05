@@ -4,12 +4,12 @@ import { getCurrentDay } from "../../modules/dateLogic";
 import { useSelector } from "react-redux";
 
 export default function GridBody(props) {
-    const onDayView = useSelector(state => state.onDayView.value);
-    let {dayToName, time} = props;
+    let {dayToName, time, onDayView} = props;
     let height = 30;
+    let currentDay = getCurrentDay();
 
     if(onDayView) {
-        dayToName = [dayToName[getCurrentDay()]]; 
+        dayToName = [dayToName[currentDay]]; 
         height = 60;
     } 
 

@@ -12,10 +12,10 @@ import { styles } from "../../styles/styles";
 export default function GridHeader(props) {
     const [headerHeight, setHeaderHeight] = useState(0);
     const [headerWidth, setHeaderWidth] = useState(0);
-    const onDayView = useSelector(state => state.onDayView.value);
     let dayToName = props.dayToName;
-    let currentDay = getCurrentDay()
+    let currentDay = getCurrentDay();
     let overridingStyles = [{}, {}];
+    const onDayView = useSelector(state => state.onDayView.value);
     useOverlayDimensions(headerHeight, headerWidth); //calculate overlay dimensions
 
     if(onDayView) {
@@ -24,7 +24,7 @@ export default function GridHeader(props) {
     } 
 
     return (<>
-        <View style={{...styles.timeboxCell}}></View>
+        <View style={{width: 49}}></View>
         {dayToName.map((day, index) => {
             return (<>
             

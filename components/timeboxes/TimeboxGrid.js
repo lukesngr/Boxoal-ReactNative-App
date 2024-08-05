@@ -17,6 +17,7 @@ import { styles } from "../../styles/styles";
 import GridHeader from "./GridHeader";
 import GridBody from "./GridBody";
 
+
 export default function TimeboxGrid(props) {
     const selectedDate = useSelector(state => state.selectedDate.value);
     const selectedSchedule = useSelector(state => state.selectedSchedule.value);

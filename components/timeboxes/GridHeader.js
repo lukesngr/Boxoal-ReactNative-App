@@ -21,17 +21,18 @@ export default function GridHeader(props) {
 
     useEffect(() => {
         if(onDayView) {
-            setDayToName([dayToName[currentDay]]); 
-            setHeaderFontsize(18);
+            if(dayToName.length > 1) {setDayToName([dayToName[currentDay]]); }
+            setHeaderFontsize(25);
         }else{
             setDayToName(props.dayToName);
             setHeaderFontsize(16);
         }
     }, [onDayView])
+    console.log(dayToName, props.dayToName);
     
 
     return (<>
-        <View style={styles.timeboxCell}></View>
+        <View style={{borderColor: 'white', borderWidth: 1, padding: 1, width: styles.timeTextOverallWidth}}></View>
         {dayToName.map((day, index) => {
             return (<>
             <View key={day.day} style={{backgroundColor: day.day == currentDay ? 'black' :  'white', ...styles.timeboxCell}}
@@ -41,7 +42,7 @@ export default function GridHeader(props) {
                                 setHeaderWidth(event.nativeEvent.layout.width);
                             }
                         }}>
-                <Text style={{fontSize: 16, color: day.day == currentDay ? 'black' :  'white'}}>{day.name+" ("+day.date+"/"+day.month+")"}</Text>
+                <Text style={{fontSize: headerFontsize, color: day.day == currentDay ? 'white' :  'black'}}>{day.name+" ("+day.date+"/"+day.month+")"}</Text>
                 {day.day == currentDay && <ActiveOverlay></ActiveOverlay>}
                 {day.day < currentDay && <Overlay></Overlay>}
                 <RecordingOverlay day={day}></RecordingOverlay>

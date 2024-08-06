@@ -4,11 +4,9 @@ import { useState } from "react";
 import { useSelector } from 'react-redux';
 import CreateTimeboxForm from "./CreateTimeboxForm";
 import TimeboxActionsForm from "./TimeboxActionsForm";
-import { styles } from "../../styles/styles";
-import onDayView from "../../redux/onDayView";
 
 export default function Timebox(props) {
-    const {headerWidth, headerHeight} = useSelector(state => state.overlayDimensions.value);
+    const {headerWidth} = useSelector(state => state.overlayDimensions.value);
     const onDayView = useSelector(state => state.onDayView.value);
     const [modalVisible, setModalVisible] = useState(false);
     const timeboxGrid = useSelector(state => state.timeboxGrid.value);

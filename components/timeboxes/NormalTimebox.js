@@ -1,7 +1,6 @@
 import { Text, View } from "react-native";
 import { styles } from "../../styles/styles";
 import { useSelector } from "react-redux";
-import { useState } from "react";
 
 export default function NormalTimebox(props) {
     const onDayView = useSelector(state => state.onDayView.value);

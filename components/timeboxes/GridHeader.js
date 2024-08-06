@@ -19,6 +19,19 @@ export default function GridHeader(props) {
     let currentDay = getCurrentDay();
     useOverlayDimensions(headerHeight, headerWidth);
 
+    function getStyle(day) {
+        if(!onDayView) {
+            if(day.day == currentDay) {
+                return {backgroundColor: 'black', color: 'white'};
+            }else{
+                return {backgroundColor: 'white', color: 'black'};
+            }
+        }else {
+            return {backgroundColor: 'white', color: 'black'};
+        }
+        
+    }
+
     useEffect(() => {
         if(onDayView) {
             if(dayToName.length > 1) {setDayToName([dayToName[currentDay]]); }
@@ -31,17 +44,17 @@ export default function GridHeader(props) {
     
 
     return (<>
-        <View style={{borderColor: 'white', borderWidth: 1, padding: 1, width: styles.timeTextOverallWidth}}></View>
+        <View style={{borderColor: onDayView ? 'white' : 'black', backgroundColor: 'white', borderWidth: 1, padding: 1, width: styles.timeTextOverallWidth}}></View>
         {dayToName.map((day, index) => {
             return (<>
-            <View key={day.day} style={{backgroundColor: day.day == currentDay ? 'black' :  'white', ...styles.timeboxCell}}
+            <View key={day.day} style={{...styles.timeboxCell, backgroundColor: getStyle(day).backgroundColor, }}
                         onLayout={(event) => {
                             if(index == 0) {
                                 setHeaderHeight(event.nativeEvent.layout.height);
                                 setHeaderWidth(event.nativeEvent.layout.width);
                             }
                         }}>
-                <Text style={{fontSize: headerFontsize, color: day.day == currentDay ? 'white' :  'black'}}>{day.name+" ("+day.date+"/"+day.month+")"}</Text>
+                <Text style={{fontSize: headerFontsize, color: getStyle(day).color}}>{day.name+" ("+day.date+"/"+day.month+")"}</Text>
                 {day.day == currentDay && <ActiveOverlay></ActiveOverlay>}
                 {day.day < currentDay && <Overlay></Overlay>}
                 <RecordingOverlay day={day}></RecordingOverlay>

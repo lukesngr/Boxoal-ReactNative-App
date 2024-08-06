@@ -118,7 +118,6 @@ export const styles = {
         borderColor: 'black', 
         borderWidth: 1, 
         padding: 1,
-        width: 49
     },
     scheduleButtonOutlineStyle: {
         backgroundColor: '#7FFFD4',

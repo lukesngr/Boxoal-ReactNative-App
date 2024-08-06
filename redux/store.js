@@ -14,6 +14,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { persistStore, persistReducer } from 'redux-persist';
 import { combineReducers } from '@reduxjs/toolkit'
 import onDayViewReducer from './onDayView'
+import daySelectedReducer from './daySelected'
 
 const rootReducer = combineReducers({
   scheduleEssentials: scheduleEssentialsReducer,
@@ -28,12 +29,13 @@ const rootReducer = combineReducers({
   selectedDate: selectedDateReducer,
   selectedSchedule: selectedScheduleReducer,
   onDayView: onDayViewReducer,
+  daySelected: daySelectedReducer,
 });
 
 const persistConfig = {
   key: 'root',
   storage: AsyncStorage,
-  whitelist: ['username', 'timeboxRecording', 'activeOverlayInterval', 'activeOverlayHeight', 'overlayDimensions'],
+  whitelist: ['username', 'timeboxRecording', 'activeOverlayInterval', 'activeOverlayHeight', 'overlayDimensions', 'daySelected']
 }
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

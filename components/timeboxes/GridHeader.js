@@ -10,13 +10,13 @@ import { goToDay } from "../../modules/coreLogic";
 import { IconButton } from "react-native-paper";
 
 export default function GridHeader(props) {
-    const [headerHeight, setHeaderHeight] = useState(0);
-    const [headerWidth, setHeaderWidth] = useState(0);
-    const [dayToName, setDayToName] = useState(props.dayToName);
-    const [headerFontsize, setHeaderFontsize] = useState(16);
+    const dispatch = useDispatch();
     const onDayView = useSelector(state => state.onDayView.value);
     const daySelected = useSelector(state => state.daySelected.value);
-    const dispatch = useDispatch();
+    const [headerHeight, setHeaderHeight] = useState(0);
+    const [headerWidth, setHeaderWidth] = useState(0);
+    let dayToName = onDayView ? [props.dayToName[daySelected]] : props.dayToName;
+    let headerFontsize = onDayView ? 23 : 16;
     
     useOverlayDimensions(headerHeight, headerWidth, onDayView);
 
@@ -30,19 +30,7 @@ export default function GridHeader(props) {
         }else {
             return {backgroundColor: 'white', color: 'black'};
         }
-        
     }
-
-    useEffect(() => {
-        if(onDayView) {
-            setDayToName([props.dayToName[daySelected]]);
-            setHeaderFontsize(23);
-        }else{
-            setDayToName(props.dayToName);
-            setHeaderFontsize(16);
-        }
-    }, [onDayView, daySelected])
-    
 
     return (<>
         <View style={{borderColor: onDayView ? 'white' : 'black', backgroundColor: 'white', borderWidth: 1, padding: 1, width: styles.timeTextOverallWidth}}></View>

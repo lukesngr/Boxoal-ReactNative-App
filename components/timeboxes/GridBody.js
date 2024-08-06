@@ -6,20 +6,10 @@ import { styles } from "../../styles/styles";
 import { useState, useEffect } from "react";
 
 export default function GridBody(props) {
-    const [dayToName, setDayToName] = useState(props.dayToName);
-    const [timeboxHeight, setTimeboxHeight] = useState(styles.normalTimeboxHeight);
     const onDayView = useSelector(state => state.onDayView.value);
     const daySelected = useSelector(state => state.daySelected.value);
-
-    useEffect(() => {
-        if(onDayView) {
-            if(dayToName.length > 1) {setDayToName([dayToName[daySelected]]); }
-            setTimeboxHeight(styles.enlargedTimeboxHeight);
-        }else{
-            setDayToName(props.dayToName);
-            setTimeboxHeight(styles.normalTimeboxHeight);
-        }
-    }, [onDayView])
+    let dayToName = onDayView ? [props.dayToName[daySelected]] : props.dayToName;
+    let timeboxHeight = onDayView ? styles.enlargedTimeboxHeight : styles.normalTimeboxHeight;
 
     return (
     <View key={props.index} style={{flexDirection: 'row'}}>

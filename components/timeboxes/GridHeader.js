@@ -14,14 +14,22 @@ export default function GridHeader(props) {
     const [headerWidth, setHeaderWidth] = useState(0);
     useOverlayDimensions(headerHeight, headerWidth); 
     let dayToName = props.dayToName;
-    let currentDay = getCurrentDay();
-    let overridingStyles = [{}, {}];
+    let currentDay = dayToName[getCurrentDay()];
     const onDayView = useSelector(state => state.onDayView.value);
 
     return (
     <>
         <View style={styles.timeboxCell}></View>
-        {onDayView && dayToName.map((day, index) => 
+        {onDayView && 
+            <View key={currentDay.day} style={{backgroundColor: 'black', ...styles.timeboxCell}} 
+            onLayout={(event) => {setHeaderHeight(event.nativeEvent.layout.height); setHeaderWidth(event.nativeEvent.layout.width);}}>
+                <Text style={{fontSize: 25, color: 'white'}}>{currentDay.name+" ("+currentDay.date+"/"+currentDay.month+")"}</Text>
+                <ActiveOverlay></ActiveOverlay>
+                <Overlay></Overlay>
+                <RecordingOverlay day={currentDay}></RecordingOverlay>
+            </View>
+        }
+        {!onDayView && dayToName.map((day, index) => 
             (<View key={day.day} style={{backgroundColor: ifCurrentDay(day.day, 'black', 'white'), ...styles.timeboxCell}}
                         onLayout={(event) => {
                             if(index == 0) {
@@ -35,14 +43,5 @@ export default function GridHeader(props) {
                 <RecordingOverlay day={day}></RecordingOverlay>
             </View>)
         )}
-        {onDayView && 
-            <View key={currentDay.day} style={{backgroundColor: 'black', ...styles.timeboxCell}} 
-            onLayout={(event) => {setHeaderHeight(event.nativeEvent.layout.height); setHeaderWidth(event.nativeEvent.layout.width);}}>
-                <Text style={{fontSize: 25, color: 'white'}}>{currentDay.name+" ("+currentDay.date+"/"+currentDay.month+")"}</Text>
-                <ActiveOverlay></ActiveOverlay>
-                <Overlay></Overlay>
-                <RecordingOverlay day={currentDay}></RecordingOverlay>
-            </View>
-        }
     </>)
 }

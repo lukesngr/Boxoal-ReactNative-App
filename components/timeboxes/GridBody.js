@@ -4,9 +4,10 @@ import { getCurrentDay } from "../../modules/dateLogic";
 import { useSelector } from "react-redux";
 
 export default function GridBody(props) {
-    let {dayToName, time, onDayView} = props;
+    let {dayToName, time} = props;
     let height = 30;
-    let currentDay = getCurrentDay();
+    let currentDay = dayToName[getCurrentDay()];
+    const onDayView = useSelector(state => state.onDayView.value);
 
     if(onDayView) {
         dayToName = [dayToName[currentDay]]; 
@@ -18,8 +19,8 @@ export default function GridBody(props) {
         <View style={{borderWidth: 1, padding: 1, height: height}}>
             <Text style={{fontSize: 18, color: 'black', width: 46}}>{time}</Text>
         </View>
-        {dayToName.map((day, index) => {
-            return <Timebox key={index} day={day} time={time} index={index}></Timebox>
-        })}
-    </View>)
+        {onDayView && <Timebox day={currentDay} time={time} ></Timebox>}
+        {!onDayView && dayToName.map((day, index) => (<Timebox key={index} day={day} time={time} index={index}></Timebox>))}
+    </View>
+    )
 }

@@ -28,7 +28,6 @@ export default function GridHeader(props) {
             setHeaderFontsize(16);
         }
     }, [onDayView])
-    console.log(dayToName, props.dayToName);
     
 
     return (<>

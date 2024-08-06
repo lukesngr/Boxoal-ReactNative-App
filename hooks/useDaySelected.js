@@ -1,11 +1,9 @@
 import { useDispatch } from "react-redux";
 import { useEffect } from "react";
-import { getCurrentDay } from "../../modules/dateLogic";
 
-export function useDaySelected() {
-    let currentDay = getCurrentDay();
+export function useDaySelected(currentDay) {
+
     const dispatch = useDispatch();
-
     useEffect(() => {
         dispatch({type: 'daySelected/set', payload: currentDay});
     }, []);

@@ -15,10 +15,11 @@ export default function GridHeader(props) {
     const daySelected = useSelector(state => state.daySelected.value);
     const [headerHeight, setHeaderHeight] = useState(0);
     const [headerWidth, setHeaderWidth] = useState(0);
+    useOverlayDimensions(headerHeight, headerWidth, onDayView);
     let dayToName = onDayView ? [props.dayToName[daySelected]] : props.dayToName;
     let headerFontsize = onDayView ? 23 : 16;
     
-    useOverlayDimensions(headerHeight, headerWidth, onDayView);
+    
 
     function getStyle(day) {
         if(!onDayView) {

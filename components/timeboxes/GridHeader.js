@@ -13,12 +13,13 @@ export default function GridHeader(props) {
     const [dayToName, setDayToName] = useState(props.dayToName);
     const [headerFontsize, setHeaderFontsize] = useState(16);
     const onDayView = useSelector(state => state.onDayView.value);
+    const daySelected = useSelector(state => state.daySelected.value);
     
     useOverlayDimensions(headerHeight, headerWidth, onDayView);
 
     function getStyle(day) {
         if(!onDayView) {
-            if(day.day == props.currentDay) {
+            if(day.day == daySelected) {
                 return {backgroundColor: 'black', color: 'white'};
             }else{
                 return {backgroundColor: 'white', color: 'black'};
@@ -31,7 +32,7 @@ export default function GridHeader(props) {
 
     useEffect(() => {
         if(onDayView) {
-            if(dayToName.length > 1) {setDayToName([dayToName[props.currentDay]]); }
+            if(dayToName.length > 1) {setDayToName([dayToName[daySelected]]); }
             setHeaderFontsize(25);
         }else{
             setDayToName(props.dayToName);

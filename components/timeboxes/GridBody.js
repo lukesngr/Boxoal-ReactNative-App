@@ -9,11 +9,11 @@ export default function GridBody(props) {
     const [dayToName, setDayToName] = useState(props.dayToName);
     const [timeboxHeight, setTimeboxHeight] = useState(styles.normalTimeboxHeight);
     const onDayView = useSelector(state => state.onDayView.value);
-    let currentDay = getCurrentDay();
+    const daySelected = useSelector(state => state.daySelected.value);
 
     useEffect(() => {
         if(onDayView) {
-            if(dayToName.length > 1) {setDayToName([dayToName[currentDay]]); }
+            if(dayToName.length > 1) {setDayToName([dayToName[daySelected]]); }
             setTimeboxHeight(styles.enlargedTimeboxHeight);
         }else{
             setDayToName(props.dayToName);

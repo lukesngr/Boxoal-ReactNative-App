@@ -5,18 +5,12 @@ import { useSelector } from "react-redux";
 
 export default function GridBody(props) {
     let {dayToName, time} = props;
-    let height = 30;
     let currentDay = dayToName[getCurrentDay()];
     const onDayView = useSelector(state => state.onDayView.value);
 
-    if(onDayView) {
-        dayToName = [dayToName[currentDay]]; 
-        height = 60;
-    } 
-
     return (
     <View key={props.index} style={{flexDirection: 'row'}}>
-        <View style={{borderWidth: 1, padding: 1, height: height}}>
+        <View style={{borderWidth: 1, padding: 1, height: onDayView ? 60 : 30}}>
             <Text style={{fontSize: 18, color: 'black', width: 46}}>{time}</Text>
         </View>
         {onDayView && <Timebox day={currentDay} time={time} ></Timebox>}

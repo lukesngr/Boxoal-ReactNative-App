@@ -10,10 +10,8 @@ export default function NormalTimebox(props) {
     let height = timeboxHeight*props.data.numberOfBoxes;
 
     return (
-    <>
-        <View style={{position: 'relative', height: height, backgroundColor: props.data.color, width: '100%'}}>
-            <Text style={{fontSize: fontSize, color: 'black'}}>{props.data.title}</Text>
-        </View>
-    </>
+    <View style={{position: 'relative', height: height, backgroundColor: props.data.color, width: '100%'}}>
+        <Text style={{fontSize: fontSize, color: 'black'}}>{props.data.title}</Text>
+    </View>
     )
 }

@@ -30,7 +30,7 @@ export default function Timebox(props) {
     return (
     <View style={{borderWidth: 1, borderColor: 'black', width: onDayView ? headerWidth : 50.5, height: onDayView ? 60 : 30, zIndex: 998}}>
         <Pressable onPress={onPress}>
-            {data ? (<NormalTimebox data={data}></NormalTimebox>) : (<Text></Text>)}
+            {data ? (<NormalTimebox data={data}></NormalTimebox>) : (<Text style={{width: '100%', height: '100%'}}></Text>)}
         </Pressable>
         {data ? (
             <TimeboxActionsForm data={data} date={date} time={props.time} visible={modalVisible} close={() => setModalVisible(false)}></TimeboxActionsForm>

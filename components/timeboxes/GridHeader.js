@@ -1,9 +1,7 @@
 import { Text, View } from "react-native";
 import ActiveOverlay from "../overlay/ActiveOverlay";
 import RecordingOverlay from "../overlay/RecordingOverlay";
-import { ifCurrentDay, ifEqualOrBeyondCurrentDay } from "../../modules/dateLogic";
 import Overlay from "../overlay/Overlay";
-import { getCurrentDay } from "../../modules/dateLogic";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import useOverlayDimensions from "../../hooks/useOverlayDimensions";
@@ -15,12 +13,12 @@ export default function GridHeader(props) {
     const [dayToName, setDayToName] = useState(props.dayToName);
     const [headerFontsize, setHeaderFontsize] = useState(16);
     const onDayView = useSelector(state => state.onDayView.value);
-    let currentDay = getCurrentDay();
+    
     useOverlayDimensions(headerHeight, headerWidth, onDayView);
 
     function getStyle(day) {
         if(!onDayView) {
-            if(day.day == currentDay) {
+            if(day.day == props.currentDay) {
                 return {backgroundColor: 'black', color: 'white'};
             }else{
                 return {backgroundColor: 'white', color: 'black'};
@@ -33,7 +31,7 @@ export default function GridHeader(props) {
 
     useEffect(() => {
         if(onDayView) {
-            if(dayToName.length > 1) {setDayToName([dayToName[currentDay]]); }
+            if(dayToName.length > 1) {setDayToName([dayToName[props.currentDay]]); }
             setHeaderFontsize(25);
         }else{
             setDayToName(props.dayToName);
@@ -54,8 +52,8 @@ export default function GridHeader(props) {
                             }
                         }}>
                 <Text style={{fontSize: headerFontsize, color: getStyle(day).color}}>{day.name+" ("+day.date+"/"+day.month+")"}</Text>
-                {day.day == currentDay && <ActiveOverlay></ActiveOverlay>}
-                {day.day < currentDay && <Overlay></Overlay>}
+                {day.day == props.currentDay && <ActiveOverlay></ActiveOverlay>}
+                {day.day < props.currentDay && <Overlay></Overlay>}
                 <RecordingOverlay day={day}></RecordingOverlay>
             </View></>)
         })}

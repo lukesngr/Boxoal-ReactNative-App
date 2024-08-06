@@ -8,7 +8,6 @@ import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import useOverlayDimensions from "../../hooks/useOverlayDimensions";
 import { styles } from "../../styles/styles";
-import { set } from "../../redux/activeOverlayInterval";
 
 export default function GridHeader(props) {
     const [headerHeight, setHeaderHeight] = useState(0);
@@ -17,7 +16,7 @@ export default function GridHeader(props) {
     const [headerFontsize, setHeaderFontsize] = useState(16);
     const onDayView = useSelector(state => state.onDayView.value);
     let currentDay = getCurrentDay();
-    useOverlayDimensions(headerHeight, headerWidth);
+    useOverlayDimensions(headerHeight, headerWidth, onDayView);
 
     function getStyle(day) {
         if(!onDayView) {

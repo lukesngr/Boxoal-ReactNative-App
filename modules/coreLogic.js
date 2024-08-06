@@ -333,3 +333,19 @@ export function getDateWithSuffix(date) {
       default: return `${date}th`;
     }
 };
+
+export function goToDay(dispatch, daySelected, direction) {
+    if(direction == 'left') {
+        if(daySelected > 0) {
+            dispatch({type: 'daySelected/set', payload: daySelected-1});
+        }else if(daySelected == 0) {
+            dispatch({type: 'daySelected/set', payload: 6});
+        }
+    }else if(direction == 'right') {
+        if(daySelected < 6) {
+            dispatch({type: 'daySelected/set', payload: daySelected+1});
+        }else if(daySelected == 6) {
+            dispatch({type: 'daySelected/set', payload: 0});
+        }
+    }
+}

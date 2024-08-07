@@ -1,6 +1,6 @@
 import { useSelector } from "react-redux";
 import { useEffect } from "react";
-import { calculatePixelsFromTopOfGridBasedOnTime } from "../modules/timeLogic";
+import { calculatePixelsFromTopOfGridBasedOnTime } from "../modules/coreLogic";
 import dayjs from "dayjs";
 
 export default function useRecordedBoxes(filteredRecordings) {

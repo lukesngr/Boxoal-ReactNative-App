@@ -18,10 +18,10 @@ export default function useRecordedBoxes(filteredRecordings) {
                 let biggerThanAvailableSpace = recordingBoxHeight > availableSpace;
 
                 //error handling
-                if(heightForBox < overlayDimensions.timeboxHeight) {
-                    heightForBox = overlayDimensions.timeboxHeight;
+                if(recordingBoxHeight < overlayDimensions.timeboxHeight) {
+                    recordingBoxHeight = overlayDimensions.timeboxHeight;
                 }else if(biggerThanAvailableSpace) { 
-                    heightForBox = availableSpace;
+                    recordingBoxHeight = availableSpace;
                 }
 
                 let eitherIsNotZero = !(marginToRecording == 0 || recordingBoxHeight == 0); //due to overlay dimensions not being set at right time

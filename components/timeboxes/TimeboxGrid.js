@@ -36,9 +36,8 @@ export default function TimeboxGrid(props) {
                 })}
             </View>
             <View style={{position: 'absolute', transform: [{translateX: 50}], zIndex: 999}}>
-            {dayToName.map((day, index) => {
-                    return <RecordedTimeBoxOverlay key={index} index={index} day={day}></RecordedTimeBoxOverlay>
-            })}
+            <RecordedTimeBoxOverlay dayToName={dayToName}></RecordedTimeBoxOverlay>
+
             </View>
         </View>
     </ScrollView>

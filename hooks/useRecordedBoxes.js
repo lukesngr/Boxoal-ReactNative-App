@@ -1,23 +1,25 @@
 import { useSelector } from "react-redux";
+import { useEffect } from "react";
+import { calculatePixelsFromTopOfGridBasedOnTime } from "../modules/timeLogic";
+import dayjs from "dayjs";
 
 export default function useRecordedBoxes(filteredRecordings) {
     const {wakeupTime, boxSizeUnit, boxSizeNumber} = useSelector(state => state.scheduleEssentials.value);
-    const {timeboxHeight, overlayHeight, headerHeight} = useSelector(state => state.overlayDimensions.value);
+    const overlayDimensions = useSelector(state => state.overlayDimensions.value);
     let recordingBoxes = [];
     useEffect(() => {
         if(filteredRecordings.length > 0) {
             filteredRecordings.forEach(element => {
-                
                 let pixelsToRecordingStart = calculatePixelsFromTopOfGridBasedOnTime(wakeupTime, boxSizeUnit, boxSizeNumber, overlayDimensions, dayjs(element.recordedStartTime));
-                let pixelsToRecordingEnd = calculatePixelsFromTopOfGridBasedOnTime(wakeupTime, boxSizeUnit, boxSizeNumber, overlayDimensions, dayjs(element.recordedEndTime)) 
-                let marginToRecording = pixelsToRecordingStart+headerHeight;
+                let pixelsToRecordingEnd = calculatePixelsFromTopOfGridBasedOnTime(wakeupTime, boxSizeUnit, boxSizeNumber, overlayDimensions, dayjs(element.recordedEndTime)); 
+                let marginToRecording = pixelsToRecordingStart+overlayDimensions.headerHeight;
                 let recordingBoxHeight = pixelsToRecordingEnd-marginToRecording;
-                let availableSpace = (overlayHeight-marginToRecording);
+                let availableSpace = (overlayDimensions.overlayHeight-marginToRecording);
                 let biggerThanAvailableSpace = recordingBoxHeight > availableSpace;
 
                 //error handling
-                if(heightForBox < timeboxHeight) {
-                    heightForBox = timeboxHeight;
+                if(heightForBox < overlayDimensions.timeboxHeight) {
+                    heightForBox = overlayDimensions.timeboxHeight;
                 }else if(biggerThanAvailableSpace) { 
                     heightForBox = availableSpace;
                 }

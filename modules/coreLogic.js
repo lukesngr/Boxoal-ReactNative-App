@@ -281,9 +281,9 @@ export function recordIfNotificationPressed(dispatch, routeParams) {
             {headers: { 'Origin': 'http://localhost:3000' }}
         ).then(() => {
             queryClient.refetchQueries();
-            Alert.alert("Added recorded timebox");
+            Alert.alert("Timebox", "Added recorded timebox");
         }).catch(function(error) {
-            Alert.alert("Error contact developer");
+            Alert.alert("Error", "An error occurred, please try again or contact the developer");
             console.log(error); 
         })
         NativeModules.BackgroundWorkManager.stopBackgroundWork(); 

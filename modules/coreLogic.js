@@ -349,3 +349,11 @@ export function goToDay(dispatch, daySelected, direction) {
         }
     }
 }
+
+export function filterRecordingBasedOnDay(day) { //used closure first time doing so, so nice
+    return function(obj) {
+        let recordedStartTime = dayjs(obj.recordedStartTime);
+        let monthNotBasedOnZeroAsFirst = recordedStartTime.month()+1;
+        return monthNotBasedOnZeroAsFirst == day.month && (recordedStartTime.date()) == day.date;
+    }
+}

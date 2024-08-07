@@ -19,8 +19,6 @@ export default function GridHeader(props) {
     let dayToName = onDayView ? [props.dayToName[daySelected]] : props.dayToName;
     let headerFontsize = onDayView ? 23 : 16;
     
-    
-
     function getStyle(day) {
         if(!onDayView) {
             if(day.day == daySelected) {
@@ -33,28 +31,29 @@ export default function GridHeader(props) {
         }
     }
 
-    return (<>
-        <View style={{borderColor: onDayView ? 'white' : 'black', backgroundColor: 'white', borderWidth: 1, padding: 1, width: styles.timeTextOverallWidth}}></View>
-        {dayToName.map((day, index) => {
-            return (<>
-            <View key={day.day} style={{...styles.timeboxCell, backgroundColor: getStyle(day).backgroundColor, }}
-                        onLayout={(event) => {
-                            if(index == 0) {
-                                setHeaderHeight(event.nativeEvent.layout.height);
-                                setHeaderWidth(event.nativeEvent.layout.width);
-                            }
-                        }}>
-                {onDayView && 
-                <View style={{flexDirection: 'row', justifyContent: 'space-around', alignItems: 'center'}}>
-                    <IconButton icon="menu-left" size={40} onPress={() => goToDay(dispatch, daySelected, 'left')}></IconButton>
-                    <Text style={{marginLeft: 20, marginRight: 20, fontSize: headerFontsize, color: getStyle(day).color}}>{day.name+" ("+day.date+"/"+day.month+")"}</Text>
-                    <IconButton icon="menu-right" size={40} onPress={() => goToDay(dispatch, daySelected, 'right')}></IconButton>
-                </View>}
-                {!onDayView && <Text style={{fontSize: headerFontsize, color: getStyle(day).color}}>{day.name+" ("+day.date+"/"+day.month+")"}</Text>}
-                {day.day == props.currentDay && <ActiveOverlay></ActiveOverlay>}
-                {day.day < props.currentDay && <Overlay></Overlay>}
-                <RecordingOverlay day={day}></RecordingOverlay>
-            </View></>)
-        })}
-    </>)
+    return (
+        <View style={{flexDirection: 'row'}}>
+            <View style={{borderColor: onDayView ? 'white' : 'black', backgroundColor: 'white', borderWidth: 1, padding: 1, width: styles.timeTextOverallWidth}}></View>
+            {dayToName.map((day, index) => {
+                return (<>
+                <View key={day.day} style={{...styles.timeboxCell, backgroundColor: getStyle(day).backgroundColor, }}
+                            onLayout={(event) => {
+                                if(index == 0) {
+                                    setHeaderHeight(event.nativeEvent.layout.height);
+                                    setHeaderWidth(event.nativeEvent.layout.width);
+                                }
+                            }}>
+                    {onDayView && 
+                    <View style={{flexDirection: 'row', justifyContent: 'space-around', alignItems: 'center'}}>
+                        <IconButton icon="menu-left" size={40} onPress={() => goToDay(dispatch, daySelected, 'left')}></IconButton>
+                        <Text style={{marginLeft: 20, marginRight: 20, fontSize: headerFontsize, color: getStyle(day).color}}>{day.name+" ("+day.date+"/"+day.month+")"}</Text>
+                        <IconButton icon="menu-right" size={40} onPress={() => goToDay(dispatch, daySelected, 'right')}></IconButton>
+                    </View>}
+                    {!onDayView && <Text style={{fontSize: headerFontsize, color: getStyle(day).color}}>{day.name+" ("+day.date+"/"+day.month+")"}</Text>}
+                    {day.day == props.currentDay && <ActiveOverlay></ActiveOverlay>}
+                    {day.day < props.currentDay && <Overlay></Overlay>}
+                    <RecordingOverlay day={day}></RecordingOverlay>
+                </View></>)
+            })}
+        </View>)
 }

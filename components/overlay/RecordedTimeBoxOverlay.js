@@ -12,6 +12,7 @@ export default function RecordedTimeBoxOverlay(props) {
     for(let day of props.dayToName) {
         let filteredRecordings = recordedTimeboxes.filter(filterRecordingBasedOnDay(day));
         let recordedBoxes = useRecordedBoxes(filteredRecordings);
+        console.log(recordedBoxes, filteredRecordings);
         recordedBoxesForWeek.push(recordedBoxes);
     }
 
@@ -22,21 +23,24 @@ export default function RecordedTimeBoxOverlay(props) {
     }
     
     return <>
-    {displayedRecordings.map((displayedRecording, index) => (
+    {displayedRecordings.map((displayedRecording, index) => {
+        let dayIndex = index;
+        return (
         <>
-        {displayedRecording.map((recordedBox, index) => (
-            <View key={index} style={{
-                width: headerWidth, 
-                height: recordedBox.heightForBox, 
-                transform: [{translateY: recordedBox.marginFromTop}, {translateX: headerWidth*props.index}],
-                backgroundColor: 'red',
-                opacity: 0.7,
-                zIndex: 999,
-                position: 'absolute'
-            }}>
-                <Text>{recordedBox.title}</Text>
-            </View>
-            ))
-        }</>
-    ))}</>
+            {displayedRecording.map((recordedBox, index) => (
+                <View key={index} style={{
+                    width: headerWidth, 
+                    height: recordedBox.recordingBoxHeight, 
+                    transform: [{translateY: recordedBox.marginToRecording}, {translateX: headerWidth*dayIndex}],
+                    backgroundColor: 'red',
+                    opacity: 0.7,
+                    zIndex: 999,
+                    position: 'absolute'
+                }}>
+                    <Text>{recordedBox.title}</Text>
+                </View>
+                ))
+            }
+        </>)
+    })}</>
 }

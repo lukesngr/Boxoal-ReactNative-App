@@ -27,18 +27,13 @@ export default function TimeboxGrid(props) {
     return (
     <ScrollView>
         <View style={styles.overallView}>
-            <View style={{flexDirection: 'row'}}>
-                <GridHeader currentDay={currentDay} dayToName={dayToName}></GridHeader>
-            </View>
+            <GridHeader currentDay={currentDay} dayToName={dayToName}></GridHeader>
             <View style={{flexDirection: 'column'}}>
                 {listOfTimes.map((time, index) => {
                     return <GridBody key={index} currentDay={currentDay} time={time} dayToName={dayToName}></GridBody>
                 })}
             </View>
-            <View style={{position: 'absolute', transform: [{translateX: 50}], zIndex: 999}}>
-            <RecordedTimeBoxOverlay dayToName={dayToName}></RecordedTimeBoxOverlay>
-
-            </View>
+            <RecordedTimeBoxOverlay currentDay={currentDay} dayToName={dayToName}></RecordedTimeBoxOverlay>
         </View>
     </ScrollView>
     )

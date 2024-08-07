@@ -11,7 +11,6 @@ export default function RecordedTimeBoxOverlay(props) {
     const {recordedTimeboxes} = useSelector(state => state.scheduleData.value);
     let boxoalInfo = [wakeupTime, boxSizeUnit, boxSizeNumber, overlayDimensions];
     
-
     let data = recordedTimeboxes.filter(function(obj) {
         let recordedStartTime = dayjs(obj.recordedStartTime);
         return (recordedStartTime.month()+1) == props.day.month && (recordedStartTime.date()) == props.day.date;
@@ -41,17 +40,17 @@ export default function RecordedTimeBoxOverlay(props) {
         }
     }, [recordedTimeboxes]);
     
-    return <>{recordedBoxes.map((recordedBoxes, index) => (
+    return <>{recordedBoxes.map((recordedBox, index) => (
         <View key={index} style={{
             width: overlayDimensions.headerWidth, 
-            height: recordedBoxes.heightForBox, 
-            transform: [{translateY: recordedBoxes.marginFromTop}, {translateX: overlayDimensions.headerWidth*props.index}],
+            height: recordedBox.heightForBox, 
+            transform: [{translateY: recordedBox.marginFromTop}, {translateX: overlayDimensions.headerWidth*props.index}],
             backgroundColor: 'red',
             opacity: 0.7,
             zIndex: 999,
             position: 'absolute'
         }}>
-            <Text>{recordedBoxes.title}</Text>
+            <Text>{recordedBox.title}</Text>
         </View>
     ))}</>
 }

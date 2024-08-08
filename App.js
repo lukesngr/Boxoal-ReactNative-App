@@ -42,10 +42,7 @@ export const linking = {
   config: {
     initialRouteName: 'SplashScreen',
     screens: {
-      FinalView: {
-        path: 'login/:accessToken'
-      },
-      Timeboxes: { //this is a hack but other ways are far too complex
+      FinalView: { //this is a hack but other ways are far too complex
         path: 'stopRecording/:timeboxID/:scheduleID/:recordingStartTime'
       }
     }, 

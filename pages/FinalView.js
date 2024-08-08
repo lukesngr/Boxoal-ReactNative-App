@@ -15,6 +15,7 @@ import { useEffect } from 'react';
 import useCurrentUser from '../hooks/useCurrentUser';
 import { MD3LightTheme, Icon } from 'react-native-paper';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import { Dashboard } from './Dashboard';
 
 let theme = {
     ...MD3LightTheme,
@@ -64,24 +65,25 @@ export default function FinalView({ navigation, route }) {
     return (
           <Tab.Navigator theme={theme}>
             <Tab.Screen 
+                name="Dashboard" 
+                component={Dashboard} 
+                options={{headerShown: false, tabBarIcon: ({color}) => (
+                    <MaterialCommunityIcons name="circle-outline" size={20} color='black' />
+                )}}
+            />
+            <Tab.Screen 
                 name="Timeboxes" 
                 children={() => <Timeboxes navigation={navigation} data={data}></Timeboxes>} 
                 options={{headerShown: false, tabBarIcon: ({color}) => (
-                    <MaterialCommunityIcons name="circle-outline" size={20} color='black' />
+                    <MaterialCommunityIcons name="checkbox-blank-outline" size={20} color='black' />
                 )}}/>
             <Tab.Screen 
                 name="Goals" 
                 children={() => <Goals data={data}></Goals>} 
                 options={{headerShown: false, tabBarIcon: ({color}) => (
-                    <MaterialCommunityIcons name="checkbox-blank-outline" size={20} color='black' />
-                )}}/>
-            <Tab.Screen 
-                name="Settings" 
-                component={Areas} 
-                options={{headerShown: false, tabBarIcon: ({color}) => (
                     <MaterialCommunityIcons name="menu" size={20} color='black' />
-                )}}
-            />
+                )}}/>
+            
           </Tab.Navigator>
     )
 }

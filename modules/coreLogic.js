@@ -378,6 +378,6 @@ export function calculateXPPoints(timeboxData, recordedStartTime, recordedEndTim
         secondPoint = timeboxDuration / recordingDuration;
     }
 
-    return secondPoint + firstPoint;
+    return firstPoint + secondPoint;
 
 }

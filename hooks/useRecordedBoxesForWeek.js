@@ -1,5 +1,4 @@
 import { useSelector } from "react-redux";
-import { useEffect } from "react";
 import { calculatePixelsFromTopOfGridBasedOnTime } from "../modules/coreLogic";
 import dayjs from "dayjs";
 import { filterRecordingBasedOnDay } from "../modules/coreLogic";

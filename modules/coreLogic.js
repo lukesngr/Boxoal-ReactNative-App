@@ -357,3 +357,27 @@ export function filterRecordingBasedOnDay(day) { //used closure first time doing
         return monthNotBasedOnZeroAsFirst == day.month && (recordedStartTime.date()) == day.date;
     }
 }
+
+export function calculateXPPoints(timeboxData, recordedStartTime, recordedEndTime) {
+    const minuteConversionDivisor = 60000;
+    let timeboxDuration = (timeboxData.endTime - timeboxData.startTime) / minuteConversionDivisor;
+    let differenceBetweenStartTimes = Math.abs(recordedStartTime - timeboxData.startTime) / minuteConversionDivisor;
+    let firstPoint = 0;
+    if(differenceBetweenStartTimes >= timeboxDuration*1.3) {
+        firstPoint = timeboxDuration / differenceBetweenStartTimes;
+    }else if(differenceBetweenStartTimes < timeboxDuration*1.3) {
+        let gradient = ((1/1.3)-1)/timeboxDuration*1.3; //using y=mx+c, using graphs for this logic as it makes calculating points based on certain values be linear
+        firstPoint = gradient*differenceBetweenStartTimes + 1;
+    }
+
+    let recordingDuration = (recordedEndTime - recordedStartTime) / minuteConversionDivisor;
+
+    let secondPoint = 1;
+
+    if(recordingDuration > timeboxDuration) {
+        secondPoint = timeboxDuration / recordingDuration;
+    }
+
+    return secondPoint + firstPoint;
+
+}

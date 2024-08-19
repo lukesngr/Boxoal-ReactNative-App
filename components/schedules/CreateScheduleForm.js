@@ -6,10 +6,10 @@ import { queryClient } from "../../App";
 import DatePicker from "react-native-date-picker";
 import { Picker } from "@react-native-picker/picker";
 import { convertToTimeAndDate } from "../../modules/coreLogic";
-import { getCurrentUser } from "aws-amplify/auth";
-import { Dialog, Portal, TextInput, Button, Text } from "react-native-paper";
+import { Dialog, Portal, TextInput, Button } from "react-native-paper";
 import Alert from "../Alert";
 import { styles } from "../../styles/styles";
+import { useAuthenticator } from "@aws-amplify/ui-react-native";
 
 export default function CreateScheduleForm(props) {
     const [title, setTitle] = useState("");
@@ -22,15 +22,15 @@ export default function CreateScheduleForm(props) {
     const [wakeupTimeText, setWakeupTimeText] = useState("07:00");
     const [wakeupTimeModalVisible, setWakeupTimeModalVisible] = useState(false);
     const [alert, setAlert] = useState({shown: false, title: "", message: ""});
+    const {user} = useAuthenticator();
     
     async function createSchedule() {
-        const { userId } = await getCurrentUser();
         axios.post(serverIP+'/createSchedule', {
             title,
             boxSizeNumber: parseInt(boxSizeNumber),
             boxSizeUnit,
             wakeupTime: wakeupTimeText,
-            userUUID: userId, 
+            userUUID: user.userId, 
         }).then(async () => {
             props.close();
             setAlert({shown: true, title: "Timebox", message: "Created schedule!"});

@@ -11,11 +11,13 @@ import EditTimeboxForm from "./EditTimeboxForm";
 import Alert from "../Alert";
 import { Dialog, Paragraph, Portal } from "react-native-paper";
 import { getCurrentUser } from "aws-amplify/auth";
+import { useAuthenticator } from "@aws-amplify/ui-react-native";
 
 export default function TimeboxActionsForm(props) {
     const {data, date, time} = props;
     const [showEditTimeboxForm, setShowEditTimeboxForm] = useState(false);
     const [alert, setAlert] = useState({shown: false, title: "", message: ""});
+    const {user} = useAuthenticator();
     const timeboxRecording = useSelector(state => state.timeboxRecording.value);
     const schedule = useSelector(state => state.scheduleEssentials.value);
     const dispatch = useDispatch();
@@ -36,8 +38,7 @@ export default function TimeboxActionsForm(props) {
         dispatch({type: 'timeboxRecording/set', payload: {timeboxID: -1, timeboxDate: 0, recordingStartTime: 0}});
         dispatch(setActiveOverlayInterval());
         let xpGained = calculateXPPoints(data, recordedStartTime, new Date());
-        const {userId} = await getCurrentUser();
-        axios.post(serverIP+'/addExperience', {points: xpGained, userUUID: userId}).catch(function(error) { console.log(error); });
+        axios.post(serverIP+'/addExperience', {points: xpGained, userUUID: user.userId}).catch(function(error) { console.log(error); });
         axios.post(serverIP+'/createRecordedTimebox', {
             recordedStartTime: recordedStartTime, 
             recordedEndTime: new Date(), 

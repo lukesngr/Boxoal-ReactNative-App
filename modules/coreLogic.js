@@ -360,8 +360,8 @@ export function filterRecordingBasedOnDay(day) { //used closure first time doing
 
 export function calculateXPPoints(timeboxData, recordedStartTime, recordedEndTime) {
     const minuteConversionDivisor = 60000;
-    let timeboxDuration = (timeboxData.endTime - timeboxData.startTime) / minuteConversionDivisor;
-    let differenceBetweenStartTimes = Math.abs(recordedStartTime - timeboxData.startTime) / minuteConversionDivisor;
+    let timeboxDuration = (new Date(timeboxData.endTime) - new Date(timeboxData.startTime)) / minuteConversionDivisor;
+    let differenceBetweenStartTimes = Math.abs(recordedStartTime - new Date(timeboxData.startTime)) / minuteConversionDivisor;
     let firstPoint = 0;
     if(differenceBetweenStartTimes >= timeboxDuration*1.3) {
         firstPoint = timeboxDuration / differenceBetweenStartTimes;
@@ -371,13 +371,11 @@ export function calculateXPPoints(timeboxData, recordedStartTime, recordedEndTim
     }
 
     let recordingDuration = (recordedEndTime - recordedStartTime) / minuteConversionDivisor;
-
     let secondPoint = 1;
 
     if(recordingDuration > timeboxDuration) {
         secondPoint = timeboxDuration / recordingDuration;
     }
-    console.log(firstPoint, secondPoint, firstPoint+secondPoint);
     return firstPoint + secondPoint;
 
 }

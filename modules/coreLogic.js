@@ -377,7 +377,7 @@ export function calculateXPPoints(timeboxData, recordedStartTime, recordedEndTim
     if(recordingDuration > timeboxDuration) {
         secondPoint = timeboxDuration / recordingDuration;
     }
-
+    console.log(firstPoint, secondPoint, firstPoint+secondPoint);
     return firstPoint + secondPoint;
 
 }

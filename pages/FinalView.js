@@ -1,7 +1,6 @@
 import { createMaterialBottomTabNavigator } from 'react-native-paper/react-navigation';
 import Goals from './Goals';
 import Timeboxes from './Timeboxes';
-import Areas from './Areas';
 import dayjs from "dayjs";
 import { useDispatch, useSelector } from "react-redux";
 import { useQuery } from "@tanstack/react-query";
@@ -12,8 +11,7 @@ import serverIP from '../modules/serverIP';
 import Welcome from '../components/Welcome';
 import { initialNotificationSetup, recordIfNotificationPressed} from '../modules/coreLogic';
 import { useEffect } from 'react';
-import useCurrentUser from '../hooks/useCurrentUser';
-import { MD3LightTheme, Icon } from 'react-native-paper';
+import { MD3LightTheme } from 'react-native-paper';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { Dashboard } from './Dashboard';
 

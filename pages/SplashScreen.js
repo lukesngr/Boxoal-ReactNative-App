@@ -4,6 +4,7 @@ import { useEffect, useRef } from 'react';
 import SignInButton from '../components/SignInButton';
 import { getCurrentUser } from 'aws-amplify/auth';
 import { styles } from '../styles/styles';
+import { useAuthenticator } from '@aws-amplify/ui-react';
 
 function stepFunction(steps, t) {
     let stepSize = 1 / 20.0;
@@ -17,14 +18,13 @@ const secondStepFunction = (t) => stepFunction(14.0, t);
 const thirdStepFunction = (t) => stepFunction(16.0, t);
 
 export default function SplashScreen({navigation}) {
+  const { authStatus } = useAuthenticator(context => [context.authStatus]);
+  const dispatch = useDispatch();
 
-  async function checkIfSignedIn() {
-    try {
+  async function goToOperationalPage() {
       const { userId } = await getCurrentUser();
+      dispatch({type: 'username/set', payload: userId});
       navigation.navigate('FinalView');
-    } catch (error) {
-      console.log(error);
-    }
   }
 
   const firstLineDisplayed = useRef(new Animated.Value(0)).current;
@@ -37,7 +37,7 @@ export default function SplashScreen({navigation}) {
 
   useEffect(() => {
     
-    checkIfSignedIn();
+    if(authStatus == 'authenticated') { goToOperationalPage(); }
     Animated.sequence([
       Animated.timing(firstLineDisplayed, {
         toValue: 100,

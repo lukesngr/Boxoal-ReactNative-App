@@ -33,13 +33,16 @@ const Tab = createMaterialBottomTabNavigator();
 
 export default function FinalView({ navigation, route }) {
     const dispatch = useDispatch();
-    let userID = useCurrentUser();
+    const { authStatus } = useAuthenticator(context => [context.authStatus]);
+    if(authStatus != 'authenticated') { navigation.navigate('Login'); }
+
     const selectedDate = useSelector(state => state.selectedDate.value);
+    const username = useSelector(state => state.username.value);
     const {status, data, error, refetch} = useQuery({
         queryKey: ["schedule", selectedDate], 
         queryFn: async () => {
             const response = await axios.get(serverIP+"/getSchedules", { params: {
-                userUUID: userID, 
+                userUUID: username, 
                 startOfWeek: dayjs(selectedDate).startOf('week').hour(0).minute(0).toDate(), 
                 endOfWeek: dayjs(selectedDate).endOf('week').add(1, 'day').hour(23).minute(59).toDate()
             }});

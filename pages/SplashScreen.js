@@ -17,15 +17,7 @@ const secondStepFunction = (t) => stepFunction(14.0, t);
 const thirdStepFunction = (t) => stepFunction(16.0, t);
 
 export default function SplashScreen({navigation}) {
-  const { authStatus, user } = useAuthenticator();
-  const dispatch = useDispatch();
-  console.log(user.userId);
-
-  async function goToOperationalPage() {
-      const { userId } = await getCurrentUser();
-      dispatch({type: 'username/set', payload: userId});
-      navigation.navigate('FinalView');
-  }
+  const { authStatus } = useAuthenticator();
 
   const firstLineDisplayed = useRef(new Animated.Value(0)).current;
   const secondLineDisplayed = useRef(new Animated.Value(0)).current;
@@ -37,7 +29,7 @@ export default function SplashScreen({navigation}) {
 
   useEffect(() => {
     
-    if(authStatus == 'authenticated') { goToOperationalPage(); }
+    if(authStatus == 'authenticated') { navigation.navigate('FinalView'); }
     Animated.sequence([
       Animated.timing(firstLineDisplayed, {
         toValue: 100,

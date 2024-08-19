@@ -1,4 +1,4 @@
-import { addBoxesToTime, convertToDateTime, recordingNotificationsSetup, thereIsNoRecording } from "../../modules/coreLogic";
+import { addBoxesToTime, calculateXPPoints, convertToDateTime, recordingNotificationsSetup, thereIsNoRecording } from "../../modules/coreLogic";
 import axios from 'axios';
 import { queryClient } from '../../App';
 import { useState } from "react";
@@ -10,6 +10,7 @@ import { Button } from "react-native-paper";
 import EditTimeboxForm from "./EditTimeboxForm";
 import Alert from "../Alert";
 import { Dialog, Paragraph, Portal } from "react-native-paper";
+import useCurrentUser from "../../hooks/useCurrentUser";
 
 export default function TimeboxActionsForm(props) {
     const {data, date, time} = props;
@@ -18,6 +19,9 @@ export default function TimeboxActionsForm(props) {
     const timeboxRecording = useSelector(state => state.timeboxRecording.value);
     const schedule = useSelector(state => state.scheduleEssentials.value);
     const dispatch = useDispatch();
+    let user
+    const userID = useCurrentUser();
+    console.log(userID);
     
     const noPreviousRecording = thereIsNoRecording(data.recordedTimeBoxes, data.reoccuring, date, time);
     const timeboxIsntRecording = timeboxRecording.timeboxID == -1;
@@ -34,6 +38,9 @@ export default function TimeboxActionsForm(props) {
         let recordedStartTime = new Date(timeboxRecording.recordingStartTime);
         dispatch({type: 'timeboxRecording/set', payload: {timeboxID: -1, timeboxDate: 0, recordingStartTime: 0}});
         dispatch(setActiveOverlayInterval());
+        let xpGained = calculateXPPoints(data, recordedStartTime, new Date());
+        
+        axios.post(serverIP+'/addExperience', {points: xpGained, userUUID: userID}).catch(function(error) { console.log(error); });
         axios.post(serverIP+'/createRecordedTimebox', {
             recordedStartTime: recordedStartTime, 
             recordedEndTime: new Date(), 

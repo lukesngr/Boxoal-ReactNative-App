@@ -14,6 +14,7 @@ import { useEffect } from 'react';
 import { MD3LightTheme } from 'react-native-paper';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { Dashboard } from './Dashboard';
+import { useAuthenticator } from '@aws-amplify/ui-react-native';
 
 let theme = {
     ...MD3LightTheme,
@@ -31,16 +32,15 @@ const Tab = createMaterialBottomTabNavigator();
 
 export default function FinalView({ navigation, route }) {
     const dispatch = useDispatch();
-    const { authStatus } = useAuthenticator(context => [context.authStatus]);
+    const { authStatus, user } = useAuthenticator();
     if(authStatus != 'authenticated') { navigation.navigate('Login'); }
 
     const selectedDate = useSelector(state => state.selectedDate.value);
-    const username = useSelector(state => state.username.value);
     const {status, data, error, refetch} = useQuery({
         queryKey: ["schedule", selectedDate], 
         queryFn: async () => {
             const response = await axios.get(serverIP+"/getSchedules", { params: {
-                userUUID: username, 
+                userUUID: user.userId, 
                 startOfWeek: dayjs(selectedDate).startOf('week').hour(0).minute(0).toDate(), 
                 endOfWeek: dayjs(selectedDate).endOf('week').add(1, 'day').hour(23).minute(59).toDate()
             }});

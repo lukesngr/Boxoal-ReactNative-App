@@ -4,22 +4,22 @@ import { useEffect, useRef } from 'react';
 import SignInButton from '../components/SignInButton';
 import { getCurrentUser } from 'aws-amplify/auth';
 import { styles } from '../styles/styles';
-import { useAuthenticator } from '@aws-amplify/ui-react';
+import { useAuthenticator } from '@aws-amplify/ui-react-native';
+import { useDispatch } from 'react-redux';
 
 function stepFunction(steps, t) {
     let stepSize = 1 / 20.0;
     return Math.floor(t / stepSize)*stepSize;
 }
 
-
-
 const firstStepFunction = (t) => stepFunction(20.0, t);
 const secondStepFunction = (t) => stepFunction(14.0, t);
 const thirdStepFunction = (t) => stepFunction(16.0, t);
 
 export default function SplashScreen({navigation}) {
-  const { authStatus } = useAuthenticator(context => [context.authStatus]);
+  const { authStatus, user } = useAuthenticator();
   const dispatch = useDispatch();
+  console.log(user.userId);
 
   async function goToOperationalPage() {
       const { userId } = await getCurrentUser();

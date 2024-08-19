@@ -33,8 +33,6 @@ export default function EditTimeboxForm(props) {
     const {id, wakeupTime, boxSizeUnit, boxSizeNumber} = useSelector(state => state.scheduleEssentials.value);
     const {timeboxes, goals} = useSelector(state => state.scheduleData.value);
 
-    console.log(props.data);
-
     let [time, date] = convertToTimeAndDate(props.data.startTime);
     let maxNumberOfBoxes = calculateMaxNumberOfBoxes(wakeupTime, boxSizeUnit, boxSizeNumber, timeboxes, time, date);
 

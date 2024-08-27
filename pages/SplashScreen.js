@@ -6,6 +6,7 @@ import { getCurrentUser } from 'aws-amplify/auth';
 import { styles } from '../styles/styles';
 import { useAuthenticator } from '@aws-amplify/ui-react-native';
 import { useDispatch } from 'react-redux';
+import { Button } from 'react-native-paper';
 
 function stepFunction(steps, t) {
     let stepSize = 1 / 20.0;
@@ -106,18 +107,18 @@ export default function SplashScreen({navigation}) {
   return (
   <View style={styles.splashScreenContainer}>
     <Animated.View style={[styles.splashTextContainer, {width: firstLineDisplayed.interpolate({inputRange: [0, 100], outputRange: ['0%', '100%']}),
-    borderRightColor: blinkingCaretOne.interpolate({inputRange: [0, 0.5, 0.6, 1], outputRange: ['transparent', 'transparent', '#7FFFD4', '#7FFFD4']})}]}>
+    borderRightColor: blinkingCaretOne.interpolate({inputRange: [0, 0.5, 0.6, 1], outputRange: ['transparent', 'transparent', '#C5C27C', '#C5C27C']})}]}>
       <Text numberOfLines={1} style={styles.splashText}>Timeboxing</Text>
     </Animated.View>
     <Animated.View style={[styles.splashTextContainer, {width: secondLineDisplayed.interpolate({inputRange: [0, 100], outputRange: ['0%', '100%']}),
-    borderRightColor: blinkingCaretTwo.interpolate({inputRange: [0, 0.5, 0.6, 1], outputRange: ['transparent', 'transparent', '#7FFFD4', '#7FFFD4']})}]}>
+    borderRightColor: blinkingCaretTwo.interpolate({inputRange: [0, 0.5, 0.6, 1], outputRange: ['transparent', 'transparent', '#C5C27C', '#C5C27C']})}]}>
       <Text  numberOfLines={1} style={styles.splashText}>For The</Text>
     </Animated.View>
     <Animated.View style={[styles.splashTextContainer, {width: thirdLineDisplayed.interpolate({inputRange: [0, 100], outputRange: ['0%', '100%']}),
-    borderRightColor: blinkingCaretThree.interpolate({inputRange: [0, 0.5, 0.6, 1], outputRange: ['transparent', 'transparent', '#7FFFD4', '#7FFFD4']})}]}>
+    borderRightColor: blinkingCaretThree.interpolate({inputRange: [0, 0.5, 0.6, 1], outputRange: ['transparent', 'transparent', '#C5C27C', '#C5C27C']})}]}>
       <Text numberOfLines={1} style={styles.splashText}>Everyman</Text>
     </Animated.View>
-    <SignInButton signIn={() => navigation.navigate('Login')}></SignInButton>
+    <Button mode="contained" style={{...styles.welcomeButtonOutlineStyle, backgroundColor: '#C5C27C'}} onPress={() => navigation.navigate('Login')}>Sign In</Button>
   </View>
   );
 }

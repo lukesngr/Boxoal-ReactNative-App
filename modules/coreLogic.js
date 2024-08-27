@@ -363,10 +363,11 @@ export function calculateXPPoints(timeboxData, recordedStartTime, recordedEndTim
     let timeboxDuration = (new Date(timeboxData.endTime) - new Date(timeboxData.startTime)) / minuteConversionDivisor;
     let differenceBetweenStartTimes = Math.abs(recordedStartTime - new Date(timeboxData.startTime)) / minuteConversionDivisor;
     let firstPoint = 0;
-    if(differenceBetweenStartTimes >= timeboxDuration*1.3) {
+    let slightlyMoreThanTimeboxDuration = timeboxDuration*1.3;
+    if(differenceBetweenStartTimes >= slightlyMoreThanTimeboxDuration) {
         firstPoint = timeboxDuration / differenceBetweenStartTimes;
-    }else if(differenceBetweenStartTimes < timeboxDuration*1.3) {
-        let gradient = ((1/1.3)-1)/timeboxDuration*1.3; //using y=mx+c, using graphs for this logic as it makes calculating points based on certain values be linear
+    }else if(differenceBetweenStartTimes < slightlyMoreThanTimeboxDuration) {
+        let gradient = ((1/1.3)-1) / slightlyMoreThanTimeboxDuration; //using y=mx+c, using graphs for this logic as it makes calculating points based on certain values be linear
         firstPoint = gradient*differenceBetweenStartTimes + 1;
     }
 
@@ -378,4 +379,17 @@ export function calculateXPPoints(timeboxData, recordedStartTime, recordedEndTim
     }
     return firstPoint + secondPoint;
 
+}
+
+export function getProgressAndLevel(xpPoints) {
+    if(xpPoints < 10) {
+        return {progress: 0, level: 1};
+    }else{
+        let level = Math.floor(33*Math.log10(xpPoints - 9) + 1);
+        let xpPointsNeededForCurrentLevel = Math.pow(10, (level-1)/33) + 9;
+        let xpPointsNeededForNextLevel = Math.pow(10, level/33) + 9;
+        let differenceInPointsBetweenLevels = xpPointsNeededForNextLevel - xpPointsNeededForCurrentLevel;
+        let progress = ((xpPoints - xpPointsNeededForCurrentLevel) / differenceInPointsBetweenLevels);
+        return {progress: progress, level: Math.round(level)};
+    }
 }

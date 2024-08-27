@@ -7,7 +7,6 @@ import { getProgressAndLevel } from "../modules/coreLogic";
 export function Dashboard(props) {
 
   let userID = props.userID;
-  console.log(userID);
   const {status, data, error, refetch} = useQuery({
     queryKey: ["XP"], 
     queryFn: async () => {
@@ -18,11 +17,9 @@ export function Dashboard(props) {
   })
   let currentLevel = 1;
   let currentProgress = 0;
-  console.log(data, status);
 
   if(data !== undefined) {
     let {progress, level} = getProgressAndLevel(data.points);
-    console.log(progress, level);
     currentLevel = level;
     currentProgress = progress;
   }

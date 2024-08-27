@@ -1,8 +1,37 @@
 import { View, Text } from "react-native";
-export function Dashboard() {
+import { ProgressBar } from "react-native-paper";
+import { useQuery } from "@tanstack/react-query";
+import axios from "axios";
+import serverIP from "../modules/serverIP";
+import { getProgressAndLevel } from "../modules/coreLogic";
+export function Dashboard(props) {
+
+  let userID = props.userID;
+  console.log(userID);
+  const {status, data, error, refetch} = useQuery({
+    queryKey: ["XP"], 
+    queryFn: async () => {
+        const response = await axios.get(serverIP+"/getExperience", { params: {userUUID: userID}});
+        return response.data;
+    },
+    enabled: true
+  })
+  let currentLevel = 1;
+  let currentProgress = 0;
+  console.log(data, status);
+
+  if(data !== undefined) {
+    let {progress, level} = getProgressAndLevel(data.points);
+    console.log(progress, level);
+    currentLevel = level;
+    currentProgress = progress;
+  }
+
   return (
-    <View>
-      <Text style={{fontFamily: 'KameronRegular', fontSize: 30, color: 'black', textAlign: 'center', marginTop: 5}}>Welcome Back</Text>
+    <View style={{backgroundColor: '#D9D9D9', height: '100%'}}>
+      <Text style={{fontFamily: 'KameronRegular', fontSize: 30, color: 'black', textAlign: 'center', marginTop: 30}}>Welcome Back</Text>
+      <Text style={{fontFamily: 'KameronRegular', fontSize: 20, color: 'black', marginTop: 20, marginHorizontal: 30}}>Lvl {currentLevel}</Text>
+      <ProgressBar progress={currentProgress} color={'#C5C27C'} style={{marginTop: 10, marginHorizontal: 30, width: '80%'}} />
     </View>
   );
 }

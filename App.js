@@ -12,6 +12,7 @@ import { ResetPassword } from './components/login/ResetPassword.js';
 import { SignUp } from './components/login/SignUp.js';
 import { configureAmplify } from './modules/awsConfig';
 import { PaperProvider, MD3LightTheme  } from 'react-native-paper';
+import { Authenticator } from '@aws-amplify/ui-react-native';
 configureAmplify();
 
 const Stack = createNativeStackNavigator();
@@ -51,6 +52,7 @@ export const linking = {
 
 export default function App() {
   return (
+    <Authenticator.Provider>
     <PaperProvider theme={theme}>
     <QueryClientProvider client={queryClient}>
       <Provider store={store}>
@@ -87,5 +89,6 @@ export default function App() {
       </Provider>
     </QueryClientProvider>
     </PaperProvider>
+    </Authenticator.Provider>
   );
 }

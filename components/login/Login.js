@@ -37,17 +37,17 @@ export function Login({ navigation }) {
     }
 
     return (
-        <>
+        <View style={{width: '90%', marginLeft: '5%'}}>
             <Text style={styles.signInTitle}>Sign In</Text>
             <TextInput label="Username" value={username} onChangeText={setUsername} {...styles.paperInput}></TextInput>
             <TextInput label="Password" value={password} onChangeText={setPassword} secureTextEntry={passwordHidden} {...styles.paperInput} right={
                 <TextInput.Icon
-                  icon={passwordHidden ? 'eye' : 'eye-off'}
-                  onPress={() => setPasswordHidden(!passwordHidden)}
-                  forceTextInputFocus={false}
+                icon={passwordHidden ? 'eye' : 'eye-off'}
+                onPress={() => setPasswordHidden(!passwordHidden)}
+                forceTextInputFocus={false}
                 />
-              }></TextInput>
-            <Button mode="contained" style={styles.welcomeButtonOutlineStyle} onPress={login}>Sign In</Button>
+            }></TextInput>
+            <Button mode="contained" style={{...styles.welcomeButtonOutlineStyle, marginTop: 20}} onPress={login}>Sign In</Button>
             <View style={{flexDirection: 'row', justifyContent: 'space-between', width: '90%'}}>
                 <Pressable onPress={forgetPassword}>
                     <Text style={styles.signInUnderText}>Forget Password</Text>
@@ -56,6 +56,6 @@ export function Login({ navigation }) {
                     <Text style={styles.signInUnderText}>Create Account</Text>
                 </Pressable>            
             </View>
-        </>
+        </View>
     )
 }

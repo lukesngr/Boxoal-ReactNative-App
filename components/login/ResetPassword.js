@@ -1,10 +1,10 @@
-import {Alert, Pressable, Text, TextInput, View} from 'react-native';
+import {Alert, Pressable, Text, View} from 'react-native';
 import {styles} from '../../styles/styles';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import { useState } from 'react';
 import { signIn } from 'aws-amplify/auth';
-import Button from '../timeboxes/Button';
+import { Button, TextInput } from 'react-native-paper';
 
 export function ResetPassword({navigation}) {
     const [confirmPasswordHidden, setConfirmPasswordHidden] = useState(true);
@@ -15,9 +15,9 @@ export function ResetPassword({navigation}) {
     const [enteredCode, setEnteredCode] = useState(false);
     const [email, setEmail] = useState("");
 
-    function sendCodeToEmail() {
+    async function sendCodeToEmail() {
         Alert.alert("Code Sent", "Check your email for the code");
-        
+       
     }
 
     function verifyCode() {
@@ -30,28 +30,27 @@ export function ResetPassword({navigation}) {
         <>
             <Text style={styles.signInTitle}>Reset Password</Text>
             {enteredCode ? ( <>
-                <Text style={styles.signInLabel}>Password</Text>
-                <View style={{flexDirection: 'row'}}>
-                    <TextInput secureTextEntry={passwordHidden} style={styles.signInTextInput} onChangeText={setPassword} value={password}></TextInput>
-                    <Pressable onPress={() => setPasswordHidden(!passwordHidden)}>
-                        <FontAwesomeIcon style={{ transform: [{translateX: -35}]}} icon={passwordHidden ? faEye : faEyeSlash} size={30} ></FontAwesomeIcon>
-                    </Pressable>
-                </View>
-                <Text style={styles.signInLabel}>Confirm Password</Text>
-                <View style={{flexDirection: 'row'}}>
-                    <TextInput secureTextEntry={confirmPasswordHidden} style={styles.signInTextInput} onChangeText={setConfirmPassword} value={confirmPassword}></TextInput>
-                    <Pressable onPress={() => setConfirmPassword(!confirmPasswordHidden)}>
-                        <FontAwesomeIcon style={{ transform: [{translateX: -35}]}} icon={confirmPasswordHidden ? faEye : faEyeSlash} size={30} ></FontAwesomeIcon>
-                    </Pressable>
-                </View>
-                <Button textStyle={styles.buttonTextStyle} outlineStyle={styles.signInButtonOutlineStyle} title="Reset Password" onPress={resetPassword} />
+                <TextInput label="Password" value={password} onChangeText={setPassword} secureTextEntry={passwordHidden} {...styles.paperInput} right={
+                    <TextInput.Icon
+                    icon={passwordHidden ? 'eye' : 'eye-off'}
+                    onPress={() => setPasswordHidden(!passwordHidden)}
+                    forceTextInputFocus={false}
+                    />}>
+                </TextInput>
+                <TextInput label="Confirm Password" value={confirmPassword} onChangeText={setConfirmPassword} secureTextEntry={confirmPasswordHidden} {...styles.paperInput} right={
+                    <TextInput.Icon
+                    icon={confirmPasswordHidden ? 'eye' : 'eye-off'}
+                    onPress={() => setConfirmPasswordHidden(!confirmPasswordHidden)}
+                    forceTextInputFocus={false}
+                    />}>
+                </TextInput>
+                <Button mode="contained" style={{...styles.welcomeButtonOutlineStyle, marginTop: 20}} onPress={resetPassword}>Reset Password</Button>
             </>) : (<>
-                <Text style={styles.signInLabel}>Email</Text>
-                <TextInput style={styles.signInTextInput} onChangeText={setEmail} value={email}></TextInput>
-                <Button textStyle={styles.buttonTextStyle} outlineStyle={styles.signInButtonOutlineStyle} title="Send Code to Email" onPress={sendCodeToEmail} />
-                <Text style={styles.signInLabel}>Code </Text>
-                <TextInput style={styles.signInTextInput} onChangeText={setCode} value={code}></TextInput>
-                <Button textStyle={styles.buttonTextStyle} outlineStyle={styles.signInButtonOutlineStyle} title="Verify Code" onPress={verifyCode} />
+                <TextInput label="Email" value={email} onChangeText={setEmail} {...styles.paperInput}></TextInput>
+                
+                <TextInput label="Code" value={code} onChangeText={setCode} {...styles.paperInput}></TextInput>
+                <Button mode="contained" style={{...styles.welcomeButtonOutlineStyle, marginTop: 20}} onPress={sendCodeToEmail}>Send Code To Email</Button>
+                <Button mode="contained" style={{...styles.welcomeButtonOutlineStyle, marginTop: 20}} onPress={verifyCode}>Verify Code</Button>
             </>)
             }
         </>

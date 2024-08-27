@@ -67,7 +67,7 @@ export default function FinalView({ navigation, route }) {
           <Tab.Navigator theme={theme}>
             <Tab.Screen 
                 name="Dashboard" 
-                component={Dashboard} 
+                children={() => <Dashboard userID={user.userId}></Dashboard>} 
                 options={{headerShown: false, tabBarIcon: ({color}) => (
                     <MaterialCommunityIcons name="circle-outline" size={20} color='black' />
                 )}}

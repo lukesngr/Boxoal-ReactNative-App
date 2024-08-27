@@ -84,7 +84,7 @@ export const styles = {
         backgroundColor: 'rgba(128, 128, 128, 0.2)',
     },
     welcomeButtonOutlineStyle: {
-        backgroundColor: '#7FFFD4',
+        backgroundColor: '#C5C27C',
         padding: 5,
         marginTop: 100,
         marginLeft: 10,
@@ -94,7 +94,7 @@ export const styles = {
         width: '100%',
         height: '100%',
         paddingTop: 200,
-        backgroundColor: '#fff',
+        backgroundColor: '#D9D9D9',
         paddingLeft: 40,
         paddingRight: 40,
     },

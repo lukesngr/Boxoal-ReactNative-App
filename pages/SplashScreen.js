@@ -118,7 +118,7 @@ export default function SplashScreen({navigation}) {
     borderRightColor: blinkingCaretThree.interpolate({inputRange: [0, 0.5, 0.6, 1], outputRange: ['transparent', 'transparent', '#C5C27C', '#C5C27C']})}]}>
       <Text numberOfLines={1} style={styles.splashText}>Everyman</Text>
     </Animated.View>
-    <Button mode="contained" style={{...styles.welcomeButtonOutlineStyle, backgroundColor: '#C5C27C'}} onPress={() => navigation.navigate('Login')}>Sign In</Button>
+    <Button mode="contained" style={styles.welcomeButtonOutlineStyle} onPress={() => navigation.navigate('Login')}>Get Started</Button>
   </View>
   );
 }

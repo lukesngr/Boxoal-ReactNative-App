@@ -3,7 +3,7 @@ import {styles} from '../../styles/styles';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import { useState } from 'react';
-import { signIn } from 'aws-amplify/auth';
+import { confirmResetPassword, signIn } from 'aws-amplify/auth';
 import { Button, TextInput } from 'react-native-paper';
 
 export function ResetPassword({navigation}) {
@@ -12,24 +12,41 @@ export function ResetPassword({navigation}) {
     const [code, setCode] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
-    const [enteredCode, setEnteredCode] = useState(false);
-    const [email, setEmail] = useState("");
+    const [codeSent, setCodeSent] = useState(false);
+    const [username, setUsername] = useState("");
 
-    async function sendCodeToEmail() {
+    async function sendCode() {
         Alert.alert("Code Sent", "Check your email for the code");
-       
+        try {
+            const output = await resetPassword({ username });
+            if(output.nextStep.resetPasswordStep == 'CONFIRM_RESET_PASSWORD_WITH_CODE') {
+                setCodeSent(true);
+            }
+        } catch (error) {
+            console.log(error);
+        }
     }
 
-    function verifyCode() {
-        setEnteredCode(true);
+    async function resetPassword() {
+        try {
+            const output = await confirmResetPassword({ username, code, newPassword: password });
+            if(output.nextStep.resetPasswordStep == 'DONE') {
+                Alert.alert("Password Reset", "Your password has been reset");
+                navigation.navigate("SignIn");
+            }
+        }catch(error) {
+            console.log(error);
+        }
     }
-
-    function resetPassword() {}
 
     return (
         <>
             <Text style={styles.signInTitle}>Reset Password</Text>
-            {enteredCode ? ( <>
+            {codeSent ? (<>
+                <TextInput label="Username" value={username} onChangeText={setUsername} {...styles.paperInput}></TextInput>
+                <Button mode="contained" style={{...styles.welcomeButtonOutlineStyle, marginTop: 20}} onPress={sendCode}>Send Code To SMS/Email</Button>
+            </>) : ( <>
+                <TextInput label="Code" value={code} onChangeText={setCode} {...styles.paperInput}></TextInput>
                 <TextInput label="Password" value={password} onChangeText={setPassword} secureTextEntry={passwordHidden} {...styles.paperInput} right={
                     <TextInput.Icon
                     icon={passwordHidden ? 'eye' : 'eye-off'}
@@ -45,13 +62,7 @@ export function ResetPassword({navigation}) {
                     />}>
                 </TextInput>
                 <Button mode="contained" style={{...styles.welcomeButtonOutlineStyle, marginTop: 20}} onPress={resetPassword}>Reset Password</Button>
-            </>) : (<>
-                <TextInput label="Email" value={email} onChangeText={setEmail} {...styles.paperInput}></TextInput>
-                
-                <TextInput label="Code" value={code} onChangeText={setCode} {...styles.paperInput}></TextInput>
-                <Button mode="contained" style={{...styles.welcomeButtonOutlineStyle, marginTop: 20}} onPress={sendCodeToEmail}>Send Code To Email</Button>
-                <Button mode="contained" style={{...styles.welcomeButtonOutlineStyle, marginTop: 20}} onPress={verifyCode}>Verify Code</Button>
-            </>)
+            </>) 
             }
         </>
     )

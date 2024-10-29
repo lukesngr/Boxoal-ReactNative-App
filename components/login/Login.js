@@ -6,6 +6,7 @@ import { useState } from 'react';
 import { Button } from 'react-native-paper';
 import { signIn } from 'aws-amplify/auth';
 import { TextInput } from 'react-native-paper';
+import { Alert } from 'react-native';
 
 export function Login({ navigation }) {
     const [passwordHidden, setPasswordHidden] = useState(true);
@@ -13,18 +14,12 @@ export function Login({ navigation }) {
     const [password, setPassword] = useState("");
 
     async function login() {
-        let result;
         try {
-            result = await signIn({
-                username: username,
-                password: password,
-            })
-        } catch (error) {
-            console.log(error.underlyingError)
-        }
-
-        if(result.nextStep?.signInStep === 'DONE') {
+            await signIn({username, password});
+            console.log("done");
             navigation.navigate('FinalView');
+        } catch (error) {
+            Alert.alert("Error", error.message);
         }
     }
 

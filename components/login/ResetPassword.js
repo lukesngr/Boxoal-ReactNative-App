@@ -10,8 +10,8 @@ import { set } from '../../redux/activeOverlayInterval';
 export function ResetPassword({navigation}) {
     const [confirmPasswordHidden, setConfirmPasswordHidden] = useState(true);
     const [passwordHidden, setPasswordHidden] = useState(true);
-    const [code, setCode] = useState("");
-    const [password, setPassword] = useState("");
+    const [confirmationCode, setConfirmationCode] = useState("");
+    const [newPassword, setNewPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
     const [codeSent, setCodeSent] = useState(false);
     const [username, setUsername] = useState("");
@@ -20,7 +20,6 @@ export function ResetPassword({navigation}) {
         Alert.alert("Code Sent", "Check your email for the code");
         try {
             const output = await resetPassword({ username });
-            console.log(output);
             if(output.nextStep.resetPasswordStep == 'CONFIRM_RESET_PASSWORD_WITH_CODE') {
                 setCodeSent(true);
             }
@@ -30,15 +29,12 @@ export function ResetPassword({navigation}) {
     }
 
     async function confirmAndSetPassword() {
-        setCodeSent(true);
         try {
-            const output = await confirmResetPassword({ username, code, newPassword: password });
-            if(output.nextStep.resetPasswordStep == 'DONE') {
-                Alert.alert("Password Reset", "Your password has been reset");
-                navigation.navigate("SignIn");
-            }
+            await confirmResetPassword({ username, confirmationCode, newPassword});
+            Alert.alert("Password Reset", "Your password has been reset");
+            navigation.navigate("Login");
         }catch(error) {
-            console.log(error);
+            Alert.alert("Error", error.message);
         }
         
     }
@@ -47,8 +43,8 @@ export function ResetPassword({navigation}) {
         <>
             <Text style={styles.signInTitle}>Reset Password</Text>
             {codeSent ? ( <>
-                <TextInput label="Code" value={code} onChangeText={setCode} {...styles.paperInput}></TextInput>
-                <TextInput label="Password" value={password} onChangeText={setPassword} secureTextEntry={passwordHidden} {...styles.paperInput} right={
+                <TextInput label="Code" value={confirmationCode} onChangeText={setConfirmationCode} {...styles.paperInput}></TextInput>
+                <TextInput label="Password" value={newPassword} onChangeText={setNewPassword} secureTextEntry={passwordHidden} {...styles.paperInput} right={
                     <TextInput.Icon
                     icon={passwordHidden ? 'eye' : 'eye-off'}
                     onPress={() => setPasswordHidden(!passwordHidden)}

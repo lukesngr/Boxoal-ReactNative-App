@@ -10,6 +10,7 @@ import { styles } from "../../styles/styles";
 import GridHeader from "./GridHeader";
 import GridBody from "./GridBody";
 import { useDaySelected } from "../../hooks/useDaySelected";
+import CorrectModalDisplayer from "../modals/CorrectModalDisplayer";
 
 
 export default function TimeboxGrid(props) {
@@ -28,6 +29,7 @@ export default function TimeboxGrid(props) {
     <ScrollView>
         <View style={styles.overallView}>
             <GridHeader currentDay={currentDay} dayToName={dayToName}></GridHeader>
+            <CorrectModalDisplayer></CorrectModalDisplayer>
             <View style={{flexDirection: 'column'}}>
                 {listOfTimes.map((time, index) => {
                     return <GridBody key={index} currentDay={currentDay} time={time} dayToName={dayToName}></GridBody>

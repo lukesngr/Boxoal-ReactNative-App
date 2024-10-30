@@ -6,13 +6,13 @@ import CreateTimeboxForm from "./CreateTimeboxForm";
 import TimeboxActionsForm from "./TimeboxActionsForm";
 
 export default function Timebox(props) {
+    const dispatch = useDispatch();
     const {headerWidth} = useSelector(state => state.overlayDimensions.value);
     const onDayView = useSelector(state => state.onDayView.value);
     const [modalVisible, setModalVisible] = useState(false);
     const timeboxGrid = useSelector(state => state.timeboxGrid.value);
-
-    let date = props.day.date+"/"+props.day.month;
-    let dayName = props.day.name;
+    const date = props.day.date+"/"+props.day.month;
+    const dayName = props.day.name;
     let data;
 
     if(timeboxGrid) { 
@@ -22,7 +22,11 @@ export default function Timebox(props) {
     }
 
     function onPress() {
-        setModalVisible(!modalVisible);
+        if(data) {
+            dispatch({type: 'modalVisible/set', payload: {visible: true, props: {data: data, date: date, time: props.time}}});
+        }else{
+            dispatch({type: 'modalVisible/set', payload: {visible: true, props: {dayName: dayName, date: date, time: props.time}}});
+        }
     }
 
     return (
@@ -30,12 +34,6 @@ export default function Timebox(props) {
         <Pressable onPress={onPress}>
             {data ? (<NormalTimebox data={data}></NormalTimebox>) : (<Text style={{width: '100%', height: '100%'}}></Text>)}
         </Pressable>
-        {data ? (
-            <TimeboxActionsForm data={data} date={date} time={props.time} visible={modalVisible} close={() => setModalVisible(false)}></TimeboxActionsForm>
-        ) : (
-            <CreateTimeboxForm time={props.time} dayName={dayName} date={date} visible={modalVisible} close={() => setModalVisible(false)}></CreateTimeboxForm>
-        )
-        }
     </View>
     )
 }

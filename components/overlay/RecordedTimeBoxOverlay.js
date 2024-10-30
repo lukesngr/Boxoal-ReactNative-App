@@ -35,7 +35,7 @@ export default function RecordedTimeBoxOverlay(props) {
                     opacity: 0.7,
                     zIndex: 999,
                     position: 'absolute'
-                }}>
+                }} pointerEvents="none">
                     <Text>{recordedBox.title}</Text>
                 </View>
                 ))

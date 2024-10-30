@@ -25,7 +25,7 @@ export default function RecordedTimeBoxOverlay(props) {
     {displayedRecordings.map((displayedRecording, index) => {
         let dayIndex = index;
         return (
-        <>
+        <View key={index}>
             {displayedRecording.length > 0 && displayedRecording.map((recordedBox, index) => (
                 <View key={index} style={{
                     width: headerWidth, 
@@ -40,7 +40,7 @@ export default function RecordedTimeBoxOverlay(props) {
                 </View>
                 ))
             }
-        </>)
+        </View>)
     })}
     </View>)
 }

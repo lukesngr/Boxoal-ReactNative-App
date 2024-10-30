@@ -72,17 +72,21 @@ export default function TimeboxActionsForm(props) {
         })  
     }
     
+    function closeModal() {
+        dispatch({type: 'modalVisible/set', payload: {visible: false, props: {}}});
+    }
+    
     return (
     <>
         {showEditTimeboxForm ? ( <EditTimeboxForm data={data} previousRecording={!noPreviousRecording} close={() => setShowEditTimeboxForm(false)}></EditTimeboxForm>) : (
         <Portal>
-            <Dialog style={{backgroundColor: '#C5C27C'}} visible={props.visible} onDismiss={props.close}>
+            <Dialog style={{backgroundColor: '#C5C27C'}} visible={props.visible} onDismiss={closeModal}>
                 <Dialog.Title style={{color: 'white'}}>{data.title}</Dialog.Title>
                 <Dialog.Content>
                     <Paragraph style={{color: 'white'}}>Actions for "{data.title}" timebox</Paragraph>
                 </Dialog.Content>
                 <Dialog.Actions>
-                    <Button textColor="white" onPress={props.close}>Close</Button>
+                    <Button textColor="white" onPress={closeModal}>Close</Button>
                     {noPreviousRecording && timeboxIsntRecording && <>
                         <Button textColor="black"  buttonColor="white" mode="contained" onPress={autoRecord}>Complete</Button> 
                         <Button textColor="black"  buttonColor="white" mode="contained" onPress={startRecording}>Record</Button>

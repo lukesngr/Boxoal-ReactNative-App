@@ -5,12 +5,13 @@ import { queryClient } from "../../App";
 import { Portal, Dialog, TextInput, Button } from "react-native-paper";
 import { Picker } from "@react-native-picker/picker";
 import { convertToTimeAndDate, calculateMaxNumberOfBoxes, convertToDayjs, addBoxesToTime } from "../../modules/coreLogic";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { styles } from "../../styles/styles";
 import Alert from "../Alert";
 import { dayToName } from "../../modules/dateLogic";
 
 export default function EditTimeboxForm(props) {
+    const dispatch = useDispatch();
     const [title, setTitle] = useState(props.data.title);
     const [description, setDescription] = useState(props.data.description);
     const [numberOfBoxes, setNumberOfBoxes] = useState(String(props.data.numberOfBoxes));
@@ -35,6 +36,10 @@ export default function EditTimeboxForm(props) {
 
     let [time, date] = convertToTimeAndDate(props.data.startTime);
     let maxNumberOfBoxes = calculateMaxNumberOfBoxes(wakeupTime, boxSizeUnit, boxSizeNumber, timeboxes, time, date);
+
+    function closeModal() {
+        dispatch({type: 'modalVisible/set', payload: {visible: false, props: {}}});
+    }
 
     function updateTimeBox() {
         let endTime = convertToDayjs(addBoxesToTime(boxSizeUnit, boxSizeNumber, time, numberOfBoxes), date).toDate(); //add boxes to start time to get end time
@@ -111,7 +116,7 @@ export default function EditTimeboxForm(props) {
 
     return (
     <Portal>
-        <Dialog style={{backgroundColor: '#C5C27C'}} visible={true} onDismiss={props.close}>
+        <Dialog style={{backgroundColor: '#C5C27C'}} visible={true} onDismiss={closeModal}>
             <Dialog.Title style={{color: 'white'}}>Edit Timebox</Dialog.Title>
             <Dialog.Content>
                 <TextInput label="Title" value={title} onChangeText={setTitle} {...styles.paperInput}/>
@@ -147,7 +152,7 @@ export default function EditTimeboxForm(props) {
                 <TextInput label="Percentage of Goal" value={goalPercentage} onChangeText={setGoalPercentage} {...styles.paperInput}/>
             </Dialog.Content>
             <Dialog.Actions>
-                <Button textColor="white" onPress={props.close}>Close</Button>
+                <Button textColor="white" onPress={closeModal}>Close</Button>
                 <Button textColor="black"  buttonColor="white" mode="contained" onPress={deleteTimeBox}>Delete</Button>
                 {props.previousRecording && <Button textColor="black"  buttonColor="white" mode="contained" onPress={clearRecording}>Clear Recording</Button>}
                 <Button textColor="black"  buttonColor="white" mode="contained" onPress={updateTimeBox}>Update</Button>

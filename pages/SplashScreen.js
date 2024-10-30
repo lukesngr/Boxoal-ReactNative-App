@@ -102,7 +102,7 @@ export default function SplashScreen({navigation}) {
         { iterations: 4 }
       )
     ]).start();
-  });
+  }, []);
 
   return (
   <View style={styles.splashScreenContainer}>

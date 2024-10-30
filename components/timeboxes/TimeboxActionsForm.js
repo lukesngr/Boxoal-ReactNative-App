@@ -26,6 +26,10 @@ export default function TimeboxActionsForm(props) {
     const timeboxIsntRecording = timeboxRecording.timeboxID == -1;
     const timeboxIsRecording = timeboxRecording.timeboxID == data.id && timeboxRecording.timeboxDate == date;
 
+    function closeModal() {
+        dispatch({type: 'modalVisible/set', payload: {visible: false, props: {}}});
+    }
+
     async function startRecording() {
         NativeModules.BackgroundWorkManager.startBackgroundWork(JSON.stringify(data), JSON.stringify(schedule), new Date().toISOString());
         dispatch({type: 'timeboxRecording/set', payload: {timeboxID: data.id, timeboxDate: date, recordingStartTime: new Date().toISOString()}});
@@ -45,11 +49,11 @@ export default function TimeboxActionsForm(props) {
             timeBox: {connect: {id: data.id}}, 
             schedule: {connect: {id: schedule.id}}},
         ).then(async () => {
-            props.close();
+            closeModal();
             setAlert({shown: true, title: "Timebox", message: "Added recorded timebox!"});
             await queryClient.refetchQueries();
         }).catch(function(error) {
-            props.close();
+            closeModal();
             setAlert({shown: true, title: "Error", message: "An error occurred, please try again or contact the developer"});
             console.log(error); 
         })  
@@ -62,18 +66,14 @@ export default function TimeboxActionsForm(props) {
             timeBox: {connect: {id: data.id}}, 
             schedule: {connect: {id: schedule.id}}
         }).then(async () => {
-            props.close();
+            closeModal();
             setAlert({shown: true, title: "Timebox", message: "Added recorded timebox!"});
             await queryClient.refetchQueries();
         }).catch(function(error) {
-            props.close();
+            closeModal();
             setAlert({shown: true, title: "Error", message: "An error occurred, please try again or contact the developer"});
             console.log(error); 
         })  
-    }
-    
-    function closeModal() {
-        dispatch({type: 'modalVisible/set', payload: {visible: false, props: {}}});
     }
     
     return (

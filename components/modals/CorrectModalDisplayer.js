@@ -9,8 +9,8 @@ export default function CorrectModalDisplayer() {
     if(modalVisible.visible) {
         return (<>  
             {timeboxNotCreated ? 
-                (<CreateTimeboxForm {...modalVisible.props}></CreateTimeboxForm>) : 
-                (<TimeboxActionsForm {...modalVisible.props}></TimeboxActionsForm>)
+                (<CreateTimeboxForm visible={modalVisible.visible} {...modalVisible.props}></CreateTimeboxForm>) : 
+                (<TimeboxActionsForm visible={modalVisible.visible} {...modalVisible.props}></TimeboxActionsForm>)
             }
         </>)
     }else{

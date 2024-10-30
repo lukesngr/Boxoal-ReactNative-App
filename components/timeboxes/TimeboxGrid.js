@@ -18,11 +18,10 @@ export default function TimeboxGrid(props) {
     const schedule = props.data[selectedSchedule];
     const dayToName = getArrayOfDayDateDayNameAndMonthForHeaders(selectedDate); //get all info to make headers look nice
     const listOfTimes = returnTimesSeperatedForSchedule(schedule); //get times that go down each row
-    let currentDay = getCurrentDay();
     useTimeboxGridRedux(schedule, selectedDate); //make a map for the timeboxes with another map inside it, makes lookup fast
     useScheduleSetter(schedule); //set schedule data to redux store (timeboxes, recordedTimeboxes, goals
     useActiveOverlay(schedule);
-    useDaySelected(currentDay);
+    useDaySelected(getCurrentDay());
 
     return (
     <ScrollView>

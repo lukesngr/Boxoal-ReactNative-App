@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 
 export default function CorrectModalDisplayer() {
     const modalVisible = useSelector(state => state.modalVisible.value);
-    const timeboxNotCreated = ("dayName" in modalVisible);
+    const timeboxNotCreated = ("dayName" in modalVisible.props);
 
     if(modalVisible.visible) {
         return (<>  

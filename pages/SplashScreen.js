@@ -29,8 +29,10 @@ export default function SplashScreen({navigation}) {
   const blinkingCaretThree = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
-    
     if(authStatus == 'authenticated') { navigation.navigate('FinalView'); }
+  }, [authStatus]);
+  
+  useEffect(() => {
     Animated.sequence([
       Animated.timing(firstLineDisplayed, {
         toValue: 100,

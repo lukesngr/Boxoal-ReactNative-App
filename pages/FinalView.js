@@ -41,8 +41,8 @@ export default function FinalView({ navigation, route }) {
         queryFn: async () => {
             const response = await axios.get(serverIP+"/getSchedules", { params: {
                 userUUID: user.userId, 
-                startOfWeek: dayjs(selectedDate).startOf('week').hour(0).minute(0).toDate(), 
-                endOfWeek: dayjs(selectedDate).endOf('week').add(1, 'day').hour(23).minute(59).toDate()
+                startOfWeek: dayjs(selectedDate).startOf('year').hour(0).minute(0).toDate(), 
+                endOfWeek: dayjs(selectedDate).endOf('year').hour(23).minute(59).toDate()
             }});
             return response.data;
         },

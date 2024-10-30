@@ -8,15 +8,15 @@ import { styles } from '../../styles/styles';
 import { dayToName } from '../../modules/dateLogic';
 import { listOfColors } from '../../styles/styles';
 import { Dialog, Portal, TextInput, Button } from 'react-native-paper';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import Alert from '../Alert';
 
 
 export default function CreateTimeboxForm(props) {
     
+    const dispatch = useDispatch();
     const {id, wakeupTime, boxSizeUnit, boxSizeNumber} = useSelector(state => state.scheduleEssentials.value);
     const {timeboxes, goals} = useSelector(state => state.scheduleData.value);
-
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
     const [numberOfBoxes, setNumberOfBoxes] = useState('1');
@@ -82,9 +82,13 @@ export default function CreateTimeboxForm(props) {
         }
     }
 
+    function closeModal() {
+        dispatch({type: 'modalVisible/set', payload: {visible: false, props: {}}});
+    }
+
     return (
     <Portal>
-        <Dialog style={{backgroundColor: '#C5C27C'}} visible={props.visible} onDismiss={props.close}>
+        <Dialog style={{backgroundColor: '#C5C27C'}} visible={props.visible} onDismiss={closeModal}>
             <Dialog.Title style={{color: 'white'}}>Create Timebox</Dialog.Title>
             <Dialog.Content>
                 <TextInput label="Title" value={title} onChangeText={setTitle} {...styles.paperInput}/>
@@ -122,7 +126,7 @@ export default function CreateTimeboxForm(props) {
                 </>}
             </Dialog.Content>
             <Dialog.Actions>
-                <Button textColor="white" onPress={props.close}>Close</Button>
+                <Button textColor="white" onPress={closeModal}>Close</Button>
                 {!moreOptionsVisible && <Button textColor="white" onPress={() => setMoreOptionsVisible(true)}>More Options</Button>}
                 {moreOptionsVisible && <Button textColor="white" onPress={() => setMoreOptionsVisible(false)}>Less Options</Button>}
                 <Button textColor="black"  buttonColor="white" mode="contained" onPress={handleSubmit}>Create</Button>

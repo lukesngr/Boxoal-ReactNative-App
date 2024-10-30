@@ -33,6 +33,10 @@ export default function CreateTimeboxForm(props) {
 
     let maxNumberOfBoxes = calculateMaxNumberOfBoxes(wakeupTime, boxSizeUnit, boxSizeNumber, timeboxes, time, date);
     
+    function closeModal() {
+        dispatch({type: 'modalVisible/set', payload: {visible: false, props: {}}});
+    }
+
     function handleSubmit() {
         let startTime = convertToDayjs(time, date).toDate();
         let endTime = convertToDayjs(addBoxesToTime(boxSizeUnit, boxSizeNumber, time, numberOfBoxes), date).toDate(); //add boxes to start time to get end time
@@ -56,11 +60,11 @@ export default function CreateTimeboxForm(props) {
         }
         
         axios.post(serverIP+'/createTimebox', data).then(async () => {
-            props.close();
+            closeModal();
             setAlert({shown: true, title: "Timebox", message: "Added timebox!"});
             await queryClient.refetchQueries();
         }).catch(function(error) {
-            props.close();
+            closeModal();
             setAlert({shown: true, title: "Error", message: "An error occurred, please try again or contact the developer"});
             console.log(error); 
         })
@@ -82,9 +86,7 @@ export default function CreateTimeboxForm(props) {
         }
     }
 
-    function closeModal() {
-        dispatch({type: 'modalVisible/set', payload: {visible: false, props: {}}});
-    }
+    
 
     return (
     <Portal>

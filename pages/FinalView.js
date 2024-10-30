@@ -32,7 +32,7 @@ const Tab = createMaterialBottomTabNavigator();
 
 export default function FinalView({ navigation, route }) {
     const dispatch = useDispatch();
-    const { authStatus, user } = useAuthenticator();
+    const { authStatus, user } = useAuthenticator((context) => [context.user]);
     if(authStatus != 'authenticated') { navigation.navigate('Login'); }
 
     const selectedDate = useSelector(state => state.selectedDate.value);

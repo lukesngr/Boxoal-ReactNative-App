@@ -15,6 +15,7 @@ import { persistStore, persistReducer } from 'redux-persist';
 import { combineReducers } from '@reduxjs/toolkit'
 import onDayViewReducer from './onDayView'
 import daySelectedReducer from './daySelected'
+import modalVisibleReducer from './modalVisible'
 
 const rootReducer = combineReducers({
   scheduleEssentials: scheduleEssentialsReducer,
@@ -30,6 +31,7 @@ const rootReducer = combineReducers({
   selectedSchedule: selectedScheduleReducer,
   onDayView: onDayViewReducer,
   daySelected: daySelectedReducer,
+  modalVisible: modalVisibleReducer,
 });
 
 const persistConfig = {

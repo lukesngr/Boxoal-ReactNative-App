@@ -68,5 +68,16 @@ export function ifEqualOrBeyondCurrentDay(number, returnIfTrue, returnIfFalse) {
     return returnIfFalse;
 }
 
-
-
+function timeboxesDateBinarySearch(timeboxes, selectedDate) {
+    let middle = timeboxes.length / 2 + 1; 
+    
+    if(new Date(timeboxes[middle].startTime) == selectedDate) {
+        return middle;
+    }else if(new Date(timeboxes[middle].startTime) < selectedDate) {
+        return timeboxesDateBinarySearch(timeboxes.slice(middle), selectedDate);
+    }else if(new Date(timeboxes[middle].startTime) > selectedDate) {
+        return timeboxesDateBinarySearch(timeboxes.slice(0, middle), selectedDate);
+    }if(new Date(timeboxes[middle].startTime) == selectedDate) {
+        return middle;
+    } 
+}

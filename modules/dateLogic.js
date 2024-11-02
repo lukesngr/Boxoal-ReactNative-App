@@ -69,15 +69,14 @@ export function ifEqualOrBeyondCurrentDay(number, returnIfTrue, returnIfFalse) {
 }
 
 function timeboxesDateBinarySearch(timeboxes, selectedDate) {
-    let middle = timeboxes.length / 2 + 1; 
+    let middle = timeboxes.length / 2;
+    let middleStartTime = new Date(timeboxes[middle].startTime); 
     
-    if(new Date(timeboxes[middle].startTime) == selectedDate) {
+    if(middleStartTime == selectedDate || timeboxes.length == 1) {
         return middle;
-    }else if(new Date(timeboxes[middle].startTime) < selectedDate) {
+    }else if(middleStartTime < selectedDate) {
         return timeboxesDateBinarySearch(timeboxes.slice(middle), selectedDate);
-    }else if(new Date(timeboxes[middle].startTime) > selectedDate) {
+    }else if(middleStartTime > selectedDate) {
         return timeboxesDateBinarySearch(timeboxes.slice(0, middle), selectedDate);
-    }if(new Date(timeboxes[middle].startTime) == selectedDate) {
-        return middle;
-    } 
+    }
 }

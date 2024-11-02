@@ -75,8 +75,16 @@ function timeboxesDateBinarySearch(timeboxes, selectedDate) {
     if(middleStartTime == selectedDate || timeboxes.length == 1) {
         return middle;
     }else if(middleStartTime < selectedDate) {
-        return timeboxesDateBinarySearch(timeboxes.slice(middle), selectedDate);
+        return timeboxesDateBinarySearch(timeboxes.slice(middle+1), selectedDate);
     }else if(middleStartTime > selectedDate) {
         return timeboxesDateBinarySearch(timeboxes.slice(0, middle), selectedDate);
     }
+}
+
+function filterTimeboxesBasedOnWeekRange(timeboxes, selectedDate) {
+    let startOfWeek = dayjs(selectedDate).startOf('week').hour(0).minute(0).toDate();
+    let endOfWeek = dayjs(selectedDate).endOf('week').add(1, 'day').hour(23).minute(59).toDate();
+    let indexOfStartOfRange = timeboxesDateBinarySearch(timeboxes, startOfWeek);
+    
+    return timeboxesDateBinarySearch(timeboxes, selectedDate);
 }

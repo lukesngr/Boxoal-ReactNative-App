@@ -4,8 +4,12 @@ import { queryClient } from "../../App";
 import serverIP from "../../modules/serverIP";
 import { useState } from "react";
 import { useSelector } from "react-redux";
+import { convertToTimeAndDate } from "../../modules/coreLogic";
+import { Pressable } from "react-native";
+import { useDispatch } from "react-redux";
 
 export default function TimeboxAsListItem(props) {
+    const dispatch = useDispatch();
     const [checked, setChecked] = useState(props.timebox.recordedTimeBoxes.length > 0);
     const {id, wakeupTime, boxSizeUnit, boxSizeNumber} = useSelector(state => state.scheduleEssentials.value);
 
@@ -30,9 +34,16 @@ export default function TimeboxAsListItem(props) {
         });
     }
 
+    function openTimeboxModal() {
+        let [date, time] = convertToTimeAndDate(props.timebox.startTime);
+        dispatch({type: 'modalVisible/set', payload: {visible: true, props: {data: props.timebox, date, time}}});
+    }
+
     return (
     <Surface style={{paddingLeft: 40, flexDirection: 'row', paddingBottom: 15, backgroundColor: 'white'}}>
-        <Text style={{color: 'black', fontSize: 20, width: 265, paddingTop: 10}}>{props.timebox.title}</Text>
+        <Pressable onPress={openTimeboxModal}>
+            <Text style={{color: 'black', fontSize: 20, width: 265, paddingTop: 10}}>{props.timebox.title}</Text>
+        </Pressable>
         <Checkbox 
             color='black' 
             status={checked ? 'checked' : 'unchecked'}

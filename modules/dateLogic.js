@@ -75,9 +75,25 @@ function timeboxesDateBinarySearch(timeboxes, selectedDate) {
     if(middleStartTime == selectedDate || timeboxes.length == 1) {
         return middle;
     }else if(middleStartTime < selectedDate) {
-        return timeboxesDateBinarySearch(timeboxes.slice(middle+1), selectedDate);
+        return timeboxesDateBinarySearch(timeboxes.slice(middle), selectedDate);
     }else if(middleStartTime > selectedDate) {
         return timeboxesDateBinarySearch(timeboxes.slice(0, middle), selectedDate);
+    }
+}
+
+function binarySearch(array, value) {
+    let middle = array.length / 2;
+    let center = array[middle];
+    console.log(array, value)
+    if(center == value) {
+        console.log(center, value)
+        return Math.round(middle);
+    }else if(array.length == 1) {
+        return Math.round(middle);
+    }else if(value > center) {
+        return middle+binarySearch(array.slice(middle), value);
+    }else if(value < center) {
+        return binarySearch(array.slice(0, middle), value);
     }
 }
 
@@ -85,6 +101,8 @@ function filterTimeboxesBasedOnWeekRange(timeboxes, selectedDate) {
     let startOfWeek = dayjs(selectedDate).startOf('week').hour(0).minute(0).toDate();
     let endOfWeek = dayjs(selectedDate).endOf('week').add(1, 'day').hour(23).minute(59).toDate();
     let indexOfStartOfRange = timeboxesDateBinarySearch(timeboxes, startOfWeek);
-    
-    return timeboxesDateBinarySearch(timeboxes, selectedDate);
+    timeboxes = timeboxes.slice(indexOfStartOfRange); //do before to remove useless info
+    let indexOfEndOfRange = timeboxesDateBinarySearch(timeboxes, endOfWeek);
+    timeboxes = timeboxes.slice(0, indexOfEndOfRange+1);
+    return timeboxes;
 }

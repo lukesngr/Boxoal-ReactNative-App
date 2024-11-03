@@ -35,9 +35,8 @@ export default function FinalView({ navigation, route }) {
     const { authStatus, user } = useAuthenticator((context) => [context.user]);
     if(authStatus != 'authenticated') { navigation.navigate('Login'); }
 
-    const selectedDate = useSelector(state => state.selectedDate.value);
     const {status, data, error, refetch} = useQuery({
-        queryKey: ["schedule", selectedDate], 
+        queryKey: ["schedule"], 
         queryFn: async () => {
             const response = await axios.get(serverIP+"/getSchedules", { params: {
                 userUUID: user.userId

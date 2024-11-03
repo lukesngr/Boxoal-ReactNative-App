@@ -68,41 +68,27 @@ export function ifEqualOrBeyondCurrentDay(number, returnIfTrue, returnIfFalse) {
     return returnIfFalse;
 }
 
-function timeboxesDateBinarySearch(timeboxes, selectedDate) {
+function alteredBinarySearchForTimeboxDate(timeboxes, selectedDate) {
     let middle = timeboxes.length / 2;
-    let middleStartTime = new Date(timeboxes[middle].startTime); 
-    
-    if(middleStartTime == selectedDate || timeboxes.length == 1) {
-        return middle;
-    }else if(middleStartTime < selectedDate) {
-        return timeboxesDateBinarySearch(timeboxes.slice(middle), selectedDate);
-    }else if(middleStartTime > selectedDate) {
-        return timeboxesDateBinarySearch(timeboxes.slice(0, middle), selectedDate);
-    }
-}
+    let middleStartTime = new Date(timeboxes[Math.floor(middle)].startTime);
 
-function binarySearch(array, value) {
-    let middle = array.length / 2;
-    let center = array[middle];
-    console.log(array, value)
-    if(center == value) {
-        console.log(center, value)
+    if(selectedDate.getTime() == middleStartTime.getTime()) {
         return Math.round(middle);
-    }else if(array.length == 1) {
+    }else if(timeboxes.length == 1) {
         return Math.round(middle);
-    }else if(value > center) {
-        return middle+binarySearch(array.slice(middle), value);
-    }else if(value < center) {
-        return binarySearch(array.slice(0, middle), value);
+    }else if(selectedDate > middleStartTime) {
+        return middle+alteredBinarySearchForTimeboxDate(timeboxes.slice(middle), selectedDate);
+    }else if(selectedDate < middleStartTime) {
+        return alteredBinarySearchForTimeboxDate(timeboxes.slice(0, middle), selectedDate);
     }
 }
 
 function filterTimeboxesBasedOnWeekRange(timeboxes, selectedDate) {
     let startOfWeek = dayjs(selectedDate).startOf('week').hour(0).minute(0).toDate();
     let endOfWeek = dayjs(selectedDate).endOf('week').add(1, 'day').hour(23).minute(59).toDate();
-    let indexOfStartOfRange = timeboxesDateBinarySearch(timeboxes, startOfWeek);
+    let indexOfStartOfRange = alteredBinarySearchForTimeboxDate(timeboxes, startOfWeek);
     timeboxes = timeboxes.slice(indexOfStartOfRange); //do before to remove useless info
-    let indexOfEndOfRange = timeboxesDateBinarySearch(timeboxes, endOfWeek);
+    let indexOfEndOfRange = alteredBinarySearchForTimeboxDate(timeboxes, endOfWeek);
     timeboxes = timeboxes.slice(0, indexOfEndOfRange+1);
     return timeboxes;
 }

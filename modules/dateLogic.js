@@ -69,12 +69,15 @@ export function ifEqualOrBeyondCurrentDay(number, returnIfTrue, returnIfFalse) {
 }
 
 function alteredBinarySearchForTimeboxDate(timeboxes, selectedDate) {
+
+    if(timeboxes.length == 0) {
+        return 0;
+    }
+
     let middle = timeboxes.length / 2;
     let middleStartTime = new Date(timeboxes[Math.floor(middle)].startTime);
 
-    if(selectedDate.getTime() == middleStartTime.getTime()) {
-        return Math.round(middle);
-    }else if(timeboxes.length == 1) {
+    if(selectedDate.getTime() == middleStartTime.getTime() || timeboxes.length == 1) {
         return Math.round(middle);
     }else if(selectedDate > middleStartTime) {
         return middle+alteredBinarySearchForTimeboxDate(timeboxes.slice(middle), selectedDate);
@@ -83,7 +86,10 @@ function alteredBinarySearchForTimeboxDate(timeboxes, selectedDate) {
     }
 }
 
-function filterTimeboxesBasedOnWeekRange(timeboxes, selectedDate) {
+export function filterTimeboxesBasedOnWeekRange(timeboxes, selectedDate) {
+    if(timeboxes.length == 0) {
+        return timeboxes;
+    }
     let startOfWeek = dayjs(selectedDate).startOf('week').hour(0).minute(0).toDate();
     let endOfWeek = dayjs(selectedDate).endOf('week').add(1, 'day').hour(23).minute(59).toDate();
     let indexOfStartOfRange = alteredBinarySearchForTimeboxDate(timeboxes, startOfWeek);

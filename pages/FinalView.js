@@ -32,7 +32,7 @@ const Tab = createMaterialBottomTabNavigator();
 
 export default function FinalView({ navigation, route }) {
     const dispatch = useDispatch();
-    const { authStatus, user } = useAuthenticator((context) => [context.user]);
+    const { authStatus, user } = useAuthenticator();
     if(authStatus != 'authenticated') { navigation.navigate('Login'); }
 
     const {status, data, error, refetch} = useQuery({

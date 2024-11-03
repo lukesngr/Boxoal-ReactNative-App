@@ -8,6 +8,7 @@ import EditScheduleForm from "../components/schedules/EditScheduleForm";
 import GoalAccordion from "../components/goals/GoalAccordion";
 import CreateGoalForm from "../components/goals/CreateGoalForm";
 import { styles } from "../styles/styles";
+import CorrectModalDisplayer from "../components/modals/CorrectModalDisplayer";
 
 export default function Goals(props) {
     const selectedSchedule = useSelector(state => state.selectedSchedule.value);
@@ -35,6 +36,7 @@ export default function Goals(props) {
                 </Surface>
             </View>
         </View>
+        <CorrectModalDisplayer></CorrectModalDisplayer>
         <CreateGoalForm visible={createGoalVisible} close={() => setCreateGoalVisible(false)} id={schedule.id}></CreateGoalForm>
         <EditScheduleForm data={schedule} visible={editScheduleVisible} close={() => setEditScheduleVisible(false)}></EditScheduleForm>
         <CreateScheduleForm visible={createScheduleVisible} close={() => setCreateScheduleVisible(false)}></CreateScheduleForm>

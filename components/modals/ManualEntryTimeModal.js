@@ -1,5 +1,6 @@
 import axios from "axios";
 import { Dialog, Button } from "react-native-paper";
+import { useState } from "react";
 
 export default function ManualEntryTimeModal(props) {
     const [recordedStartTime, setRecordedStartTime] = useState(props.data.startTime);
@@ -32,8 +33,8 @@ export default function ManualEntryTimeModal(props) {
             <Button textColor="black"  buttonColor="white" mode="contained" onPress={() => setEndTimePickerVisible(true)}>Pick End Start Time</Button>
         </Dialog.Content>
         <Dialog.Actions>
-            <Button textColor="white" onPress={closeModal}>Close</Button>
-            <Button textColor="black"  buttonColor="white" mode="contained" onPress={stopRecording}>Enter</Button>
+            <Button textColor="white" onPress={props.close}>Close</Button>
+            <Button textColor="black"  buttonColor="white" mode="contained" onPress={submitManualEntry}>Enter</Button>
         </Dialog.Actions>
     </Dialog>
     <DatePicker modal mode="datetime" date={recordedStartTime}

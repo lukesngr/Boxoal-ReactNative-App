@@ -12,9 +12,11 @@ import Alert from "../Alert";
 import { Dialog, Paragraph, Portal } from "react-native-paper";
 import { getCurrentUser } from "aws-amplify/auth";
 import { useAuthenticator } from "@aws-amplify/ui-react-native";
+import ManualEntryTimeModal from "../modals/ManualEntryTimeModal";
 
 export default function TimeboxActionsForm(props) {
     const {data, date, time} = props;
+    const [manualEntryModalShown, setManualEntryModalShown] = useState(false);
     const [showEditTimeboxForm, setShowEditTimeboxForm] = useState(false);
     const [alert, setAlert] = useState({shown: false, title: "", message: ""});
     const {user} = useAuthenticator();
@@ -97,6 +99,7 @@ export default function TimeboxActionsForm(props) {
                     
                 </Dialog.Actions>
             </Dialog>
+            <ManualEntryTimeModal visible={manualEntryModalShown} close={() => setManualEntryModalShown(false)} data={data} scheduleID={schedule.id}></ManualEntryTimeModal>
             {alert.shown && <Alert visible={alert.shown} close={() => setAlert({...alert, shown: false})} title={alert.title} message={alert.message}/> }
         </Portal>)}
     </>);

@@ -1,12 +1,17 @@
 import axios from "axios";
 import { Dialog, Button } from "react-native-paper";
 import { useState } from "react";
+import DatePicker from "react-native-date-picker";
+import serverIP from "../../modules/serverIP";
+import Alert from "../Alert";
+import { queryClient } from '../../App';
 
 export default function ManualEntryTimeModal(props) {
-    const [recordedStartTime, setRecordedStartTime] = useState(props.data.startTime);
-    const [recordedEndTime, setRecordedEndTime] = useState(props.data.endTime);
+    const [recordedStartTime, setRecordedStartTime] = useState(new Date(props.data.startTime));
+    const [recordedEndTime, setRecordedEndTime] = useState(new Date(props.data.endTime));
     const [startTimePickerVisible, setStartTimePickerVisible] = useState(false);
     const [endTimePickerVisible, setEndTimePickerVisible] = useState(false);
+    const [alert, setAlert] = useState({shown: false, title: "", message: ""});
 
     function submitManualEntry() {
         axios.post(serverIP+'/createRecordedTimebox', {
@@ -27,14 +32,14 @@ export default function ManualEntryTimeModal(props) {
 
     return (<>
     <Dialog style={{backgroundColor: '#C5C27C'}} visible={props.visible} onDismiss={props.close}>
-        <Dialog.Title style={{color: 'white'}}>Manual Entry Recorded Time For {props.datatitle}</Dialog.Title>
+        <Dialog.Title style={{color: 'white'}}>Manual Entry Of Recorded Time</Dialog.Title>
         <Dialog.Content>
-            <Button textColor="black"  buttonColor="white" mode="contained" onPress={() => setStartTimePickerVisible(true)}>Pick Recorded Start Time</Button>
-            <Button textColor="black"  buttonColor="white" mode="contained" onPress={() => setEndTimePickerVisible(true)}>Pick End Start Time</Button>
+            <Button textColor="black" buttonColor="white" mode="contained" style={{marginBottom: 2}} onPress={() => setStartTimePickerVisible(true)}>Pick Recorded Start Time</Button>
+            <Button textColor="black" buttonColor="white" mode="contained" onPress={() => setEndTimePickerVisible(true)}>Pick Recorded End Time</Button>
         </Dialog.Content>
         <Dialog.Actions>
             <Button textColor="white" onPress={props.close}>Close</Button>
-            <Button textColor="black"  buttonColor="white" mode="contained" onPress={submitManualEntry}>Enter</Button>
+            <Button textColor="black" buttonColor="white" mode="contained" onPress={submitManualEntry}>Enter</Button>
         </Dialog.Actions>
     </Dialog>
     <DatePicker modal mode="datetime" date={recordedStartTime}
@@ -59,5 +64,6 @@ export default function ManualEntryTimeModal(props) {
         }
         onCancel={() => setEndTimePickerVisible(false)}>
     </DatePicker>
+    {alert.shown && <Alert visible={alert.shown} close={() => setAlert({...alert, shown: false})} title={alert.title} message={alert.message}/> }
     </>)
 }

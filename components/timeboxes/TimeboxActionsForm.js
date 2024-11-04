@@ -60,23 +60,6 @@ export default function TimeboxActionsForm(props) {
             console.log(error); 
         })  
     }
-
-    function autoRecord() {
-        axios.post(serverIP+'/createRecordedTimebox', {
-            recordedStartTime: data.startTime, 
-            recordedEndTime: data.endTime,
-            timeBox: {connect: {id: data.id}}, 
-            schedule: {connect: {id: schedule.id}}
-        }).then(async () => {
-            closeModal();
-            setAlert({shown: true, title: "Timebox", message: "Added recorded timebox!"});
-            await queryClient.refetchQueries();
-        }).catch(function(error) {
-            closeModal();
-            setAlert({shown: true, title: "Error", message: "An error occurred, please try again or contact the developer"});
-            console.log(error); 
-        })  
-    }
     
     return (
     <>

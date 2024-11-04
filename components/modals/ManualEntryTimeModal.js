@@ -1,6 +1,6 @@
 import axios from "axios";
 import { Dialog, Button } from "react-native-paper";
-import { set } from "../../redux/activeOverlayInterval";
+
 export default function ManualEntryTimeModal(props) {
     const [recordedStartTime, setRecordedStartTime] = useState(props.data.startTime);
     const [recordedEndTime, setRecordedEndTime] = useState(props.data.endTime);
@@ -14,11 +14,11 @@ export default function ManualEntryTimeModal(props) {
             timeBox: {connect: {id: props.data.id}}, 
             schedule: {connect: {id: props.scheduleID}}
         }).then(async () => {
-            closeModal();
+            props.close();
             setAlert({shown: true, title: "Timebox", message: "Added recorded timebox!"});
             await queryClient.refetchQueries();
         }).catch(function(error) {
-            closeModal();
+            props.close();
             setAlert({shown: true, title: "Error", message: "An error occurred, please try again or contact the developer"});
             console.log(error); 
         })  

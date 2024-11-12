@@ -23,7 +23,6 @@ export default function TimeboxActionsForm(props) {
     const timeboxRecording = useSelector(state => state.timeboxRecording.value);
     const schedule = useSelector(state => state.scheduleEssentials.value);
     const dispatch = useDispatch();
-    console.log(data);
     
     const noPreviousRecording = thereIsNoRecording(data.recordedTimeBoxes, data.reoccuring, date, time);
     const timeboxIsntRecording = timeboxRecording.timeboxID == -1;
@@ -83,7 +82,7 @@ export default function TimeboxActionsForm(props) {
                     
                 </Dialog.Actions>
             </Dialog>
-            <ManualEntryTimeModal visible={manualEntryModalShown} close={() => setManualEntryModalShown(false)} data={data} scheduleID={schedule.id}></ManualEntryTimeModal>
+            <ManualEntryTimeModal dispatch={dispatch} visible={manualEntryModalShown} close={() => setManualEntryModalShown(false)} data={data} scheduleID={schedule.id}></ManualEntryTimeModal>
             {alert.shown && <Alert visible={alert.shown} close={() => setAlert({...alert, shown: false})} title={alert.title} message={alert.message}/> }
         </Portal>)}
     </>);

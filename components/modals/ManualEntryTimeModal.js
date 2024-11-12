@@ -4,9 +4,11 @@ import { useState } from "react";
 import DatePicker from "react-native-date-picker";
 import serverIP from "../../modules/serverIP";
 import Alert from "../Alert";
-import { queryClient } from '../../App';
+import { queryClient } from "../../App";
+import { useDispatch } from "react-redux";
 
 export default function ManualEntryTimeModal(props) {
+    const dispatch = useDispatch();
     const [recordedStartTime, setRecordedStartTime] = useState(new Date(props.data.startTime));
     const [recordedEndTime, setRecordedEndTime] = useState(new Date(props.data.endTime));
     const [startTimePickerVisible, setStartTimePickerVisible] = useState(false);
@@ -27,7 +29,12 @@ export default function ManualEntryTimeModal(props) {
             props.close();
             setAlert({shown: true, title: "Error", message: "An error occurred, please try again or contact the developer"});
             console.log(error); 
-        })  
+        })
+        
+        let [date, time] = convertToTimeAndDate(props.data.startTime);
+        let timeboxTitle = props.data.title;
+        let timebox = {...props.data, recordedTimeBoxes: [{recordedStartTime, recordedEndTime, title: timeboxTitle}]};
+        dispatch({type: 'modalVisible/set', payload: {visible: true, props: {timebox, date, time}}});
     }
 
     return (<>

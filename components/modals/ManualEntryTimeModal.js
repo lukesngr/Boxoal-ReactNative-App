@@ -6,9 +6,9 @@ import serverIP from "../../modules/serverIP";
 import Alert from "../Alert";
 import { queryClient } from "../../App";
 import { useDispatch } from "react-redux";
+import { convertToTimeAndDate } from "../../modules/coreLogic";
 
 export default function ManualEntryTimeModal(props) {
-    const dispatch = useDispatch();
     const [recordedStartTime, setRecordedStartTime] = useState(new Date(props.data.startTime));
     const [recordedEndTime, setRecordedEndTime] = useState(new Date(props.data.endTime));
     const [startTimePickerVisible, setStartTimePickerVisible] = useState(false);
@@ -28,13 +28,13 @@ export default function ManualEntryTimeModal(props) {
         }).catch(function(error) {
             props.close();
             setAlert({shown: true, title: "Error", message: "An error occurred, please try again or contact the developer"});
-            console.log(error); 
+            console.log(error.message); 
         })
         
         let [date, time] = convertToTimeAndDate(props.data.startTime);
         let timeboxTitle = props.data.title;
         let timebox = {...props.data, recordedTimeBoxes: [{recordedStartTime, recordedEndTime, title: timeboxTitle}]};
-        dispatch({type: 'modalVisible/set', payload: {visible: true, props: {timebox, date, time}}});
+        props.dispatch({type: 'modalVisible/set', payload: {visible: true, props: {data: timebox, date, time}}});
     }
 
     return (<>

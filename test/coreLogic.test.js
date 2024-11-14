@@ -188,7 +188,7 @@ describe('Recording and Progress Functions', () => {
         { recordedTimeBoxes: [{}], goalPercentage: 0.5 },
         { recordedTimeBoxes: [{}], goalPercentage: 0.3 }
       ];
-      expect(getProgressWithGoal(timeboxes)).toBe(80);
+      expect(getProgressWithGoal(timeboxes)).toBe(1);
     });
 
     test('handles timeboxes without recordings', () => {

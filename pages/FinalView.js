@@ -9,7 +9,7 @@ import Loading from "../components/Loading";
 import { Text } from "react-native";
 import serverIP from '../modules/serverIP';
 import Welcome from '../components/Welcome';
-import { initialNotificationSetup, recordIfNotificationPressed} from '../modules/coreLogic';
+import { initialNotificationSetup, recordIfNotificationPressed} from '../modules/sideEffects';
 import { useEffect } from 'react';
 import { MD3LightTheme } from 'react-native-paper';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';

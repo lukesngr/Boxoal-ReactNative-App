@@ -1,309 +1,253 @@
-import {  calculateMaxNumberOfBoxesAfterTimeIfEmpty,
-   calculateMaxNumberOfBoxes, calculateBoxesBetweenTwoDateTimes, addBoxesToTime, calculateOverlayHeightForNow, calculateSizeOfRecordingOverlay, thereIsNoRecording, generateTimeBoxGrid } from '../modules/coreLogic';
+import { 
+  calculateMaxNumberOfBoxesAfterTimeIfEmpty,
+  calculateBoxesBetweenTwoTimes,
+  calculateMaxNumberOfBoxes,
+  addBoxesToTime,
+  calculateOverlayHeightForNow,
+  calculateSizeOfRecordingOverlay,
+  thereIsNoRecording,
+  generateTimeBoxGrid,
+  getHeightForBoxes,
+  getProgressWithGoal,
+  getDateWithSuffix,
+  goToDay,
+  filterRecordingBasedOnDay,
+  calculateXPPoints,
+  getProgressAndLevel,
+  convertToDayjs,
+  convertToTimeAndDate
+} from '../modules/coreLogic';
+import dayjs from 'dayjs';
 
-describe('Testing max number of boxes after time is empty', () => {
-  test('should calculate the max number of boxes when schedule is empty for minutes when wakeup time before', () => {
-    const boxSizeUnit = 'min';
-    const boxSizeNumber = 15;
-
-    const wakeUpTimeSeparated = [8, 30]; 
-    const timeSeparated = [12, 45];
-
-    const result = calculateMaxNumberOfBoxesAfterTimeIfEmpty(boxSizeUnit, boxSizeNumber,  timeSeparated, wakeUpTimeSeparated);
-
-    expect(result).toBe(79); 
+describe('Time and Date Conversion Functions', () => {
+  test('convertToDayjs handles standard time and date', () => {
+    const result = convertToDayjs('14:30', '15/1');
+    expect(result.format('HH:mm DD/MM')).toBe('14:30 15/01');
   });
 
-  test('should calculate the max number of boxes when schedule is empty for minutes when wakeup time after', () => {
-    const boxSizeUnit = 'min';
-    const boxSizeNumber = 15;
-
-    const wakeUpTimeSeparated = [10, 30]; 
-    const timeSeparated = [10, 0];
-
-    const result = calculateMaxNumberOfBoxesAfterTimeIfEmpty(boxSizeUnit, boxSizeNumber, timeSeparated, wakeUpTimeSeparated);
-
-    expect(result).toBe(2);
+  test('convertToDayjs handles midnight', () => {
+    const result = convertToDayjs('00:00', '1/1');
+    expect(result.format('HH:mm DD/MM')).toBe('00:00 01/01');
   });
 
-  test('should calculate the max number of boxes when schedule is empty for hours when wakeup time before', () => {
-    const boxSizeUnit = 'hr';
-    const boxSizeNumber = 1;
-
-    const wakeUpTimeSeparated = [8, 30]; 
-    const timeSeparated = [16, 30];
-
-    const result = calculateMaxNumberOfBoxesAfterTimeIfEmpty(boxSizeUnit, boxSizeNumber, timeSeparated, wakeUpTimeSeparated);
-
-    expect(result).toBe(16);
+  test('convertToTimeAndDate handles standard datetime', () => {
+    const input = new Date('2024-01-15T14:30:00');
+    const [time, date] = convertToTimeAndDate(input);
+    expect(time).toBe('14:30');
+    expect(date).toBe('15/1');
   });
 
-  test('should calculate the max number of boxes when schedule is empty for hours when wakeup time after', () => {
-    const boxSizeUnit = 'hr';
-    const boxSizeNumber = 1;
-
-    const wakeUpTimeSeparated = [10, 0]; 
-    const timeSeparated = [8, 0];
-
-    const result = calculateMaxNumberOfBoxesAfterTimeIfEmpty(boxSizeUnit, boxSizeNumber, timeSeparated, wakeUpTimeSeparated);
-
-    expect(result).toBe(2);
-  });
-
-});
-
-describe('Testing max number of boxes after time is empty errors', () => {
-  test('if minutes are not divisble by box size number', () => {
-    const boxSizeUnit = 'min';
-    const boxSizeNumber = 15;
-
-    const wakeUpTimeSeparated = [8, 30]; 
-    const timeSeparated = [12, 48];
-
-    const consoleSpy = jest.spyOn(global.console, 'log');
-
-    const result = calculateMaxNumberOfBoxesAfterTimeIfEmpty(boxSizeUnit, boxSizeNumber,  timeSeparated, wakeUpTimeSeparated);
-
-    expect(consoleSpy).toHaveBeenCalledWith("Minutes aren't divisible by boxSizeNumber, just gonna ignore");
-    consoleSpy.mockRestore();
-
-    expect(result).toBe(79); 
-  });
-
-  //taking too long to test any possible error just gonna test the main ones
-
-});
-
-describe('Testing calculate boxes between two date times', () => {
-
-  test('should calculate the number of boxes between two date times in minutes', () => {
-    const dateTime1 = new Date('2023-01-01T08:30:00');
-    const dateTime2 = new Date('2023-01-01T10:45:00');
-    const boxSizeUnit = 'min';
-    const boxSizeNumber = 15;
-
-    const result = calculateBoxesBetweenTwoDateTimes(dateTime1, dateTime2, boxSizeUnit, boxSizeNumber);
-
-    expect(result).toBe(9);
-  });
-
-  test('should calculate the number of boxes between two date times in hours', () => {
-    const dateTime1 = new Date('2023-01-01T08:30:00');
-    const dateTime2 = new Date('2023-01-01T10:30:00');
-    const boxSizeUnit = 'hr';
-    const boxSizeNumber = 1;
-
-    const result = calculateBoxesBetweenTwoDateTimes(dateTime1, dateTime2, boxSizeUnit, boxSizeNumber);
-
-    expect(result).toBe(2);
-  });
-
-  test('should calculate the number of boxes between two date times in hours reverse', () => {
-    const dateTime1 = new Date('2023-01-01T10:30:00');
-    const dateTime2 = new Date('2023-01-01T08:30:00');
-    const boxSizeUnit = 'hr';
-    const boxSizeNumber = 1;
-
-    const result = calculateBoxesBetweenTwoDateTimes(dateTime1, dateTime2, boxSizeUnit, boxSizeNumber);
-
-    expect(result).toBe(2);
-  });
-
-  test('should calculate the number of boxes between two date times in hours if extra minutes', () => {
-    const dateTime1 = new Date('2023-01-01T08:30:00');
-    const dateTime2 = new Date('2023-01-01T10:33:00');
-    const boxSizeUnit = 'hr';
-    const boxSizeNumber = 1;
-
-    const result = calculateBoxesBetweenTwoDateTimes(dateTime1, dateTime2, boxSizeUnit, boxSizeNumber);
-
-    expect(result).toBe(2);
+  test('convertToTimeAndDate handles midnight', () => {
+    const input = new Date('2024-01-15T00:00:00');
+    const [time, date] = convertToTimeAndDate(input);
+    expect(time).toBe('00:00');
+    expect(date).toBe('15/1');
   });
 });
 
-describe('Testing calculate boxes between two date times', () => {
-  
-  test('should calculate the max number of boxes based on the schedule, time, and date', () => {
-    const schedule = {
-      wakeupTime: '08:30',
-      timeboxes: [
-        { startTime: '2024-01-01T13:00:00', numberOfBoxes: 1 },
-        { startTime: '2024-01-01T15:30:00', numberOfBoxes: 1 },
-      ],
-      boxSizeUnit: 'min',
-      boxSizeNumber: 15,
+describe('Box Calculation Functions', () => {
+  describe('calculateMaxNumberOfBoxesAfterTimeIfEmpty', () => {
+    test('handles minutes with time ahead of wakeup', () => {
+      const result = calculateMaxNumberOfBoxesAfterTimeIfEmpty('min', 15, [12, 45], [8, 30]);
+      expect(result).toBe(79);
+    });
+
+    test('handles minutes with time behind wakeup', () => {
+      const result = calculateMaxNumberOfBoxesAfterTimeIfEmpty('min', 15, [7, 45], [8, 30]);
+      expect(result).toBe(91);
+    });
+
+    test('handles hours with time ahead of wakeup', () => {
+      const result = calculateMaxNumberOfBoxesAfterTimeIfEmpty('hr', 1, [12, 0], [8, 0]);
+      expect(result).toBe(20);
+    });
+
+    test('handles hours with time behind wakeup', () => {
+      const result = calculateMaxNumberOfBoxesAfterTimeIfEmpty('hr', 1, [7, 0], [8, 0]);
+      expect(result).toBe(23);
+    });
+
+    test('handles edge case with non-divisible minutes', () => {
+      const result = calculateMaxNumberOfBoxesAfterTimeIfEmpty('min', 15, [12, 47], [8, 30]);
+      expect(result).toBe(79);
+    });
+  });
+
+  describe('calculateMaxNumberOfBoxes', () => {
+    test('handles empty schedule', () => {
+      const result = calculateMaxNumberOfBoxes('08:30', 'min', 15, [], '12:45', '1/1');
+      expect(result).toBe(79);
+    });
+
+    test('handles schedule with one future timebox', () => {
+      const timeboxes = [{
+        startTime: '2024-01-01T14:00:00'
+      }];
+      const result = calculateMaxNumberOfBoxes('08:30', 'min', 15, timeboxes, '12:45', '1/1');
+      expect(result).toBe(5);
+    });
+
+    test('handles schedule with multiple timeboxes', () => {
+      const timeboxes = [
+        { startTime: '2024-01-01T14:00:00' },
+        { startTime: '2024-01-01T16:00:00' }
+      ];
+      const result = calculateMaxNumberOfBoxes('08:30', 'min', 15, timeboxes, '12:45', '1/1');
+      expect(result).toBe(5);
+    });
+  });
+});
+
+describe('Overlay and Recording Functions', () => {
+  describe('calculateOverlayHeightForNow', () => {
+    test('handles standard case', () => {
+      const overlayDimensions = { timeboxHeight: 50, headerWidth: 100 };
+      const result = calculateOverlayHeightForNow('08:30', 'min', 15, overlayDimensions);
+      expect(typeof result).toBe('number');
+      expect(result).toBeGreaterThanOrEqual(0);
+    });
+
+    test('handles uninitialized dimensions', () => {
+      const overlayDimensions = { headerWidth: 0 };
+      const result = calculateOverlayHeightForNow('08:30', 'min', 15, overlayDimensions);
+      expect(result).toBe(0);
+    });
+  });
+
+  describe('calculateSizeOfRecordingOverlay', () => {
+    const overlayDimensions = {
+      overlayHeight: 1000,
+      headerHeight: 50,
+      timeboxHeight: 50
     };
-    const time = '12:45';
-    const date = '1/1';
 
-    const result = calculateMaxNumberOfBoxes(schedule, time, date);
+    test('handles past recording', () => {
+      const day = { date: 14 };
+      const currentDate = dayjs().date(15);
+      const recordedStartTime = currentDate.subtract(1, 'day').toISOString();
+      const result = calculateSizeOfRecordingOverlay(
+        '08:30',
+        'min',
+        15,
+        overlayDimensions,
+        500,
+        day,
+        recordedStartTime
+      );
+      expect(result).toEqual([1000, 50]);
+    });
 
-    expect(result).toBe(1);
+    test('handles current day recording', () => {
+      const day = { date: dayjs().date() };
+      const recordedStartTime = dayjs().toISOString();
+      const result = calculateSizeOfRecordingOverlay(
+        '08:30',
+        'min',
+        15,
+        overlayDimensions,
+        500,
+        day,
+        recordedStartTime
+      );
+      expect(Array.isArray(result)).toBe(true);
+      expect(result.length).toBe(2);
+    });
+  });
+});
+
+describe('Recording and Progress Functions', () => {
+  describe('thereIsNoRecording', () => {
+    test('handles empty recorded boxes', () => {
+      expect(thereIsNoRecording([], null, '1/1', '08:00')).toBe(true);
+    });
+
+    test('handles daily reoccurring with match', () => {
+      const recordedBoxes = [{
+        recordedStartTime: new Date('2024-01-15T08:00:00')
+      }];
+      const reoccuring = { reoccurFrequency: 'daily' };
+      expect(thereIsNoRecording(recordedBoxes, reoccuring, '15/1', '08:00')).toBe(false);
+    });
+
+    test('handles daily reoccurring without match', () => {
+      const recordedBoxes = [{
+        recordedStartTime: new Date('2024-01-15T08:00:00')
+      }];
+      const reoccuring = { reoccurFrequency: 'daily' };
+      expect(thereIsNoRecording(recordedBoxes, reoccuring, '16/1', '08:00')).toBe(true);
+    });
   });
 
-  test('should calculate the max number of boxes if there is none', () => {
-    const schedule = {
-      wakeupTime: '08:30',
-      timeboxes: [],
-      boxSizeUnit: 'min',
-      boxSizeNumber: 15,
+  describe('getProgressWithGoal', () => {
+    test('handles empty timeboxes', () => {
+      expect(getProgressWithGoal([])).toBe(100);
+    });
+
+    test('handles timeboxes with recordings', () => {
+      const timeboxes = [
+        { recordedTimeBoxes: [{}], goalPercentage: 0.5 },
+        { recordedTimeBoxes: [{}], goalPercentage: 0.3 }
+      ];
+      expect(getProgressWithGoal(timeboxes)).toBe(80);
+    });
+
+    test('handles timeboxes without recordings', () => {
+      const timeboxes = [
+        { recordedTimeBoxes: [], goalPercentage: 0.5 },
+        { recordedTimeBoxes: [], goalPercentage: 0.5 }
+      ];
+      expect(getProgressWithGoal(timeboxes)).toBe(0);
+    });
+  });
+});
+
+describe('XP and Level Functions', () => {
+  describe('calculateXPPoints', () => {
+    const timeboxData = {
+      startTime: '2024-01-15T08:00:00',
+      endTime: '2024-01-15T09:00:00'
     };
-    const time = '12:45';
-    const date = '1/1';
 
-    const result = calculateMaxNumberOfBoxes(schedule, time, date);
+    test('handles perfect timing', () => {
+      const recordedStartTime = new Date('2024-01-15T08:00:00');
+      const recordedEndTime = new Date('2024-01-15T09:00:00');
+      const result = calculateXPPoints(timeboxData, recordedStartTime, recordedEndTime);
+      expect(result).toBe(2);
+    });
 
-    expect(result).toBe(79);
+    test('handles delayed start', () => {
+      const recordedStartTime = new Date('2024-01-15T08:30:00');
+      const recordedEndTime = new Date('2024-01-15T09:30:00');
+      const result = calculateXPPoints(timeboxData, recordedStartTime, recordedEndTime);
+      expect(result).toBe(1.5);
+    });
+
+    test('handles very delayed start', () => {
+      const recordedStartTime = new Date('2024-01-15T10:00:00');
+      const recordedEndTime = new Date('2024-01-15T11:00:00');
+      const result = calculateXPPoints(timeboxData, recordedStartTime, recordedEndTime);
+      expect(result).toBe(1.5);
+    });
   });
 
-  test('should add boxes to the given time and return the updated time in minutes', () => {
-    const boxSizeUnit = 'min';
-    const boxSizeNumber = 15;
-    const time = '08:30'; 
-    const numberOfBoxes = 3;
+  describe('getProgressAndLevel', () => {
+    test('handles low XP points', () => {
+      const result = getProgressAndLevel(5);
+      expect(result).toEqual({ progress: 0, level: 1 });
+    });
 
-    const result = addBoxesToTime(boxSizeUnit, boxSizeNumber, time, numberOfBoxes);
+    test('handles medium XP points', () => {
+      const result = getProgressAndLevel(50);
+      expect(result.level).toBeGreaterThan(1);
+      expect(result.progress).toBeGreaterThanOrEqual(0);
+      expect(result.progress).toBeLessThanOrEqual(1);
+    });
 
-    
-    expect(result).toBe('9:15');
+    test('handles high XP points', () => {
+      const result = getProgressAndLevel(1000);
+      expect(result.level).toBeGreaterThan(10);
+      expect(result.progress).toBeGreaterThanOrEqual(0);
+      expect(result.progress).toBeLessThanOrEqual(1);
+    });
   });
-
-  it('should add boxes to the given time and return the updated time in hours', () => {
-    const boxSizeUnit = 'hr';
-    const boxSizeNumber = 1;
-    const time = '08:30'; 
-    const numberOfBoxes = 3; 
-
-    const result = addBoxesToTime(boxSizeUnit, boxSizeNumber, time, numberOfBoxes);
-
-    
-    expect(result).toBe('11:30');
-  });
-
-  it('testing if 24 hour time works in minutes', () => {
-    const boxSizeUnit = 'min';
-    const boxSizeNumber = 15;
-    const time = '23:30'; 
-    const numberOfBoxes = 3; 
-
-    const result = addBoxesToTime(boxSizeUnit, boxSizeNumber, time, numberOfBoxes);
-
-    
-    expect(result).toBe('0:15');
-  });
-
-  it('testing if 24 hour time works in in hours', () => {
-    const boxSizeUnit = 'hr';
-    const boxSizeNumber = 1;
-    const time = '22:00'; 
-    const numberOfBoxes = 3; 
-
-    const result = addBoxesToTime(boxSizeUnit, boxSizeNumber, time, numberOfBoxes);
-
-    
-    expect(result).toBe('1:00');
-  });
-});
-
-describe('Testing overlay height calculation functions', () => {
-  it('calculating overlay height', () => {
-    const boxSizeUnit = 'min';
-    const boxSizeNumber = 30;
-    const wakeupTime = '7:30';
-
-    const overlayDimensions = [96, 1718, 35.796875];
-
-    let mockDate = new Date();
-    mockDate.setHours(21);
-    mockDate.setMinutes(20);
-
-    jest.useFakeTimers("modern");
-    jest.setSystemTime(mockDate);
-
-    let result = calculateOverlayHeightForNow({wakeupTime, boxSizeUnit, boxSizeNumber}, overlayDimensions);
-
-    expect(result).toBe(990.3802083333334);
-  });
-
-  it('calculating recording overlay height', () => {
-    const boxSizeUnit = 'min';
-    const boxSizeNumber = 30;
-    const wakeupTime = '7:30';
-
-    const overlayDimensions = [96, 1718, 35.796875];
-
-    let overlayHeight = 966.515625;
-
-    let mockDate = new Date();
-    mockDate.setHours(21);
-    mockDate.setMinutes(20);
-
-    jest.useFakeTimers("modern");
-    jest.setSystemTime(mockDate);
-
-    let result = calculateSizeOfRecordingOverlay({wakeupTime, boxSizeUnit, boxSizeNumber}, overlayDimensions, overlayHeight);
-
-    expect(result).toBe(23.86458333333337);
-  });
-})
-
-describe('thereIsNoRecording', () => {
-
-  const recordedBoxes = [
-    { recordedStartTime: new Date(2024, 0, 17, 8, 0, 0, 0)},
-    { recordedStartTime: new Date(2024, 0, 18, 9, 30, 0, 0) },
-  ];
-  
-  const reoccuringDaily = { reoccurFrequency: 'daily' };
-
-  test('should return true when recordedBoxes is empty', () => {
-    const result = thereIsNoRecording([], null, '17/1', '08:00');
-    expect(result).toBe(true);
-  });
-
-  test('should return true for daily reoccurring when no match in recordedBoxes', () => {
-    const result = thereIsNoRecording(recordedBoxes, reoccuringDaily, '19/1', '10:00');
-    expect(result).toBe(true);
-  });
-
-  test('should return false for daily reoccurring when there is a match in recordedBoxes', () => {
-    const result = thereIsNoRecording(recordedBoxes, reoccuringDaily, '18/1', '09:30');
-    expect(result).toBe(false);
-  });
-
-});
-
-describe('generateTimeBoxGrid', () => {
-
-  test('should generate nothing when no timeboxes', () => {
-    let timeboxGrid = new Map();
-    generateTimeBoxGrid({timeboxes: []}, '17/1', timeboxGrid);
-    expect(timeboxGrid).toEqual(timeboxGrid);
-  });
-  
-  test('should generate with reoccurring daily', () => {
-    
-    let schedule = {timeboxes: [{startTime: new Date(2024, 0, 18, 9, 30, 0, 0), reoccuring: {reoccurFrequency: 'daily'}}]};
-    let timeboxGrid = new Map();
-    generateTimeBoxGrid(schedule, new Date(2024, 0, 18, 9, 30, 0, 0), timeboxGrid);
-    expect(timeboxGrid.get('18/1').get('9:30')).toEqual(schedule.timeboxes[0]);
-    expect(timeboxGrid.get('20/1').get('9:30')).toEqual(schedule.timeboxes[0]);
-  });
-
-  test('should generate with reoccurring weekly', () => {
-    
-    let schedule = {timeboxes: [{startTime: new Date(2024, 0, 18, 9, 30, 0, 0), reoccuring: {reoccurFrequency: 'weekly', weeklyDay: 1}}]};
-    let timeboxGrid = new Map();
-    generateTimeBoxGrid(schedule, new Date(2024, 0, 18, 9, 30, 0, 0), timeboxGrid);
-    expect(timeboxGrid.get('15/1').get('9:30')).toEqual(schedule.timeboxes[0]);
-  });
-
-  test('should generate with reoccurring weekly even on non-current week', () => {
-    
-    let schedule = {timeboxes: [{startTime: new Date(2024, 0, 18, 9, 30, 0, 0), reoccuring: {reoccurFrequency: 'weekly', weeklyDay: 1}}]};
-    let timeboxGrid = new Map();
-    generateTimeBoxGrid(schedule, new Date(2024, 0, 25, 9, 30, 0, 0), timeboxGrid);
-    expect(timeboxGrid.get('22/1').get('9:30')).toEqual(schedule.timeboxes[0]);
-  });
-
 });

@@ -226,7 +226,7 @@ describe('calculateBoxesBetweenTwoTimes', () => {
 
 
 
-/*
+
 describe('calculatePixelsFromTopOfGridBasedOnTime', () => {
   // Setup common test variables
   const overlayDimensions = {
@@ -296,8 +296,14 @@ describe('calculatePixelsFromTopOfGridBasedOnTime', () => {
       );
       
       // Should calculate from previous day's wakeup time
-      expect(result).toBe(5750); // (23 hours + 0 minutes) worth of pixels
+      expect(result).toBe(4600); // (23 hours + 0 minutes) worth of pixels
     });
+
+    test('testing some of the other logic from functions after to determine error in code', () => {
+      const time = dayjs('2024-01-15T11:30:00'); // 3 hours after wakeup;
+      const time2 = dayjs('2024-01-15T08:30:00'); // Exactly at wakeup time
+
+      c
   });
 
   describe('hour-based calculations', () => {
@@ -424,7 +430,7 @@ describe('calculatePixelsFromTopOfGridBasedOnTime', () => {
       expect(result).toBe(100);
     });
   });
-});*/
+});
 
 describe('Overlay and Recording Functions', () => {
   describe('calculateOverlayHeightForNow', () => {

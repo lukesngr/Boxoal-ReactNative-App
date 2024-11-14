@@ -7,11 +7,16 @@ import { useSelector } from "react-redux";
 import { convertToTimeAndDate } from "../../modules/coreLogic";
 import { Pressable } from "react-native";
 import { useDispatch } from "react-redux";
+import { useEffect } from "react";
 
 export default function TimeboxAsListItem(props) {
     const dispatch = useDispatch();
     const [checked, setChecked] = useState(props.timebox.recordedTimeBoxes.length > 0);
     const {id, wakeupTime, boxSizeUnit, boxSizeNumber} = useSelector(state => state.scheduleEssentials.value);
+
+    useEffect(() => {
+        setChecked(props.timebox.recordedTimeBoxes?.length > 0);
+    }, [props.timebox.recordedTimeBoxes]);
 
     function completeTimebox() {
         axios.post(serverIP+'/createRecordedTimebox', {

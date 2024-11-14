@@ -85,12 +85,13 @@ export function calculateMaxNumberOfBoxesAfterTimeIfEmpty(boxSizeUnit, boxSizeNu
 
 export function calculateBoxesBetweenTwoTimes(time1, time2, boxSizeUnit, boxSizeNumber) {
     let numberOfBoxes = 0;
+    const minuteConversionDivisor = 60000;
+    const hoursConversionDivisor = 3600000;
 
     if(boxSizeUnit == "min") {
-        numberOfBoxes += Math.floor(((time2.hour() - time1.hour())*60) / boxSizeNumber);
-        numberOfBoxes += Math.floor((time2.minute() - time1.minute()) / boxSizeNumber);
+        numberOfBoxes += Math.floor(((time2.valueOf() - time1.valueOf()) / minuteConversionDivisor) / boxSizeNumber);
     }else if(boxSizeUnit == "hr") {
-        numberOfBoxes += Math.floor((time2.hour() - time1.hour()) / boxSizeNumber);
+        numberOfBoxes += Math.floor(((time2.valueOf() - time1.valueOf()) / hoursConversionDivisor) / boxSizeNumber);
     }
 
     if(time1 > time2) {

@@ -8,7 +8,7 @@
     "upgrade": "react-native upgrade",
     "lint": "eslint .",
     "start": "react-native start",
-    "test": "jest"
+    "test": "jest --watch"
   },
   "dependencies": {
     "@aws-amplify/cli": "^12.12.4",

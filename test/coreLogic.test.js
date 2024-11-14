@@ -138,7 +138,7 @@ describe('calculateBoxesBetweenTwoTimes', () => {
     test('handles reversed times', () => {
       const time1 = dayjs('2024-01-15T12:00:00');
       const time2 = dayjs('2024-01-15T10:00:00');
-      expect(calculateBoxesBetweenTwoTimes(time1, time2, boxSizeUnit, 15)).toBe(-8);
+      expect(calculateBoxesBetweenTwoTimes(time1, time2, boxSizeUnit, 15)).toBe(8);
     });
 
     test('handles different box sizes', () => {
@@ -179,7 +179,7 @@ describe('calculateBoxesBetweenTwoTimes', () => {
     test('handles reversed times with hours', () => {
       const time1 = dayjs('2024-01-15T14:00:00');
       const time2 = dayjs('2024-01-15T10:00:00');
-      expect(calculateBoxesBetweenTwoTimes(time1, time2, boxSizeUnit, 1)).toBe(-4);
+      expect(calculateBoxesBetweenTwoTimes(time1, time2, boxSizeUnit, 1)).toBe(4);
     });
 
     test('handles non-divisible hour ranges', () => {

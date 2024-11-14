@@ -54,7 +54,7 @@ describe('Box Calculation Functions', () => {
 
     test('handles minutes with time behind wakeup', () => {
       const result = calculateMaxNumberOfBoxesAfterTimeIfEmpty('min', 15, [7, 45], [8, 30]);
-      expect(result).toBe(91);
+      expect(result).toBe(3);
     });
 
     test('handles hours with time ahead of wakeup', () => {
@@ -64,7 +64,7 @@ describe('Box Calculation Functions', () => {
 
     test('handles hours with time behind wakeup', () => {
       const result = calculateMaxNumberOfBoxesAfterTimeIfEmpty('hr', 1, [7, 0], [8, 0]);
-      expect(result).toBe(23);
+      expect(result).toBe(1);
     });
 
     test('handles edge case with non-divisible minutes', () => {

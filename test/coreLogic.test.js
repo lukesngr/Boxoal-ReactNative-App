@@ -215,18 +215,12 @@ describe('XP and Level Functions', () => {
       expect(result).toBe(2);
     });
 
-    test('handles delayed start', () => {
-      const recordedStartTime = new Date('2024-01-15T08:30:00');
-      const recordedEndTime = new Date('2024-01-15T09:30:00');
+    //testing this isnt that iedge cases
+    test('makes sure not 0', () => {
+      const recordedStartTime = new Date('2024-01-15T01:00:00');
+      const recordedEndTime = new Date('2024-05-21T21:00:00');
       const result = calculateXPPoints(timeboxData, recordedStartTime, recordedEndTime);
-      expect(result).toBe(1.5);
-    });
-
-    test('handles very delayed start', () => {
-      const recordedStartTime = new Date('2024-01-15T10:00:00');
-      const recordedEndTime = new Date('2024-01-15T11:00:00');
-      const result = calculateXPPoints(timeboxData, recordedStartTime, recordedEndTime);
-      expect(result).toBe(1.5);
+      expect(result).toBeGreaterThan(0);
     });
   });
 

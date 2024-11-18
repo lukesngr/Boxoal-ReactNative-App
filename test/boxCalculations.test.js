@@ -221,32 +221,32 @@ describe('Box Calculation Functions', () => {
       test('calculates full hours', () => {
         const time1 = dayjs('2024-01-15T10:00:00');
         const time2 = dayjs('2024-01-15T12:30:00');
-        expect(calculateRemainderTimeBetweenTwoTimes(time1, time2, boxSizeUnit, 1)).toBe(30);
+        expect(calculateRemainderTimeBetweenTwoTimes(time1, time2, boxSizeUnit, 1)).toBe(0.5);
       });
 
       test('handles partial hours', () => {
         const time1 = dayjs('2024-01-15T10:30:00');
         const time2 = dayjs('2024-01-15T12:45:00');
         // Should only count complete hours
-        expect(calculateRemainderTimeBetweenTwoTimes(time1, time2, boxSizeUnit, 1)).toBe(15);
+        expect(calculateRemainderTimeBetweenTwoTimes(time1, time2, boxSizeUnit, 1)).toBe(0.25);
       });
 
       test('handles 2-hour box sizes', () => {
         const time1 = dayjs('2024-01-15T10:00:00');
         const time2 = dayjs('2024-01-15T15:00:00');
-        expect(calculateRemainderTimeBetweenTwoTimes(time1, time2, boxSizeUnit, 2)).toBe(60);
+        expect(calculateRemainderTimeBetweenTwoTimes(time1, time2, boxSizeUnit, 2)).toBe(1);
       });
 
       test('handles reversed times with hours', () => {
         const time1 = dayjs('2024-01-15T14:50:00');
         const time2 = dayjs('2024-01-15T10:00:00');
-        expect(calculateRemainderTimeBetweenTwoTimes(time1, time2, boxSizeUnit, 1)).toBe(-50);
+        expect(calculateRemainderTimeBetweenTwoTimes(time1, time2, boxSizeUnit, 1)).toBe(-0.833333333333333);
       });
 
       test('handles non-divisible hour ranges', () => {
         const time1 = dayjs('2024-01-15T10:00:00');
-        const time2 = dayjs('2024-01-15T13:01:00');
-        expect(calculateRemainderTimeBetweenTwoTimes(time1, time2, boxSizeUnit, 2)).toBe(61);
+        const time2 = dayjs('2024-01-15T13:30:00');
+        expect(calculateRemainderTimeBetweenTwoTimes(time1, time2, boxSizeUnit, 2)).toBe(1.5);
       });
     });
 

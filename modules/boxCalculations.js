@@ -75,7 +75,7 @@ export function calculateRemainderTimeBetweenTwoTimes(time1, time2, boxSizeUnit,
     if(boxSizeUnit == "min") {
         remainderTime += Math.round(((time2.valueOf() - time1.valueOf()) / minuteConversionDivisor) % boxSizeNumber);
     }else if(boxSizeUnit == "hr") {
-        remainderTime += Math.round((((time2.valueOf() - time1.valueOf()) / hoursConversionDivisor) % boxSizeNumber)*60);
+        remainderTime += ((time2.valueOf() - time1.valueOf()) / hoursConversionDivisor) % boxSizeNumber;
     }
 
     return remainderTime;

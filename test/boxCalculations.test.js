@@ -176,12 +176,77 @@ describe('Box Calculation Functions', () => {
         const time2 = dayjs('2024-01-15T23:59:00');
         expect(calculateBoxesBetweenTwoTimes(time1, time2, 'hr', 1)).toBe(23);
       });
+    });
 
-      test('testing some of the other logic from functions after to determine error in code', () => {
-        const time = dayjs('2024-01-15T11:30:00'); // 3 hours after wakeup;
-        const time2 = dayjs('2024-01-15T08:30:00'); // Exactly at wakeup time
-        expect(calculateBoxesBetweenTwoTimes(time, time2, 'hr', 1)).toBe(3);
-        expect(calculateRemainderTimeBetweenTwoTimes(time, time2, 'hr', 1)).toBe(0);
+  });
+
+  describe('calculateRemainderBoxesBetweenTwoTimes', () => {
+    describe('minute-based calculations', () => {
+      const boxSizeUnit = 'min';
+
+      test('calculates boxes for same hour different minutes', () => {
+        const time1 = dayjs('2024-01-15T10:00:00');
+        const time2 = dayjs('2024-01-15T10:10:00');
+        expect(calculateRemainderTimeBetweenTwoTimes(time1, time2, boxSizeUnit, 15)).toBe(10);
+      });
+
+      test('calculates boxes across hour boundary', () => {
+        const time1 = dayjs('2024-01-15T10:45:00');
+        const time2 = dayjs('2024-01-15T11:20:00');
+        expect(calculateRemainderTimeBetweenTwoTimes(time1, time2, boxSizeUnit, 15)).toBe(5);
+      });
+
+      test('handles multiple hours difference', () => {
+        const time1 = dayjs('2024-01-15T10:00:00');
+        const time2 = dayjs('2024-01-15T10:37:00');
+        expect(calculateRemainderTimeBetweenTwoTimes(time1, time2, boxSizeUnit, 30)).toBe(7);
+      });
+
+      test('handles reversed times', () => {
+        const time1 = dayjs('2024-01-15T12:19:00');
+        const time2 = dayjs('2024-01-15T10:00:00');
+        expect(calculateRemainderTimeBetweenTwoTimes(time1, time2, boxSizeUnit, 15)).toBe(4);
+      });
+
+      test('handles different box sizes', () => {
+        const time1 = dayjs('2024-01-15T10:00:00');
+        const time2 = dayjs('2024-01-15T11:00:30');
+        expect(calculateRemainderTimeBetweenTwoTimes(time1, time2, boxSizeUnit, 30)).toBe(1);
+      });
+    });
+
+    describe('hour-based calculations', () => {
+      const boxSizeUnit = 'hr';
+
+      test('calculates full hours', () => {
+        const time1 = dayjs('2024-01-15T10:00:00');
+        const time2 = dayjs('2024-01-15T12:30:00');
+        expect(calculateRemainderTimeBetweenTwoTimes(time1, time2, boxSizeUnit, 1)).toBe(30);
+      });
+
+      test('handles partial hours', () => {
+        const time1 = dayjs('2024-01-15T10:30:00');
+        const time2 = dayjs('2024-01-15T12:45:00');
+        // Should only count complete hours
+        expect(calculateRemainderTimeBetweenTwoTimes(time1, time2, boxSizeUnit, 1)).toBe(15);
+      });
+
+      test('handles 2-hour box sizes', () => {
+        const time1 = dayjs('2024-01-15T10:00:00');
+        const time2 = dayjs('2024-01-15T15:00:00');
+        expect(calculateRemainderTimeBetweenTwoTimes(time1, time2, boxSizeUnit, 2)).toBe(60);
+      });
+
+      test('handles reversed times with hours', () => {
+        const time1 = dayjs('2024-01-15T14:50:00');
+        const time2 = dayjs('2024-01-15T10:00:00');
+        expect(calculateRemainderTimeBetweenTwoTimes(time1, time2, boxSizeUnit, 1)).toBe(50);
+      });
+
+      test('handles non-divisible hour ranges', () => {
+        const time1 = dayjs('2024-01-15T10:00:00');
+        const time2 = dayjs('2024-01-15T13:01:00');
+        expect(calculateRemainderTimeBetweenTwoTimes(time1, time2, boxSizeUnit, 2)).toBe(61);
       });
     });
 

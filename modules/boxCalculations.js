@@ -73,7 +73,7 @@ export function calculateRemainderTimeBetweenTwoTimes(time1, time2, boxSizeUnit,
     const hoursConversionDivisor = 3600000;
 
     if(boxSizeUnit == "min") {
-        remainderTime += (((time2.valueOf() - time1.valueOf()) / minuteConversionDivisor) % boxSizeNumber);
+        remainderTime += Math.round(((time2.valueOf() - time1.valueOf()) / minuteConversionDivisor) % boxSizeNumber);
     }else if(boxSizeUnit == "hr") {
         remainderTime += Math.round((((time2.valueOf() - time1.valueOf()) / hoursConversionDivisor) % boxSizeNumber)*60);
     }

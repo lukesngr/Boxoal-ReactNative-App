@@ -1,4 +1,4 @@
-import { calculateRemainderTimeBetweenTwoTimes } from "./timeLogic";
+import { calculateBoxesBetweenTwoTimes, calculateMaxNumberOfBoxes, calculateRemainderTimeBetweenTwoTimes } from "./boxCalculations";
 
 import dayjs from "dayjs";
 var isSameOrBefore = require('dayjs/plugin/isSameOrBefore')

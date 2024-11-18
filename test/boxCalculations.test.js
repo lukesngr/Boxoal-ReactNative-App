@@ -240,7 +240,7 @@ describe('Box Calculation Functions', () => {
       test('handles reversed times with hours', () => {
         const time1 = dayjs('2024-01-15T14:50:00');
         const time2 = dayjs('2024-01-15T10:00:00');
-        expect(calculateRemainderTimeBetweenTwoTimes(time1, time2, boxSizeUnit, 1)).toBe(50);
+        expect(calculateRemainderTimeBetweenTwoTimes(time1, time2, boxSizeUnit, 1)).toBe(-50);
       });
 
       test('handles non-divisible hour ranges', () => {

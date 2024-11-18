@@ -79,17 +79,3 @@ export function returnTimesSeperatedForSchedule(schedule) {
     return listOfTimes;
 }
 
-export function calculateRemainderTimeBetweenTwoTimes(time1, time2, boxSizeUnit, boxSizeNumber) {
-    let remainderTime = 0;
-
-    if(boxSizeUnit == "min") {
-        remainderTime += ((time2.hour() - time1.hour())*60) % boxSizeNumber;
-        remainderTime += (time2.minute() - time1.minute()) % boxSizeNumber;
-    }else if(boxSizeUnit == "hr") {
-        remainderTime += (time2.hour() - time1.hour()) / boxSizeNumber;
-        remainderTime += (time2.minute() - time1.minute()) / (boxSizeNumber*60);
-    }
-
-    return remainderTime;
-
-}

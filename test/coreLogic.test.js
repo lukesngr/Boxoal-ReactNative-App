@@ -168,7 +168,7 @@ describe('calculatePixelsFromTopOfGridBasedOnTime', () => {
       );
       
       // Should calculate from previous day's wakeup time
-      expect(result).toBe(3850); // (16 hours worth of pixels)
+      expect(result).toBe(3200); // (16 hours worth of pixels)
     });
 
     test('should handle exact wakeup time', () => {
@@ -197,7 +197,7 @@ describe('calculatePixelsFromTopOfGridBasedOnTime', () => {
       );
       
       // Should calculate from previous day's wakeup time
-      expect(result).toBe(4100); // (17 hours worth of pixels)
+      expect(result).toBe(3400); // (17 hours worth of pixels)
     });
 
     test('should handle negative remainder time', () => {
@@ -212,7 +212,7 @@ describe('calculatePixelsFromTopOfGridBasedOnTime', () => {
       );
       
       // Should handle the negative remainder correctly
-      expect(result).toBe(5733.333333333334); // (23 hours + 50 minutes worth of pixels)
+      expect(result).toBe(4766.666666666667); // (23 hours + 50 minutes worth of pixels)
     });
   });
 

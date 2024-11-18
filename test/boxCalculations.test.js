@@ -205,7 +205,7 @@ describe('Box Calculation Functions', () => {
       test('handles reversed times', () => {
         const time1 = dayjs('2024-01-15T12:19:00');
         const time2 = dayjs('2024-01-15T10:00:00');
-        expect(calculateRemainderTimeBetweenTwoTimes(time1, time2, boxSizeUnit, 15)).toBe(4);
+        expect(calculateRemainderTimeBetweenTwoTimes(time1, time2, boxSizeUnit, 15)).toBe(-4);
       });
 
       test('handles different box sizes', () => {

@@ -78,11 +78,6 @@ export function calculateRemainderTimeBetweenTwoTimes(time1, time2, boxSizeUnit,
         remainderTime += Math.round((((time2.valueOf() - time1.valueOf()) / hoursConversionDivisor) % boxSizeNumber)*60);
     }
 
-    if(time1 > time2) {
-        return -remainderTime;
-    }else{
-        return remainderTime;
-    }
 
 }
 

@@ -55,7 +55,7 @@ export function calculatePixelsFromTopOfGridBasedOnTime(wakeupTime, boxSizeUnit,
     let remainderTime = calculateRemainderTimeBetweenTwoTimes(wakeupDateTime, time, boxSizeUnit, boxSizeNumber);
 
     if(remainderTime < 0) { //if negative remainder e.g. time is behind number of boxes
-        remainderTime = boxSizeNumber + remainderTime; 
+        remainderTime = boxSizeNumber + remainderTime; //if remainder is negative then u need to get the minutes that are left
     }
     
     const justBoxesHeight = pixelsPerBox * boxesBetween;

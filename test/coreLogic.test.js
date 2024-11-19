@@ -19,33 +19,6 @@ import {
   convertToTimeAndDate
 } from '../modules/coreLogic';
 import dayjs from 'dayjs';
-import { calculateRemainderTimeBetweenTwoTimes } from '../modules/formatters';
-
-describe('Time and Date Conversion Functions', () => {
-  test('convertToDayjs handles standard time and date', () => {
-    const result = convertToDayjs('14:30', '15/1');
-    expect(result.format('HH:mm DD/MM')).toBe('14:30 15/01');
-  });
-
-  test('convertToDayjs handles midnight', () => {
-    const result = convertToDayjs('00:00', '1/1');
-    expect(result.format('HH:mm DD/MM')).toBe('00:00 01/01');
-  });
-
-  test('convertToTimeAndDate handles standard datetime', () => {
-    const input = new Date('2024-01-15T14:30:00');
-    const [time, date] = convertToTimeAndDate(input);
-    expect(time).toBe('14:30');
-    expect(date).toBe('15/1');
-  });
-
-  test('convertToTimeAndDate handles midnight', () => {
-    const input = new Date('2024-01-15T00:00:00');
-    const [time, date] = convertToTimeAndDate(input);
-    expect(time).toBe('00:00');
-    expect(date).toBe('15/1');
-  });
-});
 
 describe('Recording and Progress Functions', () => {
   describe('thereIsNoRecording', () => {

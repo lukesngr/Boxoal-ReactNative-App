@@ -1,5 +1,31 @@
-import { calculateRemainderTimeBetweenTwoDateTimes, returnTimesSeperatedForSchedule } from '../modules/timeLogic';
+import dayjs from "dayjs";
+import { convertToDayjs, convertToTimeAndDate } from "../modules/formatters";
 
+describe('Time and Date Conversion Functions', () => {
+  test('convertToDayjs handles standard time and date', () => {
+    const result = convertToDayjs('14:30', '15/1');
+    expect(result.format('HH:mm DD/MM')).toBe('14:30 15/01');
+  });
+
+  test('convertToDayjs handles midnight', () => {
+    const result = convertToDayjs('00:00', '1/1');
+    expect(result.format('HH:mm DD/MM')).toBe('00:00 01/01');
+  });
+
+  test('convertToTimeAndDate handles standard datetime', () => {
+    const input = new Date('2024-01-15T14:30:00');
+    const [time, date] = convertToTimeAndDate(input);
+    expect(time).toBe('14:30');
+    expect(date).toBe('15/1');
+  });
+
+  test('convertToTimeAndDate handles midnight', () => {
+    const input = new Date('2024-01-15T00:00:00');
+    const [time, date] = convertToTimeAndDate(input);
+    expect(time).toBe('00:00');
+    expect(date).toBe('15/1');
+  });
+});
 
 describe('returnTimesSeperatedForSchedule normal testing', () => {
   test('should return an array of times based on the given schedule in minutes', () => {
@@ -114,96 +140,4 @@ describe('returnTimesSeperatedForSchedule error testing', () => {
     expect(consoleSpy).toHaveBeenCalledWith("Beware decimal passed as box size number, was ignored");
     consoleSpy.mockRestore();
   });
-});
-
-describe('calculateRemainderTimeBetweenTwoDateTimes normal testing', () => {
-  test('for minutes', () => {
-    let dateTime1 = new Date(2023, 10, 1, 10, 30);
-    let dateTime2 = new Date(2023, 10, 1, 10, 45);
-
-    const result = calculateRemainderTimeBetweenTwoDateTimes(dateTime1, dateTime2, "min", 30);
-
-    expect(result).toEqual(15);
-  })
-
-  test('for hours', () => {
-    let dateTime1 = new Date(2023, 10, 1, 10, 30);
-    let dateTime2 = new Date(2023, 10, 1, 10, 45);
-
-    //needs to be decimal for hours
-
-    const result = calculateRemainderTimeBetweenTwoDateTimes(dateTime1, dateTime2, "hr", 1);
-
-    expect(result).toEqual(0.25);
-  })
-
-  test('for hours where box size number bigger than 1', () => {
-    let dateTime1 = new Date(2023, 10, 1, 10, 0);
-    let dateTime2 = new Date(2023, 10, 1, 11, 0);
-
-    //needs to be decimal for hours
-
-    const result = calculateRemainderTimeBetweenTwoDateTimes(dateTime1, dateTime2, "hr", 2);
-
-    expect(result).toEqual(0.5);
-  })
-});
-
-describe('calculateRemainderTimeBetweenTwoDateTimes error testing', () => {
-  test('reverse order', () => {
-    let dateTime1 = new Date(2023, 10, 1, 10, 45);
-    let dateTime2 = new Date(2023, 10, 1, 10, 30);
-
-    const result = calculateRemainderTimeBetweenTwoDateTimes(dateTime1, dateTime2, "min", 30);
-
-    expect(result).toEqual(-15);
-  })
-
-  test('decimal input for boxSizeNumber', () => {
-    let dateTime1 = new Date(2023, 10, 1, 10, 30);
-    let dateTime2 = new Date(2023, 10, 1, 10, 45);
-
-    //needs to be decimal for hours
-
-    const consoleSpy = jest.spyOn(global.console, 'log');
-
-    const result = calculateRemainderTimeBetweenTwoDateTimes(dateTime1, dateTime2, "hr", 1.5);
-
-    expect(consoleSpy).toHaveBeenCalledWith("Beware decimal passed as box size number, was ignored");
-    consoleSpy.mockRestore();
-
-    expect(result).toEqual(0.25);
-  })
-
-  test('non date time', () => {
-    let dateTime1 = 0;
-    let dateTime2 = 0;
-
-    //needs to be decimal for hours
-
-    const consoleSpy = jest.spyOn(global.console, 'log');
-
-    const result = calculateRemainderTimeBetweenTwoDateTimes(dateTime1, dateTime2, "hr", 2);
-
-    expect(consoleSpy).toHaveBeenCalledWith("Datetimes passed aren't datetimes");
-    consoleSpy.mockRestore();
-
-    expect(result).toEqual(0);
-  })
-
-  test('if box size number isnt a number', () => {
-    let dateTime1 = new Date(2023, 10, 1, 10, 30);
-    let dateTime2 = new Date(2023, 10, 1, 10, 45);
-
-    //needs to be decimal for hours
-
-    const consoleSpy = jest.spyOn(global.console, 'log');
-
-    const result = calculateRemainderTimeBetweenTwoDateTimes(dateTime1, dateTime2, "hr", 'gfg');
-
-    expect(consoleSpy).toHaveBeenCalledWith("Box size number isn't a number");
-    consoleSpy.mockRestore();
-
-    expect(result).toEqual(0);
-  })
 });

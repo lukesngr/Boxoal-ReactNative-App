@@ -1,6 +1,6 @@
 
 import dayjs from 'dayjs';
-import { calculateMaxNumberOfBoxesAfterTimeIfEmpty, calculateMaxNumberOfBoxes, calculateBoxesBetweenTwoTimes, calculateRemainderTimeBetweenTwoTimes } from '../modules/boxCalculations';
+import { calculateMaxNumberOfBoxesAfterTimeIfEmpty, calculateMaxNumberOfBoxes, calculateBoxesBetweenTwoTimes, calculateRemainderTimeBetweenTwoTimes, addBoxesToTime } from '../modules/boxCalculations';
 
 
 describe('Box Calculation Functions', () => {
@@ -248,6 +248,25 @@ describe('Box Calculation Functions', () => {
         const time2 = dayjs('2024-01-15T13:30:00');
         expect(calculateRemainderTimeBetweenTwoTimes(time1, time2, boxSizeUnit, 2)).toBe(1.5);
       });
+    });
+
+  });
+
+  describe('addBoxesToTime', () => {
+    test('trying minutes', () => {
+      expect(addBoxesToTime('min', 15, "8:30", 1)).toBe("8:45");
+    });
+
+    test('trying hours', () => {
+      expect(addBoxesToTime('hr', 1, "8:30", 1)).toBe("9:30");
+    });
+
+    test('making sure 24 hour time works in min', () => {
+      expect(addBoxesToTime('min', 30, "23:30", 30)).toBe("0:30");
+    });
+
+    test('making sure 24 hour time works in hour', () => {
+      expect(addBoxesToTime('hr', 1, "23:30", 1)).toBe("0:30");
     });
 
   });

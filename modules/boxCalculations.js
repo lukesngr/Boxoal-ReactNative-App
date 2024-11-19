@@ -126,7 +126,7 @@ export function addBoxesToTime(boxSizeUnit, boxSizeNumber, time, numberOfBoxes) 
         }
     }else if(boxSizeUnit == "hr") {
         endHours += numberOfBoxes * boxSizeNumber;
-        if(endHours > 24) {
+        if(endHours >= 24) {
             endHours = endHours - 24;
         }
     }

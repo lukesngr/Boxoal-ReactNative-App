@@ -1,4 +1,4 @@
-import { getArrayOfDayDateDayNameAndMonthForHeaders, ifCurrentDay, ifEqualOrBeyondCurrentDay } from '../modules/dateCode';
+import { getArrayOfDayDateDayNameAndMonthForHeaders, filterTimeboxesBasedOnWeekRange, alteredBinarySearchForTimeboxDate } from '../modules/dateCode';
 
 //mainly testing most important functions in this code
 describe('getArrayOfDayDateDayNameAndMonthForHeaders', () => {
@@ -50,6 +50,183 @@ describe('getArrayOfDayDateDayNameAndMonthForHeaders', () => {
   });
 
   //not gonna test other use cases as I feel dayjs is relatively stable and can handle any input
+});
+
+function createTimebox(date) {
+  return {
+      startTime: new Date(date).toISOString()
+  };
+}
+
+// Helper function to create array of timeboxes for testing
+function createTimeboxArray(dates) {
+  return dates.map(date => createTimebox(date));
+}
+
+describe('alteredBinarySearchForTimeboxDate', () => {
+
+  test('handles empty array', () => {
+      const result = alteredBinarySearchForTimeboxDate([], new Date('2024-03-15'));
+      expect(result).toBe(0);
+  });
+
+  test('handles single item array - exact match', () => {
+      const timeboxes = createTimeboxArray(['2024-03-15T12:00:00']);
+      const result = alteredBinarySearchForTimeboxDate(
+          timeboxes,
+          new Date('2024-03-15T12:00:00')
+      );
+      expect(result).toBe(0);
+  });
+
+  test('handles single item array - different date', () => {
+      const timeboxes = createTimeboxArray(['2024-03-15T12:00:00']);
+      const result = alteredBinarySearchForTimeboxDate(
+          timeboxes,
+          new Date('2024-03-16T12:00:00')
+      );
+      expect(result).toBe(0);
+  });
+
+  test('finds exact match in middle of array', () => {
+      const timeboxes = createTimeboxArray([
+          '2024-03-14T12:00:00',
+          '2024-03-15T12:00:00',
+          '2024-03-16T12:00:00'
+      ]);
+      const result = alteredBinarySearchForTimeboxDate(
+          timeboxes,
+          new Date('2024-03-15T12:00:00')
+      );
+      expect(result).toBe(1);
+  });
+
+  test('handles date greater than middle', () => {
+      const timeboxes = createTimeboxArray([
+          '2024-03-14T12:00:00',
+          '2024-03-15T12:00:00',
+          '2024-03-16T12:00:00'
+      ]);
+      const result = alteredBinarySearchForTimeboxDate(
+          timeboxes,
+          new Date('2024-03-16T12:00:00')
+      );
+      expect(result).toBe(2);
+  });
+
+  test('handles date less than middle', () => {
+      const timeboxes = createTimeboxArray([
+          '2024-03-14T12:00:00',
+          '2024-03-15T12:00:00',
+          '2024-03-16T12:00:00'
+      ]);
+      const result = alteredBinarySearchForTimeboxDate(
+          timeboxes,
+          new Date('2024-03-14T12:00:00')
+      );
+      expect(result).toBe(0);
+  });
+
+  test('handles large array', () => {
+      const dates = Array.from({ length: 10 }, (_, i) => 
+          `2024-03-${String(i + 1).padStart(2, '0')}T12:00:00`
+      );
+      const timeboxes = createTimeboxArray(dates);
+      const result = alteredBinarySearchForTimeboxDate(
+          timeboxes,
+          new Date('2024-03-05T12:00:00')
+      );
+      expect(result).toBe(4);
+  });
+});
+
+describe('filterTimeboxesBasedOnWeekRange', () => {
+
+  test('handles empty array', () => {
+      const result = filterTimeboxesBasedOnWeekRange([], new Date('2024-03-15'));
+      expect(result).toEqual([]);
+  });
+
+  test('filters timeboxes for a week correctly', () => {
+      // Create timeboxes for 10 days spanning a week
+      const dates = [
+          '2024-03-10T12:00:00', // Sunday
+          '2024-03-11T12:00:00',
+          '2024-03-12T12:00:00',
+          '2024-03-13T12:00:00',
+          '2024-03-14T12:00:00',
+          '2024-03-15T12:00:00',
+          '2024-03-16T12:00:00', // Saturday
+          '2024-03-17T12:00:00', // Next Sunday
+      ];
+      const timeboxes = createTimeboxArray(dates);
+      const selectedDate = new Date('2024-03-15'); // A Friday
+
+      const result = filterTimeboxesBasedOnWeekRange(timeboxes, selectedDate);
+      
+      // Should include Sunday (03-10) through Saturday (03-16)
+      expect(result.length).toBe(7);
+      expect(new Date(result[0].startTime)).toEqual(new Date('2024-03-10T12:00:00'));
+      expect(new Date(result[result.length - 1].startTime)).toEqual(new Date('2024-03-16T12:00:00'));
+  });
+
+  test('handles timeboxes at different times of day', () => {
+      const dates = [
+          '2024-03-10T08:00:00',
+          '2024-03-10T14:00:00',
+          '2024-03-11T09:00:00',
+          '2024-03-11T16:00:00'
+      ];
+      const timeboxes = createTimeboxArray(dates);
+      const selectedDate = new Date('2024-03-10');
+
+      const result = filterTimeboxesBasedOnWeekRange(timeboxes, selectedDate);
+      expect(result.length).toBe(4);
+  });
+
+  test('handles week spanning month boundary', () => {
+      const dates = [
+          '2024-03-31T12:00:00', // Sunday
+          '2024-04-01T12:00:00',
+          '2024-04-02T12:00:00',
+          '2024-04-03T12:00:00',
+          '2024-04-04T12:00:00',
+          '2024-04-05T12:00:00',
+          '2024-04-06T12:00:00' // Saturday
+      ];
+      const timeboxes = createTimeboxArray(dates);
+      const selectedDate = new Date('2024-04-03'); // Wednesday
+
+      const result = filterTimeboxesBasedOnWeekRange(timeboxes, selectedDate);
+      expect(result.length).toBe(7);
+      expect(new Date(result[0].startTime)).toEqual(new Date('2024-03-31T12:00:00'));
+      expect(new Date(result[result.length - 1].startTime)).toEqual(new Date('2024-04-06T12:00:00'));
+  });
+
+  test('handles sparse timeboxes within week', () => {
+      const dates = [
+          '2024-03-10T12:00:00', // Sunday
+          '2024-03-12T12:00:00', // Tuesday
+          '2024-03-15T12:00:00', // Friday
+      ];
+      const timeboxes = createTimeboxArray(dates);
+      const selectedDate = new Date('2024-03-12');
+
+      const result = filterTimeboxesBasedOnWeekRange(timeboxes, selectedDate);
+      expect(result.length).toBe(3);
+  });
+
+  test('handles timeboxes exactly at week boundaries', () => {
+      const dates = [
+          '2024-03-10T00:00:00', // Sunday start
+          '2024-03-16T23:59:59', // Saturday end
+      ];
+      const timeboxes = createTimeboxArray(dates);
+      const selectedDate = new Date('2024-03-13');
+
+      const result = filterTimeboxesBasedOnWeekRange(timeboxes, selectedDate);
+      expect(result.length).toBe(2);
+  });
 });
 
 

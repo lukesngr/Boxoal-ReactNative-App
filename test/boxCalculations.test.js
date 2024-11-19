@@ -262,7 +262,7 @@ describe('Box Calculation Functions', () => {
     });
 
     test('making sure 24 hour time works in min', () => {
-      expect(addBoxesToTime('min', 30, "23:30", 30)).toBe("0:30");
+      expect(addBoxesToTime('min', 30, "23:30", 1)).toBe("0:00");
     });
 
     test('making sure 24 hour time works in hour', () => {

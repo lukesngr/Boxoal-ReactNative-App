@@ -8,7 +8,7 @@ import { convertToTimeAndDate, calculateMaxNumberOfBoxes, convertToDayjs, addBox
 import { useDispatch, useSelector } from "react-redux";
 import { styles } from "../../styles/styles";
 import Alert from "../Alert";
-import { dayToName } from "../../modules/dateLogic";
+import { dayToName } from "../../modules/dateCode";
 
 export default function EditTimeboxForm(props) {
     const dispatch = useDispatch();

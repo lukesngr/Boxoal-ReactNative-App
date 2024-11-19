@@ -1,5 +1,4 @@
-import { getArrayOfDayDateDayNameAndMonthForHeaders, ifCurrentDay, ifEqualOrBeyondCurrentDay } from '../modules/dateLogic';
-
+import { getArrayOfDayDateDayNameAndMonthForHeaders, ifCurrentDay, ifEqualOrBeyondCurrentDay } from '../modules/dateCode';
 
 //mainly testing most important functions in this code
 describe('getArrayOfDayDateDayNameAndMonthForHeaders', () => {

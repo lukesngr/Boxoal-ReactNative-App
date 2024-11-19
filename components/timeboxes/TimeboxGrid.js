@@ -1,6 +1,6 @@
 import { useSelector } from "react-redux";
-import { getArrayOfDayDateDayNameAndMonthForHeaders, getCurrentDay } from "../../modules/dateLogic";
-import { returnTimesSeperatedForSchedule } from "../../modules/timeLogic";
+import { getArrayOfDayDateDayNameAndMonthForHeaders, getCurrentDay } from "../../modules/dateCode";
+import { returnTimesSeperatedForSchedule } from "../../modules/formatters";
 import useTimeboxGridRedux from "../../hooks/useTimeboxGridRedux";
 import { useScheduleSetter } from "../../hooks/useScheduleSetter";
 import { View, ScrollView } from "react-native";
@@ -11,7 +11,7 @@ import GridHeader from "./GridHeader";
 import GridBody from "./GridBody";
 import { useDaySelected } from "../../hooks/useDaySelected";
 import CorrectModalDisplayer from "../modals/CorrectModalDisplayer";
-import { filterTimeboxesBasedOnWeekRange } from "../../modules/dateLogic";
+import { filterTimeboxesBasedOnWeekRange } from "../../modules/dateCode";
 
 
 export default function TimeboxGrid(props) {

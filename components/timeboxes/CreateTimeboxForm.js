@@ -5,7 +5,7 @@ import axios from 'axios';
 import { queryClient } from '../../App';
 import serverIP from '../../modules/serverIP';
 import { styles } from '../../styles/styles';
-import { dayToName } from '../../modules/dateLogic';
+import { dayToName } from '../../modules/dateCode';
 import { listOfColors } from '../../styles/styles';
 import { Dialog, Portal, TextInput, Button } from 'react-native-paper';
 import { useDispatch, useSelector } from 'react-redux';

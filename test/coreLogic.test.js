@@ -19,7 +19,7 @@ import {
   convertToTimeAndDate
 } from '../modules/coreLogic';
 import dayjs from 'dayjs';
-import { calculateRemainderTimeBetweenTwoTimes } from '../modules/timeLogic';
+import { calculateRemainderTimeBetweenTwoTimes } from '../modules/formatters';
 
 describe('Time and Date Conversion Functions', () => {
   test('convertToDayjs handles standard time and date', () => {

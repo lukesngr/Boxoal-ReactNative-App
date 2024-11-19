@@ -4,38 +4,7 @@ import dayjs from "dayjs";
 var isSameOrBefore = require('dayjs/plugin/isSameOrBefore')
 dayjs.extend(isSameOrBefore)
 
-export function convertToDayjs(time, date) {
-    let timeSeparated = time.split(":").map(function(num) { return parseInt(num); });
-    let dateSeparated = date.split("/").map(function(num) { return parseInt(num); });
-    let dayjsInstance = dayjs().hour(timeSeparated[0]).minute(timeSeparated[1]).date(dateSeparated[0]).month(dateSeparated[1]-1).second(0).millisecond(0);
-    return dayjsInstance;
-}
 
-export function convertToTimeAndDate(input) {
-    let datetime = new Date(input);
-    let hours = datetime.getHours();
-    let minutes = datetime.getMinutes();
-    let date = datetime.getDate();
-    let month = datetime.getMonth()+1;
-
-    if(minutes == 0) {
-        minutes = "00";
-    }
-
-    if(hours == 0) {
-        hours = "00";
-    }
-
-    if(minutes < 10 && minutes != "00") {
-        minutes = "0"+minutes;
-    }
-
-    if(hours < 10 && hours != "00") {
-        hours = "0"+hours;
-    }
-
-    return [hours+':'+minutes, date+'/'+month];
-}
 
 
 export function thereIsNoRecording(recordedBoxes, reoccuring, date, time) {
@@ -105,19 +74,6 @@ export function getProgressWithGoal(timeboxes) {
     return Math.round(percentage);
 }
 
-export function getDateWithSuffix(date) {
-    if (date > 3 && date < 21) {
-        return `${date}th`
-    };
-
-    switch (date % 10) {
-      case 1: return `${date}st`;
-      case 2: return `${date}nd`;
-      case 3: return `${date}rd`;
-      default: return `${date}th`;
-    }
-};
-
 export function goToDay(dispatch, daySelected, direction) {
     if(direction == 'left') {
         if(daySelected > 0) {
@@ -131,14 +87,6 @@ export function goToDay(dispatch, daySelected, direction) {
         }else if(daySelected == 6) {
             dispatch({type: 'daySelected/set', payload: 0});
         }
-    }
-}
-
-export function filterRecordingBasedOnDay(day) { //used closure first time doing so, so nice
-    return function(obj) {
-        let recordedStartTime = dayjs(obj.recordedStartTime);
-        let monthNotBasedOnZeroAsFirst = recordedStartTime.month()+1;
-        return monthNotBasedOnZeroAsFirst == day.month && (recordedStartTime.date()) == day.date;
     }
 }
 

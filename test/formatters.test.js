@@ -1,5 +1,5 @@
 import dayjs from "dayjs";
-import { convertToDayjs, convertToTimeAndDate } from "../modules/formatters";
+import { convertToDayjs, convertToTimeAndDate, returnTimesSeperatedForSchedule } from "../modules/formatters";
 
 describe('Time and Date Conversion Functions', () => {
   test('convertToDayjs handles standard time and date', () => {
@@ -139,5 +139,119 @@ describe('returnTimesSeperatedForSchedule error testing', () => {
 
     expect(consoleSpy).toHaveBeenCalledWith("Beware decimal passed as box size number, was ignored");
     consoleSpy.mockRestore();
+  });
+});
+
+import { getDateWithSuffix, filterRecordingBasedOnDay } from './dateUtils'; // adjust path as needed
+import dayjs from 'dayjs';
+
+describe('getDateWithSuffix', () => {
+  // Test cases for numbers that should end in 'th'
+  test('returns correct suffix for numbers between 4 and 20', () => {
+    const numbers = [4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20];
+    numbers.forEach(num => {
+      expect(getDateWithSuffix(num)).toBe(`${num}th`);
+    });
+  });
+
+  // Test cases for numbers ending in 1 (except 11)
+  test('returns "st" for numbers ending in 1 (except 11)', () => {
+    const numbers = [1, 21, 31];
+    numbers.forEach(num => {
+      expect(getDateWithSuffix(num)).toBe(`${num}st`);
+    });
+  });
+
+  // Test cases for numbers ending in 2 (except 12)
+  test('returns "nd" for numbers ending in 2 (except 12)', () => {
+    const numbers = [2, 22];
+    numbers.forEach(num => {
+      expect(getDateWithSuffix(num)).toBe(`${num}nd`);
+    });
+  });
+
+  // Test cases for numbers ending in 3 (except 13)
+  test('returns "rd" for numbers ending in 3 (except 13)', () => {
+    const numbers = [3, 23];
+    numbers.forEach(num => {
+      expect(getDateWithSuffix(num)).toBe(`${num}rd`);
+    });
+  });
+
+  // Edge cases
+  test('handles edge cases correctly', () => {
+    expect(getDateWithSuffix(11)).toBe('11th');
+    expect(getDateWithSuffix(12)).toBe('12th');
+    expect(getDateWithSuffix(13)).toBe('13th');
+    expect(getDateWithSuffix(0)).toBe('0th');
+  });
+});
+
+describe('filterRecordingBasedOnDay', () => {
+  // Helper function to create test recordings
+  const createRecording = (startTime) => ({
+    recordedStartTime: startTime.toISOString()
+  });
+
+  test('matches recording on same day and month', () => {
+    const targetDay = {
+      date: 15,
+      month: 3 // March
+    };
+
+    const recording = createRecording(dayjs('2024-03-15T10:30:00'));
+    const filterFn = filterRecordingBasedOnDay(targetDay);
+    
+    expect(filterFn(recording)).toBe(true);
+  });
+
+  test('does not match recording on different day', () => {
+    const targetDay = {
+      date: 15,
+      month: 3 // March
+    };
+
+    const recording = createRecording(dayjs('2024-03-16T10:30:00'));
+    const filterFn = filterRecordingBasedOnDay(targetDay);
+    
+    expect(filterFn(recording)).toBe(false);
+  });
+
+  test('does not match recording on different month', () => {
+    const targetDay = {
+      date: 15,
+      month: 3 // March
+    };
+
+    const recording = createRecording(dayjs('2024-04-15T10:30:00'));
+    const filterFn = filterRecordingBasedOnDay(targetDay);
+    
+    expect(filterFn(recording)).toBe(false);
+  });
+
+  test('handles different years correctly', () => {
+    const targetDay = {
+      date: 15,
+      month: 3 // March
+    };
+
+    const recording = createRecording(dayjs('2023-03-15T10:30:00'));
+    const filterFn = filterRecordingBasedOnDay(targetDay);
+    
+    expect(filterFn(recording)).toBe(true);
+  });
+
+  test('handles different times on same day correctly', () => {
+    const targetDay = {
+      date: 15,
+      month: 3 // March
+    };
+
+    const morningRecording = createRecording(dayjs('2024-03-15T06:00:00'));
+    const eveningRecording = createRecording(dayjs('2024-03-15T18:00:00'));
+    const filterFn = filterRecordingBasedOnDay(targetDay);
+    
+    expect(filterFn(morningRecording)).toBe(true);
+    expect(filterFn(eveningRecording)).toBe(true);
   });
 });

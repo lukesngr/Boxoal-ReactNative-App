@@ -165,8 +165,9 @@ describe('filterTimeboxesBasedOnWeekRange', () => {
       const result = filterTimeboxesBasedOnWeekRange(timeboxes, selectedDate);
       
       // Should include Sunday (03-10) through Saturday (03-16)
-      expect(result.length).toBe(7);
       console.log(result);
+      expect(result.length).toBe(7);
+      
       expect(new Date(result[0].startTime)).toEqual(new Date('2024-03-10T12:00:00Z'));
       expect(new Date(result[result.length - 1].startTime)).toEqual(new Date('2024-03-16T12:00:00Z'));
   });

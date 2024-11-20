@@ -37,7 +37,7 @@ export function filterTimeboxesBasedOnWeekRange(timeboxes, selectedDate) {
         return timeboxes;
     }
     let startOfWeek = dayjs(selectedDate).startOf('week').subtract(1, 'day').hour(0).minute(0).toDate();
-    let endOfWeek = dayjs(selectedDate).endOf('week').add(1, 'day').hour(23).minute(59).toDate();
+    let endOfWeek = dayjs(selectedDate).endOf('week').hour(23).minute(59).toDate();
     let indexOfStartOfRange = alteredBinarySearchForTimeboxDate(timeboxes, startOfWeek);
     timeboxes = timeboxes.slice(indexOfStartOfRange); //do before to remove useless info
     let indexOfEndOfRange = alteredBinarySearchForTimeboxDate(timeboxes, endOfWeek);

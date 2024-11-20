@@ -71,10 +71,10 @@ describe('alteredBinarySearchForTimeboxDate', () => {
   });
 
   test('handles single item array - exact match', () => {
-      const timeboxes = createTimeboxArray(['2024-03-15T12:00:00']);
+      const timeboxes = createTimeboxArray(['2024-03-15T12:00:00Z']);
       const result = alteredBinarySearchForTimeboxDate(
           timeboxes,
-          new Date('2024-03-15T12:00:00')
+          new Date('2024-03-15T12:00:00Z')
       );
       expect(result).toBe(0);
   });

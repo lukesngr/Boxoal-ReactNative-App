@@ -24,9 +24,9 @@ export function alteredBinarySearchForTimeboxDate(timeboxes, selectedDate) {
     let middleStartTime = new Date(timeboxes[Math.floor(middle)].startTime);
 
     if(selectedDate.getTime() == middleStartTime.getTime() || timeboxes.length == 1) {
-        return Math.round(middle);
+        return Math.floor(middle);
     }else if(selectedDate > middleStartTime) {
-        return middle+alteredBinarySearchForTimeboxDate(timeboxes.slice(middle), selectedDate);
+        return Math.floor(middle)+alteredBinarySearchForTimeboxDate(timeboxes.slice(middle), selectedDate);
     }else if(selectedDate < middleStartTime) {
         return alteredBinarySearchForTimeboxDate(timeboxes.slice(0, middle), selectedDate);
     }

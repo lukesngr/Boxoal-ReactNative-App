@@ -23,6 +23,8 @@ export default function TimeboxActionsForm(props) {
     const timeboxRecording = useSelector(state => state.timeboxRecording.value);
     const schedule = useSelector(state => state.scheduleEssentials.value);
     const dispatch = useDispatch();
+
+    console.log(data, time, date);
     
     const noPreviousRecording = thereIsNoRecording(data.recordedTimeBoxes, data.reoccuring, date, time);
     const timeboxIsntRecording = timeboxRecording.timeboxID == -1;

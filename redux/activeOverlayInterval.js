@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import { useRef } from 'react';
-import { calculateOverlayHeightForNow } from './../modules/coreLogic';
+import { calculateOverlayHeightForNow } from '../modules/overlayFunctions';
 
 
   export const activeOverlayInterval = createSlice({

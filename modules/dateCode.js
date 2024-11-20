@@ -14,7 +14,7 @@ export function getArrayOfDayDateDayNameAndMonthForHeaders(todaysDate) {
     return result;
 }
 
-function alteredBinarySearchForTimeboxDate(timeboxes, selectedDate) {
+export function alteredBinarySearchForTimeboxDate(timeboxes, selectedDate) {
 
     if(timeboxes.length == 0) {
         return 0;
@@ -36,7 +36,7 @@ export function filterTimeboxesBasedOnWeekRange(timeboxes, selectedDate) {
     if(timeboxes.length == 0) {
         return timeboxes;
     }
-    let startOfWeek = dayjs(selectedDate).startOf('week').hour(0).minute(0).toDate();
+    let startOfWeek = dayjs(selectedDate).startOf('week').subtract(1, 'day').hour(0).minute(0).toDate();
     let endOfWeek = dayjs(selectedDate).endOf('week').add(1, 'day').hour(23).minute(59).toDate();
     let indexOfStartOfRange = alteredBinarySearchForTimeboxDate(timeboxes, startOfWeek);
     timeboxes = timeboxes.slice(indexOfStartOfRange); //do before to remove useless info

@@ -150,14 +150,14 @@ describe('filterTimeboxesBasedOnWeekRange', () => {
   test('filters timeboxes for a week correctly', () => {
       // Create timeboxes for 10 days spanning a week
       const dates = [
-          '2024-03-10T12:00:00', // Sunday
-          '2024-03-11T12:00:00',
-          '2024-03-12T12:00:00',
-          '2024-03-13T12:00:00',
-          '2024-03-14T12:00:00',
-          '2024-03-15T12:00:00',
-          '2024-03-16T12:00:00', // Saturday
-          '2024-03-17T12:00:00', // Next Sunday
+        '2024-03-10T12:00:00Z', // Sunday
+        '2024-03-11T12:00:00Z',
+        '2024-03-12T12:00:00Z',
+        '2024-03-13T12:00:00Z',
+        '2024-03-14T12:00:00Z', 
+        '2024-03-15T12:00:00Z',
+        '2024-03-16T12:00:00Z', // Saturday
+        '2024-03-17T12:00:00Z', // Next Sunday
       ];
       const timeboxes = createTimeboxArray(dates);
       const selectedDate = new Date('2024-03-15'); // A Friday
@@ -166,8 +166,9 @@ describe('filterTimeboxesBasedOnWeekRange', () => {
       
       // Should include Sunday (03-10) through Saturday (03-16)
       expect(result.length).toBe(7);
-      expect(new Date(result[0].startTime)).toEqual(new Date('2024-03-10T12:00:00'));
-      expect(new Date(result[result.length - 1].startTime)).toEqual(new Date('2024-03-16T12:00:00'));
+      console.log(result);
+      expect(new Date(result[0].startTime)).toEqual(new Date('2024-03-10T12:00:00Z'));
+      expect(new Date(result[result.length - 1].startTime)).toEqual(new Date('2024-03-16T12:00:00Z'));
   });
 
   test('handles timeboxes at different times of day', () => {

@@ -1,6 +1,6 @@
 
 import dayjs from 'dayjs';
-import { calculateMaxNumberOfBoxesAfterTimeIfEmpty, calculateMaxNumberOfBoxes, calculateBoxesBetweenTwoTimes, calculateRemainderTimeBetweenTwoTimes, addBoxesToTime } from '../modules/boxCalculations';
+import { calculateMaxNumberOfBoxesAfterTimeIfEmpty, calculateMaxNumberOfBoxes, calculateBoxesBetweenTwoTimes, calculateRemainderTimeBetweenTwoTimes, addBoxesToTime } from '../../modules/boxCalculations';
 
 
 describe('Box Calculation Functions', () => {

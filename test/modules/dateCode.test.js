@@ -1,4 +1,4 @@
-import { getArrayOfDayDateDayNameAndMonthForHeaders, filterTimeboxesBasedOnWeekRange, alteredBinarySearchForTimeboxDate } from '../modules/dateCode';
+import { getArrayOfDayDateDayNameAndMonthForHeaders, filterTimeboxesBasedOnWeekRange, alteredBinarySearchForTimeboxDate } from '../../modules/dateCode';
 
 //mainly testing most important functions in this code
 describe('getArrayOfDayDateDayNameAndMonthForHeaders', () => {

@@ -1,5 +1,5 @@
 import dayjs from "dayjs";
-import { convertToDayjs, convertToTimeAndDate, returnTimesSeperatedForSchedule, getDateWithSuffix, filterRecordingBasedOnDay } from "../modules/formatters";
+import { convertToDayjs, convertToTimeAndDate, returnTimesSeperatedForSchedule, getDateWithSuffix, filterRecordingBasedOnDay } from "../../modules/formatters";
 
 describe('Time and Date Conversion Functions', () => {
   test('convertToDayjs handles standard time and date', () => {

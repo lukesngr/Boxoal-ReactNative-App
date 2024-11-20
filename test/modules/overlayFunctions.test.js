@@ -1,5 +1,5 @@
 import dayjs from "dayjs";
-import { calculateOverlayHeightForNow, calculatePixelsFromTopOfGridBasedOnTime, calculateSizeOfRecordingOverlay } from "../modules/overlayFunctions";
+import { calculateOverlayHeightForNow, calculatePixelsFromTopOfGridBasedOnTime, calculateSizeOfRecordingOverlay } from "../../modules/overlayFunctions";
 
 describe('calculatePixelsFromTopOfGridBasedOnTime', () => {
   // Setup common test variables

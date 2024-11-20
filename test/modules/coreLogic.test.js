@@ -17,7 +17,7 @@ import {
   getProgressAndLevel,
   convertToDayjs,
   convertToTimeAndDate
-} from '../modules/coreLogic';
+} from '../../modules/coreLogic';
 import dayjs from 'dayjs';
 
 describe('Recording and Progress Functions', () => {

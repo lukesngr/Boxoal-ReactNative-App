@@ -1,4 +1,4 @@
-import { convertToDayjs } from "./coreLogic";
+import { convertToDayjs } from "./formatters";
 import dayjs from "dayjs";
 
 export function getHeightForBoxes(numberOfBoxes) { return `calc(${(numberOfBoxes * 100)}% + ${(numberOfBoxes - 1) * 2}px)` }

@@ -1,7 +1,7 @@
 import { useSelector } from "react-redux";
-import { calculatePixelsFromTopOfGridBasedOnTime } from "../modules/coreLogic";
 import dayjs from "dayjs";
-import { filterRecordingBasedOnDay } from "../modules/coreLogic";
+import { calculatePixelsFromTopOfGridBasedOnTime } from "../modules/overlayFunctions";
+import { filterRecordingBasedOnDay } from "../modules/formatters";
 
 export default function useRecordedBoxesForWeek(dayToName, recordedTimeboxes) {
     const {wakeupTime, boxSizeUnit, boxSizeNumber} = useSelector(state => state.scheduleEssentials.value);

@@ -1,5 +1,6 @@
 import { useSelector } from "react-redux";
-import { getArrayOfDayDateDayNameAndMonthForHeaders, getCurrentDay } from "../../modules/dateCode";
+import { getArrayOfDayDateDayNameAndMonthForHeaders } from "../../modules/dateCode";
+import { getCurrentDay } from "../../modules/untestableFunctions";
 import { returnTimesSeperatedForSchedule } from "../../modules/formatters";
 import useTimeboxGridRedux from "../../hooks/useTimeboxGridRedux";
 import { useScheduleSetter } from "../../hooks/useScheduleSetter";

@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { calculateOverlayHeightForNow } from '../modules/coreLogic';
+import { calculateOverlayHeightForNow } from '../modules/overlayFunctions';
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
 import { resetActiveOverlayInterval, setActiveOverlayInterval } from '../redux/activeOverlayInterval';

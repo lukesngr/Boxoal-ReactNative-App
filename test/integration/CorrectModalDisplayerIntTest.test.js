@@ -95,18 +95,19 @@ jest.mock('react-native', () => ({
   }));
 
   jest.mock('react-native-paper', () => {
-    const Dialog = (props) => props.children;
-    Dialog.Title = (props) => props.children;
-    Dialog.Content = (props) => props.children;
-    Dialog.Actions = (props) => props.children;
+    const Dialog = props => <div data-testid="dialog">{props.children}</div>;
+    Dialog.Title = props => <div data-testid="dialog-title">{props.children}</div>;
+    Dialog.Content = props => <div data-testid="dialog-content">{props.children}</div>;
+    Dialog.Actions = props => <div data-testid="dialog-actions">{props.children}</div>;
 
     return {
       Dialog,
-      Button: 'Button',
-      Card: 'Card',
-      Text: 'Text',
-      Modal: 'Modal',
-      Portal: 'Portal',
+      Button: props => <div data-testid="button">{props.children}</div>,
+      Card: props => <div data-testid="card">{props.children}</div>,
+      Text: props => <div data-testid="text">{props.children}</div>,
+      Modal: props => <div data-testid="modal">{props.children}</div>,
+      Portal: props => <div data-testid="portal">{props.children}</div>,
+      TextInput: props => <div data-testid="textinput">{props.children}</div>,
     };
   });
 

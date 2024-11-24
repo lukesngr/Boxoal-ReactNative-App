@@ -2,16 +2,21 @@ import React from "react";
 import { render } from "@testing-library/react";
 import { configureStore } from "@reduxjs/toolkit";
 import { Provider } from "react-redux";
-import timeboxGridReducer from './timeboxGrid'
-import timeboxRecordingReducer from './timeboxRecording'
-import timeboxDialogReducer from './timeboxDialog'
-import usernameReducer from './username'
-import selectedDateReducer from './selectedDate'
-import selectedScheduleReducer from './selectedSchedule'
+import scheduleEssentialsReducer from '../redux/scheduleEssentials'
+import overlayDimensionsReducer from '../redux/overlayDimensions'
+import activeOverlayHeightReducer from '../redux/activeOverlayHeight'
+import activeOverlayIntervalReducer from '../redux/activeOverlayInterval'
+import scheduleDataReducer from '../redux/scheduleData'
+import timeboxGridReducer from '../redux/timeboxGrid'
+import timeboxRecordingReducer from '../redux/timeboxRecording'
+import timeboxDialogReducer from '../redux/timeboxDialog'
+import usernameReducer from '../redux/username'
+import selectedDateReducer from '../redux/selectedDate'
+import selectedScheduleReducer from '../redux/selectedSchedule'
 import { combineReducers } from '@reduxjs/toolkit'
-import onDayViewReducer from './onDayView'
-import daySelectedReducer from './daySelected'
-import modalVisibleReducer from './modalVisible'
+import onDayViewReducer from '../redux/onDayView'
+import daySelectedReducer from '../redux/daySelected'
+import modalVisibleReducer from '../redux/modalVisible'
 
 const rootReducer = combineReducers({
   scheduleEssentials: scheduleEssentialsReducer,
@@ -36,7 +41,7 @@ export function renderWithProviders(
     preloadedState = {},
     // Automatically create a store instance if no store was passed in
     store = configureStore({
-      reducer: { reducer: rootReducer },
+      reducer: rootReducer ,
       preloadedState,
     }),
     ...renderOptions

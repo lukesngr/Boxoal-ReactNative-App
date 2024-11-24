@@ -3,7 +3,7 @@ import { convertToDayjs } from '../../modules/formatters';
 import { addBoxesToTime, calculateMaxNumberOfBoxes } from '../../modules/boxCalculations';
 import {Picker} from '@react-native-picker/picker';;
 import axios from 'axios';
-import { queryClient } from '../../App';
+import { queryClient } from '../../modules/queryClient.js';
 import serverIP from '../../modules/serverIP';
 import { styles } from '../../styles/styles';
 import { dayToName } from '../../modules/dateCode';

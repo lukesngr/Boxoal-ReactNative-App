@@ -4,7 +4,7 @@ import { useState } from "react";
 import DatePicker from "react-native-date-picker";
 import serverIP from "../../modules/serverIP";
 import Alert from "../Alert";
-import { queryClient } from "../../App";
+import { queryClient } from '../../modules/queryClient.js';
 import { useDispatch } from "react-redux";
 import { convertToTimeAndDate } from "../../modules/coreLogic";
 

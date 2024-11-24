@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useState } from "react";
 import serverIP from "../../modules/serverIP";
-import { queryClient } from "../../App";
+import { queryClient } from '../../modules/queryClient.js';
 import { Portal, Dialog, TextInput, Button } from "react-native-paper";
 import { Picker } from "@react-native-picker/picker";
 import { convertToTimeAndDate, calculateMaxNumberOfBoxes, convertToDayjs, addBoxesToTime } from "../../modules/coreLogic";

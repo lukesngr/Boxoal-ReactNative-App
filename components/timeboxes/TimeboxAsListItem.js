@@ -1,6 +1,6 @@
 import { Text, Checkbox, Surface } from "react-native-paper";
 import axios from "axios";
-import { queryClient } from "../../App";
+import { queryClient } from '../../modules/queryClient.js';
 import serverIP from "../../modules/serverIP";
 import { useState } from "react";
 import { useSelector } from "react-redux";

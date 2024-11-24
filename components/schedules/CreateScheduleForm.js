@@ -2,7 +2,7 @@ import { Pressable } from "react-native";
 import axios from "axios";
 import { useState } from "react";
 import serverIP from "../../modules/serverIP";
-import { queryClient } from "../../App";
+import { queryClient } from '../../modules/queryClient.js';
 import DatePicker from "react-native-date-picker";
 import { Picker } from "@react-native-picker/picker";
 import { convertToTimeAndDate } from "../../modules/coreLogic";

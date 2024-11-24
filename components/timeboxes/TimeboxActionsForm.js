@@ -10,7 +10,6 @@ import { Button } from "react-native-paper";
 import EditTimeboxForm from "./EditTimeboxForm";
 import Alert from "../Alert";
 import { Dialog, Paragraph, Portal } from "react-native-paper";
-import { getCurrentUser } from "aws-amplify/auth";
 import { useAuthenticator } from "@aws-amplify/ui-react-native";
 import ManualEntryTimeModal from "../modals/ManualEntryTimeModal";
 

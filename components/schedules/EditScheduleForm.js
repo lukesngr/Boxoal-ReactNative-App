@@ -6,7 +6,6 @@ import { queryClient } from "../../App";
 import DatePicker from "react-native-date-picker";
 import { Picker } from "@react-native-picker/picker";
 import { convertToTimeAndDate } from "../../modules/coreLogic";
-import { getCurrentUser } from "aws-amplify/auth";
 import { Dialog, Portal, TextInput, Button, Text } from "react-native-paper";
 import Alert from "../Alert";
 import { styles } from "../../styles/styles";

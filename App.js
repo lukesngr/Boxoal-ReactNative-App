@@ -13,10 +13,11 @@ import { SignUp } from './components/login/SignUp.js';
 import { configureAmplify } from './modules/awsConfig';
 import { PaperProvider, MD3LightTheme  } from 'react-native-paper';
 import { Authenticator } from '@aws-amplify/ui-react-native';
+import { queryClient } from './modules/queryClient.js';
 configureAmplify();
 
 const Stack = createNativeStackNavigator();
-export const queryClient = new QueryClient();
+
 
 export let theme = {
   ...MD3LightTheme,

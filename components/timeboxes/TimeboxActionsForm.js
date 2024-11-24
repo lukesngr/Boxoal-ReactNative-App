@@ -1,6 +1,6 @@
 import { addBoxesToTime, calculateXPPoints, convertToDateTime, recordingNotificationsSetup, thereIsNoRecording } from "../../modules/coreLogic";
 import axios from 'axios';
-import { queryClient } from '../../App';
+import { queryClient } from '../../modules/queryClient.js';
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setActiveOverlayInterval, resetActiveOverlayInterval } from "../../redux/activeOverlayInterval";

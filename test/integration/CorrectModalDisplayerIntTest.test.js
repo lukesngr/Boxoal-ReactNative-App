@@ -2,10 +2,11 @@
  * @jest-environment jsdom
  */
 
-import { Dialog } from "react-native-paper";
+import { Dialog, Paragraph } from "react-native-paper";
 import CorrectModalDisplayer from "../../components/modals/CorrectModalDisplayer";
 import { renderWithProviders } from "../renderWithProviders";
 import { Text } from "react-native";
+import { modalVisible } from "../../redux/modalVisible";
 
 
 jest.mock('react-native', () => ({
@@ -31,6 +32,16 @@ jest.mock('react-native', () => ({
       spring: jest.fn(),
       Value: jest.fn(),
     },
+    NativeModules: {
+      BackgroundWorkManager: {
+          startBackgroundWork: jest.fn(),
+          stopBackgroundWork: jest.fn()
+      }
+    },
+  }));
+  
+  jest.mock('axios', () => ({
+    post: jest.fn(),
   }));
 
   jest.mock('react-native-safe-area-context', () => ({
@@ -87,6 +98,7 @@ jest.mock('react-native', () => ({
       signOut: jest.fn(),
       user: {
         username: 'testUser',
+        userId: '343432sdfd5',
         // add other user properties you need
       },
       authStatus: 'authenticated', // or 'unauthenticated', etc
@@ -108,6 +120,7 @@ jest.mock('react-native', () => ({
       Modal: props => <div data-testid="modal">{props.children}</div>,
       Portal: props => <div data-testid="portal">{props.children}</div>,
       TextInput: props => <div data-testid="textinput">{props.children}</div>,
+      Paragraph: props => <div data-testid="paragraph">{props.children}</div>,
     };
   });
 
@@ -118,9 +131,25 @@ jest.mock('react-native', () => ({
     })
   }));
 
-  jest.mock('react-native-date-picker', () => ({
-    DatePicker: 'DatePicker',
+  jest.mock('../../components/Alert', () => ({
+    Alert: 'Alert'
   }));
+
+  jest.mock('react-native-date-picker', () => ({
+    __esModule: true,
+    default: function DatePicker({ 
+      modal, 
+      mode, 
+      date, 
+      onDateChange, 
+      open, 
+      onConfirm, 
+      onCancel 
+    }) {
+      return null;
+    }
+  }));
+
   jest.mock('react-native-svg', () => ({
     Svg: 'Svg',
     Circle: 'Circle',
@@ -130,17 +159,57 @@ jest.mock('react-native', () => ({
 describe('CorrectModalDisplayerIntTest', () => {
     describe('CorrectModalDisplayer CreateTimeboxForm', () => {
         test('CreateTimeboxForm renders correctly', () => {
-            const initialState = {modalVisible: 
+            const modalVisible =  
             {value: 
               {visible: true, 
                 props: {date: "20/11", dayName: "Wed", time: "21:30"}
               }
-            }};
-            const result = renderWithProviders(<CorrectModalDisplayer/>, {
-                preloadedState: initialState
+            };
+            const {getByText} = renderWithProviders(<CorrectModalDisplayer/>, {
+                preloadedState: {
+                  modalVisible
+                }
             });
             
-            expect(result.getByText('Create Timebox')).toBeTruthy();
+            expect(getByText('Create Timebox')).toBeTruthy();
         });
+    });
+
+    describe('CorrectModalDisplayer TimeboxActionsForm', () => {
+      test('TimeboxActionsForm renders correctly', () => {
+          const modalVisible = {value: 
+            {visible: true, 
+              props: {date: "20/11", time: "21:30", 
+                data: {id: 1,
+                title: "Test Timebox",
+                description: "Test timebox created for 20/11 at 21:30",
+                startTime: "2024-11-20T21:30:00.000Z",
+                endTime: "2024-11-20T22:30:00.000Z",   // Assuming 1 hour duration
+                numberOfBoxes: 4,
+                color: "#4ECDC4",
+                goalID: 1,
+                goalPercentage: 100,
+                recordedTimeBoxes: {
+                  id: 101,
+                  recordedStartTime: "2024-11-20T21:30:00.000Z",
+                  timeBoxID: 1,
+                  timeBox: {
+                    title: "Test Timebox",
+                    description: "Test timebox created for 20/11 at 21:30"
+                  }
+                },
+                reoccuring: {
+                  id: 201,
+                  reoccurFrequency: "weekly",
+                  weeklyDay: 3  
+                }
+              }}
+          }};
+          const {getByText} = renderWithProviders(<CorrectModalDisplayer/>, {
+              preloadedState: {modalVisible}
+          });
+          
+          expect(getByText('Test Timebox')).toBeTruthy();
+      });
     });
 });

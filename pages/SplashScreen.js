@@ -1,11 +1,8 @@
 import { StyleSheet, Text, View } from 'react-native';
 import { Animated, Easing } from 'react-native';
 import { useEffect, useRef } from 'react';
-import SignInButton from '../components/SignInButton';
-import { getCurrentUser } from 'aws-amplify/auth';
 import { styles } from '../styles/styles';
 import { useAuthenticator } from '@aws-amplify/ui-react-native';
-import { useDispatch } from 'react-redux';
 import { Button } from 'react-native-paper';
 
 function stepFunction(steps, t) {

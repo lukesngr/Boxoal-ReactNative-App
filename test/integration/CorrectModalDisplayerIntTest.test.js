@@ -136,12 +136,11 @@ describe('CorrectModalDisplayerIntTest', () => {
                 props: {date: "20/11", dayName: "Wed", time: "21:30"}
               }
             }};
-            const { getByText } = renderWithProviders(<CorrectModalDisplayer/>, {
+            const result = renderWithProviders(<CorrectModalDisplayer/>, {
                 preloadedState: initialState
-            })
+            });
             
-            const element = getByText('Create Timebox');
-            expect(element).toBeInTheDocument();
+            expect(result.getByText('Create Timebox')).toBeTruthy();
         });
     });
 });

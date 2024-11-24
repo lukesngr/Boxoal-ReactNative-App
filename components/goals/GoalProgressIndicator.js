@@ -1,4 +1,3 @@
-import { Surface } from "react-native-paper";
 import Svg, { Circle, Text } from "react-native-svg";
 import { getDateWithSuffix, getProgressWithGoal } from "../../modules/coreLogic";
 import dayjs from "dayjs";

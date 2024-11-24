@@ -1,3 +1,4 @@
+import { signIn } from "aws-amplify/auth";
 import CorrectModalDisplayer from "../../components/modals/CorrectModalDisplayer";
 import { renderWithProviders } from "../renderWithProviders";
 
@@ -65,6 +66,18 @@ jest.mock('react-native', () => ({
     },
   }));
 
+  jest.mock('aws-amplify/auth', () => ({
+    signOut: jest.fn(),
+    signIn: jest.fn(),
+  }));
+
+  jest.mock('@notifee/react-native', () => ({
+    notifee: {
+      requestPermission: jest.fn(),
+      createChannel: jest.fn(),
+    },
+  }));
+
   jest.mock('@aws-amplify/ui-react-native', () => ({
     useAuthenticator: jest.fn().mockReturnValue({
       signOut: jest.fn(),
@@ -95,6 +108,11 @@ jest.mock('react-native', () => ({
 
   jest.mock('react-native-date-picker', () => ({
     DatePicker: 'DatePicker',
+  }));
+  jest.mock('react-native-svg', () => ({
+    Svg: 'Svg',
+    Circle: 'Circle',
+    Text: 'Text',
   }));
 
 describe('CorrectModalDisplayerIntTest', () => {

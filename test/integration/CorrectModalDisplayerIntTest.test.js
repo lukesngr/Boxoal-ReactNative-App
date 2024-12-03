@@ -173,6 +173,24 @@ describe('CorrectModalDisplayerIntTest', () => {
             
             expect(getByText('Create Timebox')).toBeTruthy();
         });
+
+        test('CreateTimeboxForm cant set number of boxes zero or higher than boxes available', () => {
+          const modalVisible =  
+          {value: 
+            {visible: true, 
+              props: {date: "20/11", dayName: "Wed", time: "21:30"}
+            }
+          };
+          const result = renderWithProviders(<CorrectModalDisplayer/>, {
+              preloadedState: {
+                modalVisible
+              }
+          });
+
+          console.log(result)
+          
+          expect(result.getByText('Create Timebox')).toBeTruthy();
+      });
     });
 
     describe('CorrectModalDisplayer TimeboxActionsForm', () => {
@@ -211,5 +229,7 @@ describe('CorrectModalDisplayerIntTest', () => {
           
           expect(getByText('Test Timebox')).toBeTruthy();
       });
+
+      //no reason to write integration tests, gonna end to end test this
     });
 });

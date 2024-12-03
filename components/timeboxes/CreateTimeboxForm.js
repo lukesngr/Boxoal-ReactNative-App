@@ -33,7 +33,6 @@ export default function CreateTimeboxForm(props) {
     let {time, date} = props;
 
     let maxNumberOfBoxes = calculateMaxNumberOfBoxes(wakeupTime, boxSizeUnit, boxSizeNumber, timeboxes, time, date);
-    console.log(wakeupTime, boxSizeUnit, boxSizeNumber, timeboxes, time, date);
     
     function closeModal() {
         dispatch({type: 'modalVisible/set', payload: {visible: false, props: {}}});

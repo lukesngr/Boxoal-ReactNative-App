@@ -2,7 +2,7 @@ import dayjs from "dayjs";
 import { useSelector } from "react-redux";
 
 export function getCurrentDay() {
-    const {wakeupTime} = useSelector(state => state.profile.value);
+    const {wakeupTime} = useSelector(state => state.scheduleEssentials.value);
     const dateObject = dayjs();
     let currentDay = dateObject.day();
     let cutOffDateTime = dateObject.hour(wakeupTime.split(':')[0]).minute(wakeupTime.split(':')[1]);
@@ -16,7 +16,7 @@ export function getCurrentDay() {
 
 
 export function ifCurrentDay(number, returnIfTrue, returnIfFalse) {
-    const {wakeupTime} = useSelector(state => state.profile.value);
+    const {wakeupTime} = useSelector(state => state.scheduleEssentials.value);
     const dateObject = dayjs();
     let currentDay = dateObject.day();
     let cutOffDateTime = dateObject.hour(wakeupTime.split(':')[0]).minute(wakeupTime.split(':')[1]);
@@ -35,7 +35,7 @@ export function ifCurrentDay(number, returnIfTrue, returnIfFalse) {
 }
 
 export function ifEqualOrBeyondCurrentDay(number, returnIfTrue, returnIfFalse) {
-    const {wakeupTime} = useSelector(state => state.profile.value);
+    const {wakeupTime} = useSelector(state => state.scheduleEssentials.value);
     const dateObject = dayjs();
     let currentDay = dateObject.day();
     let cutOffDateTime = dateObject.hour(wakeupTime.split(':')[0]).minute(wakeupTime.split(':')[1]);

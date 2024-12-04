@@ -9,7 +9,7 @@ dayjs.extend(isSameOrBefore)
 
 export default function RecordingOverlay(props) {
     const {recordingStartTime, timeboxID} = useSelector(state => state.timeboxRecording.value);
-    const {wakeupTime, boxSizeUnit, boxSizeNumber} = useSelector(state => state.profile.value);
+    const {wakeupTime, boxSizeUnit, boxSizeNumber} = useSelector(state => state.scheduleEssentials.value);
     const overlayDimensions = useSelector(state => state.overlayDimensions.value);
     const activeOverlayHeight = useSelector(state => state.activeOverlayHeight.value);
     const [marginFromTop, setMarginFromTop] = useState(overlayDimensions.headerHeight+activeOverlayHeight); 

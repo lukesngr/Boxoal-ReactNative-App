@@ -16,7 +16,7 @@ import Alert from '../Alert';
 export default function CreateTimeboxForm(props) {
     
     const dispatch = useDispatch();
-    const {id, wakeupTime, boxSizeUnit, boxSizeNumber} = useSelector(state => state.profile.value);
+    const {id, wakeupTime, boxSizeUnit, boxSizeNumber} = useSelector(state => state.scheduleEssentials.value);
     const {timeboxes, goals} = useSelector(state => state.scheduleData.value);
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");

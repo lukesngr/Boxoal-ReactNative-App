@@ -5,7 +5,7 @@ import { styles } from "../styles/styles";
 
 export default function useOverlayDimensions(headerHeight, headerWidth, onDayView) {
     const dispatch = useDispatch();
-    const {boxSizeUnit, boxSizeNumber, wakeupTime} = useSelector(state => state.profile.value);
+    const {boxSizeUnit, boxSizeNumber, wakeupTime} = useSelector(state => state.scheduleEssentials.value);
     let timeboxHeight = styles.normalTimeboxHeight;
     
     if(onDayView) {

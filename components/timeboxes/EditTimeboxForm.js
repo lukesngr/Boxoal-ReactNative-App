@@ -31,7 +31,7 @@ export default function EditTimeboxForm(props) {
     
     const [alert, setAlert] = useState({shown: false, title: "", message: ""});
 
-    const {id, wakeupTime, boxSizeUnit, boxSizeNumber} = useSelector(state => state.profile.value);
+    const {id, wakeupTime, boxSizeUnit, boxSizeNumber} = useSelector(state => state.scheduleEssentials.value);
     const {timeboxes, goals} = useSelector(state => state.scheduleData.value);
 
     let [time, date] = convertToTimeAndDate(props.data.startTime);

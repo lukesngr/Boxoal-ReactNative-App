@@ -18,7 +18,7 @@ import { calculateOverlayHeightForNow } from '../modules/overlayFunctions';
   export function setActiveOverlayInterval() { 
     return function (dispatch, getState) {
       const overlayDimensions = getState().overlayDimensions.value;
-      const {wakeupTime, boxSizeUnit, boxSizeNumber} = getState().profile.value;
+      const {wakeupTime, boxSizeUnit, boxSizeNumber} = getState().scheduleEssentials.value;
       const newInterval = setInterval(() => 
           { 
               dispatch({type:"activeOverlayHeight/set", payload: calculateOverlayHeightForNow(wakeupTime, boxSizeUnit, boxSizeNumber, overlayDimensions)});

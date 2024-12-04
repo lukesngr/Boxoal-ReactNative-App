@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit'
 
-export const profile = createSlice({
-  name: 'profile',
+export const scheduleEssentials = createSlice({
+  name: 'scheduleEssentials',
   initialState: {
     value: {id: 0, boxSizeUnit: 'min', boxSizeNumber: 30, wakeupTime: '07:00', progress: 0, level: 0},
   },
@@ -13,6 +13,6 @@ export const profile = createSlice({
 })
 
 // Action creators are generated for each case reducer function
-export const { set } = profile.actions
+export const { set } = scheduleEssentials.actions
 
-export default profile.reducer
+export default scheduleEssentials.reducer

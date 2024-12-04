@@ -12,7 +12,7 @@ import { useEffect } from "react";
 export default function TimeboxAsListItem(props) {
     const dispatch = useDispatch();
     const [checked, setChecked] = useState(props.timebox.recordedTimeBoxes.length > 0);
-    const {id, wakeupTime, boxSizeUnit, boxSizeNumber} = useSelector(state => state.profile.value);
+    const {id, wakeupTime, boxSizeUnit, boxSizeNumber} = useSelector(state => state.scheduleEssentials.value);
 
     useEffect(() => {
         setChecked(props.timebox.recordedTimeBoxes?.length > 0);

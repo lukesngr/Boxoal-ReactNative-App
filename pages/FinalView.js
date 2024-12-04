@@ -15,6 +15,7 @@ import { MD3LightTheme } from 'react-native-paper';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { Dashboard } from './Dashboard';
 import { useAuthenticator } from '@aws-amplify/ui-react-native';
+import { useProfile } from '../hooks/useProfile';
 
 let theme = {
     ...MD3LightTheme,
@@ -34,6 +35,8 @@ export default function FinalView({ navigation, route }) {
     const dispatch = useDispatch();
     const { authStatus, user } = useAuthenticator();
     if(authStatus != 'authenticated') { navigation.navigate('Login'); }
+
+    useProfile(user.userId, dispatch);
 
     const {status, data, error, refetch} = useQuery({
         queryKey: ["schedule"], 

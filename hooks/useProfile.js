@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
+import { useQuery } from "react-query";
 import axios from "axios";
 import { getProgressAndLevel } from "../modules/coreLogic";
 export function useProfile(userID, dispatch) {

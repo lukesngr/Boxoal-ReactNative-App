@@ -4,7 +4,7 @@ import { calculatePixelsFromTopOfGridBasedOnTime } from "../modules/overlayFunct
 import { filterRecordingBasedOnDay } from "../modules/formatters";
 
 export default function useRecordedBoxesForWeek(dayToName, recordedTimeboxes) {
-    const {wakeupTime, boxSizeUnit, boxSizeNumber} = useSelector(state => state.scheduleEssentials.value);
+    const {wakeupTime, boxSizeUnit, boxSizeNumber} = useSelector(state => state.profile.value);
     const overlayDimensions = useSelector(state => state.overlayDimensions.value);
 
     let recordingBoxesForWeek = [];

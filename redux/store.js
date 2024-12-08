@@ -1,5 +1,5 @@
 import { configureStore } from '@reduxjs/toolkit'
-import scheduleEssentialsReducer from './scheduleEssentials'
+import profileReducer from './profile'
 import overlayDimensionsReducer from './overlayDimensions'
 import activeOverlayHeightReducer from './activeOverlayHeight'
 import activeOverlayIntervalReducer from './activeOverlayInterval'
@@ -18,7 +18,7 @@ import daySelectedReducer from './daySelected'
 import modalVisibleReducer from './modalVisible'
 
 const rootReducer = combineReducers({
-  scheduleEssentials: scheduleEssentialsReducer,
+  profile: profileReducer,
   overlayDimensions: overlayDimensionsReducer,
   activeOverlayHeight: activeOverlayHeightReducer,
   activeOverlayInterval: activeOverlayIntervalReducer,
@@ -37,7 +37,7 @@ const rootReducer = combineReducers({
 const persistConfig = {
   key: 'root',
   storage: AsyncStorage,
-  whitelist: ['username', 'timeboxRecording', 'activeOverlayInterval', 'activeOverlayHeight', 'overlayDimensions', 'daySelected']
+  whitelist: ['username', 'timeboxRecording', 'activeOverlayInterval', 'activeOverlayHeight', 'overlayDimensions', 'daySelected', 'profile']
 }
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

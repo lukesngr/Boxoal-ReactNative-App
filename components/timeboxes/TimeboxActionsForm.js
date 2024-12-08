@@ -20,7 +20,7 @@ export default function TimeboxActionsForm(props) {
     const [alert, setAlert] = useState({shown: false, title: "", message: ""});
     const {user} = useAuthenticator();
     const timeboxRecording = useSelector(state => state.timeboxRecording.value);
-    const schedule = useSelector(state => state.scheduleEssentials.value);
+    const schedule = useSelector(state => state.profile.value);
     const dispatch = useDispatch();
     
     const noPreviousRecording = thereIsNoRecording(data.recordedTimeBoxes, data.reoccuring, date, time);

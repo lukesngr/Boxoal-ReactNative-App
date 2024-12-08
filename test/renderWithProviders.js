@@ -2,7 +2,7 @@ import React from "react";
 import { render } from "@testing-library/react";
 import { configureStore } from "@reduxjs/toolkit";
 import { Provider } from "react-redux";
-import scheduleEssentialsReducer from '../redux/scheduleEssentials'
+import profileReducer from '../redux/profile'
 import overlayDimensionsReducer from '../redux/overlayDimensions'
 import activeOverlayHeightReducer from '../redux/activeOverlayHeight'
 import activeOverlayIntervalReducer from '../redux/activeOverlayInterval'
@@ -19,7 +19,7 @@ import daySelectedReducer from '../redux/daySelected'
 import modalVisibleReducer from '../redux/modalVisible'
 
 const rootReducer = combineReducers({
-  scheduleEssentials: scheduleEssentialsReducer,
+  profile: profileReducer,
   overlayDimensions: overlayDimensionsReducer,
   activeOverlayHeight: activeOverlayHeightReducer,
   activeOverlayInterval: activeOverlayIntervalReducer,

@@ -18,10 +18,11 @@ import { filterTimeboxesBasedOnWeekRange } from "../../modules/dateCode";
 export default function TimeboxGrid(props) {
     const selectedDate = useSelector(state => state.selectedDate.value);
     const selectedSchedule = useSelector(state => state.selectedSchedule.value);
+    const profile = useSelector(state => state.profile.value);
     let schedule = props.data[selectedSchedule];
     schedule.timeboxes = filterTimeboxesBasedOnWeekRange(schedule.timeboxes, selectedDate); //filter timeboxes based on week range
     const dayToName = getArrayOfDayDateDayNameAndMonthForHeaders(selectedDate); //get all info to make headers look nice
-    const listOfTimes = returnTimesSeperatedForSchedule(schedule); //get times that go down each row
+    const listOfTimes = returnTimesSeperatedForSchedule(profile); //get times that go down each row
     let currentDay = getCurrentDay();
     useTimeboxGridRedux(schedule, selectedDate); //make a map for the timeboxes with another map inside it, makes lookup fast
     useScheduleSetter(schedule); //set schedule data to redux store (timeboxes, recordedTimeboxes, goals

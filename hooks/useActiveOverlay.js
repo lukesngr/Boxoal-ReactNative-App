@@ -9,11 +9,12 @@ export default function useActiveOverlay(schedule) {
 
     const timeboxRecording = useSelector(state => state.timeboxRecording.value);
     const overlayDimensions = useSelector(state => state.overlayDimensions.value);
+    const profile = useSelector(state => state.profile.value);
     const dispatch = useDispatch();
 
     useEffect(() => {
         if(timeboxRecording.timeboxID == -1) {
-            dispatch({type:"activeOverlayHeight/set", payload: calculateOverlayHeightForNow(schedule.wakeupTime, schedule.boxSizeUnit, schedule.boxSizeNumber, overlayDimensions)});
+            dispatch({type:"activeOverlayHeight/set", payload: calculateOverlayHeightForNow(profile.wakeupTime, profile.boxSizeUnit, profile.boxSizeNumber, overlayDimensions)});
             dispatch(setActiveOverlayInterval());
         }else if(dayjs(timeboxRecording.timeboxDate).isBefore(dayjs(), 'date')){
             dispatch({type:"activeOverlayHeight/set", payload: 0});

@@ -1,5 +1,6 @@
 import Svg, { Circle, Text } from "react-native-svg";
-import { getDateWithSuffix, getProgressWithGoal } from "../../modules/coreLogic";
+import { getProgressWithGoal } from "../../modules/coreLogic";
+import { getDateWithSuffix } from "../../modules/formatters";
 import dayjs from "dayjs";
 import { View } from "react-native";
 

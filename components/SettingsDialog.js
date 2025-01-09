@@ -16,7 +16,7 @@ export default function SettingsDialog(props) {
     const profile = useSelector(state => state.profile.value);
     const [dayView, setDayView] = useState(onDayView);
     const [scheduleIndex, setScheduleIndex] = useState(selectedSchedule+1);
-    const [boxSizeNumber, setBoxSizeNumber] = useState(profile.boxSizeNumber);
+    const [boxSizeNumber, setBoxSizeNumber] = useState(String(profile.boxSizeNumber));
     const [boxSizeUnit, setBoxSizeUnit] = useState(profile.boxSizeUnit);
     const [wakeupTime, setWakeupTime] = useState(convertToDayjs(profile.wakeupTime, '12/1').toDate());
     const [wakeupTimeText, setWakeupTimeText] = useState(profile.wakeupTime);
@@ -37,8 +37,9 @@ export default function SettingsDialog(props) {
 
     function updateProfile() {
         let wakeupTimeAsText = convertToTimeAndDate(wakeupTime)[0];
-        axios.post(serverIP+'/updateProfile', {boxSizeUnit, boxSizeNumber, wakeupTime: wakeupTimeAsText, userUUID: user.userId}).catch(function(error) { console.log(error); });
-        dispatch({type: 'profile/set', payload: {boxSizeNumber, boxSizeUnit, wakeupTime}});
+        let convertedBackBoxSizeNumber = Number(boxSizeNumber);
+        axios.post(serverIP+'/updateProfile', {boxSizeUnit, convertedBackBoxSizeNumber, wakeupTime: wakeupTimeAsText, userUUID: user.userId}).catch(function(error) { console.log(error); });
+        dispatch({type: 'profile/set', payload: {convertedBackBoxSizeNumber, boxSizeUnit, wakeupTime}});
         props.hideDialog();
     }
     
@@ -85,8 +86,8 @@ export default function SettingsDialog(props) {
                 </Pressable>
             </Dialog.Content>
             <Dialog.Actions>
-                <Button textColor="white" buttonColor="#49454F" mode="contained" onPress={logOut}>Logout</Button>
-                <Button textColor="white" buttonColor="#49454F" mode="contained" onPress={updateProfile}>Update Schedule</Button>
+                <Button textColor="black" buttonColor="white" mode="contained" onPress={logOut}>Logout</Button>
+                <Button textColor="black" buttonColor="white" mode="contained" onPress={updateProfile}>Update Schedule</Button>
                 <Button textColor='white' onPress={props.hideDialog}>Done</Button>
             </Dialog.Actions>
           </Dialog>

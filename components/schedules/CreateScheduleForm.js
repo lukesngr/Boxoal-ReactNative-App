@@ -1,11 +1,9 @@
-import { Pressable } from "react-native";
+
 import axios from "axios";
 import { useState } from "react";
 import serverIP from "../../modules/serverIP";
 import { queryClient } from '../../modules/queryClient.js';
-import DatePicker from "react-native-date-picker";
-import { Picker } from "@react-native-picker/picker";
-import { convertToTimeAndDate } from "../../modules/coreLogic";
+
 import { Dialog, Portal, TextInput, Button } from "react-native-paper";
 import Alert from "../Alert";
 import { styles } from "../../styles/styles";

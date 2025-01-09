@@ -5,8 +5,12 @@ import { useSelector, useDispatch } from "react-redux";
 import { Picker } from "@react-native-picker/picker";
 import { set } from "../redux/activeOverlayInterval";
 import { convertToDayjs, convertToTimeAndDate } from "../modules/formatters";
+import { styles } from "../styles/styles";
+import DatePicker from "react-native-date-picker";
+import { Pressable } from "react-native";
 
 export default function SettingsDialog(props) {
+    const dispatch = useDispatch();
     const selectedSchedule = useSelector(state => state.selectedSchedule.value);
     const onDayView = useSelector(state => state.onDayView.value);
     const profile = useSelector(state => state.profile.value);
@@ -14,10 +18,10 @@ export default function SettingsDialog(props) {
     const [scheduleIndex, setScheduleIndex] = useState(selectedSchedule+1);
     const [boxSizeNumber, setBoxSizeNumber] = useState(profile.boxSizeNumber);
     const [boxSizeUnit, setBoxSizeUnit] = useState(profile.boxSizeUnit);
-    const [wakeupTime, setWakeupTime] = useState(convertToDayjs(profile.wakeupTime).toDate());
+    const [wakeupTime, setWakeupTime] = useState(convertToDayjs(profile.wakeupTime, '12/1').toDate());
     const [wakeupTimeText, setWakeupTimeText] = useState(profile.wakeupTime);
     const [wakeupTimeModalVisible, setWakeupTimeModalVisible] = useState(false);
-    const dispatch = useDispatch();
+    
     const {data} = props;
 
     function setOnDayView(value) {

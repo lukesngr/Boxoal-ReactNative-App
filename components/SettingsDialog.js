@@ -4,12 +4,19 @@ import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Picker } from "@react-native-picker/picker";
 import { set } from "../redux/activeOverlayInterval";
+import { convertToDayjs, convertToTimeAndDate } from "../modules/formatters";
 
 export default function SettingsDialog(props) {
     const selectedSchedule = useSelector(state => state.selectedSchedule.value);
     const onDayView = useSelector(state => state.onDayView.value);
+    const profile = useSelector(state => state.profile.value);
     const [dayView, setDayView] = useState(onDayView);
     const [scheduleIndex, setScheduleIndex] = useState(selectedSchedule+1);
+    const [boxSizeNumber, setBoxSizeNumber] = useState(profile.boxSizeNumber);
+    const [boxSizeUnit, setBoxSizeUnit] = useState(profile.boxSizeUnit);
+    const [wakeupTime, setWakeupTime] = useState(convertToDayjs(profile.wakeupTime).toDate());
+    const [wakeupTimeText, setWakeupTimeText] = useState(profile.wakeupTime);
+    const [wakeupTimeModalVisible, setWakeupTimeModalVisible] = useState(false);
     const dispatch = useDispatch();
     const {data} = props;
 
@@ -23,6 +30,13 @@ export default function SettingsDialog(props) {
         dispatch({type: 'selectedSchedule/set', payload: value-1});
         
     }
+
+    function updateProfile() {
+        let wakeupTimeAsText = convertToTimeAndDate(wakeupTime)[0];
+        axios.post(serverIP+'/updateProfile', {boxSizeUnit, boxSizeNumber, wakeupTime: wakeupTimeAsText, userUUID: user.userId}).catch(function(error) { console.log(error); });
+        dispatch({type: 'profile/set', payload: {boxSizeNumber, boxSizeUnit, wakeupTime}});
+        props.hideDialog();
+    }
     
     async function logOut() {
         await signOut();
@@ -30,7 +44,7 @@ export default function SettingsDialog(props) {
         props.navigation.navigate('Login');
     }
 
-    return (
+    return (<>
         <Portal>
           <Dialog style={{backgroundColor: '#C5C27C'}} visible={props.visible} onDismiss={props.hideDialog}>
             <Dialog.Title>Settings</Dialog.Title>
@@ -48,12 +62,48 @@ export default function SettingsDialog(props) {
                         </Picker>
 	                )}
                 />
+                <TextInput label="Timebox Duration" value={boxSizeNumber} onChangeText={setBoxSizeNumber} {...styles.paperInput}/>
+                <TextInput label="Timebox Unit"  value={boxSizeUnit} {...styles.paperInput}
+                    render={(props) => (
+                        <Picker style={{color: 'black', marginTop: 5}} dropdownIconColor='black' selectedValue={boxSizeUnit} onValueChange={setBoxSizeUnit}>
+                            <Picker.Item label="Min" value="min" />
+                            <Picker.Item label="Hour" value="hr" />
+                        </Picker>
+                    )}
+                />
+                <Pressable onPress={() => setWakeupTimeModalVisible(true)}>
+                    <TextInput 
+                    label="Wakeup time" 
+                    value={wakeupTimeText}
+                    right={<TextInput.Icon onPress={() => setWakeupTimeModalVisible(true)} icon="clock-edit" />} 
+                    editable={false} 
+                    {...styles.paperInput}/>
+                </Pressable>
             </Dialog.Content>
             <Dialog.Actions>
                 <Button textColor="white" buttonColor="#49454F" mode="contained" onPress={logOut}>Logout</Button>
+                <Button textColor="white" buttonColor="#49454F" mode="contained" onPress={updateProfile}>Update Schedule</Button>
                 <Button textColor='white' onPress={props.hideDialog}>Done</Button>
             </Dialog.Actions>
           </Dialog>
         </Portal>
-    )
+        <DatePicker 
+            modal 
+            mode="time" 
+            date={wakeupTime} 
+            onDateChange={
+                (date) => {
+                    setWakeupTime(date);
+                    setWakeupTimeText(convertToTimeAndDate(date)[0]);
+                }
+            } 
+            open={wakeupTimeModalVisible} 
+            onConfirm={(date) => { 
+                setWakeupTime(date); 
+                setWakeupTimeModalVisible(false);
+                setWakeupTimeText(convertToTimeAndDate(date)[0]);
+            }} 
+            onCancel={() => setWakeupTimeModalVisible(false)}>
+        </DatePicker>
+    </>)
 };

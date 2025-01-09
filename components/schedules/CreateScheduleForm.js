@@ -13,23 +13,12 @@ import { useAuthenticator } from "@aws-amplify/ui-react-native";
 
 export default function CreateScheduleForm(props) {
     const [title, setTitle] = useState("");
-    const [boxSizeNumber, setBoxSizeNumber] = useState("30");
-    const [boxSizeUnit, setBoxSizeUnit] = useState("min");
-    let wakeupDateTime = new Date();
-    wakeupDateTime.setHours(7);
-    wakeupDateTime.setMinutes(0);
-    const [wakeupTime, setWakeupTime] = useState(wakeupDateTime);
-    const [wakeupTimeText, setWakeupTimeText] = useState("07:00");
-    const [wakeupTimeModalVisible, setWakeupTimeModalVisible] = useState(false);
     const [alert, setAlert] = useState({shown: false, title: "", message: ""});
     const {user} = useAuthenticator();
     
     async function createSchedule() {
         axios.post(serverIP+'/createSchedule', {
             title,
-            boxSizeNumber: parseInt(boxSizeNumber),
-            boxSizeUnit,
-            wakeupTime: wakeupTimeText,
             userUUID: user.userId, 
         }).then(async () => {
             props.close();
@@ -49,23 +38,6 @@ export default function CreateScheduleForm(props) {
             <Dialog.Title style={{color: 'white'}}>Create Schedule</Dialog.Title>
             <Dialog.Content>
                 <TextInput label="Title" value={title} onChangeText={setTitle} {...styles.paperInput}/>
-                <TextInput label="Timebox Duration" value={boxSizeNumber} onChangeText={setBoxSizeNumber} {...styles.paperInput}/>
-                <TextInput label="Timebox Unit"  value={boxSizeUnit} {...styles.paperInput}
-	                render={(props) => (
-                        <Picker style={{color: 'black', marginTop: 5}} dropdownIconColor='black' selectedValue={boxSizeUnit} onValueChange={setBoxSizeUnit}>
-                            <Picker.Item label="Min" value="min" />
-                            <Picker.Item label="Hour" value="hr" />
-                        </Picker>
-	                )}
-                />
-                <Pressable onPress={() => setWakeupTimeModalVisible(true)}>
-                    <TextInput 
-                    label="Wakeup time" 
-                    value={wakeupTimeText}
-                    right={<TextInput.Icon onPress={() => setWakeupTimeModalVisible(true)} icon="clock-edit" />} 
-                    editable={false} 
-                    {...styles.paperInput}/>
-                </Pressable>
             </Dialog.Content>
             <Dialog.Actions>
                 <Button textColor="white" onPress={props.close}>Close</Button>
@@ -74,23 +46,5 @@ export default function CreateScheduleForm(props) {
           </Dialog>
             {alert.shown && <Alert visible={alert.shown} close={() => setAlert({...alert, shown: false})} title={alert.title} message={alert.message}/> }
         </Portal>
-        <DatePicker 
-            modal 
-            mode="time" 
-            date={wakeupTime} 
-            onDateChange={
-                (date) => {
-                    setWakeupTime(date);
-                    setWakeupTimeText(convertToTimeAndDate(date)[0]);
-                }
-            } 
-            open={wakeupTimeModalVisible} 
-            onConfirm={(date) => { 
-                setWakeupTime(date); 
-                setWakeupTimeModalVisible(false);
-                setWakeupTimeText(convertToTimeAndDate(date)[0]);
-            }} 
-            onCancel={() => setWakeupTimeModalVisible(false)}>
-        </DatePicker>
     </>)
 }

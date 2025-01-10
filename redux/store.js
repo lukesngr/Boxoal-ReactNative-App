@@ -9,7 +9,6 @@ import timeboxRecordingReducer from './timeboxRecording'
 import timeboxDialogReducer from './timeboxDialog'
 import usernameReducer from './username'
 import selectedDateReducer from './selectedDate'
-import selectedScheduleReducer from './selectedSchedule'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { persistStore, persistReducer } from 'redux-persist';
 import { combineReducers } from '@reduxjs/toolkit'
@@ -28,7 +27,6 @@ const rootReducer = combineReducers({
   timeboxDialog: timeboxDialogReducer,
   username: usernameReducer,
   selectedDate: selectedDateReducer,
-  selectedSchedule: selectedScheduleReducer,
   onDayView: onDayViewReducer,
   daySelected: daySelectedReducer,
   modalVisible: modalVisibleReducer,

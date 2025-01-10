@@ -3,9 +3,6 @@ import axios from "axios";
 import { useState } from "react";
 import serverIP from "../../modules/serverIP";
 import { queryClient } from '../../modules/queryClient.js';
-import DatePicker from "react-native-date-picker";
-import { Picker } from "@react-native-picker/picker";
-import { convertToTimeAndDate } from "../../modules/coreLogic";
 import { Dialog, Portal, TextInput, Button, Text } from "react-native-paper";
 import Alert from "../Alert";
 import { styles } from "../../styles/styles";
@@ -15,7 +12,7 @@ export default function EditScheduleForm(props) {
     const dispatch = useDispatch();
     const [title, setTitle] = useState(props.data.title);
     const [alert, setAlert] = useState({shown: false, title: "", message: ""});
-    const profile = useSelector(state => state.selectedSchedule.value);
+    const profile = useSelector(state => state.profile.value);
     
     async function updateSchedule() {
         axios.put(serverIP+'/updateSchedule', {

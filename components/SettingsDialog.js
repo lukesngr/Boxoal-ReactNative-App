@@ -15,12 +15,11 @@ import { useAuthenticator } from "@aws-amplify/ui-react-native";
 export default function SettingsDialog(props) {
     const {user} = useAuthenticator();
     const dispatch = useDispatch();
-    const selectedSchedule = useSelector(state => state.selectedSchedule.value);
     const onDayView = useSelector(state => state.onDayView.value);
     const profile = useSelector(state => state.profile.value);
     console.log(profile.wakeupTime)
     const [dayView, setDayView] = useState(onDayView);
-    const [scheduleIndex, setScheduleIndex] = useState(selectedSchedule+1);
+    const [scheduleIndex, setScheduleIndex] = useState(profile.scheduleID);
     const [boxSizeNumber, setBoxSizeNumber] = useState(String(profile.boxSizeNumber));
     const [boxSizeUnit, setBoxSizeUnit] = useState(profile.boxSizeUnit);
     const [wakeupTime, setWakeupTime] = useState(convertToDayjs(profile.wakeupTime, '12/1').toDate());
@@ -34,17 +33,11 @@ export default function SettingsDialog(props) {
         dispatch({type: 'onDayView/set', payload: value});
     }
 
-    function setSchedule(value) {
-        setScheduleIndex(value);
-        dispatch({type: 'selectedSchedule/set', payload: value-1});
-        
-    }
-
     function updateProfile() {
         let wakeupTimeAsText = convertToTimeAndDate(wakeupTime)[0];
         let convertedBackBoxSizeNumber = Number(boxSizeNumber);
-        axios.post(serverIP+'/updateProfile', {id: profile.id, boxSizeUnit, boxSizeNumber: convertedBackBoxSizeNumber, wakeupTime: wakeupTimeAsText, userUUID: user.userId}).catch(function(error) { console.log(error); });
-        dispatch({type: 'profile/set', payload: {id: profile.id, boxSizeNumber: convertedBackBoxSizeNumber, boxSizeUnit, wakeupTime: wakeupTimeAsText, progress: profile.progress, level: profile.level}});
+        axios.post(serverIP+'/updateProfile', {scheduleID: scheduleIndex, boxSizeUnit, boxSizeNumber: convertedBackBoxSizeNumber, wakeupTime: wakeupTimeAsText, userUUID: user.userId}).catch(function(error) { console.log(error); });
+        dispatch({type: 'profile/set', payload: {scheduleID: scheduleIndex, boxSizeNumber: convertedBackBoxSizeNumber, boxSizeUnit, wakeupTime: wakeupTimeAsText, progress: profile.progress, level: profile.level}});
         props.hideDialog();
     }
     
@@ -65,7 +58,7 @@ export default function SettingsDialog(props) {
                 </SegmentedButtons>
                 <TextInput label="Schedule" value={String(scheduleIndex)} style={{backgroundColor: 'white', marginTop: 10}} selectionColor="black" textColor="black"
 	                render={(props) => (
-                        <Picker style={{color: 'black', marginTop: 5}} dropdownIconColor='black' selectedValue={scheduleIndex} onValueChange={setSchedule}>
+                        <Picker style={{color: 'black', marginTop: 5}} dropdownIconColor='black' selectedValue={scheduleIndex} onValueChange={setScheduleIndex}>
                             {data && data.map((schedule, index) => {
                                 return <Picker.Item key={index} label={schedule.title} value={index+1} />
                             })}
@@ -92,8 +85,8 @@ export default function SettingsDialog(props) {
             </Dialog.Content>
             <Dialog.Actions>
                 <Button textColor="black" buttonColor="white" mode="contained" onPress={logOut}>Logout</Button>
-                <Button textColor="black" buttonColor="white" mode="contained" onPress={updateProfile}>Update Schedule</Button>
-                <Button textColor='white' onPress={props.hideDialog}>Done</Button>
+                <Button textColor="black" buttonColor="white" mode="contained" onPress={updateProfile}>Update</Button>
+                <Button textColor='white' onPress={props.hideDialog}>Exit</Button>
             </Dialog.Actions>
           </Dialog>
         </Portal>

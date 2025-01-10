@@ -12,9 +12,9 @@ export function useProfile(userID, dispatch) {
     })
 
     if(data !== undefined) {
-        let {points, boxSizeUnit, boxSizeNumber, wakeupTime} = data;
+        let {points, boxSizeUnit, boxSizeNumber, wakeupTime, scheduleID} = data;
         let {progress, level} = getProgressAndLevel(points);
-        dispatch({type: 'profile/set', payload: {id: userID, boxSizeUnit, boxSizeNumber, wakeupTime, progress, level}});
+        dispatch({type: 'profile/set', payload: {scheduleID, boxSizeUnit, boxSizeNumber, wakeupTime, progress, level}});
     }
     return;
 }

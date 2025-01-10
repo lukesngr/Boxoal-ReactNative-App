@@ -11,11 +11,11 @@ import { styles } from "../styles/styles";
 import CorrectModalDisplayer from "../components/modals/CorrectModalDisplayer";
 
 export default function Goals(props) {
-    const selectedSchedule = useSelector(state => state.selectedSchedule.value);
+    const profile = useSelector(state => state.profile.value);
     const [createScheduleVisible, setCreateScheduleVisible] = useState(false);
     const [editScheduleVisible, setEditScheduleVisible] = useState(false);
     const [createGoalVisible, setCreateGoalVisible] = useState(false);
-    let schedule = props.data[selectedSchedule];
+    let schedule = props.data[profile.scheduleID];
 
     return (<>
         <View style={{backgroundColor: '#D9D9D9', width: '100%', height: '100%', padding: 20, paddingLeft: 15, paddingRight: 15}}>

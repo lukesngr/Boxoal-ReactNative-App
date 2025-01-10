@@ -36,8 +36,8 @@ export default function SettingsDialog(props) {
     function updateProfile() {
         let wakeupTimeAsText = convertToTimeAndDate(wakeupTime)[0];
         let convertedBackBoxSizeNumber = Number(boxSizeNumber);
-        axios.post(serverIP+'/updateProfile', {scheduleID: scheduleIndex, boxSizeUnit, boxSizeNumber: convertedBackBoxSizeNumber, wakeupTime: wakeupTimeAsText, userUUID: user.userId}).catch(function(error) { console.log(error); });
-        dispatch({type: 'profile/set', payload: {scheduleID: scheduleIndex, boxSizeNumber: convertedBackBoxSizeNumber, boxSizeUnit, wakeupTime: wakeupTimeAsText, progress: profile.progress, level: profile.level}});
+        axios.post(serverIP+'/updateProfile', {scheduleID: (scheduleIndex-1), boxSizeUnit, boxSizeNumber: convertedBackBoxSizeNumber, wakeupTime: wakeupTimeAsText, userUUID: user.userId}).catch(function(error) { console.log(error); });
+        dispatch({type: 'profile/set', payload: {scheduleID: (scheduleIndex-1), boxSizeNumber: convertedBackBoxSizeNumber, boxSizeUnit, wakeupTime: wakeupTimeAsText, progress: profile.progress, level: profile.level}});
         props.hideDialog();
     }
     

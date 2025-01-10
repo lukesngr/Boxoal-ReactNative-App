@@ -4,9 +4,12 @@ import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import serverIP from "../modules/serverIP";
 import { getProgressAndLevel } from "../modules/coreLogic";
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
 export function Dashboard(props) {
 
   let userID = props.userID;
+  const dispatch = useDispatch();
   const {status, data, error, refetch} = useQuery({
     queryKey: ["XP"], 
     queryFn: async () => {

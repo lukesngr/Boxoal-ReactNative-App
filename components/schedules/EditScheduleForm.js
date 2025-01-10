@@ -15,7 +15,7 @@ export default function EditScheduleForm(props) {
     const dispatch = useDispatch();
     const [title, setTitle] = useState(props.data.title);
     const [alert, setAlert] = useState({shown: false, title: "", message: ""});
-    const selectedSchedule = useSelector(state => state.selectedSchedule.value);
+    const profile = useSelector(state => state.selectedSchedule.value);
     
     async function updateSchedule() {
         axios.put(serverIP+'/updateSchedule', {
@@ -34,12 +34,13 @@ export default function EditScheduleForm(props) {
     }
 
     async function deleteSchedule() {
+        let scheduleBefore = (profile.scheduleID-1);
         axios.post(serverIP+'/deleteSchedule', {
             id: props.data.id
         },).then(async () => {
             props.close();
-            if(selectedSchedule > 0) {
-                dispatch({type: 'selectedSchedule/set', payload: selectedSchedule-1});
+            if(profile.scheduleID > 0) {
+                dispatch({type: 'profile/set', payload: {...profile, scheduleID: scheduleBefore}});
             }
             setAlert({shown: true, title: "Timebox", message: "Deleted schedule!"});
             await queryClient.refetchQueries();

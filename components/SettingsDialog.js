@@ -8,12 +8,17 @@ import { convertToDayjs, convertToTimeAndDate } from "../modules/formatters";
 import { styles } from "../styles/styles";
 import DatePicker from "react-native-date-picker";
 import { Pressable } from "react-native";
+import axios from "axios";
+import serverIP from "../modules/serverIP";
+import { useAuthenticator } from "@aws-amplify/ui-react-native";
 
 export default function SettingsDialog(props) {
+    const {user} = useAuthenticator();
     const dispatch = useDispatch();
     const selectedSchedule = useSelector(state => state.selectedSchedule.value);
     const onDayView = useSelector(state => state.onDayView.value);
     const profile = useSelector(state => state.profile.value);
+    console.log(profile.wakeupTime)
     const [dayView, setDayView] = useState(onDayView);
     const [scheduleIndex, setScheduleIndex] = useState(selectedSchedule+1);
     const [boxSizeNumber, setBoxSizeNumber] = useState(String(profile.boxSizeNumber));
@@ -38,8 +43,8 @@ export default function SettingsDialog(props) {
     function updateProfile() {
         let wakeupTimeAsText = convertToTimeAndDate(wakeupTime)[0];
         let convertedBackBoxSizeNumber = Number(boxSizeNumber);
-        axios.post(serverIP+'/updateProfile', {boxSizeUnit, convertedBackBoxSizeNumber, wakeupTime: wakeupTimeAsText, userUUID: user.userId}).catch(function(error) { console.log(error); });
-        dispatch({type: 'profile/set', payload: {convertedBackBoxSizeNumber, boxSizeUnit, wakeupTime}});
+        axios.post(serverIP+'/updateProfile', {id: profile.id, boxSizeUnit, boxSizeNumber: convertedBackBoxSizeNumber, wakeupTime: wakeupTimeAsText, userUUID: user.userId}).catch(function(error) { console.log(error); });
+        dispatch({type: 'profile/set', payload: {id: profile.id, boxSizeNumber: convertedBackBoxSizeNumber, boxSizeUnit, wakeupTime: wakeupTimeAsText, progress: profile.progress, level: profile.level}});
         props.hideDialog();
     }
     

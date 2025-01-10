@@ -29,7 +29,6 @@ const rootReducer = combineReducers({
   timeboxDialog: timeboxDialogReducer,
   username: usernameReducer,
   selectedDate: selectedDateReducer,
-  selectedSchedule: selectedScheduleReducer,
   onDayView: onDayViewReducer,
   daySelected: daySelectedReducer,
   modalVisible: modalVisibleReducer,

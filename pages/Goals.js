@@ -15,7 +15,7 @@ export default function Goals(props) {
     const [createScheduleVisible, setCreateScheduleVisible] = useState(false);
     const [editScheduleVisible, setEditScheduleVisible] = useState(false);
     const [createGoalVisible, setCreateGoalVisible] = useState(false);
-    let schedule = props.data[profile.scheduleID];
+    let schedule = props.data[profile.scheduleIndex];
 
     return (<>
         <View style={{backgroundColor: '#D9D9D9', width: '100%', height: '100%', padding: 20, paddingLeft: 15, paddingRight: 15}}>

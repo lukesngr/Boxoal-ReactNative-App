@@ -31,13 +31,13 @@ export default function EditScheduleForm(props) {
     }
 
     async function deleteSchedule() {
-        let scheduleBefore = (profile.scheduleID-1);
+        let scheduleBefore = (profile.scheduleIndex-1);
         axios.post(serverIP+'/deleteSchedule', {
             id: props.data.id
         },).then(async () => {
             props.close();
-            if(profile.scheduleID > 0) {
-                dispatch({type: 'profile/set', payload: {...profile, scheduleID: scheduleBefore}});
+            if(profile.scheduleIndex > 0) {
+                dispatch({type: 'profile/set', payload: {...profile, scheduleIndex: scheduleBefore}});
             }
             setAlert({shown: true, title: "Timebox", message: "Deleted schedule!"});
             await queryClient.refetchQueries();

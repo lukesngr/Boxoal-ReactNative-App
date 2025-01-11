@@ -3,7 +3,6 @@ import { signOut } from "aws-amplify/auth"
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Picker } from "@react-native-picker/picker";
-import { set } from "../redux/activeOverlayInterval";
 import { convertToDayjs, convertToTimeAndDate } from "../modules/formatters";
 import { styles } from "../styles/styles";
 import DatePicker from "react-native-date-picker";
@@ -17,9 +16,8 @@ export default function SettingsDialog(props) {
     const dispatch = useDispatch();
     const onDayView = useSelector(state => state.onDayView.value);
     const profile = useSelector(state => state.profile.value);
-    console.log(profile.wakeupTime)
     const [dayView, setDayView] = useState(onDayView);
-    const [scheduleIndex, setScheduleIndex] = useState(profile.scheduleID);
+    const [scheduleIndex, setScheduleIndex] = useState(profile.scheduleIndex+1);
     const [boxSizeNumber, setBoxSizeNumber] = useState(String(profile.boxSizeNumber));
     const [boxSizeUnit, setBoxSizeUnit] = useState(profile.boxSizeUnit);
     const [wakeupTime, setWakeupTime] = useState(convertToDayjs(profile.wakeupTime, '12/1').toDate());
@@ -36,8 +34,8 @@ export default function SettingsDialog(props) {
     function updateProfile() {
         let wakeupTimeAsText = convertToTimeAndDate(wakeupTime)[0];
         let convertedBackBoxSizeNumber = Number(boxSizeNumber);
-        axios.post(serverIP+'/updateProfile', {scheduleID: (scheduleIndex-1), boxSizeUnit, boxSizeNumber: convertedBackBoxSizeNumber, wakeupTime: wakeupTimeAsText, userUUID: user.userId}).catch(function(error) { console.log(error); });
-        dispatch({type: 'profile/set', payload: {scheduleID: (scheduleIndex-1), boxSizeNumber: convertedBackBoxSizeNumber, boxSizeUnit, wakeupTime: wakeupTimeAsText, progress: profile.progress, level: profile.level}});
+        axios.post(serverIP+'/updateProfile', {scheduleIndex: (scheduleIndex-1), scheduleID: data[scheduleIndex-1].id, boxSizeUnit, boxSizeNumber: convertedBackBoxSizeNumber, wakeupTime: wakeupTimeAsText, userUUID: user.userId}).catch(function(error) { console.log(error); });
+        dispatch({type: 'profile/set', payload: {scheduleIndex: (scheduleIndex-1), scheduleID: data[scheduleIndex-1].id, boxSizeNumber: convertedBackBoxSizeNumber, boxSizeUnit, wakeupTime: wakeupTimeAsText, progress: profile.progress, level: profile.level}});
         props.hideDialog();
     }
     

@@ -133,3 +133,16 @@ export function addBoxesToTime(boxSizeUnit, boxSizeNumber, time, numberOfBoxes) 
 
     return `${endHours}:${endMinutes < 10 ? '0' : ''}${endMinutes}`;
 }
+
+export function getPercentageOfBoxSizeFilled(boxSizeUnit, boxSizeNumber, startTime, endTime) {
+    const minuteConversionDivisor = 60000;
+    let minutesOfTimeBox = (endTime.valueOf() - startTime.valueOf()) / minuteConversionDivisor;
+    let percentageOfBoxSizeFilled =  0;
+
+    if(boxSizeUnit == "min") {
+        percentageOfBoxSizeFilled = minutesOfTimeBox / boxSizeNumber;
+    }else if(boxSizeUnit == "hr") {
+        percentageOfBoxSizeFilled = minutesOfTimeBox / (boxSizeNumber * 60);
+    }
+    return percentageOfBoxSizeFilled;
+}

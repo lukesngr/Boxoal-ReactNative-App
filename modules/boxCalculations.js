@@ -166,7 +166,7 @@ export function filterTimeGridBasedOnSpace(timeGridFilteredByDate, boxSizeUnit, 
 }
 
 export function getMarginFromTopOfTimebox(boxSizeUnit, boxSizeNumber, timeboxTime, startOfTimeboxTime, timeboxHeight) {
-    let minutesBetweenTimes = convertToDayjs(timeboxTime, '1/1').diff(convertToDayjs(startOfTimeboxTime, '1/1'), 'minute');
+    let minutesBetweenTimes = convertToDayjs(startOfTimeboxTime, '1/1').diff(convertToDayjs(timeboxTime, '1/1'), 'minute');
     let marginFromTop = 0;
 
     if(boxSizeUnit == "min") {

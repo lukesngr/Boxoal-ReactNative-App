@@ -147,10 +147,10 @@ export function getPercentageOfBoxSizeFilled(boxSizeUnit, boxSizeNumber, startTi
     return percentageOfBoxSizeFilled;
 }
 
-export function filterTimeGridBasedOnSpace(timeGridFilteredByDate, boxSizeUnit, boxSizeNumber, time, numberOfBoxes) {
+export function filterTimeGridBasedOnSpace(timeGridFilteredByDate, boxSizeUnit, boxSizeNumber, time) {
     let times = Object.keys(timeGridFilteredByDate);
     times = times.slice(times.indexOf(time));
-    let endTime = addBoxesToTime(boxSizeUnit, boxSizeNumber, time, numberOfBoxes);
+    let endTime = addBoxesToTime(boxSizeUnit, boxSizeNumber, time, 1);
     let reachedMaximum = false;
     for(let i = 0; i < times.length; i++) {
         if(convertToDayjs(times[i], '1/1').toDate() > convertToDayjs(endTime, '1/1').toDate()) {

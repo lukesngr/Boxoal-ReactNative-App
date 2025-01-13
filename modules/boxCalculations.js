@@ -149,21 +149,20 @@ export function getPercentageOfBoxSizeFilled(boxSizeUnit, boxSizeNumber, startTi
 
 export function filterTimeGridBasedOnSpace(timeGridFilteredByDate, boxSizeUnit, boxSizeNumber, time) {
     let times = Object.keys(timeGridFilteredByDate);
-    times = times.slice(times.indexOf(time));
     let endTime = addBoxesToTime(boxSizeUnit, boxSizeNumber, time, 1);
-    let reachedMaximum = false;
-    for(let i = 0; i < times.length; i++) {
-        if(convertToDayjs(times[i], '1/1').toDate() > convertToDayjs(endTime, '1/1').toDate()) {
-            reachedMaximum = true;
-            break;
+    let filteredTimes = [];
+    let i = 0;
+    for(i = 0; i < times.length; i++) {
+        let startTimeAsDate = convertToDayjs(time, '1/1').toDate();
+        let timeAsDate = convertToDayjs(times[i], '1/1').toDate();
+        let endTimeAsDate = convertToDayjs(endTime, '1/1').toDate();
+
+        if(timeAsDate >= startTimeAsDate && timeAsDate < endTimeAsDate) {
+            filteredTimes.push(times[i]);
         }
     }
 
-    if(reachedMaximum) {
-        times = times.slice(0, i-1);
-    }
-
-    return times;
+    return filteredTimes;
 }
 
 export function getMarginFromTopOfTimebox(boxSizeUnit, boxSizeNumber, timeboxTime, startOfTimeboxTime, timeboxHeight) {

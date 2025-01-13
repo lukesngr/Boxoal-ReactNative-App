@@ -165,3 +165,16 @@ export function filterTimeGridBasedOnSpace(timeGridFilteredByDate, boxSizeUnit, 
 
     return times;
 }
+
+export function getMarginFromTopOfTimebox(boxSizeUnit, boxSizeNumber, timeboxTime, startOfTimeboxTime, timeboxHeight) {
+    let minutesBetweenTimes = convertToDayjs(timeboxTime, '1/1').diff(convertToDayjs(startOfTimeboxTime, '1/1'), 'minute');
+    let marginFromTop = 0;
+
+    if(boxSizeUnit == "min") {
+        marginFromTop = (minutesBetweenTimes / boxSizeNumber) * timeboxHeight;
+    }else if(boxSizeUnit == "hr") {
+        marginFromTop = (minutesBetweenTimes / (boxSizeNumber * 60)) * timeboxHeight;
+    }
+
+    return marginFromTop;
+}

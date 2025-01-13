@@ -1,6 +1,6 @@
 
 import dayjs from 'dayjs';
-import { calculateMaxNumberOfBoxesAfterTimeIfEmpty, calculateMaxNumberOfBoxes, calculateBoxesBetweenTwoTimes, calculateRemainderTimeBetweenTwoTimes, addBoxesToTime } from '../../modules/boxCalculations';
+import { getPercentageOfBoxSizeFilled, calculateMaxNumberOfBoxesAfterTimeIfEmpty, calculateMaxNumberOfBoxes, calculateBoxesBetweenTwoTimes, calculateRemainderTimeBetweenTwoTimes, addBoxesToTime } from '../../modules/boxCalculations';
 
 
 describe('Box Calculation Functions', () => {
@@ -271,4 +271,68 @@ describe('Box Calculation Functions', () => {
 
   });
 
+});
+
+describe('getPercentageOfBoxSizeFilled', () => {
+  // Helper function to create dates with a specific minute difference
+  const createDatePair = (minutesDifference) => {
+    const startTime = new Date('2024-01-01T10:00:00Z');
+    const endTime = new Date(startTime.getTime() + (minutesDifference * 60000));
+    return { startTime, endTime };
+  };
+
+  // Test cases for minutes
+  describe('when boxSizeUnit is "min"', () => {
+    test('returns 1 when timespan exactly matches box size', () => {
+      const { startTime, endTime } = createDatePair(30);
+      const result = getPercentageOfBoxSizeFilled('min', 30, startTime, endTime);
+      expect(result).toBe(1);
+    });
+
+    test('returns 0.5 when timespan is half of box size', () => {
+      const { startTime, endTime } = createDatePair(15);
+      const result = getPercentageOfBoxSizeFilled('min', 30, startTime, endTime);
+      expect(result).toBe(0.5);
+    });
+
+    test('returns 2 when timespan is double box size', () => {
+      const { startTime, endTime } = createDatePair(60);
+      const result = getPercentageOfBoxSizeFilled('min', 30, startTime, endTime);
+      expect(result).toBe(2);
+    });
+
+    test('handles zero minute difference', () => {
+      const startTime = new Date('2024-01-01T10:00:00Z');
+      const endTime = new Date('2024-01-01T10:00:00Z');
+      const result = getPercentageOfBoxSizeFilled('min', 30, startTime, endTime);
+      expect(result).toBe(0);
+    });
+  });
+
+  // Test cases for hours
+  describe('when boxSizeUnit is "hr"', () => {
+    test('returns 1 when timespan exactly matches box size', () => {
+      const { startTime, endTime } = createDatePair(60);
+      const result = getPercentageOfBoxSizeFilled('hr', 1, startTime, endTime);
+      expect(result).toBe(1);
+    });
+
+    test('returns 0.5 when timespan is half of box size', () => {
+      const { startTime, endTime } = createDatePair(30);
+      const result = getPercentageOfBoxSizeFilled('hr', 1, startTime, endTime);
+      expect(result).toBe(0.5);
+    });
+
+    test('returns 2 when timespan is double box size', () => {
+      const { startTime, endTime } = createDatePair(120);
+      const result = getPercentageOfBoxSizeFilled('hr', 1, startTime, endTime);
+      expect(result).toBe(2);
+    });
+
+    test('handles fractional hours', () => {
+      const { startTime, endTime } = createDatePair(90);
+      const result = getPercentageOfBoxSizeFilled('hr', 1.5, startTime, endTime);
+      expect(result).toBe(1);
+    });
+  });
 });

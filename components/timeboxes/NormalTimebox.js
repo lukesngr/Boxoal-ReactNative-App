@@ -8,11 +8,10 @@ export default function NormalTimebox(props) {
     const {boxSizeNumber, boxSizeUnit} = useSelector(state => state.profile.value);
     let fontSize = onDayView ? 20 : 12;
     let timeboxHeight = onDayView ? styles.enlargedTimeboxHeight : styles.normalTimeboxHeight;
-    let percentageOfBoxSizeFilled = getPercentageOfBoxSizeFilled(boxSizeUnit, boxSizeNumber, props.data.startTime, props.data.endTime);
-    let height = timeboxHeight*props.data.numberOfBoxes*percentageOfBoxSizeFilled;
-
+    let percentageOfBoxSizeFilled = getPercentageOfBoxSizeFilled(boxSizeUnit, boxSizeNumber, new Date(props.data.startTime), new Date(props.data.endTime));
+    let height = Math.floor(timeboxHeight*props.data.numberOfBoxes*percentageOfBoxSizeFilled);
     return (
-    <View style={{position: 'relative', height: height, backgroundColor: props.data.color, width: '100%'}}>
+    <View style={{position: 'relative', height: height, backgroundColor: props.data.color, width: '100%', marginTop: props.marginFromTop}}>
         <Text style={{fontSize: fontSize, color: 'black'}}>{props.data.title}</Text>
     </View>
     )

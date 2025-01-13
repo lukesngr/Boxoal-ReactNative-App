@@ -26,12 +26,13 @@ export default function Timebox(props) {
 
             if(timeboxGrid[date][props.time]) {
                 data = timeboxGrid[date][props.time];
-            }else{
+            }else if(boxesInsideSpace.length > 0) {
                 if(onDayView) {
                     marginFromTop = getMarginFromTopOfTimebox(boxSizeUnit, boxSizeNumber, props.time, boxesInsideSpace[0], 60);
                 }else{
                     marginFromTop = getMarginFromTopOfTimebox(boxSizeUnit, boxSizeNumber, props.time, boxesInsideSpace[0], 30);
                 }
+                data = timeboxGrid[date][boxesInsideSpace[0]];
             }
         }
     }

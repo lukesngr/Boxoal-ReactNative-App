@@ -196,3 +196,18 @@ export function findSmallestTimeBoxLengthInSpace(timeboxGridFilteredByDate, time
 
     return smallestTimeboxLength;
 } 
+
+export function getStatistics(recordedTimeboxes) {
+    let reschedules = 0;
+    for(let i = 0; i < recordedTimeboxes.length; i++) {
+        let recordedTimebox = recordedTimeboxes[i];
+        let recordedTimeboxStartTime = new Date(recordedTimebox.recordedStartTime);
+        let timeboxStartTime = new Date(recordedTimebox.timeBox.startTime);
+        if(recordedTimeboxStartTime.getDate() != timeboxStartTime.getDate()) {
+            reschedules++;
+        }
+    }
+
+    let rescheduleRate = reschedules / recordedTimeboxes.length;
+    return {rescheduleRate};
+}

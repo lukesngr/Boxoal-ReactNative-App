@@ -1,8 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { getProgressAndLevel } from "../modules/coreLogic";
-export function useProfile(user, dispatch) {
-    if(user !== undefined && user.userId !== undefined) {
+export function useProfile( dispatch) {
         const {status, data, error, refetch} = useQuery({
             queryKey: ["XP"], 
             queryFn: async () => {
@@ -17,6 +16,5 @@ export function useProfile(user, dispatch) {
             let {progress, level} = getProgressAndLevel(points);
             dispatch({type: 'profile/set', payload: {scheduleID, boxSizeUnit, boxSizeNumber, wakeupTime, progress, level}});
         }
-    }
     return;
 }

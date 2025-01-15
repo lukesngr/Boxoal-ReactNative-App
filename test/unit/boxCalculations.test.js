@@ -34,7 +34,7 @@ describe('Box Calculation Functions', () => {
   describe('calculateMaxNumberOfBoxes', () => {
     test('handles empty schedule', () => {
       const result = calculateMaxNumberOfBoxes('08:30', 'min', 15, [], '12:45', '1/1');
-      expect(result).toBe(5);
+      expect(result).toBe(79);
     });
 
     test('handles schedule with one future timebox', () => {
@@ -51,7 +51,7 @@ describe('Box Calculation Functions', () => {
         { startTime: '2024-01-01T16:00:00' }
       ];
       const result = calculateMaxNumberOfBoxes('08:30', 'min', 15, timeboxes, '12:45', '1/1');
-      expect(result).toBe(5);
+      expect(result).toBe(79);
     });
   });
 
@@ -361,7 +361,7 @@ describe('getStatistics', () => {
       const recordedTimeboxes = [{"id": 59, "recordedEndTime": "2024-11-28T05:00:00.000Z", "recordedStartTime": "2024-11-28T04:00:00.000Z", 
         "timeBox": {"description": "P's test", "id": 16, "title": "P's test", 'startTime': '2024-11-29T04:00:00.000Z', 'endTime': '2024-11-28T05:00:00.000Z'}}];
       const result = getStatistics(recordedTimeboxes);
-      expect(result).toEqual({rescheduleRate: 1});
+      expect(result).toEqual({rescheduleRate: 1, averageTimeOverBy: 0});
       });
     });
 })

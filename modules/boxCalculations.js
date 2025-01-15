@@ -200,21 +200,42 @@ export function findSmallestTimeBoxLengthInSpace(timeboxGridFilteredByDate, time
 export function getStatistics(recordedTimeboxes) {
     let reschedules = 0;
     let minutesOverBy = 0;
+    let timeStartedAccuracy = 0;
+    let timeboxesThatMatchPredictedStart = 0;
+    let timeboxesThatMatchCorrectTime = 0;
     for(let i = 0; i < recordedTimeboxes.length; i++) {
         let recordedTimebox = recordedTimeboxes[i];
         let recordedTimeboxStartTime = new Date(recordedTimebox.recordedStartTime);
         let recordedTimeboxEndTime = new Date(recordedTimebox.recordedEndTime);
         let timeboxStartTime = new Date(recordedTimebox.timeBox.startTime);
         let timeboxEndTime = new Date(recordedTimebox.timeBox.endTime);
+        
+        //reschedule rate
         if(recordedTimeboxStartTime.getDate() != timeboxStartTime.getDate()) {
             reschedules++;
         }
-        minutesOverBy += ((recordedTimeboxEndTime - recordedTimeboxStartTime) - (timeboxEndTime - timeboxStartTime));
+
+        ///average minutes over by
+        let currentMinutesOverBy = ((recordedTimeboxEndTime - recordedTimeboxStartTime) - (timeboxEndTime - timeboxStartTime));
+        if(currentMinutesOverBy == 0) {
+            timeboxesThatMatchCorrectTime++;
+        }
+        minutesOverBy += currentMinutesOverBy;
         
+        //time started accuracy
+        let timeStartedAccuracyForTimebox = Math.abs(recordedTimeboxStartTime.getMinutes() - timeboxStartTime.getMinutes());
+        timeStartedAccuracyForTimebox += (Math.abs(recordedTimeboxStartTime.getHours() - timeboxStartTime.getHours()))*60;
+        if(timeStartedAccuracyForTimebox == 0) {
+            timeboxesThatMatchPredictedStart++;
+        }
+        timeStartedAccuracy += timeStartedAccuracyForTime;
     }
 
     minutesOverBy = minutesOverBy / 60000;
     let averageTimeOverBy = minutesOverBy / recordedTimeboxes.length;
     let rescheduleRate = reschedules / recordedTimeboxes.length;
-    return {rescheduleRate, averageTimeOverBy};
+    timeStartedAccuracy = timeStartedAccuracy / recordedTimeboxes.length;
+    let percentagePredictedStart = timeboxesThatMatchPredictedStart / recordedTimeboxes.length;
+    let percentageCorrectTime = timeboxesThatMatchCorrectTime / recordedTimeboxes.length;
+    return {rescheduleRate, averageTimeOverBy, timeStartedAccuracy};
 }

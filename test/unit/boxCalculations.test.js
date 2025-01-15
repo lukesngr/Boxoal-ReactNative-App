@@ -1,6 +1,6 @@
 
 import dayjs from 'dayjs';
-import { findSmallestTimeBoxLengthInSpace, getPercentageOfBoxSizeFilled, calculateMaxNumberOfBoxesAfterTimeIfEmpty, calculateMaxNumberOfBoxes, calculateBoxesBetweenTwoTimes, calculateRemainderTimeBetweenTwoTimes, addBoxesToTime } from '../../modules/boxCalculations';
+import { getStatistics, findSmallestTimeBoxLengthInSpace, getPercentageOfBoxSizeFilled, calculateMaxNumberOfBoxesAfterTimeIfEmpty, calculateMaxNumberOfBoxes, calculateBoxesBetweenTwoTimes, calculateRemainderTimeBetweenTwoTimes, addBoxesToTime } from '../../modules/boxCalculations';
 
 
 describe('Box Calculation Functions', () => {
@@ -362,4 +362,6 @@ describe('getStatistics', () => {
         "timeBox": {"description": "P's test", "id": 16, "title": "P's test", 'startTime': '2024-11-28T04:00:00.000Z', 'endTime': '2024-11-28T05:00:00.000Z'}}];
       const result = getStatistics(recordedTimeboxes);
       expect(result).toEqual({rescheduleRate: 0});
+      });
+    });
 })

@@ -3,7 +3,7 @@ import NormalTimebox from "./NormalTimebox";
 import { useState } from "react";
 import { useSelector } from 'react-redux';
 import { useDispatch } from "react-redux";
-import { filterTimeGridBasedOnSpace, getMarginFromTopOfTimebox } from "../../modules/boxCalculations";
+import { filterTimeGridBasedOnSpace, getMarginFromTopOfTimebox, findSmallestTimeBoxLengthInSpace } from "../../modules/boxCalculations";
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faDiagramPredecessor } from '@fortawesome/free-solid-svg-icons';
 
@@ -18,10 +18,11 @@ export default function Timebox(props) {
     let data;
     let marginFromTop = 0;
     let numberOfBoxesInSpace = 0;
+    let boxesInsideSpace = [];
 
     if(timeboxGrid) { 
         if(timeboxGrid[date]) {
-            let boxesInsideSpace = filterTimeGridBasedOnSpace(timeboxGrid[date], profile.boxSizeUnit, profile.boxSizeNumber, props.time);
+            boxesInsideSpace = filterTimeGridBasedOnSpace(timeboxGrid[date], profile.boxSizeUnit, profile.boxSizeNumber, props.time);
             numberOfBoxesInSpace = boxesInsideSpace.length;
 
             if(timeboxGrid[date][props.time]) {
@@ -46,7 +47,7 @@ export default function Timebox(props) {
     }
 
     function expandSchedule() {
-        let smallestTimeBoxLength = getSmallestTimeboxLength(timeboxGrid[date], boxesInsideSpace);
+        let smallestTimeBoxLength = findSmallestTimeBoxLengthInSpace(timeboxGrid[date], boxesInsideSpace);
         if(smallestTimeboxLength % 60 == 0) {
             axios.post(serverIP+'/updateProfile', {...profile, boxSizeNumber: (smallestTimeboxLength / 60), boxSizeUnit: 'hr'}).catch(function(error) { console.log(error); });
             dispatch({type: 'profile/set', payload: {...profile, boxSizeNumber: smallestTimeBoxLength, boxSizeUnit: 'hr'}});

@@ -354,3 +354,12 @@ describe('findSmallestTimeBoxInSpace', () => {
     });
   });
 });
+
+describe('getStatistics', () => {
+  describe('getStatistics basic case', () => {
+    test('returns correct statistics', () => {
+      const recordedTimeboxes = [{"id": 59, "recordedEndTime": "2024-11-28T05:00:00.000Z", "recordedStartTime": "2024-11-28T04:00:00.000Z", 
+        "timeBox": {"description": "P's test", "id": 16, "title": "P's test", 'startTime': '2024-11-28T04:00:00.000Z', 'endTime': '2024-11-28T05:00:00.000Z'}}];
+      const result = getStatistics(recordedTimeboxes);
+      expect(result).toEqual({rescheduleRate: 0});
+})

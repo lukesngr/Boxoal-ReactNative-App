@@ -6,6 +6,8 @@ import { useDispatch } from "react-redux";
 import { filterTimeGridBasedOnSpace, getMarginFromTopOfTimebox, findSmallestTimeBoxLengthInSpace } from "../../modules/boxCalculations";
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faDiagramPredecessor } from '@fortawesome/free-solid-svg-icons';
+import axios from "axios";
+import serverIP from "../../modules/serverIP";
 
 export default function Timebox(props) {
     const dispatch = useDispatch();
@@ -29,9 +31,9 @@ export default function Timebox(props) {
                 data = timeboxGrid[date][props.time];
             }else if(numberOfBoxesInSpace == 1) {
                 if(onDayView) {
-                    marginFromTop = getMarginFromTopOfTimebox(boxSizeUnit, boxSizeNumber, props.time, boxesInsideSpace[0], 60);
+                    marginFromTop = getMarginFromTopOfTimebox(profile.boxSizeUnit, profile.boxSizeNumber, props.time, boxesInsideSpace[0], 60);
                 }else{
-                    marginFromTop = getMarginFromTopOfTimebox(boxSizeUnit, boxSizeNumber, props.time, boxesInsideSpace[0], 30);
+                    marginFromTop = getMarginFromTopOfTimebox(profile.boxSizeUnit, profile.boxSizeNumber, props.time, boxesInsideSpace[0], 30);
                 }
                 data = timeboxGrid[date][boxesInsideSpace[0]];
             }
@@ -47,13 +49,13 @@ export default function Timebox(props) {
     }
 
     function expandSchedule() {
-        let smallestTimeBoxLength = findSmallestTimeBoxLengthInSpace(timeboxGrid[date], boxesInsideSpace);
+        let smallestTimeboxLength = findSmallestTimeBoxLengthInSpace(timeboxGrid[date], boxesInsideSpace);
         if(smallestTimeboxLength % 60 == 0) {
             axios.post(serverIP+'/updateProfile', {...profile, boxSizeNumber: (smallestTimeboxLength / 60), boxSizeUnit: 'hr'}).catch(function(error) { console.log(error); });
-            dispatch({type: 'profile/set', payload: {...profile, boxSizeNumber: smallestTimeBoxLength, boxSizeUnit: 'hr'}});
+            dispatch({type: 'profile/set', payload: {...profile, boxSizeNumber: smallestTimeboxLength, boxSizeUnit: 'hr'}});
         }else{
-            axios.post(serverIP+'/updateProfile', {...profile, boxSizeNumber: smallestTimeBoxLength, boxSizeUnit: 'min'}).catch(function(error) { console.log(error); });
-            dispatch({type: 'profile/set', payload: {...profile, boxSizeNumber: smallestTimeBoxLength, boxSizeUnit: 'min'}});
+            axios.post(serverIP+'/updateProfile', {...profile, boxSizeNumber: smallestTimeboxLength, boxSizeUnit: 'min'}).catch(function(error) { console.log(error); });
+            dispatch({type: 'profile/set', payload: {...profile, boxSizeNumber: smallestTimeboxLength, boxSizeUnit: 'min'}});
         }
     }
 

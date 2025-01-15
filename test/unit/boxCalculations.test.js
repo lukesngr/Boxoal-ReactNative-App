@@ -352,11 +352,5 @@ describe('findSmallestTimeBoxInSpace', () => {
       const timeboxesInSpace = ['10:00', '10:30'];
       expect(findSmallestTimeBoxLengthInSpace(timeboxGridFilteredByDate, timeboxesInSpace)).toBe(10);
     });
-
-    test('returns index of smallest timebox if in hours', () => {
-      const timeboxGridFilteredByDate = {'10:00': { startTime: '2024-01-01T10:00:00', endTime: '2024-01-01T11:00:00' }, '11:00': { startTime: '2024-01-01T11:00:00', endTime: '2024-01-01T12:00:00' }};
-      const timeboxesInSpace = ['10:00', '11:00'];
-      expect(findSmallestTimeBoxLengthInSpace(timeboxGridFilteredByDate, timeboxesInSpace)).toBe(1);
-    });
   });
 });

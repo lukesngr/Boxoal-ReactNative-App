@@ -192,9 +192,7 @@ export function findSmallestTimeBoxLengthInSpace(timeboxGridFilteredByDate, time
         }
     }
 
-    if(smallestTimeboxLength % 60 == 0) {
-        smallestTimeboxLength = smallestTimeboxLength / 60;
-    }
+    
 
     return smallestTimeboxLength;
 } 

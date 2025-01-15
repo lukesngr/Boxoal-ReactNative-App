@@ -1,6 +1,6 @@
 
 import dayjs from 'dayjs';
-import { findSmallestTimeBoxInSpace, getPercentageOfBoxSizeFilled, calculateMaxNumberOfBoxesAfterTimeIfEmpty, calculateMaxNumberOfBoxes, calculateBoxesBetweenTwoTimes, calculateRemainderTimeBetweenTwoTimes, addBoxesToTime } from '../../modules/boxCalculations';
+import { findSmallestTimeBoxLengthInSpace, getPercentageOfBoxSizeFilled, calculateMaxNumberOfBoxesAfterTimeIfEmpty, calculateMaxNumberOfBoxes, calculateBoxesBetweenTwoTimes, calculateRemainderTimeBetweenTwoTimes, addBoxesToTime } from '../../modules/boxCalculations';
 
 
 describe('Box Calculation Functions', () => {
@@ -342,15 +342,21 @@ describe('findSmallestTimeBoxInSpace', () => {
     test('returns -1', () => {
       const timeboxGrid = {};
       const timeboxesInSpace = [];
-      expect(findSmallestTimeBoxInSpace(timeboxGrid, timeboxesInSpace)).toBe(-1);
+      expect(findSmallestTimeBoxLengthInSpace(timeboxGrid, timeboxesInSpace)).toBe(1000000);
     });
   });
 
   describe('when timeboxesInSpace has two items', () => {
-    test('returns index of smallest timebox', () => {
+    test('returns index of smallest timebox if in minutes', () => {
       const timeboxGridFilteredByDate = {'10:00': { startTime: '2024-01-01T10:00:00', endTime: '2024-01-01T10:10:00' }, '10:30': { startTime: '2024-01-01T10:30:00', endTime: '2024-01-01T11:00:00' }};
       const timeboxesInSpace = ['10:00', '10:30'];
-      expect(findSmallestTimeBoxInSpace(timeboxGridFilteredByDate, timeboxesInSpace)).toBe(0);
+      expect(findSmallestTimeBoxLengthInSpace(timeboxGridFilteredByDate, timeboxesInSpace)).toBe(10);
+    });
+
+    test('returns index of smallest timebox if in hours', () => {
+      const timeboxGridFilteredByDate = {'10:00': { startTime: '2024-01-01T10:00:00', endTime: '2024-01-01T11:00:00' }, '11:00': { startTime: '2024-01-01T11:00:00', endTime: '2024-01-01T12:00:00' }};
+      const timeboxesInSpace = ['10:00', '11:00'];
+      expect(findSmallestTimeBoxLengthInSpace(timeboxGridFilteredByDate, timeboxesInSpace)).toBe(1);
     });
   });
 });

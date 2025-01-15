@@ -177,3 +177,24 @@ export function getMarginFromTopOfTimebox(boxSizeUnit, boxSizeNumber, timeboxTim
 
     return marginFromTop;
 }
+
+export function findSmallestTimeBoxLengthInSpace(timeboxGridFilteredByDate, timeboxesInSpace) {
+    let smallestTimeboxLength = 1000000;
+    const minuteConversionDivisor = 60000;
+
+    for(let i = 0; i < timeboxesInSpace.length; i++) {
+        let timeboxTime = timeboxesInSpace[i];
+        let timebox = timeboxGridFilteredByDate[timeboxTime];
+
+        let currentTimeboxLength = (new Date(timebox.endTime) - new Date(timebox.startTime)) / minuteConversionDivisor;
+        if(currentTimeboxLength < smallestTimeboxLength) {
+            smallestTimeboxLength = currentTimeboxLength;
+        }
+    }
+
+    if(smallestTimeboxLength % 60 == 0) {
+        smallestTimeboxLength = smallestTimeboxLength / 60;
+    }
+
+    return smallestTimeboxLength;
+} 

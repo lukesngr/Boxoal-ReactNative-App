@@ -6,7 +6,7 @@ import serverIP from "../../modules/serverIP";
 import Alert from "../Alert";
 import { queryClient } from '../../modules/queryClient.js';
 import { useDispatch } from "react-redux";
-import { convertToTimeAndDate } from "../../modules/coreLogic";
+import { convertToTimeAndDate } from "../../modules/formatters.js";
 
 export default function ManualEntryTimeModal(props) {
     const [recordedStartTime, setRecordedStartTime] = useState(new Date(props.data.startTime));

@@ -4,7 +4,7 @@ import { queryClient } from '../../modules/queryClient.js';
 import serverIP from "../../modules/serverIP";
 import { useState } from "react";
 import { useSelector } from "react-redux";
-import { convertToTimeAndDate } from "../../modules/coreLogic";
+import { convertToTimeAndDate } from "../../modules/formatters.js";
 import { Pressable } from "react-native";
 import { useDispatch } from "react-redux";
 import { useEffect } from "react";

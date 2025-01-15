@@ -1,6 +1,6 @@
 
 import dayjs from 'dayjs';
-import { getPercentageOfBoxSizeFilled, calculateMaxNumberOfBoxesAfterTimeIfEmpty, calculateMaxNumberOfBoxes, calculateBoxesBetweenTwoTimes, calculateRemainderTimeBetweenTwoTimes, addBoxesToTime } from '../../modules/boxCalculations';
+import { findSmallestTimeBoxInSpace, getPercentageOfBoxSizeFilled, calculateMaxNumberOfBoxesAfterTimeIfEmpty, calculateMaxNumberOfBoxes, calculateBoxesBetweenTwoTimes, calculateRemainderTimeBetweenTwoTimes, addBoxesToTime } from '../../modules/boxCalculations';
 
 
 describe('Box Calculation Functions', () => {
@@ -333,6 +333,24 @@ describe('getPercentageOfBoxSizeFilled', () => {
       const { startTime, endTime } = createDatePair(90);
       const result = getPercentageOfBoxSizeFilled('hr', 1.5, startTime, endTime);
       expect(result).toBe(1);
+    });
+  });
+});
+
+describe('findSmallestTimeBoxInSpace', () => {
+  describe('when timeboxesInSpace is empty', () => {
+    test('returns -1', () => {
+      const timeboxGrid = {};
+      const timeboxesInSpace = [];
+      expect(findSmallestTimeBoxInSpace(timeboxGrid, timeboxesInSpace)).toBe(-1);
+    });
+  });
+
+  describe('when timeboxesInSpace has two items', () => {
+    test('returns index of smallest timebox', () => {
+      const timeboxGridFilteredByDate = {'10:00': { startTime: '2024-01-01T10:00:00', endTime: '2024-01-01T10:10:00' }, '10:30': { startTime: '2024-01-01T10:30:00', endTime: '2024-01-01T11:00:00' }};
+      const timeboxesInSpace = ['10:00', '10:30'];
+      expect(findSmallestTimeBoxInSpace(timeboxGridFilteredByDate, timeboxesInSpace)).toBe(0);
     });
   });
 });

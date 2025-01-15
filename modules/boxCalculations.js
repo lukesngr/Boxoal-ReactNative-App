@@ -199,15 +199,22 @@ export function findSmallestTimeBoxLengthInSpace(timeboxGridFilteredByDate, time
 
 export function getStatistics(recordedTimeboxes) {
     let reschedules = 0;
+    let minutesOverBy = 0;
     for(let i = 0; i < recordedTimeboxes.length; i++) {
         let recordedTimebox = recordedTimeboxes[i];
         let recordedTimeboxStartTime = new Date(recordedTimebox.recordedStartTime);
+        let recordedTimeboxEndTime = new Date(recordedTimebox.recordedEndTime);
         let timeboxStartTime = new Date(recordedTimebox.timeBox.startTime);
+        let timeboxEndTime = new Date(recordedTimebox.timeBox.endTime);
         if(recordedTimeboxStartTime.getDate() != timeboxStartTime.getDate()) {
             reschedules++;
         }
+        minutesOverBy += ((recordedTimeboxEndTime - recordedTimeboxStartTime) - (timeboxEndTime - timeboxStartTime));
+        
     }
 
+    minutesOverBy = minutesOverBy / 60000;
+    let averageTimeOverBy = minutesOverBy / recordedTimeboxes.length;
     let rescheduleRate = reschedules / recordedTimeboxes.length;
-    return {rescheduleRate};
+    return {rescheduleRate, averageTimeOverBy};
 }

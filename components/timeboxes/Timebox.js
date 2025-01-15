@@ -4,6 +4,8 @@ import { useState } from "react";
 import { useSelector } from 'react-redux';
 import { useDispatch } from "react-redux";
 import { filterTimeGridBasedOnSpace, getMarginFromTopOfTimebox } from "../../modules/boxCalculations";
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import { faDiagramPredecessor } from '@fortawesome/free-solid-svg-icons';
 
 export default function Timebox(props) {
     const dispatch = useDispatch();
@@ -15,18 +17,16 @@ export default function Timebox(props) {
     const dayName = props.day.name;
     let data;
     let marginFromTop = 0;
-    let moreThanOneBoxesInSpace = false;
+    let numberOfBoxesInSpace = 0;
 
     if(timeboxGrid) { 
         if(timeboxGrid[date]) {
             let boxesInsideSpace = filterTimeGridBasedOnSpace(timeboxGrid[date], boxSizeUnit, boxSizeNumber, props.time);
-            if(boxesInsideSpace.length > 1) {
-                moreThanOneBoxesInSpace = true;
-            }
+            numberOfBoxesInSpace = boxesInsideSpace.length;
 
             if(timeboxGrid[date][props.time]) {
                 data = timeboxGrid[date][props.time];
-            }else if(boxesInsideSpace.length > 0) {
+            }else if(numberOfBoxesInSpace == 1) {
                 if(onDayView) {
                     marginFromTop = getMarginFromTopOfTimebox(boxSizeUnit, boxSizeNumber, props.time, boxesInsideSpace[0], 60);
                 }else{
@@ -47,9 +47,16 @@ export default function Timebox(props) {
 
     return (
     <View style={{borderWidth: 1, borderColor: 'black', width: onDayView ? headerWidth : 50.5, height: onDayView ? 60 : 30, zIndex: 998}}>
-        <Pressable onPress={onPress}>
-            {data ? (<NormalTimebox marginFromTop={marginFromTop} data={data}></NormalTimebox>) : (<Text style={{width: '100%', height: '100%'}}></Text>)}
-        </Pressable>
+        {numberOfBoxesInSpace < 2 ? (
+            <Pressable onPress={onPress}>
+                {numberOfBoxesInSpace == 1 ? (<NormalTimebox marginFromTop={marginFromTop} data={data}></NormalTimebox>) : (<Text style={{width: '100%', height: '100%'}}></Text>)}
+            </Pressable>
+        ) : (
+            <Pressable style={{alignContent: 'center', alignItems: 'center'}} onPress={onPress}>
+                <FontAwesomeIcon style={{width: '100%', height: '100%'}} icon={faDiagramPredecessor} size={onDayView ? 60 : 30} />
+            </Pressable>
+        )}
+        
     </View>
     )
 }

@@ -200,7 +200,7 @@ export function findSmallestTimeBoxLengthInSpace(timeboxGridFilteredByDate, time
 export function getStatistics(recordedTimeboxes) {
     let reschedules = 0;
     let minutesOverBy = 0;
-    let timeStartedAccuracy = 0;
+    let averageTimeStartedLateBy = 0;
     let timeboxesThatMatchPredictedStart = 0;
     let timeboxesThatMatchCorrectTime = 0;
     for(let i = 0; i < recordedTimeboxes.length; i++) {
@@ -228,14 +228,15 @@ export function getStatistics(recordedTimeboxes) {
         if(timeStartedAccuracyForTimebox == 0) {
             timeboxesThatMatchPredictedStart++;
         }
-        timeStartedAccuracy += timeStartedAccuracyForTime;
+        averageTimeStartedLateBy += timeStartedAccuracyForTimebox;
     }
+
 
     minutesOverBy = minutesOverBy / 60000;
     let averageTimeOverBy = minutesOverBy / recordedTimeboxes.length;
     let rescheduleRate = reschedules / recordedTimeboxes.length;
-    timeStartedAccuracy = timeStartedAccuracy / recordedTimeboxes.length;
+    averageTimeStartedLateBy = averageTimeStartedLateBy / recordedTimeboxes.length;
     let percentagePredictedStart = timeboxesThatMatchPredictedStart / recordedTimeboxes.length;
     let percentageCorrectTime = timeboxesThatMatchCorrectTime / recordedTimeboxes.length;
-    return {rescheduleRate, averageTimeOverBy, timeStartedAccuracy};
+    return {rescheduleRate, averageTimeOverBy, averageTimeStartedLateBy, percentagePredictedStart, percentageCorrectTime};
 }

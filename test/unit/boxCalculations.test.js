@@ -359,9 +359,9 @@ describe('getStatistics', () => {
   describe('getStatistics basic case', () => {
     test('returns correct rescheduleRate', () => {
       const recordedTimeboxes = [{"id": 59, "recordedEndTime": "2024-11-28T05:00:00.000Z", "recordedStartTime": "2024-11-28T04:00:00.000Z", 
-        "timeBox": {"description": "P's test", "id": 16, "title": "P's test", 'startTime': '2024-11-29T04:00:00.000Z', 'endTime': '2024-11-29T05:00:00.000Z'}}];
+        "timeBox": {"description": "P's test", "id": 16, "title": "P's test", 'startTime': '2024-11-29T04:30:00.000Z', 'endTime': '2024-11-29T05:30:00.000Z'}}];
       const result = getStatistics(recordedTimeboxes);
-      expect(result).toEqual({rescheduleRate: 1, averageTimeOverBy: 0});
+      expect(result).toEqual({rescheduleRate: 1, averageTimeOverBy: 0, averageTimeStartedLateBy: 30, percentagePredictedStart: 0, percentageCorrectTime: 1});
       });
     });
 })

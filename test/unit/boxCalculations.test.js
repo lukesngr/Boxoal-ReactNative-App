@@ -361,7 +361,7 @@ describe('getStatistics', () => {
       const recordedTimeboxes = [{"id": 59, "recordedEndTime": "2024-11-28T05:00:00.000Z", "recordedStartTime": "2024-11-28T04:00:00.000Z", 
         "timeBox": {"description": "P's test", "id": 16, "title": "P's test", 'startTime': '2024-11-29T04:30:00.000Z', 'endTime': '2024-11-29T05:30:00.000Z'}}];
       const result = getStatistics(recordedTimeboxes);
-      expect(result).toEqual({averageTimeOverBy: 0, averageTimeStartedLateBy: 30, percentagePredictedStart: 0, percentageCorrectTime: 1, percentageRescheduled: 1});
+      expect(result).toEqual({averageTimeOverBy: 0, averageTimeStartedOffBy: 30, percentagePredictedStart: 0, percentageCorrectTime: 1, percentageRescheduled: 1});
       });
     });
 })

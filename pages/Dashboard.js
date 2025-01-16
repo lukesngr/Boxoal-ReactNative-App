@@ -5,12 +5,13 @@ import axios from "axios";
 import serverIP from "../modules/serverIP";
 import { getProgressAndLevel } from "../modules/coreLogic";
 import { useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { Statistics } from "../components/Statistics";
 export function Dashboard(props) {
 
+  const {scheduleIndex} = useSelector(state => state.profile);
   let userID = props.userID;
-  let timeboxes = props.data;
-  console.log(timeboxes[0].recordedTimeboxes);
+  let recordedTimeboxes = props.data[scheduleIndex].recordedTimeboxes;
   const dispatch = useDispatch();
   const {status, data, error, refetch} = useQuery({
     queryKey: ["XP"], 
@@ -38,6 +39,7 @@ export function Dashboard(props) {
       <Text style={{fontFamily: 'KameronRegular', fontSize: 30, color: 'black', textAlign: 'center', marginTop: 30}}>Welcome Back</Text>
       <Text style={{fontFamily: 'KameronRegular', fontSize: 20, color: 'black', marginTop: 20, marginHorizontal: 30}}>Lvl {currentLevel}</Text>
       <ProgressBar progress={currentProgress} color={'#C5C27C'} style={{marginTop: 10, marginHorizontal: 30, width: '80%'}} />
+      <Statistics recordedTimeboxes={recordedTimeboxes} />
     </View>
   );
 }

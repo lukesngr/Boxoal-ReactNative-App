@@ -234,9 +234,9 @@ export function getStatistics(recordedTimeboxes) {
 
     minutesOverBy = minutesOverBy / 60000;
     let averageTimeOverBy = minutesOverBy / recordedTimeboxes.length;
-    let rescheduleRate = reschedules / recordedTimeboxes.length;
+    let percentageRescheduled = reschedules / recordedTimeboxes.length;
     averageTimeStartedLateBy = averageTimeStartedLateBy / recordedTimeboxes.length;
     let percentagePredictedStart = timeboxesThatMatchPredictedStart / recordedTimeboxes.length;
     let percentageCorrectTime = timeboxesThatMatchCorrectTime / recordedTimeboxes.length;
-    return {rescheduleRate, averageTimeOverBy, averageTimeStartedLateBy, percentagePredictedStart, percentageCorrectTime};
+    return {averageTimeOverBy, averageTimeStartedLateBy, percentagePredictedStart, percentageCorrectTime, percentageRescheduled};
 }

@@ -9,10 +9,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { Statistics } from "../components/Statistics";
 export function Dashboard(props) {
 
-  const {scheduleIndex} = useSelector(state => state.profile);
+  const {scheduleIndex} = useSelector(state => state.profile.value);
   let userID = props.userID;
   let recordedTimeboxes = props.data[scheduleIndex].recordedTimeboxes;
-  const dispatch = useDispatch();
   const {status, data, error, refetch} = useQuery({
     queryKey: ["XP"], 
     queryFn: async () => {
@@ -29,10 +28,6 @@ export function Dashboard(props) {
     currentLevel = level;
     currentProgress = progress;
   }
-
-  useEffect(() => {
-    dispatch({type: 'profile/set', payload: {scheduleID: 0, scheduleIndex: 0, boxSizeUnit: 'min', boxSizeNumber: 30, wakeupTime: '07:00', progress: 0, level: 0}});
-  }, []);
 
   return (
     <View style={{backgroundColor: '#D9D9D9', height: '100%'}}>

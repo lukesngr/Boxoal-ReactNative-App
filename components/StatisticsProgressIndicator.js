@@ -1,3 +1,6 @@
+import Svg, { Circle, Text } from "react-native-svg";
+import { View } from "react-native";
+
 export function StatisticsProgressIndicator(props) {
     let {percentage, text} = props;
     let realPercentage = percentage * 100;

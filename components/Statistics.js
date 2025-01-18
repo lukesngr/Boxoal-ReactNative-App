@@ -1,5 +1,7 @@
 import { Text } from "react-native-paper";
 import { getStatistics } from "../modules/boxCalculations";
+import { View } from "react-native";
+import { StatisticsProgressIndicator } from "./StatisticsProgressIndicator";
 
 export function Statistics(props) {
     let {averageTimeOverBy, averageTimeStartedOffBy, percentagePredictedStart, percentageCorrectTime, percentageRescheduled} = getStatistics(props.recordedTimeboxes);

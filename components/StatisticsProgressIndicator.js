@@ -4,13 +4,12 @@ import { View } from "react-native";
 export function StatisticsProgressIndicator(props) {
     let {percentage, text} = props;
     let realPercentage = percentage * 100;
-    const size = 50;
-    let strokeWidth = 2;
+    const size = 100;
+    let strokeWidth = 4;
     const radius = (size - strokeWidth) / 2;
     const circumference = 2 * Math.PI * radius;
     const strokeDashoffset = circumference - (circumference * realPercentage) / 100;
-    return (<>
-        <Text style={{fontFamily: 'KameronRegular', fontSize: 20, color: 'black', marginTop: 20, marginHorizontal: 30}}>{text}</Text>
+    return (
         <View style={{marginLeft: 10, marginRight: 10}}>
             <Svg width={size} height={size}>
                 <Circle
@@ -22,7 +21,7 @@ export function StatisticsProgressIndicator(props) {
                     strokeWidth={strokeWidth}
                 />
                 <Circle
-                    stroke="#C5C27C"
+                    stroke="#2f4858"
                     fill="none"
                     cx={size / 2}
                     cy={size / 2}
@@ -40,10 +39,10 @@ export function StatisticsProgressIndicator(props) {
                     y={(size / 2)-8}
                     textAnchor="middle"
                     dy=".3em"
-                    fontSize={15}
+                    fontSize={13}
                     fill="black"
-                >{realPercentage}%</Text>
+                >{text}</Text>
             </Svg>
         </View>
-        </>)
+        )
 }

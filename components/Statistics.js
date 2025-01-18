@@ -8,9 +8,9 @@ export function Statistics(props) {
 
     return (
         <Surface style={{backgroundColor: '#C5C27C', height: 'fit-content', width: '80%', marginTop: 30, marginHorizontal: 30}} elevation={4}>
-            <Text style={{fontFamily: 'KameronRegular', fontSize: 25, color: 'black', marginTop: 20, marginHorizontal: 30}}>Statistics</Text>
-            <Text style={{fontFamily: 'Roboto', fontSize: 15, color: 'black', marginTop: 20, marginHorizontal: 30}}>Average Time Over By: {averageTimeOverBy}min</Text>
-            <Text style={{fontFamily: 'Roboto', fontSize: 15, color: 'black', marginTop: 20, marginHorizontal: 30}}>Average Time Started Off By: {averageTimeStartedOffBy}min</Text>
+            <Text style={{fontFamily: 'KameronRegular', fontSize: 25, color: 'black', marginTop: 20, marginHorizontal: 20}}>Statistics</Text>
+            <Text style={{fontFamily: 'Roboto', fontSize: 15, color: 'black', marginTop: 20, marginHorizontal: 20}}>Average Time Over By: {averageTimeOverBy}min</Text>
+            <Text style={{fontFamily: 'Roboto', fontSize: 15, color: 'black', marginTop: 20, marginHorizontal: 20}}>Average Time Started Off By: {averageTimeStartedOffBy}min</Text>
             <View style={{flexDirection: 'row', justifyContent: 'space-around', marginTop: 20, marginBottom: 20}}>
                 <StatisticsProgressIndicator percentage={percentagePredictedStart} text="Predicted Start"/>
                 <StatisticsProgressIndicator percentage={percentageCorrectTime} text="Correct Time"/>

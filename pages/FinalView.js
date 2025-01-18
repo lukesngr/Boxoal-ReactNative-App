@@ -79,7 +79,7 @@ export default function FinalView({ navigation, route }) {
                     <MaterialCommunityIcons name="checkbox-blank-outline" size={20} color='black' />
                 )}}/>
             <Tab.Screen 
-                name="Goals" 
+                name="List" 
                 children={() => <Goals data={data}></Goals>} 
                 options={{headerShown: false, tabBarIcon: ({color}) => (
                     <MaterialCommunityIcons name="menu" size={20} color='black' />

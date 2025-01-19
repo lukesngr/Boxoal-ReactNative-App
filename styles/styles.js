@@ -193,7 +193,6 @@ export const styles = {
         marginTop: 10, 
         backgroundColor: '#C5C27C', 
         textAlign: 'center', 
-        paddingLeft: '30%'
     },
     timeTextWidth: 46,
     timeTextOverallWidth: 50,

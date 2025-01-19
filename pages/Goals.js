@@ -20,7 +20,7 @@ export default function Goals(props) {
     return (<>
         <View style={{backgroundColor: '#D9D9D9', width: '100%', height: '100%', padding: 20, paddingLeft: 15, paddingRight: 15}}>
             <View style={{backgroundColor: 'white', width: '100%', height: '100%'}}>
-                <Surface style={{flexDirection: 'row', alignItems: 'center', paddingLeft: 40, backgroundColor: 'white'}}> 
+                <Surface style={{flexDirection: 'row', alignItems: 'center', paddingLeft: 20, backgroundColor: 'white'}}> 
                     <Text style={{fontSize: 25, color: 'black', textAlign: 'left', marginTop: 5, width: 220}}>{schedule.title}</Text>
                     <View style={{flexDirection: 'row', justifyContent: 'space-between', gap: -25}}>
                         <IconButton icon="cog" size={36} onPress={() => setEditScheduleVisible(true)}></IconButton>
@@ -31,7 +31,7 @@ export default function Goals(props) {
                     return <GoalAccordion key={index} goal={goal}></GoalAccordion>
                 })}
                 <Surface style={{paddingLeft: 40, flexDirection: 'row', paddingBottom: 15, backgroundColor: 'white'}}>
-                <FAB icon="plus" mode='elevated' style={styles.addGoalFAB} onPress={() => setCreateGoalVisible(true)}/>
+                <FAB icon="plus" label="Add Goal" mode='elevated' style={styles.addGoalFAB} onPress={() => setCreateGoalVisible(true)}/>
                 </Surface>
             </View>
         </View>

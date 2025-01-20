@@ -35,7 +35,7 @@ export default function GridHeader(props) {
         <View style={{flexDirection: 'row'}}>
             <View style={{borderColor: onDayView ? 'white' : 'black', backgroundColor: 'white', borderWidth: 1, padding: 1, width: styles.timeTextOverallWidth}}></View>
             {dayToName.map((day, index) => {
-                return (<>
+                return (
                 <View key={day.day} style={{...styles.timeboxCell, backgroundColor: getStyle(day).backgroundColor, }}
                             onLayout={(event) => {
                                 if(index == 0) {
@@ -53,7 +53,7 @@ export default function GridHeader(props) {
                     {day.day == props.currentDay && <ActiveOverlay></ActiveOverlay>}
                     {day.day < props.currentDay && <Overlay></Overlay>}
                     <RecordingOverlay day={day}></RecordingOverlay>
-                </View></>)
+                </View>)
             })}
         </View>)
 }

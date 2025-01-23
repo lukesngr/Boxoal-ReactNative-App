@@ -9,7 +9,7 @@ export default function GoalAccordion(props) {
     const [editGoalFormVisible, setEditGoalFormVisible] = useState(false);
     const [accordionOpen, setAccordionOpen] = useState(false);
     return (
-    <>
+    props.goal.completed ? <></> : ( <>
         <Surface style={{flexDirection: 'row', width: '100%', backgroundColor: 'white', borderRadius: 0}} elevation={accordionOpen ? 1 : 0}>
             <GoalProgressIndicator goal={props.goal}></GoalProgressIndicator>         
             <TouchableRipple onPress={() => setAccordionOpen(!accordionOpen)}>
@@ -24,6 +24,6 @@ export default function GoalAccordion(props) {
             return <TimeboxAsListItem key={index} timebox={timebox}></TimeboxAsListItem>
         })}          
         <EditGoalForm data={props.goal} visible={editGoalFormVisible} close={() => setEditGoalFormVisible(false)}></EditGoalForm>
-    </>
+        </>)
     )
 }

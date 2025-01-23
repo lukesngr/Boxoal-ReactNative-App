@@ -21,9 +21,14 @@ export default function CreateGoalForm(props) {
             title,
             priority: parseInt(priority), //damn thing won't convert auto even with number input
             targetDate: new Date(targetDate).toISOString(),
-            schedule: {connect: {id: props.id}},
+            schedule: {
+                connect: 
+                {
+                    id: props.id
+                }
+            },
             completed: false,
-            completedOn: null,
+            completedOn: new Date().toISOString(),
             partOfLine: 1 
         },
         ).then(async () => {

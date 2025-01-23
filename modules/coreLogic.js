@@ -125,3 +125,17 @@ export function getProgressAndLevel(xpPoints) {
         return {progress: progress, level: Math.round(level)};
     }
 }
+
+export function getMaxNumberOfGoals(goalsCompleted) {
+    if(goalsCompleted == 0) {
+        return 1;
+    }else if(goalsCompleted >= 1 && goalsCompleted < 6) {
+        return 2;
+    }else if(goalsCompleted >= 6 && goalsCompleted < 12) {
+        return 3;
+    }else if(goalsCompleted >= 12 && goalsCompleted < 24) {
+        return 4;
+    }else if(goalsCompleted >= 24) {
+        return 100000000000; //whoever hits this is a god
+    }
+}

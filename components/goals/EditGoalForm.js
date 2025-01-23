@@ -72,7 +72,7 @@ export default function EditGoalForm(props) {
                     selectionColor="black" 
                     textColor="black"/>
                 </Pressable>
-                <Picker style={{color: 'black', marginTop: 5}} dropdownIconColor='black' selectedValue={completed} onValueChange={setCompleted}>
+                <Picker style={{color: 'black', backgroundColor: 'white'}} dropdownIconColor='black' selectedValue={completed} onValueChange={setCompleted}>
                     <Picker.Item label="False" value={false} />
                     <Picker.Item label="True" value={true} />
                 </Picker>

@@ -238,5 +238,12 @@ export function getStatistics(recordedTimeboxes) {
     averageTimeStartedOffBy = averageTimeStartedOffBy / recordedTimeboxes.length;
     let percentagePredictedStart = timeboxesThatMatchPredictedStart / recordedTimeboxes.length;
     let percentageCorrectTime = timeboxesThatMatchCorrectTime / recordedTimeboxes.length;
+    if(recordedTimeboxes.length == 0) {
+        averageTimeOverBy = 0;
+        averageTimeStartedOffBy = 0;
+        percentagePredictedStart = 0;
+        percentageCorrectTime = 0;
+        percentageRescheduled = 0;
+    }
     return {averageTimeOverBy, averageTimeStartedOffBy, percentagePredictedStart, percentageCorrectTime, percentageRescheduled};
 }

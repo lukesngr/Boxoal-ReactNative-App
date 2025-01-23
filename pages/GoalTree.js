@@ -2,6 +2,7 @@ import { IconButton, Surface } from "react-native-paper";
 import { getMaxNumberOfGoals } from "../modules/coreLogic";
 import { useState } from "react";
 import { ScrollView, Text, View } from "react-native";
+import { GoalTreeNode } from "../components/goals/GoalTreeNode";
 
 
 export function GoalTree(props) {
@@ -37,9 +38,7 @@ export function GoalTree(props) {
             </View>
             <ScrollView>
                 {goalsInLine.map((goal, index) => {
-                    return (<Surface key={index} style={{padding: 10, margin: 10, backgroundColor: 'white', flexDirection: 'row', justifyContent: 'space-between'}}>
-                        <Text style={{fontFamily: 'KameronRegular', fontSize: 20, color: 'black'}}>{goal.title}</Text>
-                        </Surface>)
+                    return <GoalTreeNode key={index} goal={goal}></GoalTreeNode>
                 })}
             </ScrollView>
         </View>

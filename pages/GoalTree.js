@@ -1,7 +1,7 @@
 import { IconButton } from "react-native-paper";
 import { getMaxNumberOfGoals } from "../modules/coreLogic";
 import { useState } from "react";
-import { Text, View } from "react-native";
+import { ScrollView, Text, View } from "react-native";
 
 
 export function GoalTree(props) {
@@ -29,10 +29,12 @@ export function GoalTree(props) {
         <View style={{backgroundColor: 'white', width: '100%', height: '100%'}}>
             <Text style={{fontFamily: 'KameronRegular', fontSize: 30, color: 'black', textAlign: 'center', marginTop: 30}}>Goal Tree</Text>
             <View style={{flexDirection: 'row', justifyContent: 'center'}}>
-            {maxNumberOfGoals > 1 && <IconButton icon="arrow-left" size={25} onPress={() => moveLeft()}></IconButton> }
-            <Text style={{fontFamily: 'KameronRegular', fontSize: 20, color: 'black', marginTop: 15, marginHorizontal: 0}}>Goal {currentLine}</Text>
-            {maxNumberOfGoals > 1 && <IconButton icon="arrow-right" size={25} onPress={() => moveRight()}></IconButton> }
+                {maxNumberOfGoals > 1 && <IconButton icon="arrow-left" size={25} onPress={() => moveLeft()}></IconButton> }
+                <Text style={{fontFamily: 'KameronRegular', fontSize: 20, color: 'black', marginTop: 15, marginHorizontal: 0}}>Goal {currentLine}</Text>
+                {maxNumberOfGoals > 1 && <IconButton icon="arrow-right" size={25} onPress={() => moveRight()}></IconButton> }
             </View>
+            <ScrollView>
+            </ScrollView>
         </View>
     </View>)
 }

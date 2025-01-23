@@ -34,7 +34,8 @@ export default function CreateGoalForm(props) {
                 },
                 completed: false,
                 completedOn: new Date().toISOString(),
-                partOfLine: 1 
+                partOfLine: 1,
+                active: true 
             },
             ).then(async () => {
                 props.close();

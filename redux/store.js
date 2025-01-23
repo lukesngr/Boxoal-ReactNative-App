@@ -15,6 +15,14 @@ import { combineReducers } from '@reduxjs/toolkit'
 import onDayViewReducer from './onDayView'
 import daySelectedReducer from './daySelected'
 import modalVisibleReducer from './modalVisible'
+import {
+  FLUSH,
+  REHYDRATE,
+  PAUSE,
+  PERSIST,
+  PURGE,
+  REGISTER,
+} from 'redux-persist'
 
 const rootReducer = combineReducers({
   profile: profileReducer,
@@ -42,6 +50,12 @@ const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 export const store = configureStore({
   reducer: persistedReducer,
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: {
+        ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
+      },
+    }),
 });
 
 export const persistor = persistStore(store);

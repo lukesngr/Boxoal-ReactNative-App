@@ -30,10 +30,10 @@ export function GoalTree(props) {
     return (
     <View style={{backgroundColor: '#D9D9D9', width: '100%', height: '100%', padding: 20, paddingLeft: 15, paddingRight: 15}}>
         <View style={{backgroundColor: 'white', width: '100%', height: '100%'}}>
-            <Text style={{fontFamily: 'KameronRegular', fontSize: 30, color: 'black', textAlign: 'center', marginTop: 30}}>Goal Tree</Text>
+            <Text style={{fontFamily: 'KameronRegular', fontSize: 35, color: 'black', textAlign: 'center', marginTop: 30}}>Goal Tree</Text>
             <View style={{flexDirection: 'row', justifyContent: 'center'}}>
                 {maxNumberOfGoals > 1 && <IconButton icon="arrow-left" size={25} onPress={() => moveLeft()}></IconButton> }
-                <Text style={{fontFamily: 'KameronRegular', fontSize: 20, color: 'black', marginTop: 15, marginHorizontal: 0}}>Goal {currentLine}</Text>
+                <Text style={{fontFamily: 'KameronRegular', fontSize: 25, color: 'black', marginTop: 15, marginHorizontal: 0}}>Goal {currentLine}</Text>
                 {maxNumberOfGoals > 1 && <IconButton icon="arrow-right" size={25} onPress={() => moveRight()}></IconButton> }
             </View>
             <ScrollView>

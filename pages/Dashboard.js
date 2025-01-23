@@ -16,7 +16,9 @@ export function Dashboard(props) {
   let goalsCompleted = data.goals.reduce((count, item) => item.completed ? count + 1 : count, 0);
   let averageProgress = 0;
   for(let goal of data.goals) {
-    averageProgress += getProgressWithGoal(goal.timeboxes);
+    if(!goal.completed) {
+      averageProgress += getProgressWithGoal(goal.timeboxes);
+    }
   }
   if(data.goals.length != 0) { averageProgress = averageProgress / data.goals.length; }
   let recordedTimeboxes = props.data[scheduleIndex].recordedTimeboxes;

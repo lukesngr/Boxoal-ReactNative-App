@@ -63,6 +63,7 @@ export default function FinalView({ navigation, route }) {
     if(status === 'error') return <Text>Error: {error.message}</Text>
     if(data.length == 0) return <Welcome />
     
+    
     return (
           <Tab.Navigator theme={theme}>
             <Tab.Screen 

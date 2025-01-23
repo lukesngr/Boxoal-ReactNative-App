@@ -1,4 +1,4 @@
-import { IconButton } from "react-native-paper";
+import { IconButton, Surface } from "react-native-paper";
 import { getMaxNumberOfGoals } from "../modules/coreLogic";
 import { useState } from "react";
 import { ScrollView, Text, View } from "react-native";
@@ -7,7 +7,9 @@ import { ScrollView, Text, View } from "react-native";
 export function GoalTree(props) {
     const [currentLine, setCurrentLine] = useState(1);
     let goalsCompleted = props.data.goals.reduce((count, item) => item.completed ? count + 1 : count, 0);
-    let maxNumberOfGoals = 2;//getMaxNumberOfGoals(goalsCompleted);
+    let goalsInLine = props.data.goals.filter((item) => item.partOfLine == currentLine);
+    let maxNumberOfGoals = getMaxNumberOfGoals(goalsCompleted);
+    console.log(goalsInLine);
 
     function moveLeft() {
         if(currentLine > 1) {
@@ -34,6 +36,11 @@ export function GoalTree(props) {
                 {maxNumberOfGoals > 1 && <IconButton icon="arrow-right" size={25} onPress={() => moveRight()}></IconButton> }
             </View>
             <ScrollView>
+                {goalsInLine.map((goal, index) => {
+                    return (<Surface key={index} style={{padding: 10, margin: 10, backgroundColor: 'white', flexDirection: 'row', justifyContent: 'space-between'}}>
+                        <Text style={{fontFamily: 'KameronRegular', fontSize: 20, color: 'black'}}>{goal.title}</Text>
+                        </Surface>)
+                })}
             </ScrollView>
         </View>
     </View>)

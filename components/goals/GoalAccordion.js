@@ -10,7 +10,7 @@ export default function GoalAccordion(props) {
     const [accordionOpen, setAccordionOpen] = useState(false);
     return (props.goal.completed ? <></> : ( <>
         <Surface style={{flexDirection: 'row', width: '100%', backgroundColor: 'white', borderRadius: 0}} elevation={accordionOpen ? 1 : 0}>
-            <GoalProgressIndicator goal={props.goal}></GoalProgressIndicator>         
+            <GoalProgressIndicator size={50} textColor="black" circleBorderColor="#C5C27C" circleColor="#D9D9D9" goal={props.goal}></GoalProgressIndicator>         
             <TouchableRipple onPress={() => setAccordionOpen(!accordionOpen)}>
                 <Text style={{color: 'black', fontSize: 20, width: 215, paddingTop: 15}}>{props.goal.title}</Text>
             </TouchableRipple>

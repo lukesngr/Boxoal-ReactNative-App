@@ -9,7 +9,7 @@ export default function GoalProgressIndicator(props) {
     let dateWithSuffix = getDateWithSuffix(goalDateInDayJS.date())
     let abbrievatedMonth = goalDateInDayJS.format('MMM')
     let progress = getProgressWithGoal(props.goal.timeboxes);
-    const size = 50;
+    const size = props.size;
     let strokeWidth = 2;
     const radius = (size - strokeWidth) / 2;
     const circumference = 2 * Math.PI * radius;
@@ -18,7 +18,7 @@ export default function GoalProgressIndicator(props) {
         <View style={{marginLeft: 10, marginRight: 10}}>
         <Svg width={size} height={size}>
             <Circle
-                stroke="#D9D9D9"
+                stroke={props.circleColor}
                 fill="none"
                 cx={size / 2}
                 cy={size / 2}
@@ -26,7 +26,7 @@ export default function GoalProgressIndicator(props) {
                 strokeWidth={strokeWidth}
             />
             <Circle
-                stroke="#C5C27C"
+                stroke={circleBorderColor}
                 fill="none"
                 cx={size / 2}
                 cy={size / 2}
@@ -45,7 +45,7 @@ export default function GoalProgressIndicator(props) {
                 textAnchor="middle"
                 dy=".3em"
                 fontSize={15}
-                fill="black"
+                fill={props.textColor}
             >{dateWithSuffix}</Text>
             <Text
                 x={size / 2}
@@ -53,7 +53,7 @@ export default function GoalProgressIndicator(props) {
                 textAnchor="middle"
                 dy=".3em"
                 fontSize={15}
-                fill="black"
+                fill={props.textColor}
             >{abbrievatedMonth}</Text>
       </Svg>
       </View>

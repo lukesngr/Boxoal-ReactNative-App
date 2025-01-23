@@ -42,8 +42,6 @@ export default function TimeboxActionsForm(props) {
         let recordedStartTime = new Date(timeboxRecording.recordingStartTime);
         dispatch({type: 'timeboxRecording/set', payload: {timeboxID: -1, timeboxDate: 0, recordingStartTime: 0}});
         dispatch(setActiveOverlayInterval());
-        let xpGained = calculateXPPoints(data, recordedStartTime, new Date());
-        axios.post(serverIP+'/addExperience', {points: xpGained, userUUID: user.userId}).catch(function(error) { console.log(error); });
         axios.post(serverIP+'/createRecordedTimebox', {
             recordedStartTime: recordedStartTime, 
             recordedEndTime: new Date(), 

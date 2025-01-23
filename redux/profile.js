@@ -3,7 +3,7 @@ import { createSlice } from '@reduxjs/toolkit'
 export const profile = createSlice({
   name: 'profile',
   initialState: {
-    value: {scheduleID: 0, scheduleIndex: 0, boxSizeUnit: 'min', boxSizeNumber: 30, wakeupTime: '07:00', progress: 0, level: 0},
+    value: {scheduleID: 0, scheduleIndex: 0, boxSizeUnit: 'min', boxSizeNumber: 30, wakeupTime: '07:00'},
   },
   reducers: {
     set: (state, action) => {

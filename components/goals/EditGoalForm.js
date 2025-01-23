@@ -6,12 +6,14 @@ import { queryClient } from '../../modules/queryClient.js';
 import DatePicker from "react-native-date-picker";
 import { styles } from "../../styles/styles";
 import { Dialog, Portal, TextInput, Button } from "react-native-paper";
+import { Picker } from "@react-native-picker/picker";
 import Alert from "../Alert";
 
 export default function EditGoalForm(props) {
     const [title, setTitle] = useState(props.data.title);
     const [priority, setPriority] = useState(""+props.data.priority);
     const [targetDate, setTargetDate] = useState(new Date(props.data.targetDate));
+    const [completed, setCompleted] = useState(props.data.completed);
     const [targetDateText, setTargetDateText] = useState(targetDate.toISOString());
     const [datePickerVisible, setDatePickerVisible] = useState(false);
     const [alert, setAlert] = useState(false);
@@ -21,7 +23,9 @@ export default function EditGoalForm(props) {
             title,
             priority: parseInt(priority), //damn thing won't convert auto even with number input
             targetDate: targetDate.toISOString(), 
-            id: props.data.id
+            id: props.data.id,
+            completed,
+            completedOn: new Date().toISOString()
         }
         ).then(async () => {
             props.close();
@@ -68,6 +72,10 @@ export default function EditGoalForm(props) {
                     selectionColor="black" 
                     textColor="black"/>
                 </Pressable>
+                <Picker style={{color: 'black', marginTop: 5}} dropdownIconColor='black' selectedValue={completed} onValueChange={setCompleted}>
+                    <Picker.Item label="False" value={false} />
+                    <Picker.Item label="True" value={true} />
+                </Picker>
             </Dialog.Content>
             <Dialog.Actions>
                 <Button textColor="white" onPress={props.close}>Close</Button>

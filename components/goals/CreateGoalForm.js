@@ -7,6 +7,7 @@ import DatePicker from "react-native-date-picker";
 import { styles } from "../../styles/styles";
 import { Dialog, Portal, TextInput, Button } from "react-native-paper";
 import Alert from "../Alert";
+import { getMaxNumberOfGoals } from "../../modules/coreLogic.js";
 
 export default function CreateGoalForm(props) {
     const [title, setTitle] = useState("");
@@ -15,31 +16,38 @@ export default function CreateGoalForm(props) {
     const [targetDateText, setTargetDateText] = useState(targetDate.toISOString());
     const [datePickerVisible, setDatePickerVisible] = useState(false);
     const [alert, setAlert] = useState(false);
+    let goalsCompleted = props.goals.reduce((count, item) => item.completed ? count + 1 : count, 0);
+    let goalsNotCompleted = props.goals.length - goalsCompleted;
+    let maxNumberOfGoals = getMaxNumberOfGoals(goalsCompleted);
 
     function createGoal() {
-        axios.post(serverIP+'/createGoal', {
-            title,
-            priority: parseInt(priority), //damn thing won't convert auto even with number input
-            targetDate: new Date(targetDate).toISOString(),
-            schedule: {
-                connect: 
-                {
-                    id: props.id
-                }
+        if(maxNumberOfGoals > goalsNotCompleted) {
+            axios.post(serverIP+'/createGoal', {
+                title,
+                priority: parseInt(priority), //damn thing won't convert auto even with number input
+                targetDate: new Date(targetDate).toISOString(),
+                schedule: {
+                    connect: 
+                    {
+                        id: props.id
+                    }
+                },
+                completed: false,
+                completedOn: new Date().toISOString(),
+                partOfLine: 1 
             },
-            completed: false,
-            completedOn: new Date().toISOString(),
-            partOfLine: 1 
-        },
-        ).then(async () => {
-            props.close();
-            setAlert({shown: true, title: "Timebox", message: "Created goal!"});
-            await queryClient.refetchQueries();
-        }).catch(function(error) {
-            props.close();
-            setAlert({shown: true, title: "Error", message: "An error occurred, please try again or contact the developer"});
-            console.log(error);
-        })
+            ).then(async () => {
+                props.close();
+                setAlert({shown: true, title: "Timebox", message: "Created goal!"});
+                await queryClient.refetchQueries();
+            }).catch(function(error) {
+                props.close();
+                setAlert({shown: true, title: "Error", message: "An error occurred, please try again or contact the developer"});
+                console.log(error);
+            })
+        }else{
+            setAlert({shown: true, title: "Error", message: "Please complete more goals and we will unlock more goal slots for you!"});
+        }
     }
 
     return (

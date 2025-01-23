@@ -1,6 +1,6 @@
 import { Text } from "react-native";
 import { View } from "react-native";
-import { IconButton, FAB, Surface } from "react-native-paper";
+import { IconButton, FAB, Surface, Icon } from "react-native-paper";
 import CreateScheduleForm from "../components/schedules/CreateScheduleForm";
 import { useSelector } from "react-redux";
 import { useState } from "react";
@@ -23,6 +23,7 @@ export default function Goals(props) {
                 <Surface style={{flexDirection: 'row', alignItems: 'center', paddingLeft: 20, backgroundColor: 'white'}}> 
                     <Text style={{fontSize: 25, color: 'black', textAlign: 'left', marginTop: 5, width: 220}}>{schedule.title}</Text>
                     <View style={{flexDirection: 'row', justifyContent: 'space-between', gap: -25}}>
+                        <IconButton icon="tree" size={36} onPress={() => props.close()}></IconButton>
                         <IconButton icon="cog" size={36} onPress={() => setEditScheduleVisible(true)}></IconButton>
                         <IconButton icon="plus" size={36} onPress={() => setCreateScheduleVisible(true)}></IconButton>
                     </View>

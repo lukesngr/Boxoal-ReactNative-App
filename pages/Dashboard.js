@@ -7,6 +7,7 @@ import { getProgressAndLevel } from "../modules/coreLogic";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Statistics } from "../components/Statistics";
+import { getProgressWithGoal } from "../modules/coreLogic";
 export function Dashboard(props) {
 
   const {scheduleIndex} = useSelector(state => state.profile.value);

@@ -19,14 +19,14 @@ export default function GoalProgressIndicator(props) {
         <Svg width={size} height={size}>
             <Circle
                 stroke={props.circleColor}
-                fill="none"
+                fill={props.circleColor}
                 cx={size / 2}
                 cy={size / 2}
                 r={radius}
                 strokeWidth={strokeWidth}
             />
             <Circle
-                stroke={circleBorderColor}
+                stroke={props.circleBorderColor}
                 fill="none"
                 cx={size / 2}
                 cy={size / 2}

@@ -1,13 +1,74 @@
-import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome"
-import { Surface, Text } from "react-native-paper"
-import { faArrowDown } from "@fortawesome/free-solid-svg-icons"
-import GoalProgressIndicator from "./GoalProgressIndicator"
+import Svg, { Circle, Text, Path } from "react-native-svg";
+import { getProgressWithGoal } from "../../modules/coreLogic";
+import { getDateWithSuffix } from "../../modules/formatters";
+import dayjs from "dayjs";
+import { View } from "react-native";
+
 export function GoalTreeNode(props) {
-    return (<>
-        <Surface style={{padding: 10, backgroundColor: '#D9D9D9', borderRadius: 50, alignSelf: 'center', paddingVertical: '10%'}}>
-            <Text style={{fontFamily: 'KameronRegular', fontSize: 20, color: 'black'}}>{props.goal.title}</Text>
-        </Surface>
-        <GoalProgressIndicator size={50} textColor="white" circleBorderColor="#00C917" circleColor="#000000" goal={props.goal}></GoalProgressIndicator>
-        <FontAwesomeIcon icon={faArrowDown} style={{alignSelf: 'center'}} color="black" size={36}></FontAwesomeIcon>
-        </>)
+    let goalDateInDayJS = dayjs(props.goal.targetDate);
+    let dateWithSuffix = getDateWithSuffix(goalDateInDayJS.date())
+    let abbrievatedMonth = goalDateInDayJS.format('MMM')
+    let progress = getProgressWithGoal(props.goal.timeboxes);
+    const size = 120;
+    let strokeWidth = 2;
+    const radius = (size - strokeWidth) / 2;
+    const circumference = 2 * Math.PI * radius;
+    const strokeDashoffset = circumference - (circumference * progress) / 100;
+    return (
+        <View style={{alignSelf: 'center'}}>
+            <Svg width={size} height={size}>
+                <Circle
+                    stroke="#D9D9D9"
+                    fill="#D9D9D9"
+                    cx={size / 2}
+                    cy={size / 2}
+                    r={radius}
+                    strokeWidth={strokeWidth}
+                />
+                <Circle
+                    stroke='#C5C27C'
+                    fill="none"
+                    cx={size / 2}
+                    cy={size / 2}
+                    r={radius}
+                    strokeWidth={strokeWidth}
+                    strokeDasharray={circumference}
+                    strokeDashoffset={strokeDashoffset}
+                    strokeLinecap="round"
+                    rotation="-90"
+                    originX={size / 2}
+                    originY={size / 2}
+                />
+                <Text
+                    x={size / 2}
+                    y={(size / 2)-35}
+                    textAnchor="middle"
+                    dy=".3em"
+                    fontSize={15}
+                    fill={"black"}
+                    fontFamily={'KameronRegular'}
+                >{dateWithSuffix}</Text>
+                <Text
+                    x={size / 2}
+                    y={(size / 2)-20}
+                    textAnchor="middle"
+                    dy=".3em"
+                    fontSize={15}
+                    fill={"black"}
+                    fontFamily={'KameronRegular'}
+                >{abbrievatedMonth}</Text>
+                <Text x={size / 2} y={(size / 2)+1} textAnchor="middle" dy=".3em" fontSize={22} fill={"black"} fontFamily={'KameronRegular'}>{props.goal.title}</Text>
+        </Svg>
+        <Svg width={110} height={45} viewBox="0 0 24 30">
+            <Path 
+                d="M12 0 L12 24 M5 17 L12 24 L19 17" 
+                stroke="black" 
+                strokeWidth={2}
+                fill="none"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+            />
+        </Svg>
+      </View>
+    )
 }

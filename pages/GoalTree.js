@@ -1,11 +1,13 @@
 import { IconButton, Surface } from "react-native-paper";
 import { getMaxNumberOfGoals } from "../modules/coreLogic";
 import { useEffect, useState } from "react";
-import { ScrollView, Text, View } from "react-native";
+import { Pressable, ScrollView, Text, View } from "react-native";
 import { GoalTreeNode } from "../components/goals/GoalTreeNode";
 import { current } from "@reduxjs/toolkit";
 import AddGoalToTree  from "../components/goals/AddGoalToTree";
 import { BackHandler } from "react-native";
+import { faBars } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 
 
 export function GoalTree(props) {
@@ -33,7 +35,12 @@ export function GoalTree(props) {
     return (
     <View style={{backgroundColor: '#D9D9D9', width: '100%', height: '100%', padding: 20, paddingLeft: 15, paddingRight: 15}}>
         <View style={{backgroundColor: 'white', width: '100%', height: '100%'}}>
-            <Text style={{fontFamily: 'KameronRegular', fontSize: 35, color: 'black', textAlign: 'center', marginTop: 30}}>Goal Tree</Text>
+            <View style={{flexDirection: 'row', alignItems: 'center', paddingLeft: 20, justifyContent: 'center', backgroundColor: 'white'}}>
+                <Text style={{fontFamily: 'KameronRegular', fontSize: 35, color: 'black', textAlign: 'center', marginTop: 30}}>Goal Tree</Text>
+                <Pressable onPress={props.close}>
+                    <FontAwesomeIcon icon={faBars} size={35} style={{marginLeft: 15, marginTop: 29}} />
+                </Pressable>
+            </View>
             <View style={{flexDirection: 'row', justifyContent: 'center'}}>
                 {maxNumberOfGoals > 1 && <IconButton icon="arrow-left" size={25} onPress={() => moveLeft()}></IconButton> }
                 <Text style={{fontFamily: 'KameronRegular', fontSize: 25, color: 'black', marginTop: 15, marginHorizontal: 0}}>Goal {currentLine}</Text>

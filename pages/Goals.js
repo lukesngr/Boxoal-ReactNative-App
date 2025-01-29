@@ -16,12 +16,12 @@ export default function Goals(props) {
     const [createScheduleVisible, setCreateScheduleVisible] = useState(false);
     const [editScheduleVisible, setEditScheduleVisible] = useState(false);
     const [createGoalVisible, setCreateGoalVisible] = useState(false);
-    const [showSkillTree, setShowSkillTree] = useState(false);
+    const [showSkillTree, setShowSkillTree] = useState(true);
     let schedule = props.data[profile.scheduleIndex];
 
     console.log(showSkillTree);
 
-    return (showSkillTree ? (<GoalTree data={schedule} close={setShowSkillTree}></GoalTree>) : (<>
+    return (showSkillTree ? (<GoalTree data={schedule} close={() => setShowSkillTree(false)}></GoalTree>) : (<>
         <View style={{backgroundColor: '#D9D9D9', width: '100%', height: '100%', padding: 20, paddingLeft: 15, paddingRight: 15}}>
             <View style={{backgroundColor: 'white', width: '100%', height: '100%'}}>
                 <Surface style={{flexDirection: 'row', alignItems: 'center', paddingLeft: 20, backgroundColor: 'white'}}> 

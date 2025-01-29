@@ -45,6 +45,6 @@ export default function AddGoalToTree(props) {
             </Svg>
             </Pressable>
         </View>
-        <CreateGoalForm visible={createGoalVisible} active={false} line={props.line} close={() => setCreateGoalVisible(false)} id={scheduleID}  goals={props.goals}></CreateGoalForm>
+        <CreateGoalForm visible={createGoalVisible} active={props.addNonActiveGoal} line={props.line} close={() => setCreateGoalVisible(false)} id={scheduleID}  goals={props.goals}></CreateGoalForm>
     </>)
 }

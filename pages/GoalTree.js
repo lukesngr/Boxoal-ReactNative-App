@@ -1,10 +1,11 @@
 import { IconButton, Surface } from "react-native-paper";
 import { getMaxNumberOfGoals } from "../modules/coreLogic";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ScrollView, Text, View } from "react-native";
 import { GoalTreeNode } from "../components/goals/GoalTreeNode";
 import { current } from "@reduxjs/toolkit";
 import AddGoalToTree  from "../components/goals/AddGoalToTree";
+import { BackHandler } from "react-native";
 
 
 export function GoalTree(props) {
@@ -13,7 +14,6 @@ export function GoalTree(props) {
     let goalsInLine = props.data.goals.filter((item) => item.partOfLine == currentLine);
     let maxNumberOfGoals = getMaxNumberOfGoals(goalsCompleted);
     let addNonActiveGoal = goalsInLine.length == 0;
-    console.log(goalsInLine);
 
     function moveLeft() {
         if(currentLine > 1) {

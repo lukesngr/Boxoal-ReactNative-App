@@ -41,7 +41,7 @@ export default function Goals(props) {
             </View>
         </View>
         <CorrectModalDisplayer></CorrectModalDisplayer>
-        <CreateGoalForm visible={createGoalVisible} close={() => setCreateGoalVisible(false)} id={schedule.id}  goals={schedule.goals}></CreateGoalForm>
+        <CreateGoalForm visible={createGoalVisible} active={true} line={1} close={() => setCreateGoalVisible(false)} id={schedule.id}  goals={schedule.goals}></CreateGoalForm>
         <EditScheduleForm data={schedule} visible={editScheduleVisible} close={() => setEditScheduleVisible(false)}></EditScheduleForm>
         <CreateScheduleForm visible={createScheduleVisible} close={() => setCreateScheduleVisible(false)}></CreateScheduleForm>
         </>)

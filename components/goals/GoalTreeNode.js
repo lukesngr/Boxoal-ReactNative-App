@@ -16,10 +16,15 @@ export function GoalTreeNode(props) {
     const strokeDashoffset = circumference - (circumference * progress) / 100;
     let outsideColor = '#D9D9D9';
     let insideColor = '#C5C27C';
+    let {title} = props.goal;
     if(props.goal.completed) {
         outsideColor = '#C5C27C';
         insideColor = '#D9D9D9';
         dateWithSuffix = getDateWithSuffix(dayjs(props.goal.completedOn).date());
+    }
+
+    if(title.length > 10) {
+        title = title.substring(0, 8) + '..';
     }
     return (
         <View style={{alignSelf: 'center'}}>
@@ -64,7 +69,7 @@ export function GoalTreeNode(props) {
                     fill={"black"}
                     fontFamily={'KameronRegular'}
                 >{abbrievatedMonth}</Text>
-                <Text x={size / 2} y={(size / 2)+1} textAnchor="middle" dy=".3em" fontSize={22} fill={"black"} fontFamily={'KameronRegular'}>{props.goal.title}</Text>
+                <Text x={size / 2} y={(size / 2)+1} textLength={50} textAnchor="middle" dy=".3em" fontSize={22} fill={"black"} fontFamily={'KameronRegular'}>{title}</Text>
         </Svg>
         <Svg width={110} height={45} viewBox="0 0 24 30">
             <Path 

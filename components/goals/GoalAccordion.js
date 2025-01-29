@@ -31,7 +31,7 @@ export default function GoalAccordion(props) {
             console.log(error);
         })
 
-        axios.get(serverIP+'/setNextActiveGoal').then(async () => {
+        axios.get(serverIP+'/setNextGoalToActive').then(async () => {
             await queryClient.refetchQueries();
         }).catch(function(error) {
             console.log(error);

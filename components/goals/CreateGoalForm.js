@@ -19,7 +19,6 @@ export default function CreateGoalForm(props) {
     let goalsCompleted = props.goals.reduce((count, item) => item.completed ? count + 1 : count, 0);
     let goalsNotCompleted = props.goals.length - goalsCompleted;
     let maxNumberOfGoals = getMaxNumberOfGoals(goalsCompleted);
-    console.log(props.active);
 
     function createGoal() {
         if(maxNumberOfGoals > goalsNotCompleted | !(props.active)) {

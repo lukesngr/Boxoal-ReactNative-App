@@ -34,8 +34,8 @@ export function Login({ navigation }) {
     return (
         <View style={{width: '90%', marginLeft: '5%'}}>
             <Text style={styles.signInTitle}>Sign In</Text>
-            <TextInput label="Username" value={username} onChangeText={setUsername} {...styles.paperInput}></TextInput>
-            <TextInput label="Password" value={password} onChangeText={setPassword} secureTextEntry={passwordHidden} {...styles.paperInput} right={
+            <TextInput label="Username" testID='loginUsername' value={username} onChangeText={setUsername} {...styles.paperInput}></TextInput>
+            <TextInput label="Password" testID='loginPassword' value={password} onChangeText={setPassword} secureTextEntry={passwordHidden} {...styles.paperInput} right={
                 <TextInput.Icon
                 icon={passwordHidden ? 'eye' : 'eye-off'}
                 onPress={() => setPasswordHidden(!passwordHidden)}

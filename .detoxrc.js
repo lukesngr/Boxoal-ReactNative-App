@@ -55,29 +55,9 @@ module.exports = {
     }
   },
   configurations: {
-    'ios.sim.debug': {
-      device: 'simulator',
-      app: 'ios.debug'
-    },
-    'ios.sim.release': {
-      device: 'simulator',
-      app: 'ios.release'
-    },
     'android.att.debug': {
       device: 'attached',
       app: 'android.debug'
     },
-    'android.att.release': {
-      device: 'attached',
-      app: 'android.release'
-    },
-    'android.emu.debug': {
-      device: 'emulator',
-      app: 'android.debug'
-    },
-    'android.emu.release': {
-      device: 'emulator',
-      app: 'android.release'
-    }
   }
 };

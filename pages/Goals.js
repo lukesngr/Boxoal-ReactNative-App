@@ -45,7 +45,7 @@ export default function Goals(props) {
                     return <GoalAccordion key={index} goal={goal}></GoalAccordion>
                 })}
                 <Surface style={{paddingLeft: 40, flexDirection: 'row', paddingBottom: 15, backgroundColor: 'white'}}>
-                <FAB icon="plus" label="Add Goal" mode='elevated' disabled={cantAddAnymoreGoals} style={styles.addGoalFAB} onPress={() => setCreateGoalVisible(true)}/>
+                <FAB icon="plus" label="Add Goal" mode='elevated' style={styles.addGoalFAB} onPress={() => setCreateGoalVisible(true)}/>
                 </Surface>
             </View>
         </View>

@@ -37,12 +37,11 @@ export default function GoalAccordion(props) {
         })
     }
 
-    return (props.goal.completed ? <></> : ( <>
+    return (!props.goal.active ? <></> : ( <>
         <Surface style={{flexDirection: 'row', width: '100%', backgroundColor: 'white', borderRadius: 0}} elevation={accordionOpen ? 1 : 0}>
             <GoalProgressIndicator goal={props.goal}></GoalProgressIndicator>         
             <TouchableRipple onPress={() => setAccordionOpen(!accordionOpen)}>
                 <Text style={{color: 'black', fontSize: 20, width: 180, paddingTop: 15}}>{props.goal.title}</Text>
-                
             </TouchableRipple>
             <View style={{paddingTop: 15}}>
                 <Checkbox color='black' status={checked} style={{padding: 10, marginTop: 20}} onPress={() => {setChecked(true); completeGoal();}} />

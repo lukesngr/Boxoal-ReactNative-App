@@ -10,7 +10,7 @@ import { Text } from "react-native";
 import serverIP from '../modules/serverIP';
 import Welcome from '../components/Welcome';
 import { initialNotificationSetup, recordIfNotificationPressed} from '../modules/sideEffects';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { MD3LightTheme } from 'react-native-paper';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { Dashboard } from './Dashboard';
@@ -39,15 +39,23 @@ export default function FinalView({ navigation, route }) {
         context.authStatus,
       ]);
     if(authStatus != 'authenticated') { navigation.navigate('Login'); }
-    const {userId} = getCurrentUser();
     
+    const [userId, setUserId] = useState(null);
+    useEffect(() => {
+        const getUser = async () => {
+            try {
+                const currentUser = await getCurrentUser();
+                setUserId(currentUser.userId);
+            } catch (err) {
+                console.error('Failed to get user:', err);
+            }
+        };
+        getUser();
+    }, []);
 
     if(userId) {
         useProfile(userId, dispatch);
     }
-
-    console.log(authStatus);
-    console.log('Full user object:', JSON.stringify(user, null, 2))
 
     const {status, data, error, refetch} = useQuery({
         queryKey: ["schedule"], 
@@ -59,6 +67,7 @@ export default function FinalView({ navigation, route }) {
         },
         enabled: true
     })
+    console.log(error?.config, error?.message);
 
     useEffect(() => {
         initialNotificationSetup().then();

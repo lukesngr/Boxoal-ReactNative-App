@@ -82,6 +82,8 @@ android {
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
         versionName "1.0"
+        testBuildType System.getProperty('testBuildType', 'debug')  // This will later be used to control the test apk build type
+        testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
     }
     signingConfigs {
         debug {
@@ -110,6 +112,10 @@ dependencies {
     implementation("com.facebook.react:react-android")
     implementation("com.facebook.react:flipper-integration")
     implementation('androidx.work:work-runtime:2.9.0')
+    implementation ('com.google.guava:guava:30.1-android')
+    implementation ('com.google.guava:listenablefuture:9999.0-empty-to-avoid-conflict-with-guava')
+    androidTestImplementation('com.wix:detox:+')
+    implementation 'androidx.appcompat:appcompat:1.1.0'
 
     if (hermesEnabled.toBoolean()) {
         implementation("com.facebook.react:hermes-android")

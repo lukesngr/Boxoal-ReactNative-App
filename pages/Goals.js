@@ -10,6 +10,7 @@ import CreateGoalForm from "../components/goals/CreateGoalForm";
 import { styles } from "../styles/styles";
 import CorrectModalDisplayer from "../components/modals/CorrectModalDisplayer";
 import { GoalTree } from "./GoalTree";
+import { getMaxNumberOfGoals } from "../modules/coreLogic";
 
 export default function Goals(props) {
     const profile = useSelector(state => state.profile.value);
@@ -18,8 +19,24 @@ export default function Goals(props) {
     const [createGoalVisible, setCreateGoalVisible] = useState(false);
     const [showSkillTree, setShowSkillTree] = useState(false);
     let schedule = props.data[profile.scheduleIndex];
+    let goalsCompleted = 0;
+    let highestActiveIndex = 0;
+    let cantAddAnymoreGoals = false;
 
-    console.log(showSkillTree);
+    for(let i = 0; i < schedule.goals.length; i++) {
+        goalsCompleted += schedule.goals[i].completed;
+        if(schedule.goals[i].active && schedule.goals[i].partOfLine > highestActiveIndex) {
+            highestActiveIndex = schedule.goals[i].partOfLine;
+        }
+    }
+    let maxNumberOfGoals = getMaxNumberOfGoals(goalsCompleted);
+    console.log(maxNumberOfGoals);
+
+    if(maxNumberOfGoals <= highestActiveIndex) {
+        cantAddAnymoreGoals = true;
+    }
+
+    console.log(maxNumberOfGoals);
 
     if(showSkillTree) {
         return (<GoalTree data={schedule} close={() => setShowSkillTree(false)}></GoalTree>) 
@@ -39,12 +56,12 @@ export default function Goals(props) {
                     return <GoalAccordion key={index} goal={goal}></GoalAccordion>
                 })}
                 <Surface style={{paddingLeft: 40, flexDirection: 'row', paddingBottom: 15, backgroundColor: 'white'}}>
-                <FAB icon="plus" label="Add Goal" mode='elevated' style={styles.addGoalFAB} onPress={() => setCreateGoalVisible(true)}/>
+                <FAB icon="plus" label="Add Goal" mode='elevated' disabled={cantAddAnymoreGoals} style={styles.addGoalFAB} onPress={() => setCreateGoalVisible(true)}/>
                 </Surface>
             </View>
         </View>
         <CorrectModalDisplayer></CorrectModalDisplayer>
-        <CreateGoalForm visible={createGoalVisible} active={true} line={1} close={() => setCreateGoalVisible(false)} id={schedule.id}  goals={schedule.goals}></CreateGoalForm>
+        <CreateGoalForm visible={createGoalVisible} active={true} line={highestActiveIndex+1} close={() => setCreateGoalVisible(false)} id={schedule.id}  goals={schedule.goals}></CreateGoalForm>
         <EditScheduleForm data={schedule} visible={editScheduleVisible} close={() => setEditScheduleVisible(false)}></EditScheduleForm>
         <CreateScheduleForm visible={createScheduleVisible} close={() => setCreateScheduleVisible(false)}></CreateScheduleForm>
         </>)

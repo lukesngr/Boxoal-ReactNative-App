@@ -16,6 +16,8 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import { Dashboard } from './Dashboard';
 import { useAuthenticator } from '@aws-amplify/ui-react-native';
 import { useProfile } from '../hooks/useProfile';
+import { getCurrentUser } from 'aws-amplify/auth';
+import { get } from 'react-native/Libraries/TurboModule/TurboModuleRegistry';
 
 let theme = {
     ...MD3LightTheme,
@@ -33,18 +35,25 @@ const Tab = createMaterialBottomTabNavigator();
 
 export default function FinalView({ navigation, route }) {
     const dispatch = useDispatch();
-    const { authStatus, user } = useAuthenticator();
+    const { authStatus } = useAuthenticator((context) => [
+        context.authStatus,
+      ]);
     if(authStatus != 'authenticated') { navigation.navigate('Login'); }
+    const {userId} = getCurrentUser();
+    
 
-    if(user?.userId) {
-        useProfile(user.userId, dispatch);
+    if(userId) {
+        useProfile(userId, dispatch);
     }
+
+    console.log(authStatus);
+    console.log('Full user object:', JSON.stringify(user, null, 2))
 
     const {status, data, error, refetch} = useQuery({
         queryKey: ["schedule"], 
         queryFn: async () => {
             const response = await axios.get(serverIP+"/getSchedules", { params: {
-                userUUID: user.userId
+                userUUID: userId
             }});
             return response.data;
         },

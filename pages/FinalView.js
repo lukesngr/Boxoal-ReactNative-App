@@ -36,7 +36,9 @@ export default function FinalView({ navigation, route }) {
     const { authStatus, user } = useAuthenticator();
     if(authStatus != 'authenticated') { navigation.navigate('Login'); }
 
-    useProfile(user.userId, dispatch);
+    if(user?.userId) {
+        useProfile(user.userId, dispatch);
+    }
 
     const {status, data, error, refetch} = useQuery({
         queryKey: ["schedule"], 

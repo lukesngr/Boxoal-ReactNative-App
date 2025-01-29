@@ -42,7 +42,7 @@ export function Login({ navigation }) {
                 forceTextInputFocus={false}
                 />
             }></TextInput>
-            <Button mode="contained" style={{...styles.welcomeButtonOutlineStyle, marginTop: 20}} onPress={login}>Sign In</Button>
+            <Button mode="contained" testID="signInButton" style={{...styles.welcomeButtonOutlineStyle, marginTop: 20}} onPress={login}>Sign In</Button>
             <View style={{flexDirection: 'row', justifyContent: 'space-between', width: '90%'}}>
                 <Pressable onPress={forgetPassword}>
                     <Text style={styles.signInUnderText}>Forget Password</Text>

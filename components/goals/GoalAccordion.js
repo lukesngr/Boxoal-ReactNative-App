@@ -5,6 +5,7 @@ import { View } from "react-native";
 import TimeboxAsListItem from "../timeboxes/TimeboxAsListItem";
 import GoalProgressIndicator from "./GoalProgressIndicator";
 import axios from "axios";
+import serverIP from "../../modules/serverIP";
 
 export default function GoalAccordion(props) {
     const [editGoalFormVisible, setEditGoalFormVisible] = useState(false);
@@ -13,20 +14,18 @@ export default function GoalAccordion(props) {
 
     function completeGoal() {
         axios.put(serverIP+'/updateGoal', {
-            title: props.data.title,
-            priority: parseInt(props.data.priority), //damn thing won't convert auto even with number input
-            targetDate: props.data.targetDate, 
-            id: props.data.id,
+            title: props.goal.title,
+            priority: parseInt(props.goal.priority), //damn thing won't convert auto even with number input
+            targetDate: props.goal.targetDate, 
+            id: props.goal.id,
             completed: true,
             completedOn: new Date().toISOString(),
             active: false
         }
         ).then(async () => {
-            props.close();
             setAlert({shown: true, title: "Timebox", message: "Updated goal!"});
             await queryClient.refetchQueries();
         }).catch(function(error) {
-            props.close();
             setAlert({shown: true, title: "Error", message: "An error occurred, please try again or contact the developer"});
             console.log(error);
         })
@@ -42,10 +41,14 @@ export default function GoalAccordion(props) {
         <Surface style={{flexDirection: 'row', width: '100%', backgroundColor: 'white', borderRadius: 0}} elevation={accordionOpen ? 1 : 0}>
             <GoalProgressIndicator goal={props.goal}></GoalProgressIndicator>         
             <TouchableRipple onPress={() => setAccordionOpen(!accordionOpen)}>
-                <Text style={{color: 'black', fontSize: 20, width: 215, paddingTop: 15}}>{props.goal.title}</Text>
+                <Text style={{color: 'black', fontSize: 20, width: 180, paddingTop: 15}}>{props.goal.title}</Text>
+                
             </TouchableRipple>
+            <View style={{paddingTop: 15}}>
+            <Checkbox color='black' status={checked} style={{padding: 10, marginTop: 20}} onPress={() => {setChecked(true); completeGoal();}} />
+            </View>
             <View style={{flexDirection: 'row', justifyContent: 'space-between', gap: -25}}>
-                <Checkbox color='black' status={checked} onPress={() => {setChecked(true); completeGoal();}} />
+                
                 <IconButton size={35} icon="cog" onPress={() => setEditGoalFormVisible(true)} />
                 <IconButton size={35} icon={accordionOpen ? 'chevron-down' : 'chevron-up'} onPress={() => setAccordionOpen(!accordionOpen)} />
             </View>

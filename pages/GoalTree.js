@@ -37,9 +37,7 @@ export function GoalTree(props) {
         <View style={{backgroundColor: 'white', width: '100%', height: '100%'}}>
             <View style={{flexDirection: 'row', alignItems: 'center', paddingLeft: 20, justifyContent: 'center', backgroundColor: 'white'}}>
                 <Text style={{fontFamily: 'KameronRegular', fontSize: 35, color: 'black', textAlign: 'center', marginTop: 30}}>Goal Tree</Text>
-                <Pressable onPress={props.close}>
-                    <FontAwesomeIcon icon={faBars} size={35} style={{marginLeft: 15, marginTop: 29}} />
-                </Pressable>
+                <IconButton icon="menu" size={40} onPress={props.close} style={{marginLeft: 15, marginTop: 29}}></IconButton>
             </View>
             <View style={{flexDirection: 'row', justifyContent: 'center'}}>
                 {maxNumberOfGoals > 1 && <IconButton icon="arrow-left" size={25} onPress={() => moveLeft()}></IconButton> }

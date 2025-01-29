@@ -14,19 +14,26 @@ export function GoalTreeNode(props) {
     const radius = (size - strokeWidth) / 2;
     const circumference = 2 * Math.PI * radius;
     const strokeDashoffset = circumference - (circumference * progress) / 100;
+    let outsideColor = '#D9D9D9';
+    let insideColor = '#C5C27C';
+    if(props.goal.completed) {
+        outsideColor = '#C5C27C';
+        insideColor = '#D9D9D9';
+        dateWithSuffix = getDateWithSuffix(dayjs(props.goal.completedOn).date());
+    }
     return (
         <View style={{alignSelf: 'center'}}>
             <Svg width={size} height={size}>
                 <Circle
-                    stroke="#D9D9D9"
-                    fill="#D9D9D9"
+                    stroke={outsideColor}
+                    fill={outsideColor}
                     cx={size / 2}
                     cy={size / 2}
                     r={radius}
                     strokeWidth={strokeWidth}
                 />
                 <Circle
-                    stroke='#C5C27C'
+                    stroke={insideColor}
                     fill="none"
                     cx={size / 2}
                     cy={size / 2}

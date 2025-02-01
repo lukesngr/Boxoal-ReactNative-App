@@ -35,27 +35,14 @@ const Tab = createMaterialBottomTabNavigator();
 
 export default function FinalView({ navigation, route }) {
     const dispatch = useDispatch();
-    const { authStatus } = useAuthenticator((context) => [
+    const { authStatus, user } = useAuthenticator((context) => [
         context.authStatus,
+        context.user,
       ]);
     if(authStatus != 'authenticated') { navigation.navigate('Login'); }
     
-    const [userId, setUserId] = useState(null);
-    useEffect(() => {
-        const getUser = async () => {
-            try {
-                const currentUser = await getCurrentUser();
-                setUserId(currentUser.userId);
-            } catch (err) {
-                console.error('Failed to get user:', err);
-            }
-        };
-        getUser();
-    }, []);
 
-    if(userId) {
-        useProfile(userId, dispatch);
-    }
+    let userId = user?.userId;
 
     const {status, data, error, refetch} = useQuery({
         queryKey: ["schedule"], 
@@ -67,7 +54,6 @@ export default function FinalView({ navigation, route }) {
         },
         enabled: true
     })
-    console.log(error?.config, error?.message);
 
     useEffect(() => {
         initialNotificationSetup().then();

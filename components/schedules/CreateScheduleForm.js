@@ -35,11 +35,11 @@ export default function CreateScheduleForm(props) {
           <Dialog style={{backgroundColor: '#C5C27C'}} visible={props.visible} onDismiss={props.close}>
             <Dialog.Title style={{color: 'white'}}>Create Schedule</Dialog.Title>
             <Dialog.Content>
-                <TextInput label="Title" value={title} onChangeText={setTitle} {...styles.paperInput}/>
+                <TextInput label="Title" testID="scheduleTitle" value={title} onChangeText={setTitle} {...styles.paperInput}/>
             </Dialog.Content>
             <Dialog.Actions>
                 <Button textColor="white" onPress={props.close}>Close</Button>
-                <Button textColor="black"  buttonColor="white" mode="contained" onPress={createSchedule}>Create</Button>
+                <Button textColor="black" testID="createSchedule" buttonColor="white" mode="contained" onPress={createSchedule}>Create</Button>
             </Dialog.Actions>
           </Dialog>
             {alert.shown && <Alert visible={alert.shown} close={() => setAlert({...alert, shown: false})} title={alert.title} message={alert.message}/> }

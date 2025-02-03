@@ -18,7 +18,7 @@ export default function Welcome() {
                 <Video source={intro} style={{width: '100%', height: 500, backgroundColor: 'black'}} paused={false} repeat={true} controls={true}></Video>
                 <Card.Title title="Instructions" subtitle="Create a schedule to get started"/>
                 <Card.Actions>
-                    <Button mode='contained' onPress={() => setModalVisible(true)}>Create Schedule</Button>
+                    <Button mode='contained' testID="createScheduleButton" onPress={() => setModalVisible(true)}>Create Schedule</Button>
                 </Card.Actions>
             </Card>
         </View>

@@ -15,7 +15,11 @@ describe('Example', () => {
     await element(by.id('signInButton')).tap();
   });
 
-  it('welcome screen showed', async () => {
+  /* test worked so made schedule for user
+  it('create schedule', async () => {
     await expect(element(by.text('Welcome to Boxoal'))).toBeVisible();
-  });
+    await element(by.id('createScheduleButton')).tap();
+    await element(by.id('scheduleTitle')).typeText('test');
+    await element(by.id('createSchedule')).tap();
+  });*/
 });

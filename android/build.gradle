@@ -11,8 +11,8 @@ buildscript {
         google()
         mavenCentral()
         maven {
-            // All of Detox' artifacts are provided via the npm module
-            url "$rootDir/../node_modules/detox/Detox-android"
+         // All of Detox' artifacts are provided via the npm module
+           url "$rootDir/../node_modules/detox/Detox-android"
         }
     }
     dependencies {
@@ -21,7 +21,6 @@ buildscript {
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin")
     }
 }
-
 allprojects {
     repositories {
         // ...

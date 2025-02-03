@@ -13,6 +13,9 @@ describe('Example', () => {
     await element(by.id('loginUsername')).typeText('test');
     await element(by.id('loginPassword')).typeText('Test2024#');
     await element(by.id('signInButton')).tap();
+  });
+
+  it('welcome screen showed', async () => {
     await expect(element(by.text('Welcome to Boxoal'))).toBeVisible();
   });
 });

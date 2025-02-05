@@ -31,6 +31,6 @@ describe('Example', () => {
     await element(by.id('createTimeboxDescription')).typeText('test');
     await element(by.id('createTimeboxBoxes')).typeText('1');
     await element(by.id('createTimebox')).tap();
-    await expect(element(by.text('Please create a goal before creating a timebox'))).toBeVisible();
+    await expect(element(by.id('alertMessage'))).toHaveText('Please create a goal before creating a timebox');
   });
 });

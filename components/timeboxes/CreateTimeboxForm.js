@@ -95,9 +95,9 @@ export default function CreateTimeboxForm(props) {
         <Dialog style={{backgroundColor: '#C5C27C'}} visible={props.visible} onDismiss={closeModal}>
             <Dialog.Title style={{color: 'white'}}>Create Timebox</Dialog.Title>
             <Dialog.Content>
-                <TextInput label="Title" value={title} onChangeText={setTitle} {...styles.paperInput}/>
-                <TextInput label="Description" value={description} onChangeText={setDescription} {...styles.paperInput}/>
-                <TextInput label="Number of Boxes" value={numberOfBoxes} onChangeText={safeSetNumberOfBoxes} {...styles.paperInput}/>
+                <TextInput label="Title" testID='createTimeboxTitle' value={title} onChangeText={setTitle} {...styles.paperInput}/>
+                <TextInput label="Description" testID='createTimeboxDescription' value={description} onChangeText={setDescription} {...styles.paperInput}/>
+                <TextInput label="Number of Boxes" testID='createTimeboxBoxes' value={numberOfBoxes} onChangeText={safeSetNumberOfBoxes} {...styles.paperInput}/>
                 <TextInput label="Goal" value={goalSelected} {...styles.paperInput}
                     render={(props) => (
                         <Picker style={{color: 'black', marginTop: 5}} dropdownIconColor='black' selectedValue={goalSelected} onValueChange={setGoalSelected}>
@@ -133,7 +133,7 @@ export default function CreateTimeboxForm(props) {
                 <Button textColor="white" onPress={closeModal}>Close</Button>
                 {!moreOptionsVisible && <Button textColor="white" onPress={() => setMoreOptionsVisible(true)}>More Options</Button>}
                 {moreOptionsVisible && <Button textColor="white" onPress={() => setMoreOptionsVisible(false)}>Less Options</Button>}
-                <Button textColor="black"  buttonColor="white" mode="contained" onPress={handleSubmit}>Create</Button>
+                <Button textColor="black" testID='createTimebox' buttonColor="white" mode="contained" onPress={handleSubmit}>Create</Button>
             </Dialog.Actions>
         </Dialog>
         {alert.shown && <Alert visible={alert.shown} close={() => setAlert({...alert, shown: false})} title={alert.title} message={alert.message}/> }

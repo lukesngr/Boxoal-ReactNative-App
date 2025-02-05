@@ -43,7 +43,7 @@ export default function FinalView({ navigation, route }) {
     
 
     let userId = user?.userId;
-    useProfile(userId);
+    useProfile(userId, dispatch);
 
     const {status, data, error, refetch} = useQuery({
         queryKey: ["schedule"], 

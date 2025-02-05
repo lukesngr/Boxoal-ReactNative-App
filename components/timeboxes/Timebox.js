@@ -60,7 +60,7 @@ export default function Timebox(props) {
     }
 
     return (
-    <View style={{borderWidth: 1, borderColor: 'black', width: onDayView ? headerWidth : 50.5, height: onDayView ? 60 : 30, zIndex: 998}}>
+    <View testID={props.time+" "+date} style={{borderWidth: 1, borderColor: 'black', width: onDayView ? headerWidth : 50.5, height: onDayView ? 60 : 30, zIndex: 998}}>
         {numberOfBoxesInSpace < 2 ? (
             <Pressable onPress={onPress}>
                 {numberOfBoxesInSpace == 1 ? (<NormalTimebox marginFromTop={marginFromTop} data={data}></NormalTimebox>) : (<Text style={{width: '100%', height: '100%'}}></Text>)}

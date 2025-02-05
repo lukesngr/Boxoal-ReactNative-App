@@ -24,8 +24,11 @@ describe('Example', () => {
     await element(by.id('createSchedule')).tap();
   });*/
 
-  it('Go to timeboxes and make one', async () => {
+  it('Go to timeboxes and try to make one', async () => {
     await element(by.id('timeboxesTab')).atIndex(0).tap();
-    await expect(element(by.text('Get Started'))).toBeVisible();
+    await element(by.id('10:30 6/2')).atIndex(0).tap();
+    await element(by.id('createTimeboxTitle')).typeText('test');
+    await element(by.id('createTimeboxDescription')).typeText('test');
+    await element(by.id('createTimeboxBoxes')).typeText('1');
   });
 });

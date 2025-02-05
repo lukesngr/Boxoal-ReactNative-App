@@ -7,7 +7,6 @@ import scheduleDataReducer from './scheduleData'
 import timeboxGridReducer from './timeboxGrid'
 import timeboxRecordingReducer from './timeboxRecording'
 import timeboxDialogReducer from './timeboxDialog'
-import usernameReducer from './username'
 import selectedDateReducer from './selectedDate'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { persistStore, persistReducer } from 'redux-persist';
@@ -43,7 +42,7 @@ const rootReducer = combineReducers({
 const persistConfig = {
   key: 'root',
   storage: AsyncStorage,
-  whitelist: ['username', 'timeboxRecording', 'activeOverlayInterval', 'activeOverlayHeight', 'overlayDimensions', 'daySelected', 'profile']
+  whitelist: ['timeboxRecording', 'activeOverlayInterval', 'activeOverlayHeight', 'overlayDimensions', 'daySelected', 'profile']
 }
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

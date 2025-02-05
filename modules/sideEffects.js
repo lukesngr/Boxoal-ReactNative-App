@@ -36,14 +36,3 @@ export function recordIfNotificationPressed(dispatch, routeParams) {
         NativeModules.BackgroundWorkManager.stopBackgroundWork(); 
     }
 }
-
-export function setUserNameUsingGithubAccessCode(dispatch, routeParams) {
-    if(Object.hasOwn(routeParams, 'accessToken')) {
-        const { accessToken } = routeParams;
-        axios.get('https://api.github.com/user/emails', {headers: { Authorization: `token ${accessToken}`}}).then(response => {
-            dispatch({type: 'username/set', payload: response.data[0].email});
-        }).catch(err => {
-            console.log(err);
-        });
-    }
-}

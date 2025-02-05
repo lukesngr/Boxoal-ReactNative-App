@@ -57,7 +57,7 @@ export default function CreateGoalForm(props) {
           <Dialog style={{backgroundColor: '#C5C27C'}} visible={props.visible} onDismiss={props.close}>
             <Dialog.Title style={{color: 'white'}}>Create Goal</Dialog.Title>
             <Dialog.Content>
-                <TextInput label="Title" value={title} onChangeText={setTitle} style={{backgroundColor: 'white', marginBottom: 2}} selectionColor="black" textColor="black"/>
+                <TextInput testID="createGoalTitle" label="Title" value={title} onChangeText={setTitle} style={{backgroundColor: 'white', marginBottom: 2}} selectionColor="black" textColor="black"/>
                 <TextInput label="Priority(1-10)" value={priority} onChangeText={setPriority} style={{backgroundColor: 'white', marginBottom: 2}} 
                 selectionColor="black" textColor="black"/>
                 <Pressable onPress={() => setDatePickerVisible(true)}>
@@ -73,7 +73,7 @@ export default function CreateGoalForm(props) {
             </Dialog.Content>
             <Dialog.Actions>
                 <Button textColor="white" onPress={props.close}>Close</Button>
-                <Button textColor="black"  buttonColor="white" mode="contained" onPress={createGoal}>Create</Button>
+                <Button textColor="black" testID="createGoalButton" buttonColor="white" mode="contained" onPress={createGoal}>Create</Button>
             </Dialog.Actions>
           </Dialog>
             {alert.shown && <Alert visible={alert.shown} close={() => setAlert({...alert, shown: false})} title={alert.title} message={alert.message}/> }

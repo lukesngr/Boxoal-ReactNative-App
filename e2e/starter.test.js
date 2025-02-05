@@ -33,4 +33,19 @@ describe('Example', () => {
     await element(by.id('createTimebox')).tap();
     await expect(element(by.id('alertMessage'))).toHaveText('Please create a goal before creating a timebox');
   });
+
+  it('Go to goals and make one', async () => {
+    await element(by.id('goalTab')).atIndex(0).tap();
+    await element(by.id('addGoalButton')).tap();
+    await element(by.id('createGoalTitle')).typeText('test');
+    await element(by.id('createGoalButton')).tap();
+  });
+
+  it('try to make second one and get rejected', async () => {
+    await element(by.id('goalTab')).atIndex(0).tap();
+    await element(by.id('addGoalButton')).tap();
+    await element(by.id('createGoalTitle')).typeText('test');
+    await element(by.id('createGoalButton')).tap();
+    await expect(element(by.id('alertMessage'))).toHaveText('Please complete more goals and we will unlock more goal slots for you!');
+  });
 });

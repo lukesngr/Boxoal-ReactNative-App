@@ -84,7 +84,7 @@ export default function FinalView({ navigation, route }) {
                 name="Timeboxes" 
                 children={() => <Timeboxes navigation={navigation} data={data}></Timeboxes>} 
                 options={{headerShown: false, tabBarIcon: ({color}) => (
-                    <MaterialCommunityIcons name="checkbox-blank-outline" size={20} color='black' />
+                    <MaterialCommunityIcons testID='timeboxesTab' name="checkbox-blank-outline" size={20} color='black' />
                 )}}/>
             <Tab.Screen 
                 name="List" 

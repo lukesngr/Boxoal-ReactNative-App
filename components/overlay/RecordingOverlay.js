@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { calculateSizeOfRecordingOverlay } from '../../modules/coreLogic';
+import { calculateSizeOfRecordingOverlay } from '../../modules/overlayFunctions';
 import { useSelector } from 'react-redux';
 import { View } from 'react-native';
 import { set } from '../../redux/activeOverlayInterval';

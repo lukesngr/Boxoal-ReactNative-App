@@ -56,6 +56,8 @@ export default function FinalView({ navigation, route }) {
         enabled: true
     })
 
+    console.log(data);
+
     useEffect(() => {
         initialNotificationSetup().then();
     }, []);

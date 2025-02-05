@@ -24,6 +24,7 @@ describe('Example', () => {
     await element(by.id('createSchedule')).tap();
   });*/
 
+  /*
   it('Go to timeboxes and try to make one, no goal so fail', async () => {
     await element(by.id('timeboxesTab')).atIndex(0).tap();
     await element(by.id('10:30 6/2')).atIndex(0).tap();
@@ -47,5 +48,20 @@ describe('Example', () => {
     await element(by.id('createGoalTitle')).typeText('test');
     await element(by.id('createGoalButton')).tap();
     await expect(element(by.id('alertMessage'))).toHaveText('Please complete more goals and we will unlock more goal slots for you!');
+  });
+
+  it('Go to timeboxes and try to make one, then show it has been made', async () => {
+    await element(by.id('timeboxesTab')).atIndex(0).tap();
+    await element(by.id('10:30 6/2')).atIndex(0).tap();
+    await element(by.id('createTimeboxTitle')).typeText('test');
+    await element(by.id('createTimeboxDescription')).typeText('test');
+    await element(by.id('createTimeboxBoxes')).typeText('1');
+    await element(by.id('createTimebox')).tap();
+  });*/
+
+  it('Open timebox and record', async () => {
+    await element(by.id('timeboxesTab')).atIndex(0).tap();
+    await element(by.id('10:30 6/2')).atIndex(0).tap();
+    await element(by.id('recordingOverlay')).toExist().withTimeout(5000);
   });
 });

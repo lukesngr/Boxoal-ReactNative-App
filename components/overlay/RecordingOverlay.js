@@ -42,7 +42,7 @@ export default function RecordingOverlay(props) {
         }
     }, [timeboxID]);
 
-    return <View style={{
+    return <View testID="recordingOverlay" style={{
         backgroundColor: 'red',
         opacity: 0.7,
         zIndex: 999,

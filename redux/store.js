@@ -32,7 +32,6 @@ const rootReducer = combineReducers({
   timeboxGrid: timeboxGridReducer,
   timeboxRecording: timeboxRecordingReducer,
   timeboxDialog: timeboxDialogReducer,
-  username: usernameReducer,
   selectedDate: selectedDateReducer,
   onDayView: onDayViewReducer,
   daySelected: daySelectedReducer,

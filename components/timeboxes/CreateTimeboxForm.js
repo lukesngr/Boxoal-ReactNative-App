@@ -21,7 +21,7 @@ export default function CreateTimeboxForm(props) {
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
     const [numberOfBoxes, setNumberOfBoxes] = useState('1');
-    const [goalSelected, setGoalSelected] = useState(goals.length == 0 ? 1 : goals[0].id);
+    const [goalSelected, setGoalSelected] = useState(goals.length == 0 ? -1 : goals[0].id);
     
     const [moreOptionsVisible, setMoreOptionsVisible] = useState(false);
     const [reoccurFrequency, setReoccurFrequency] = useState("no");
@@ -33,13 +33,19 @@ export default function CreateTimeboxForm(props) {
     let {time, date} = props;
 
     let maxNumberOfBoxes = calculateMaxNumberOfBoxes(wakeupTime, boxSizeUnit, boxSizeNumber, timeboxes, time, date);
-    console.log(wakeupTime, boxSizeUnit, boxSizeNumber, timeboxes, time, date);
     
     function closeModal() {
         dispatch({type: 'modalVisible/set', payload: {visible: false, props: {}}});
     }
 
     function handleSubmit() {
+
+        if(goalSelected == -1) {
+            closeModal();
+            setAlert({shown: true, title: "Error", message: "Please create a goal before creating a timebox"});
+            return;
+        }
+
         let startTime = convertToDayjs(time, date).toDate();
         let endTime = convertToDayjs(addBoxesToTime(boxSizeUnit, boxSizeNumber, time, numberOfBoxes), date).toDate(); //add boxes to start time to get end time
         let color = listOfColors[Math.floor(Math.random() * listOfColors.length)]; //randomly pick a box color     

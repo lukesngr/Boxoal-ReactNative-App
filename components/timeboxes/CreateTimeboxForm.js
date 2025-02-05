@@ -43,6 +43,7 @@ export default function CreateTimeboxForm(props) {
 
         if(goalSelected == -1) {
             setAlert({shown: true, title: "Error", message: "Please create a goal before creating a timebox"});
+            return;
         }
 
         let startTime = convertToDayjs(time, date).toDate();

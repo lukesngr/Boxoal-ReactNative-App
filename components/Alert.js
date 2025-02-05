@@ -5,7 +5,7 @@ export default function Alert(props) {
         <Dialog style={{backgroundColor: '#D9D9D9'}} visible={props.visible} onDismiss={props.close}>
             <Dialog.Title>{props.title}</Dialog.Title>
             <Dialog.Content>
-                <Paragraph>
+                <Paragraph testID='alertMessage'>
                     {props.message}
                 </Paragraph>
             </Dialog.Content>

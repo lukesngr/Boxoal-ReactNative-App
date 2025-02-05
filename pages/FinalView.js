@@ -90,7 +90,7 @@ export default function FinalView({ navigation, route }) {
                 name="List" 
                 children={() => <Goals data={data}></Goals>} 
                 options={{headerShown: false, tabBarIcon: ({color}) => (
-                    <MaterialCommunityIcons name="menu" size={20} color='black' />
+                    <MaterialCommunityIcons testID='goalTab' name="menu" size={20} color='black' />
                 )}}/>
             
           </Tab.Navigator>

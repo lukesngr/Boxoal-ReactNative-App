@@ -24,11 +24,13 @@ describe('Example', () => {
     await element(by.id('createSchedule')).tap();
   });*/
 
-  it('Go to timeboxes and try to make one', async () => {
+  it('Go to timeboxes and try to make one, no goal so fail', async () => {
     await element(by.id('timeboxesTab')).atIndex(0).tap();
     await element(by.id('10:30 6/2')).atIndex(0).tap();
     await element(by.id('createTimeboxTitle')).typeText('test');
     await element(by.id('createTimeboxDescription')).typeText('test');
     await element(by.id('createTimeboxBoxes')).typeText('1');
+    await element(by.id('createTimebox')).tap();
+    await expect(element(by.text('Please create a goal before creating a timebox'))).toBeVisible();
   });
 });

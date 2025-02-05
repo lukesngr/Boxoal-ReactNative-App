@@ -88,6 +88,7 @@ export default function CreateTimeboxForm(props) {
 
         if(amountOfBoxes > maxNumberOfBoxes) {
             setNumberOfBoxes('1');
+            setAlert({shown: true, title: "Error", message: "You cannot create a timebox that exceeds the number of boxes in the schedule"});
         }else {
             setNumberOfBoxes(String(amountOfBoxes));
         }

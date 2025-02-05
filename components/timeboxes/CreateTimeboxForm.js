@@ -21,6 +21,7 @@ export default function CreateTimeboxForm(props) {
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
     const [numberOfBoxes, setNumberOfBoxes] = useState('1');
+    console.log(goals);
     const [goalSelected, setGoalSelected] = useState(goals.length == 0 ? -1 : goals[0].id);
     
     const [moreOptionsVisible, setMoreOptionsVisible] = useState(false);
@@ -41,9 +42,7 @@ export default function CreateTimeboxForm(props) {
     function handleSubmit() {
 
         if(goalSelected == -1) {
-            closeModal();
             setAlert({shown: true, title: "Error", message: "Please create a goal before creating a timebox"});
-            return;
         }
 
         let startTime = convertToDayjs(time, date).toDate();

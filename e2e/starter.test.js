@@ -6,7 +6,7 @@ describe('Example', () => {
   beforeEach(async () => {
     await device.reloadReactNative();
   });
-
+  
   it('Get started and login', async () => {
     await expect(element(by.text('Get Started'))).toBeVisible();
     await element(by.text('Get Started')).tap();
@@ -14,6 +14,7 @@ describe('Example', () => {
     await element(by.id('loginPassword')).typeText('Test2024#');
     await element(by.id('signInButton')).tap();
   });
+  
 
   /* test worked so made schedule for user
   it('create schedule', async () => {
@@ -22,4 +23,9 @@ describe('Example', () => {
     await element(by.id('scheduleTitle')).typeText('test');
     await element(by.id('createSchedule')).tap();
   });*/
+
+  it('Go to timeboxes and make one', async () => {
+    await element(by.id('timeboxesTab')).atIndex(0).tap();
+    await expect(element(by.text('Get Started'))).toBeVisible();
+  });
 });

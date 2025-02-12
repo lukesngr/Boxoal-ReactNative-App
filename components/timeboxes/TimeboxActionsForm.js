@@ -20,7 +20,7 @@ export default function TimeboxActionsForm(props) {
     const [alert, setAlert] = useState({shown: false, title: "", message: ""});
     const {user} = useAuthenticator();
     const timeboxRecording = useSelector(state => state.timeboxRecording.value);
-    const schedule = useSelector(state => state.profile.value);
+    const {boxSizeUnit, boxSizeNumber, scheduleID} = useSelector(state => state.profile.value);
     const dispatch = useDispatch();
     
     const noPreviousRecording = thereIsNoRecording(data.recordedTimeBoxes, data.reoccuring, date, time);
@@ -32,7 +32,7 @@ export default function TimeboxActionsForm(props) {
     }
 
     async function startRecording() {
-        NativeModules.BackgroundWorkManager.startBackgroundWork(JSON.stringify(data), JSON.stringify(schedule), new Date().toISOString());
+        NativeModules.BackgroundWorkManager.startBackgroundWork(JSON.stringify(data), JSON.stringify({id: scheduleID, boxSizeNumber, boxSizeUnit}), new Date().toISOString());
         dispatch({type: 'timeboxRecording/set', payload: {timeboxID: data.id, timeboxDate: date, recordingStartTime: new Date().toISOString()}});
         dispatch(resetActiveOverlayInterval());
     }
@@ -46,7 +46,7 @@ export default function TimeboxActionsForm(props) {
             recordedStartTime: recordedStartTime, 
             recordedEndTime: new Date(), 
             timeBox: {connect: {id: data.id}}, 
-            schedule: {connect: {id: schedule.id}}},
+            schedule: {connect: {id: scheduleID}}},
         ).then(async () => {
             closeModal();
             setAlert({shown: true, title: "Timebox", message: "Added recorded timebox!"});

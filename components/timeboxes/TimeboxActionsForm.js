@@ -71,7 +71,7 @@ export default function TimeboxActionsForm(props) {
                     <Button textColor="white" onPress={closeModal}>Close</Button>
                     {noPreviousRecording && timeboxIsntRecording && <>
                         <Button textColor="black"  buttonColor="white" mode="contained" style={{marginRight: 2}} onPress={() => setManualEntryModalShown(true)}>Time Entry</Button> 
-                        <Button textColor="black"  buttonColor="white" mode="contained" onPress={startRecording}>Record</Button>
+                        <Button textColor="black"  buttonColor="white" testID="recordButton" mode="contained" onPress={startRecording}>Record</Button>
                     </>}
                     {noPreviousRecording && timeboxIsRecording && 
                     <Button textColor="black"  buttonColor="white" mode="contained" onPress={stopRecording}>Stop Recording</Button>}

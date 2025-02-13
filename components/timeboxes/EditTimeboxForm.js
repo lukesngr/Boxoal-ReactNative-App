@@ -61,7 +61,9 @@ export default function EditTimeboxForm(props) {
         }else if(reoccurFrequency == "daily") {
             data["reoccuring"] = {create: {reoccurFrequency: "daily"}};
         }else if(reoccurFrequency == "no") {
-            data["reoccuring"] = {delete: true};
+            if(props.data.reoccuring.reoccurFrequency != "no") {
+                data["reoccuring"] = {delete: true};
+            }
         }
 
         axios.put(serverIP+'/updateTimeBox', data).then(async () => {

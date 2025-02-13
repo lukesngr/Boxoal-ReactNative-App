@@ -18,6 +18,8 @@ export default function RecordedTimeBoxOverlay(props) {
     }else {
         displayedRecordings = recordedBoxesForWeek;
     }
+
+    console.log(displayedRecordings);
     
     
     return (
@@ -36,7 +38,7 @@ export default function RecordedTimeBoxOverlay(props) {
                     zIndex: 999,
                     position: 'absolute'
                 }} pointerEvents="none">
-                    <Text>{recordedBox.title}</Text>
+                    <Text testID="recordedBoxText">{recordedBox.title}</Text>
                 </View>
                 ))
             }

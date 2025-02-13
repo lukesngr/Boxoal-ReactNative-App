@@ -18,9 +18,6 @@ export default function RecordedTimeBoxOverlay(props) {
     }else {
         displayedRecordings = recordedBoxesForWeek;
     }
-
-    console.log(displayedRecordings);
-    
     
     return (
     <View style={{position: 'absolute', transform: [{translateX: 50}], zIndex: 999}}>

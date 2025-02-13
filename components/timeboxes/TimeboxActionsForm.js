@@ -79,7 +79,7 @@ export default function TimeboxActionsForm(props) {
                     
                 </Dialog.Actions>
             </Dialog>
-            <ManualEntryTimeModal dispatch={dispatch} visible={manualEntryModalShown} close={() => setManualEntryModalShown(false)} data={data} scheduleID={schedule.id}></ManualEntryTimeModal>
+            <ManualEntryTimeModal dispatch={dispatch} visible={manualEntryModalShown} close={() => setManualEntryModalShown(false)} data={data} scheduleID={scheduleID}></ManualEntryTimeModal>
             {alert.shown && <Alert visible={alert.shown} close={() => setAlert({...alert, shown: false})} title={alert.title} message={alert.message}/> }
         </Portal>)}
     </>);

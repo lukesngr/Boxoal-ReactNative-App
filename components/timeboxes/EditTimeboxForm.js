@@ -120,7 +120,7 @@ export default function EditTimeboxForm(props) {
         <Dialog style={{backgroundColor: '#C5C27C'}} visible={true} onDismiss={closeModal}>
             <Dialog.Title style={{color: 'white'}}>Edit Timebox</Dialog.Title>
             <Dialog.Content>
-                <TextInput label="Title" value={title} onChangeText={setTitle} {...styles.paperInput}/>
+                <TextInput label="Title" value={title} testID="editTitle" onChangeText={setTitle} {...styles.paperInput}/>
                 <TextInput label="Description" value={description} onChangeText={setDescription} {...styles.paperInput}/>
                 <TextInput label="Number of Boxes" value={numberOfBoxes} onChangeText={safeSetNumberOfBoxes} {...styles.paperInput}/>
                 <TextInput label="Goal" value={goalSelected} {...styles.paperInput}
@@ -154,7 +154,7 @@ export default function EditTimeboxForm(props) {
             </Dialog.Content>
             <Dialog.Actions>
                 <Button textColor="white" onPress={props.back}>Back</Button>
-                <Button textColor="black"  buttonColor="white" mode="contained" testID="deleteRecording" onPress={deleteTimeBox}>Delete</Button>
+                <Button textColor="black"  buttonColor="white" mode="contained" testID="deleteTimebox" onPress={deleteTimeBox}>Delete</Button>
                 {props.previousRecording && <Button textColor="black" testID="clearRecording" buttonColor="white" mode="contained" onPress={clearRecording}>Clear Recording</Button>}
                 <Button textColor="black"  buttonColor="white" mode="contained" onPress={updateTimeBox}>Update</Button>
             </Dialog.Actions>

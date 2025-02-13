@@ -9,7 +9,6 @@ export default function NormalTimebox(props) {
     let fontSize = onDayView ? 20 : 12;
     let timeboxHeight = onDayView ? styles.enlargedTimeboxHeight : styles.normalTimeboxHeight;
     let percentageOfBoxSizeFilled = getPercentageOfBoxSizeFilled(boxSizeUnit, boxSizeNumber, new Date(props.data.startTime), new Date(props.data.endTime));
-    console.log(percentageOfBoxSizeFilled);
     let height = Math.floor(timeboxHeight*percentageOfBoxSizeFilled);
     return (
     <View style={{position: 'relative', height: height, backgroundColor: props.data.color, width: '100%', marginTop: props.marginFromTop}}>

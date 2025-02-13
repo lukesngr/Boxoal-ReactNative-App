@@ -153,7 +153,7 @@ export default function EditTimeboxForm(props) {
                 <TextInput label="Percentage of Goal" value={goalPercentage} onChangeText={setGoalPercentage} {...styles.paperInput}/>
             </Dialog.Content>
             <Dialog.Actions>
-                <Button textColor="white" onPress={closeModal}>Close</Button>
+                <Button textColor="white" onPress={props.back}>Back</Button>
                 <Button textColor="black"  buttonColor="white" mode="contained" onPress={deleteTimeBox}>Delete</Button>
                 {props.previousRecording && <Button textColor="black"  buttonColor="white" mode="contained" onPress={clearRecording}>Clear Recording</Button>}
                 <Button textColor="black"  buttonColor="white" mode="contained" onPress={updateTimeBox}>Update</Button>

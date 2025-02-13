@@ -10,7 +10,7 @@ export default function Alert(props) {
                 </Paragraph>
             </Dialog.Content>
             <Dialog.Actions>
-                <Button textColor="black" onPress={props.close}>Close</Button>
+                <Button textColor="black" testID="closeTimebox" onPress={props.close}>Close</Button>
             </Dialog.Actions>
         </Dialog>
     )

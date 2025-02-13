@@ -61,7 +61,7 @@ export default function EditTimeboxForm(props) {
         }else if(reoccurFrequency == "daily") {
             data["reoccuring"] = {create: {reoccurFrequency: "daily"}};
         }else if(reoccurFrequency == "no") {
-            if(props.data.reoccuring.reoccurFrequency != "no") {
+            if(props.data.reoccuring != null) {
                 data["reoccuring"] = {delete: true};
             }
         }

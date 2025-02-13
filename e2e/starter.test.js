@@ -50,21 +50,59 @@ describe('Example', () => {
     await expect(element(by.id('alertMessage'))).toHaveText('Please complete more goals and we will unlock more goal slots for you!');
   });
   
-
+  */
   it('Go to timeboxes and try to make one, then show it has been made', async () => {
     await element(by.id('timeboxesTab')).atIndex(0).tap();
-    await element(by.id('10:30 13/2')).atIndex(0).tap();
+    await element(by.id('11:00 14/2')).atIndex(0).tap();
     await element(by.id('createTimeboxTitle')).typeText('test');
     await element(by.id('createTimeboxDescription')).typeText('test');
     await element(by.id('createTimeboxBoxes')).typeText('1');
     await element(by.id('createTimebox')).tap();
   });
-  */
+  
 
-  it('Open timebox and record', async () => {
+  it('Open timebox and record, check that recorded box was created', async () => {
     await element(by.id('timeboxesTab')).atIndex(0).tap();
     await element(by.id('11:00 14/2')).atIndex(0).tap();
     await element(by.id('recordButton')).tap();
     await waitFor(element(by.id('recordingOverlay')).atIndex(0)).toExist().withTimeout(5000);
+    await element(by.text('Stop Recording')).atIndex(0).tap();
+    await expect(element(by.id('recordedBoxText'))).toHaveText('test');
+  });
+
+  it('Clear recording and delete timebox', async () => {
+    await element(by.id('timeboxesTab')).atIndex(0).tap();
+    await element(by.id('11:00 14/2')).atIndex(0).tap();
+    await element(by.id('editTimebox')).tap();
+    await element(by.id('clearRecording')).tap();
+    await element(by.id('closeAlert')).tap();
+    await element(by.id('deleteTimebox')).tap();
+  });
+
+  it('Go to timeboxes and try to make one, then show it has been made', async () => {
+    await element(by.id('timeboxesTab')).atIndex(0).tap();
+    await element(by.id('11:00 14/2')).atIndex(0).tap();
+    await element(by.id('createTimeboxTitle')).typeText('test');
+    await element(by.id('createTimeboxDescription')).typeText('test');
+    await element(by.id('createTimeboxBoxes')).typeText('1');
+    await element(by.id('createTimebox')).tap();
+  });
+
+  it('Open timebox and test manual entry then clear recording', async () => {
+    await element(by.id('timeboxesTab')).atIndex(0).tap();
+    await element(by.id('11:00 14/2')).atIndex(0).tap();
+    await element(by.text('Time Entry')).atIndex(0).tap();
+    await element(by.text('Enter')).atIndex(0).tap();
+    await element(by.id('closeAlert')).tap();
+  });
+
+  it('Edit timebox', async () => {
+    await element(by.id('timeboxesTab')).atIndex(0).tap();
+    await element(by.id('11:00 14/2')).atIndex(0).tap();
+    await element(by.id('editTimebox')).tap();
+    await element(by.id('editTitle')).typeText('test2');
+    await element(by.text('Update')).atIndex(0).tap();
+    await element(by.id('closeAlert')).tap();
+    await element(by.id('deleteTimebox')).tap();
   });
 });

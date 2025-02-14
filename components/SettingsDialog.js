@@ -84,7 +84,7 @@ export default function SettingsDialog(props) {
             <Dialog.Actions>
                 <Button textColor="black" buttonColor="white" mode="contained" onPress={logOut}>Logout</Button>
                 <Button textColor="black" buttonColor="white" mode="contained" onPress={updateProfile}>Update</Button>
-                <Button textColor='white' onPress={props.hideDialog}>Exit</Button>
+                <Button testID="exitSettings" textColor='white' onPress={props.hideDialog}>Exit</Button>
             </Dialog.Actions>
           </Dialog>
         </Portal>

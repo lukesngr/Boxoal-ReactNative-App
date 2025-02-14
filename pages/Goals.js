@@ -37,7 +37,7 @@ export default function Goals(props) {
                     <Text style={{fontSize: 25, color: 'black', textAlign: 'left', marginTop: 5, width: 220}}>{schedule.title}</Text>
                     <View style={{flexDirection: 'row', justifyContent: 'space-between', gap: -25}}>
                         <IconButton icon="tree" size={36} onPress={() => setShowSkillTree(true)}></IconButton>
-                        <IconButton icon="cog" size={36} onPress={() => setEditScheduleVisible(true)}></IconButton>
+                        <IconButton testID="editScheduleButton" icon="cog" size={36} onPress={() => setEditScheduleVisible(true)}></IconButton>
                         <IconButton icon="plus" size={36} onPress={() => setCreateScheduleVisible(true)}></IconButton>
                     </View>
                 </Surface>

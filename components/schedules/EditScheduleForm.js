@@ -59,7 +59,7 @@ export default function EditScheduleForm(props) {
             </Dialog.Content>
             <Dialog.Actions>
                 <Button textColor="white" onPress={props.close}>Close</Button>
-                <Button textColor="white" onPress={deleteSchedule}>Delete</Button>
+                <Button testID="deleteSchedule" textColor="white" onPress={deleteSchedule}>Delete</Button>
                 <Button textColor="black" buttonColor="white" mode="contained" onPress={updateSchedule}>Update</Button>
             </Dialog.Actions>
           </Dialog>

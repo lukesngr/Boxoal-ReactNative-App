@@ -41,10 +41,10 @@ export default function GoalAccordion(props) {
         <Surface style={{flexDirection: 'row', width: '100%', backgroundColor: 'white', borderRadius: 0}} elevation={accordionOpen ? 1 : 0}>
             <GoalProgressIndicator goal={props.goal}></GoalProgressIndicator>         
             <TouchableRipple onPress={() => setAccordionOpen(!accordionOpen)}>
-                <Text style={{color: 'black', fontSize: 20, width: 180, paddingTop: 15}}>{props.goal.title}</Text>
+                <Text testID={props.goal.title+"goalTitle"} style={{color: 'black', fontSize: 20, width: 180, paddingTop: 15}}>{props.goal.title}</Text>
             </TouchableRipple>
             <View style={{paddingTop: 15}}>
-                <Checkbox color='black' status={checked} style={{padding: 10, marginTop: 20}} onPress={() => {setChecked(true); completeGoal();}} />
+                <Checkbox color='black' testID="completeGoal" status={checked} style={{padding: 10, marginTop: 20}} onPress={() => {setChecked(true); completeGoal();}} />
             </View>
             <View style={{flexDirection: 'row', justifyContent: 'space-between', gap: -25}}>
                 

@@ -43,7 +43,9 @@ export default function FinalView({ navigation, route }) {
     
 
     let userId = user?.userId;
-    useProfile(userId, dispatch);
+
+    useProfile(user, dispatch);
+    
 
     const {status, data, error, refetch} = useQuery({
         queryKey: ["schedule"], 
@@ -78,7 +80,7 @@ export default function FinalView({ navigation, route }) {
           <Tab.Navigator theme={theme}>
             <Tab.Screen 
                 name="Dashboard" 
-                children={() => <Dashboard data={data} userID={user?.userId}></Dashboard>} 
+                children={() => <Dashboard data={data} userID={userId}></Dashboard>} 
                 options={{headerShown: false, tabBarIcon: ({color}) => (
                     <MaterialCommunityIcons name="circle-outline" size={20} color='black' />
                 )}}

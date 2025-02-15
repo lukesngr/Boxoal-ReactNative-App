@@ -104,7 +104,7 @@ export function filterRecordingBasedOnDay(day) { //used closure first time doing
 export function convertToDayjs(time, date) {
     let timeSeparated = time.split(":").map(function(num) { return parseInt(num); });
     let dateSeparated = date.split("/").map(function(num) { return parseInt(num); });
-    let dayjsInstance = dayjs().hour(timeSeparated[0]).minute(timeSeparated[1]).date(dateSeparated[0]).month(dateSeparated[1]-1).second(0).millisecond(0);
+    let dayjsInstance = dayjs().hour(timeSeparated[0]-1).minute(timeSeparated[1]).date(dateSeparated[0]).month(dateSeparated[1]-1).second(0).millisecond(0);
     return dayjsInstance;
 }
 

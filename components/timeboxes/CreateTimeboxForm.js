@@ -34,7 +34,7 @@ export default function CreateTimeboxForm(props) {
     let {time, date} = props;
 
     let maxNumberOfBoxes = calculateMaxNumberOfBoxes(wakeupTime, boxSizeUnit, boxSizeNumber, timeboxes, time, date);
-    
+    console.log(maxNumberOfBoxes)
     function closeModal() {
         dispatch({type: 'modalVisible/set', payload: {visible: false, props: {}}});
     }
@@ -81,17 +81,21 @@ export default function CreateTimeboxForm(props) {
 
     function safeSetNumberOfBoxes(number) {
         let amountOfBoxes;
-        try {
-            amountOfBoxes = Number(number)
-        }catch(e){
-            amountOfBoxes = 1;
-        }
-
-        if(amountOfBoxes > maxNumberOfBoxes) {
-            setNumberOfBoxes('1');
-            setAlert({shown: true, title: "Error", message: "You cannot create a timebox that exceeds the number of boxes in the schedule"});
-        }else {
-            setNumberOfBoxes(String(amountOfBoxes));
+        if(number != '') {
+            try {
+                amountOfBoxes = Number(number)
+            }catch(e){
+                amountOfBoxes = 1;
+            }
+        
+            if(amountOfBoxes > maxNumberOfBoxes) {
+                setNumberOfBoxes('1');
+                setAlert({shown: true, title: "Error", message: "You cannot create a timebox that exceeds the number of boxes in the schedule"});
+            }else {
+                setNumberOfBoxes(String(amountOfBoxes));
+            }
+        }else{
+            setNumberOfBoxes('');
         }
     }
 

@@ -50,7 +50,6 @@ export default function FinalView({ navigation, route }) {
     const {status, data, error, refetch} = useQuery({
         queryKey: ["schedule"], 
         queryFn: async () => {
-            console.log(userId);
             const response = await axios.get(serverIP+"/getSchedules", { params: {
                 userUUID: userId
             }});
@@ -58,8 +57,6 @@ export default function FinalView({ navigation, route }) {
         },
         enabled: true
     })
-
-    console.log(data);
 
     useEffect(() => {
         initialNotificationSetup().then();

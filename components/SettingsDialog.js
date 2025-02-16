@@ -20,7 +20,7 @@ export default function SettingsDialog(props) {
     const [scheduleIndex, setScheduleIndex] = useState(profile.scheduleIndex+1);
     const [boxSizeNumber, setBoxSizeNumber] = useState(String(profile.boxSizeNumber));
     const [boxSizeUnit, setBoxSizeUnit] = useState(profile.boxSizeUnit);
-    const [wakeupTime, setWakeupTime] = useState(convertToDayjs(profile.wakeupTime, '12/1').utc().format());
+    const [wakeupTime, setWakeupTime] = useState(convertToDayjs(profile.wakeupTime, '12/1').utc().toDate());
     const [wakeupTimeText, setWakeupTimeText] = useState(profile.wakeupTime);
     const [wakeupTimeModalVisible, setWakeupTimeModalVisible] = useState(false);
     

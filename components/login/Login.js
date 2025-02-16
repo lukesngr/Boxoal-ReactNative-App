@@ -16,7 +16,6 @@ export function Login({ navigation }) {
     async function login() {
         try {
             const result = await signIn({username, password});
-            console.log(result);
             navigation.navigate('FinalView');
         } catch (error) {
             Alert.alert("Error", error.message);

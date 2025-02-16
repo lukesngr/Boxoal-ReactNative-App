@@ -39,19 +39,19 @@ describe('Box Calculation Functions', () => {
 
     test('handles schedule with one future timebox', () => {
       const timeboxes = [{
-        startTime: '2024-01-01T14:00:00'
+        startTime: '2025-01-01T14:00:00'
       }];
       const result = calculateMaxNumberOfBoxes('08:30', 'min', 15, timeboxes, '12:45', '1/1');
-      expect(result).toBe(79);
+      expect(result).toBe(5);
     });
 
     test('handles schedule with multiple timeboxes', () => {
       const timeboxes = [
-        { startTime: '2024-01-01T14:00:00' },
-        { startTime: '2024-01-01T16:00:00' }
+        { startTime: '2025-01-01T14:00:00' },
+        { startTime: '2025-01-01T16:00:00' }
       ];
       const result = calculateMaxNumberOfBoxes('08:30', 'min', 15, timeboxes, '12:45', '1/1');
-      expect(result).toBe(79);
+      expect(result).toBe(5);
     });
   });
 

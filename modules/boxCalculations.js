@@ -83,13 +83,13 @@ export function calculateRemainderTimeBetweenTwoTimes(time1, time2, boxSizeUnit,
 }
 
 export function calculateMaxNumberOfBoxes(wakeupTime, boxSizeUnit, boxSizeNumber, timeboxes, time, date) {
-    let wakeUpTimeSeparated = wakeupTime.split(":").map(function(num) { return parseInt(num); });
-    let timeSeparated = time.split(":").map(function(num) { return parseInt(num); });
     let currentTime = convertToDayjs(time, date);
     let maxNumberOfBoxes = 0;
 
     for(let i = 0; i < timeboxes.length; i++) { //for each time box
         let timeboxStartTime = dayjs(timeboxes[i].startTime);
+        console.log(timeboxStartTime.toISOString(), currentTime.toISOString(), time, date);
+        console.log(timeboxes);
 
         if(currentTime.isBefore(timeboxStartTime)) { //if timebox occurs after the time of a timebox
             maxNumberOfBoxes = calculateBoxesBetweenTwoTimes(currentTime, timeboxStartTime, boxSizeUnit, boxSizeNumber);
@@ -100,6 +100,8 @@ export function calculateMaxNumberOfBoxes(wakeupTime, boxSizeUnit, boxSizeNumber
     }
 
     if(maxNumberOfBoxes <= 0) {
+        let timeSeparated = time.split(":").map(function(num) { return parseInt(num); });
+        let wakeUpTimeSeparated = wakeupTime.split(":").map(function(num) { return parseInt(num); });
         maxNumberOfBoxes = calculateMaxNumberOfBoxesAfterTimeIfEmpty(boxSizeUnit, boxSizeNumber, timeSeparated, wakeUpTimeSeparated);
     }
 

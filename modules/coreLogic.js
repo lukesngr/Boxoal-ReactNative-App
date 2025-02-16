@@ -12,7 +12,7 @@ export function thereIsNoRecording(recordedBoxes, reoccuring, date, time) {
         return true;
     }else if(reoccuring != null) {
         if(reoccuring.reoccurFrequency == "daily") {
-            let timeboxTime = convertToDayjs(time, date);
+            let timeboxTime = convertToDayjs(time, date).utc().format();
             let result = true
             recordedBoxes.forEach(element => {
                 if(timeboxTime.isSame(dayjs(element.recordedStartTime), 'date')) {

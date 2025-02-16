@@ -11,6 +11,9 @@ import { listOfColors } from '../../styles/styles';
 import { Dialog, Portal, TextInput, Button } from 'react-native-paper';
 import { useDispatch, useSelector } from 'react-redux';
 import Alert from '../Alert';
+import { utc } from 'dayjs';
+
+dayjs.extend(utc);
 
 
 export default function CreateTimeboxForm(props) {
@@ -46,8 +49,8 @@ export default function CreateTimeboxForm(props) {
             return;
         }
 
-        let startTime = convertToDayjs(time, date).toDate();
-        let endTime = convertToDayjs(addBoxesToTime(boxSizeUnit, boxSizeNumber, time, numberOfBoxes), date).toDate(); //add boxes to start time to get end time
+        let startTime = convertToDayjs(time, date).utc().format();
+        let endTime = convertToDayjs(addBoxesToTime(boxSizeUnit, boxSizeNumber, time, numberOfBoxes), date).utc().format(); //add boxes to start time to get end time
         let color = listOfColors[Math.floor(Math.random() * listOfColors.length)]; //randomly pick a box color     
         let data = {
             title, 

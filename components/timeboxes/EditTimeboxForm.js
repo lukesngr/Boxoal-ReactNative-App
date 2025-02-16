@@ -43,7 +43,7 @@ export default function EditTimeboxForm(props) {
     }
 
     function updateTimeBox() {
-        let endTime = convertToDayjs(addBoxesToTime(boxSizeUnit, boxSizeNumber, time, numberOfBoxes), date).toDate(); //add boxes to start time to get end time
+        let endTime = convertToDayjs(addBoxesToTime(boxSizeUnit, boxSizeNumber, time, numberOfBoxes), date).utc().format(); //add boxes to start time to get end time
 
         let data = {
             id: props.data.id,

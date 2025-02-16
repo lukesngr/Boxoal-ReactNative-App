@@ -153,9 +153,9 @@ export function filterTimeGridBasedOnSpace(timeGridFilteredByDate, boxSizeUnit, 
     let filteredTimes = [];
     let i = 0;
     for(i = 0; i < times.length; i++) {
-        let startTimeAsDate = convertToDayjs(time, '1/1').toDate();
-        let timeAsDate = convertToDayjs(times[i], '1/1').toDate();
-        let endTimeAsDate = convertToDayjs(endTime, '1/1').toDate();
+        let startTimeAsDate = convertToDayjs(time, '1/1').utc().format();
+        let timeAsDate = convertToDayjs(times[i], '1/1').utc().format();
+        let endTimeAsDate = convertToDayjs(endTime, '1/1').utc().format();
 
         if(timeAsDate >= startTimeAsDate && timeAsDate < endTimeAsDate) {
             filteredTimes.push(times[i]);

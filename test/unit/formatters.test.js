@@ -1,15 +1,18 @@
 import dayjs from "dayjs";
 import { convertToDayjs, convertToTimeAndDate, returnTimesSeperatedForSchedule, getDateWithSuffix, filterRecordingBasedOnDay } from "../../modules/formatters";
+var utc = require("dayjs/plugin/utc");
+
+dayjs.extend(utc);
 
 describe('Time and Date Conversion Functions', () => {
-  test('convertToDayjs handles standard time and date', () => {
+  test('convertToDayjs is right time and date in right timezone', () => {
     const result = convertToDayjs('14:30', '15/1');
-    expect(result.format('HH:mm DD/MM')).toBe('14:30 15/01');
+    expect(result.utc().local().format()).toBe('2025-01-15T14:30:00+11:00');
   });
 
   test('convertToDayjs handles midnight', () => {
     const result = convertToDayjs('00:00', '1/1');
-    expect(result.format('HH:mm DD/MM')).toBe('00:00 01/01');
+    expect(result.utc().local().format()).toBe('2025-01-01T00:00:00+11:00');
   });
 
   test('convertToTimeAndDate handles standard datetime', () => {

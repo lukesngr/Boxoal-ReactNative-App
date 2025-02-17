@@ -53,6 +53,15 @@ describe('Box Calculation Functions', () => {
       const result = calculateMaxNumberOfBoxes('08:30', 'min', 15, timeboxes, '12:45', '1/1');
       expect(result).toBe(5);
     });
+
+    test('handles inbetween case with multiple timeboxes', () => {
+      const timeboxes = [
+        { startTime: '2025-01-01T14:00:00' },
+        { startTime: '2025-01-01T16:00:00' }
+      ];
+      const result = calculateMaxNumberOfBoxes('08:30', 'min', 15, timeboxes, '14:45', '1/1');
+      expect(result).toBe(5);
+    });
   });
 
   describe('calculateBoxesBetweenTwoTimes', () => {

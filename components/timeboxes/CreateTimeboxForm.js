@@ -11,7 +11,8 @@ import { listOfColors } from '../../styles/styles';
 import { Dialog, Portal, TextInput, Button } from 'react-native-paper';
 import { useDispatch, useSelector } from 'react-redux';
 import Alert from '../Alert';
-import { utc } from 'dayjs';
+var utc = require("dayjs/plugin/utc");
+import dayjs from 'dayjs';
 
 dayjs.extend(utc);
 
@@ -24,7 +25,6 @@ export default function CreateTimeboxForm(props) {
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
     const [numberOfBoxes, setNumberOfBoxes] = useState('1');
-    console.log(goals);
     const [goalSelected, setGoalSelected] = useState(goals.length == 0 ? -1 : goals[0].id);
     
     const [moreOptionsVisible, setMoreOptionsVisible] = useState(false);
@@ -37,7 +37,6 @@ export default function CreateTimeboxForm(props) {
     let {time, date} = props;
 
     let maxNumberOfBoxes = calculateMaxNumberOfBoxes(wakeupTime, boxSizeUnit, boxSizeNumber, timeboxes, time, date);
-    console.log(maxNumberOfBoxes)
     function closeModal() {
         dispatch({type: 'modalVisible/set', payload: {visible: false, props: {}}});
     }

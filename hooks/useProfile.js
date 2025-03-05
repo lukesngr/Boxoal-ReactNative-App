@@ -9,7 +9,7 @@ export function useProfile(user, dispatch) {
     const {status, data, error, refetch} = useQuery({
         queryKey: ["XP"], 
         queryFn: async () => {
-            const response = await axios.get(serverIP+"/getProfile", { params: {userUUID: userID}});
+            const response = await axios.get(serverIP+"/getProfile", { params: {userUUID: user.userID}});
             return response.data;
         },
         enabled: true
@@ -22,7 +22,7 @@ export function useProfile(user, dispatch) {
         }else{
             dispatch({type: 'profile/set', payload: {scheduleID: 0, scheduleIndex: 0, boxSizeUnit: 'min', boxSizeNumber: 30, wakeupTime: '07:00'}});
         }
-    }, [data, dispatch]);
+    }, [data]);
     
     return;
 }

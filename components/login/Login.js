@@ -14,11 +14,17 @@ export function Login({ navigation }) {
     const [password, setPassword] = useState("");
 
     async function login() {
-        try {
-            const result = await signIn({username, password});
-            navigation.navigate('FinalView');
-        } catch (error) {
-            Alert.alert("Error", error.message);
+        if(username != "" && password != "") {
+            try {
+                const result = await signIn({username, password});
+                navigation.navigate('FinalView');
+            } catch (error) {
+                Alert.alert("Error", error.message);
+            }
+        }else if(username == ""){
+            Alert.alert("Error", "Username is required");
+        }else if(password == ""){
+            Alert.alert("Error", "Password is required");
         }
     }
 

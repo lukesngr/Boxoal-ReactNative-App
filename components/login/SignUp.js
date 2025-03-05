@@ -15,13 +15,20 @@ export function SignUp({navigation}) {
     const [confirmPasswordHidden, setConfirmPasswordHidden] = useState(true);
     const [code, setCode] = useState("")
     const [enteredDetails, setEnteredDetails] = useState(false);
+    const matchesPasswordPolicy = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^a-zA-Z0-9\s]).{8,}$/;
+    const noAtSymbol = /^[^@]*$/;
     
 
     async function verifyCode() {
-        const { isSignUpComplete, nextStep } = await confirmSignUp({
-            username: username,
-            confirmationCode: code,
-        });
+        if(code == "") {
+            Alert.alert("Please enter a code");
+        }else{}
+            const { isSignUpComplete, nextStep } = await confirmSignUp({
+                username: username,
+                confirmationCode: code,
+            });
+        }
+
 
         if(isSignUpComplete) {
             Alert.alert("Signed up, please login")

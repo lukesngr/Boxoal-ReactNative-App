@@ -30,27 +30,47 @@ export function SignUp({navigation}) {
     }
 
     async function createAccount() {
-        const { isSignUpComplete, userId, nextStep } = await signUp({
-            username: username,
-            password: password,
-            options: {
-              userAttributes: {
-                email: email,
-              },
+        if(noAtSymbol.test(email) || username == "" || password == "" || confirmPassword == "") {
+            if(noAtSymbol.test(email)) {
+                Alert.alert("Please enter a valid email address");
             }
-        });
 
-        if(isSignUpComplete) {
-            Alert.alert("Signed up")
-            navigation.navigate('Login');
-        }
+            if(username == "") {
+                Alert.alert("Please enter a username");
+            }
+            
+            if(password == "") {
+                Alert.alert("Please enter new password");
+            }
+            
+            if(confirmPassword == "") {
+                Alert.alert("Please confirm password");
+            } 
+        }else if(!matchesPasswordPolicy.test(password)) {
+            Alert.alert("Please ensure that the two passwords match");
+        }else if(password != confirmPassword) {
+            Alert.alert("Please ensure your password has at least 8 characters, one uppercase letter, one lowercase letter, one number, and one special character");
+        }else {
+            const { isSignUpComplete, userId, nextStep } = await signUp({
+                username: username,
+                password: password,
+                options: {
+                userAttributes: {
+                    email: email,
+                },
+                }
+            });
 
-        if(nextStep?.signUpStep === 'CONFIRM_SIGN_UP') {
-            setEnteredDetails(true);
+            if(isSignUpComplete) {
+                Alert.alert("Signed up")
+                navigation.navigate('Login');
+            }
+
+            if(nextStep?.signUpStep === 'CONFIRM_SIGN_UP') {
+                setEnteredDetails(true);
+            }
         }
     }
-
-    function resetPassword() {}
 
     return (
         <>

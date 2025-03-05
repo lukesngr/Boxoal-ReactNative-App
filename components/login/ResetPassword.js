@@ -17,24 +17,38 @@ export function ResetPassword({navigation}) {
     const [username, setUsername] = useState("");
 
     async function sendCode() {
-        Alert.alert("Code Sent", "Check your email for the code");
-        try {
-            const output = await resetPassword({ username });
-            if(output.nextStep.resetPasswordStep == 'CONFIRM_RESET_PASSWORD_WITH_CODE') {
-                setCodeSent(true);
+        if(username == "") {
+            Alert.alert("Please enter a username");
+        }else {
+            Alert.alert("Code Sent", "Check your email for the code");
+            try {
+                const output = await resetPassword({ username });
+                if(output.nextStep.resetPasswordStep == 'CONFIRM_RESET_PASSWORD_WITH_CODE') {
+                    setCodeSent(true);
+                }
+            } catch (error) {
+                console.log(error);
             }
-        } catch (error) {
-            console.log(error);
         }
     }
 
     async function confirmAndSetPassword() {
-        try {
-            await confirmResetPassword({ username, confirmationCode, newPassword});
-            Alert.alert("Password Reset", "Your password has been reset");
-            navigation.navigate("Login");
-        }catch(error) {
-            Alert.alert("Error", error.message);
+        if(confirmationCode == "") {
+            Alert.alert("Please enter a code");
+        }else if(password == "") {
+            Alert.alert("Please enter new password");
+        }else if(confirmPassword == "") {
+            Alert.alert("Please confirm password");
+        }else if(confirmPassword != password) {
+            Alert.alert("Please ensure your passwords match");
+        }else{
+            try {
+                await confirmResetPassword({ username, confirmationCode, newPassword});
+                Alert.alert("Password Reset", "Your password has been reset");
+                navigation.navigate("Login");
+            }catch(error) {
+                Alert.alert("Error", error.message);
+            }
         }
         
     }

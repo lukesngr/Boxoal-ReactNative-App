@@ -22,7 +22,7 @@ export function SignUp({navigation}) {
     async function verifyCode() {
         if(code == "") {
             Alert.alert("Please enter a code");
-        }else{}
+        }else{
             const { isSignUpComplete, nextStep } = await confirmSignUp({
                 username: username,
                 confirmationCode: code,
@@ -54,9 +54,9 @@ export function SignUp({navigation}) {
                 Alert.alert("Please confirm password");
             } 
         }else if(!matchesPasswordPolicy.test(password)) {
-            Alert.alert("Please ensure that the two passwords match");
-        }else if(password != confirmPassword) {
             Alert.alert("Please ensure your password has at least 8 characters, one uppercase letter, one lowercase letter, one number, and one special character");
+        }else if(password != confirmPassword) {
+            Alert.alert("Please ensure that the password match");
         }else {
             const { isSignUpComplete, userId, nextStep } = await signUp({
                 username: username,

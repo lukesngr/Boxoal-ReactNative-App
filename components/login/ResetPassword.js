@@ -15,6 +15,7 @@ export function ResetPassword({navigation}) {
     const [confirmPassword, setConfirmPassword] = useState("");
     const [codeSent, setCodeSent] = useState(false);
     const [username, setUsername] = useState("");
+    const matchesPasswordPolicy = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^a-zA-Z0-9\s]).{8,}$/;
 
     async function sendCode() {
         if(username == "") {
@@ -41,6 +42,8 @@ export function ResetPassword({navigation}) {
             Alert.alert("Please confirm password");
         }else if(confirmPassword != password) {
             Alert.alert("Please ensure your passwords match");
+        }else if(!matchesPasswordPolicy.test(password)) {
+            Alert.alert("Please ensure your password has at least 8 characters, one uppercase letter, one lowercase letter, one number, and one special character");
         }else{
             try {
                 await confirmResetPassword({ username, confirmationCode, newPassword});

@@ -33,20 +33,8 @@ let theme = {
 
 const Tab = createMaterialBottomTabNavigator();
 
-export default function FinalView({ navigation, route }) {
-    const dispatch = useDispatch();
-    const { authStatus, user } = useAuthenticator((context) => [
-        context.authStatus,
-        context.user,
-      ]);
-    if(authStatus != 'authenticated') { navigation.navigate('Login'); }
-    
-
-    let userId = user?.userId;
-
+function FinalViewSeperatedForFunctionality({userId, navigation, route, dispatch}) {
     useProfile(user, dispatch);
-    
-
     const {status, data, error, refetch} = useQuery({
         queryKey: ["schedule"], 
         queryFn: async () => {
@@ -97,4 +85,21 @@ export default function FinalView({ navigation, route }) {
             
           </Tab.Navigator>
     )
+}
+
+export default function FinalView({ navigation, route }) {
+    const dispatch = useDispatch();
+    const { authStatus, user } = useAuthenticator((context) => [
+        context.authStatus,
+        context.user,
+      ]);
+    if(authStatus == 'unauthenticated') { navigation.navigate('Login'); 
+
+    }else if(authStatus == 'configuring' || authStatus == "idle") {
+        return <Loading />
+    }else if(authStatus == "authenticated") {
+        return <FinalViewSeperatedForFunctionality userId={user.userId} navigation={navigation} route={route} dispatch={dispatch}/>
+    }
+    return <></>
+    
 }

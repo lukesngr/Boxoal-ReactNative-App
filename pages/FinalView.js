@@ -34,7 +34,7 @@ let theme = {
 const Tab = createMaterialBottomTabNavigator();
 
 function FinalViewSeperatedForFunctionality({userId, navigation, route, dispatch}) {
-    useProfile(user, dispatch);
+    useProfile(userId, dispatch);
     const {status, data, error, refetch} = useQuery({
         queryKey: ["schedule"], 
         queryFn: async () => {
@@ -98,6 +98,7 @@ export default function FinalView({ navigation, route }) {
     }else if(authStatus == 'configuring' || authStatus == "idle") {
         return <Loading />
     }else if(authStatus == "authenticated") {
+        console.log(user, authStatus);
         return <FinalViewSeperatedForFunctionality userId={user.userId} navigation={navigation} route={route} dispatch={dispatch}/>
     }
     return <></>

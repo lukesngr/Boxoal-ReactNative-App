@@ -129,7 +129,9 @@ export default function EditTimeboxForm(props) {
                     render={(props) => (
                         <Picker style={{color: 'black', marginTop: 5}} dropdownIconColor='black' selectedValue={goalSelected} onValueChange={setGoalSelected}>
                             {goals.map((goal, index) => {
-                                return <Picker.Item key={index} label={goal.title} value={String(goal.id)} />
+                                if(goal.active) {
+                                    return ( <Picker.Item key={index} label={goal.title} value={String(goal.id)} />)
+                                }
                             })}
                         </Picker>
                     )}

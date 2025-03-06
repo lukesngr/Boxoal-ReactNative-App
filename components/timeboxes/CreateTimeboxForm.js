@@ -25,7 +25,8 @@ export default function CreateTimeboxForm(props) {
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
     const [numberOfBoxes, setNumberOfBoxes] = useState('1');
-    const [goalSelected, setGoalSelected] = useState(goals.length == 0 ? -1 : goals[0].id);
+    const activeGoals = goals.filter(goal => goal.active);
+    const [goalSelected, setGoalSelected] = useState(activeGoals.length == 0 ? -1 : activeGoals[0].id);
     
     const [moreOptionsVisible, setMoreOptionsVisible] = useState(false);
     const [reoccurFrequency, setReoccurFrequency] = useState("no");
@@ -33,6 +34,7 @@ export default function CreateTimeboxForm(props) {
     const [goalPercentage, setGoalPercentage] = useState('0');
     
     const [alert, setAlert] = useState({shown: false, title: "", message: ""});
+
     
     let {time, date} = props;
 
@@ -114,7 +116,7 @@ export default function CreateTimeboxForm(props) {
                 <TextInput label="Goal" value={goalSelected} {...styles.paperInput}
                     render={(props) => (
                         <Picker style={{color: 'black', marginTop: 5}} dropdownIconColor='black' selectedValue={goalSelected} onValueChange={setGoalSelected}>
-                            {goals.map((goal, index) => {
+                            {activeGoals.map((goal, index) => {
                                 return <Picker.Item key={index} label={goal.title} value={String(goal.id)} />
                             })}
                         </Picker>

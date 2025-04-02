@@ -8,7 +8,7 @@ import serverIP from '../../modules/serverIP';
 import { styles } from '../../styles/styles';
 import { dayToName } from '../../modules/dateCode';
 import { listOfColors } from '../../styles/styles';
-import { Dialog, Portal, TextInput, Button } from 'react-native-paper';
+import { Dialog, Portal, TextInput, Button, SegmentedButtons } from 'react-native-paper';
 import { useDispatch, useSelector } from 'react-redux';
 import Alert from '../Alert';
 var utc = require("dayjs/plugin/utc");
@@ -32,6 +32,7 @@ export default function CreateTimeboxForm(props) {
     const [reoccurFrequency, setReoccurFrequency] = useState("no");
     const [weeklyDay, setWeeklyDay] = useState('0');
     const [goalPercentage, setGoalPercentage] = useState('0');
+    const [isTimeblock, setIsTimeBlock] = useState(false);
     
     const [alert, setAlert] = useState({shown: false, title: "", message: ""});
 
@@ -54,6 +55,7 @@ export default function CreateTimeboxForm(props) {
         let endTime = convertToDayjs(addBoxesToTime(boxSizeUnit, boxSizeNumber, time, numberOfBoxes), date).utc().format(); //add boxes to start time to get end time
         let color = listOfColors[Math.floor(Math.random() * listOfColors.length)]; //randomly pick a box color     
         let data = {
+            isTimeblock,
             title, 
             description, 
             startTime, 
@@ -110,6 +112,20 @@ export default function CreateTimeboxForm(props) {
         <Dialog style={{backgroundColor: '#C5C27C'}} visible={props.visible} onDismiss={closeModal}>
             <Dialog.Title style={{color: 'white'}}>Create Timebox</Dialog.Title>
             <Dialog.Content>
+            <SegmentedButtons
+                value={isTimeblock}
+                onValueChange={setIsTimeBlock}
+                buttons={[
+                {
+                    value: false,
+                    label: 'Timebox',
+                },
+                {
+                    value: 'train',
+                    label: 'Timeblock',
+                },
+                ]}
+            />
                 <TextInput label="Title" testID='createTimeboxTitle' value={title} onChangeText={setTitle} {...styles.paperInput}/>
                 <TextInput label="Description" testID='createTimeboxDescription' value={description} onChangeText={setDescription} {...styles.paperInput}/>
                 <TextInput label="Number of Boxes" testID='createTimeboxBoxes' value={numberOfBoxes} onChangeText={safeSetNumberOfBoxes} {...styles.paperInput}/>

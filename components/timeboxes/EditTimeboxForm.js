@@ -2,7 +2,7 @@ import axios from "axios";
 import { useState } from "react";
 import serverIP from "../../modules/serverIP";
 import { queryClient } from '../../modules/queryClient.js';
-import { Portal, Dialog, TextInput, Button } from "react-native-paper";
+import { Portal, Dialog, TextInput, Button, SegmentedButtons } from "react-native-paper";
 import { Picker } from "@react-native-picker/picker";
 import { convertToTimeAndDate, convertToDayjs } from "../../modules/formatters.js";
 import { addBoxesToTime, calculateMaxNumberOfBoxes } from "../../modules/boxCalculations.js";
@@ -29,6 +29,7 @@ export default function EditTimeboxForm(props) {
     const [reoccurFrequency, setReoccurFrequency] = useState(reoccurFreq);
     const [weeklyDay, setWeeklyDay] = useState(weeklyDayIndex);
     const [goalPercentage, setGoalPercentage] = useState(String(props.data.goalPercentage));
+    const [isTimeblock, setIsTimeBlock] = useState(false);
     
     const [alert, setAlert] = useState({shown: false, title: "", message: ""});
 
@@ -52,8 +53,12 @@ export default function EditTimeboxForm(props) {
             startTime: props.data.startTime, 
             endTime, 
             numberOfBoxes: parseInt(numberOfBoxes), 
-            goal: {connect: {id: parseInt(goalSelected)}},
-            goalPercentage: parseInt(goalPercentage)
+            goalPercentage: parseInt(goalPercentage),
+            isTimeblock,
+        }
+
+        if (!isTimeblock) {
+            data["goal"] = { connect: { id: goalSelected } };
         }
 
         if(reoccurFrequency == "weekly") {
@@ -122,6 +127,20 @@ export default function EditTimeboxForm(props) {
         <Dialog style={{backgroundColor: '#C5C27C'}} visible={true} onDismiss={closeModal}>
             <Dialog.Title style={{color: 'white'}}>Edit Timebox</Dialog.Title>
             <Dialog.Content>
+                <SegmentedButtons
+                    value={isTimeblock}
+                    onValueChange={setIsTimeBlock}
+                    buttons={[
+                    {
+                        value: false,
+                        label: 'Timebox',
+                    },
+                    {
+                        value: 'train',
+                        label: 'Timeblock',
+                    },
+                    ]}
+                />
                 <TextInput label="Title" value={title} testID="editTitle" onChangeText={setTitle} {...styles.paperInput}/>
                 <TextInput label="Description" value={description} onChangeText={setDescription} {...styles.paperInput}/>
                 <TextInput label="Number of Boxes" value={numberOfBoxes} onChangeText={safeSetNumberOfBoxes} {...styles.paperInput}/>

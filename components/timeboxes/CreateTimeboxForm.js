@@ -13,6 +13,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import Alert from '../Alert';
 var utc = require("dayjs/plugin/utc");
 import dayjs from 'dayjs';
+import { set } from '../../redux/activeOverlayInterval.js';
 
 dayjs.extend(utc);
 
@@ -29,10 +30,11 @@ export default function CreateTimeboxForm(props) {
     const [goalSelected, setGoalSelected] = useState(activeGoals.length == 0 ? -1 : activeGoals[0].id);
     
     const [moreOptionsVisible, setMoreOptionsVisible] = useState(false);
-    const [reoccurFrequency, setReoccurFrequency] = useState("no");
-    const [weeklyDay, setWeeklyDay] = useState('0');
     const [goalPercentage, setGoalPercentage] = useState('0');
     const [isTimeblock, setIsTimeBlock] = useState(false);
+    const [reoccuring, setReoccuring] = useState(false);
+    const [startOfDayRange, setStartOfDayRange] = useState(0);
+    const [endOfDayRange, setEndOfDayRange] = useState(6);
     
     const [alert, setAlert] = useState({shown: false, title: "", message: ""});
 
@@ -67,11 +69,13 @@ export default function CreateTimeboxForm(props) {
             goalPercentage: parseInt(goalPercentage)
         }
 
-        if(reoccurFrequency == "weekly") {
-            data["reoccuring"] = {create: {reoccurFrequency: "weekly", weeklyDay: weeklyDay}};
-        }else if(reoccurFrequency == "daily") {
-            data["reoccuring"] = {create: {reoccurFrequency: "daily"}};
+        if (!isTimeblock) {
+            data["goal"] = { connect: { id: goalSelected } };
         }
+
+        if (reoccuring) {
+            data["reoccuring"] = { create: { startOfDayRange, endOfDayRange } };
+        } 
         
         axios.post(serverIP+'/createTimebox', data).then(async () => {
             closeModal();
@@ -129,7 +133,7 @@ export default function CreateTimeboxForm(props) {
                 <TextInput label="Title" testID='createTimeboxTitle' value={title} onChangeText={setTitle} {...styles.paperInput}/>
                 <TextInput label="Description" testID='createTimeboxDescription' value={description} onChangeText={setDescription} {...styles.paperInput}/>
                 <TextInput label="Number of Boxes" testID='createTimeboxBoxes' value={numberOfBoxes} onChangeText={safeSetNumberOfBoxes} {...styles.paperInput}/>
-                <TextInput label="Goal" value={goalSelected} {...styles.paperInput}
+                {!isTimeblock && <TextInput label="Goal" value={goalSelected} {...styles.paperInput}
                     render={(props) => (
                         <Picker style={{color: 'black', marginTop: 5}} dropdownIconColor='black' selectedValue={goalSelected} onValueChange={setGoalSelected}>
                             {activeGoals.map((goal, index) => {
@@ -137,27 +141,37 @@ export default function CreateTimeboxForm(props) {
                             })}
                         </Picker>
                     )}
-                ></TextInput>
+                ></TextInput>}
                 {moreOptionsVisible && <>
-                    <TextInput label="Reoccurring"  value={reoccurFrequency} {...styles.paperInput}
+                    <TextInput label="Reoccurring"  value={reoccuring} {...styles.paperInput}
                         render={(props) => (
-                            <Picker style={{color: 'black', marginTop: 5}} dropdownIconColor='black' selectedValue={reoccurFrequency} onValueChange={setReoccurFrequency}>
-                                <Picker.Item label="No" value="no" />
-                                <Picker.Item label="Daily" value="daily" />
-                                <Picker.Item label="Weekly" value="weekly" />
+                            <Picker style={{color: 'black', marginTop: 5}} dropdownIconColor='black' selectedValue={reoccuring} onValueChange={setReoccuring}>
+                                <Picker.Item label="No" value={false} />
+                                <Picker.Item label="Yes" value={true} />
                             </Picker>
                         )}
                     />
-                    {reoccurFrequency == 'weekly' && <TextInput label="Reoccurring Day"  value={weeklyDay} {...styles.paperInput}
-                        render={(props) => (
-                            <Picker style={{color: 'black', marginTop: 5}} dropdownIconColor='black' selectedValue={weeklyDay} onValueChange={setWeeklyDay}>
-                                {dayToName.map((day, index) => {
-                                    return <Picker.Item key={index} label={day} value={index} />
-                                })}
-                            </Picker>
-                        )}
-                    />}
-                    <TextInput label="Percentage of Goal" value={goalPercentage} onChangeText={setGoalPercentage} {...styles.paperInput}/>
+                    {reoccuring && <>
+                        <TextInput label="Start Day"  value={startOfDayRange} {...styles.paperInput}
+                            render={(props) => (
+                                <Picker style={{color: 'black', marginTop: 5}} dropdownIconColor='black' selectedValue={startOfDayRange} onValueChange={setStartOfDayRange}>
+                                    {dayToName.map((day, index) => {
+                                        return <Picker.Item key={index} label={day} value={index} />
+                                    })}
+                                </Picker>
+                            )}
+                        />
+                        <TextInput label="End Day"  value={endOfDayRange} {...styles.paperInput}
+                            render={(props) => (
+                                <Picker style={{color: 'black', marginTop: 5}} dropdownIconColor='black' selectedValue={endOfDayRange} onValueChange={setEndOfDayRange}>
+                                    {dayToName.map((day, index) => {
+                                        return <Picker.Item key={index} label={day} value={index} />
+                                    })}
+                                </Picker>
+                            )}
+                        />
+                    </>}
+                    {!isTimeblock && <TextInput label="Percentage of Goal" value={goalPercentage} onChangeText={setGoalPercentage} {...styles.paperInput}/>}
                 </>}
             </Dialog.Content>
             <Dialog.Actions>

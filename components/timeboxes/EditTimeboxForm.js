@@ -19,10 +19,11 @@ export default function EditTimeboxForm(props) {
     const [goalSelected, setGoalSelected] = useState(props.data.goalID);
 
     const [reoccuring, setReoccuring] = useState(props.data.reoccuring != null);
-
+    console.log(reoccuring);
     const [startOfDayRange, setStartOfDayRange] = useState(props.data.reoccuring != null ? (props.data.reoccuring.startOfDayRange) : 0);
     const [endOfDayRange, setEndOfDayRange] = useState(props.data.reoccuring != null ? props.data.reoccuring.endOfDayRange : 0);
     const [goalPercentage, setGoalPercentage] = useState(String(props.data.goalPercentage));
+    console.log(startOfDayRange, endOfDayRange);
     const [isTimeblock, setIsTimeBlock] = useState(false);
     
     const [alert, setAlert] = useState({shown: false, title: "", message: ""});
@@ -143,7 +144,7 @@ export default function EditTimeboxForm(props) {
                         </Picker>
                     )}
                 ></TextInput>}
-                <TextInput label="Reoccurring"  value={reoccuring} {...styles.paperInput}
+                <TextInput label="Reoccurring" value={reoccuring ? "Yes" : "No"} {...styles.paperInput}
                         render={(props) => (
                             <Picker style={{color: 'black', marginTop: 5}} dropdownIconColor='black' selectedValue={reoccuring} onValueChange={setReoccuring}>
                                 <Picker.Item label="No" value={false} />

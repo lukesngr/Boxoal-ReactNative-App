@@ -48,7 +48,7 @@ export default function CreateTimeboxForm(props) {
 
     function handleSubmit() {
 
-        if(goalSelected == -1) {
+        if(goalSelected == -1 && !isTimeblock) {
             setAlert({shown: true, title: "Error", message: "Please create a goal before creating a timebox"});
             return;
         }
@@ -65,7 +65,6 @@ export default function CreateTimeboxForm(props) {
             numberOfBoxes: parseInt(numberOfBoxes), 
             color, 
             schedule: {connect: {id: scheduleID}}, 
-            goal: {connect: {id: parseInt(goalSelected)}},
             goalPercentage: parseInt(goalPercentage)
         }
 
@@ -125,7 +124,7 @@ export default function CreateTimeboxForm(props) {
                     label: 'Timebox',
                 },
                 {
-                    value: 'train',
+                    value: true,
                     label: 'Timeblock',
                 },
                 ]}

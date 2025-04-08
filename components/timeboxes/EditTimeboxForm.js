@@ -18,10 +18,10 @@ export default function EditTimeboxForm(props) {
     const [numberOfBoxes, setNumberOfBoxes] = useState(String(props.data.numberOfBoxes));
     const [goalSelected, setGoalSelected] = useState(props.data.goalID);
 
-    const [reoccuring, setReoccuring] = useState(data.reoccuring != null);
+    const [reoccuring, setReoccuring] = useState(props.data.reoccuring != null);
 
-    const [startOfDayRange, setStartOfDayRange] = useState(data.reoccuring != null ? (data.reoccuring.startOfDayRange) : 0);
-    const [endOfDayRange, setEndOfDayRange] = useState(data.reoccuring != null ? data.reoccuring.endOfDayRange : 0);
+    const [startOfDayRange, setStartOfDayRange] = useState(props.data.reoccuring != null ? (props.data.reoccuring.startOfDayRange) : 0);
+    const [endOfDayRange, setEndOfDayRange] = useState(props.data.reoccuring != null ? props.data.reoccuring.endOfDayRange : 0);
     const [goalPercentage, setGoalPercentage] = useState(String(props.data.goalPercentage));
     const [isTimeblock, setIsTimeBlock] = useState(false);
     

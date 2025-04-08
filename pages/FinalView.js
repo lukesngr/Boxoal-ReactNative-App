@@ -89,13 +89,14 @@ function FinalViewSeperatedForFunctionality({userId, navigation, route, dispatch
 
 export default function FinalView({ navigation, route }) {
     const dispatch = useDispatch();
-    const { authStatus, user } = useAuthenticator((context) => [
+    const { authStatus, user, isLoaded } = useAuthenticator((context) => [
         context.authStatus,
         context.user,
+        context.isLoaded,
       ]);
     if(authStatus == 'unauthenticated') { navigation.navigate('Login'); 
 
-    }else if(authStatus == 'configuring' || authStatus == "idle") {
+    }else if(authStatus == 'configuring' || authStatus == "loading") {
         return <Loading />
     }else if(authStatus == "authenticated") {
         console.log(user, authStatus);

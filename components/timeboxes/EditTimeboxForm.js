@@ -124,7 +124,7 @@ export default function EditTimeboxForm(props) {
                         label: 'Timebox',
                     },
                     {
-                        value: 'train',
+                        value: true,
                         label: 'Timeblock',
                     },
                     ]}

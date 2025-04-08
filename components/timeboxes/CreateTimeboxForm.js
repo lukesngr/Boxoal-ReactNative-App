@@ -142,7 +142,7 @@ export default function CreateTimeboxForm(props) {
                     )}
                 ></TextInput>}
                 {moreOptionsVisible && <>
-                    <TextInput label="Reoccurring"  value={reoccuring} {...styles.paperInput}
+                    <TextInput label="Reoccurring"  value={reoccuring ? "Yes" : "No"} {...styles.paperInput}
                         render={(props) => (
                             <Picker style={{color: 'black', marginTop: 5}} dropdownIconColor='black' selectedValue={reoccuring} onValueChange={setReoccuring}>
                                 <Picker.Item label="No" value={false} />
@@ -151,7 +151,7 @@ export default function CreateTimeboxForm(props) {
                         )}
                     />
                     {reoccuring && <>
-                        <TextInput label="Start Day"  value={startOfDayRange} {...styles.paperInput}
+                        <TextInput label="Start Day"  value={dayToName[startOfDayRange]} {...styles.paperInput}
                             render={(props) => (
                                 <Picker style={{color: 'black', marginTop: 5}} dropdownIconColor='black' selectedValue={startOfDayRange} onValueChange={setStartOfDayRange}>
                                     {dayToName.map((day, index) => {
@@ -160,7 +160,7 @@ export default function CreateTimeboxForm(props) {
                                 </Picker>
                             )}
                         />
-                        <TextInput label="End Day"  value={endOfDayRange} {...styles.paperInput}
+                        <TextInput label="End Day"  value={dayToName[endOfDayRange]} {...styles.paperInput}
                             render={(props) => (
                                 <Picker style={{color: 'black', marginTop: 5}} dropdownIconColor='black' selectedValue={endOfDayRange} onValueChange={setEndOfDayRange}>
                                     {dayToName.map((day, index) => {

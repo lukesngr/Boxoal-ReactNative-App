@@ -19,11 +19,9 @@ export default function EditTimeboxForm(props) {
     const [goalSelected, setGoalSelected] = useState(props.data.goalID);
 
     const [reoccuring, setReoccuring] = useState(props.data.reoccuring != null);
-    console.log(reoccuring);
     const [startOfDayRange, setStartOfDayRange] = useState(props.data.reoccuring != null ? (props.data.reoccuring.startOfDayRange) : 0);
     const [endOfDayRange, setEndOfDayRange] = useState(props.data.reoccuring != null ? props.data.reoccuring.endOfDayRange : 0);
     const [goalPercentage, setGoalPercentage] = useState(String(props.data.goalPercentage));
-    console.log(startOfDayRange, endOfDayRange);
     const [isTimeblock, setIsTimeBlock] = useState(false);
     
     const [alert, setAlert] = useState({shown: false, title: "", message: ""});
@@ -153,7 +151,7 @@ export default function EditTimeboxForm(props) {
                         )}
                     />
                     {reoccuring && <>
-                        <TextInput label="Start Day"  value={startOfDayRange} {...styles.paperInput}
+                        <TextInput label="Start Day"  value={dayToName[startOfDayRange]} {...styles.paperInput}
                             render={(props) => (
                                 <Picker style={{color: 'black', marginTop: 5}} dropdownIconColor='black' selectedValue={startOfDayRange} onValueChange={setStartOfDayRange}>
                                     {dayToName.map((day, index) => {
@@ -162,7 +160,7 @@ export default function EditTimeboxForm(props) {
                                 </Picker>
                             )}
                         />
-                        <TextInput label="End Day"  value={endOfDayRange} {...styles.paperInput}
+                        <TextInput label="End Day"  value={dayToName[endOfDayRange]} {...styles.paperInput}
                             render={(props) => (
                                 <Picker style={{color: 'black', marginTop: 5}} dropdownIconColor='black' selectedValue={endOfDayRange} onValueChange={setEndOfDayRange}>
                                     {dayToName.map((day, index) => {

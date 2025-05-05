@@ -16,6 +16,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import { Dashboard } from './Dashboard';
 import { useAuthenticator } from '@aws-amplify/ui-react-native';
 import { useProfile } from '../hooks/useProfile';
+import Auth from 'aws-amplify';
 import { getCurrentUser } from 'aws-amplify/auth';
 import { get } from 'react-native/Libraries/TurboModule/TurboModuleRegistry';
 
@@ -89,18 +90,22 @@ function FinalViewSeperatedForFunctionality({userId, navigation, route, dispatch
 
 export default function FinalView({ navigation, route }) {
     const dispatch = useDispatch();
-    const { authStatus, user, isLoaded } = useAuthenticator((context) => [
-        context.authStatus,
-        context.user,
-        context.isLoaded,
-      ]);
-    if(authStatus == 'unauthenticated') { navigation.navigate('Login'); 
+    const [userId, setUserId] = useState(-1);
+    async function getLoginInfo() { 
+        try {
+            let { userId } = await getCurrentUser();
+            setUserId(userId);
+        } catch(error) {
+            console.log(error);
+            navigation.navigate('Login');
+        }
+    }
+    useEffect(()=> {
+        getLoginInfo();
+    }, []);
 
-    }else if(authStatus == 'configuring' || authStatus == "loading") {
-        return <Loading />
-    }else if(authStatus == "authenticated") {
-        console.log(user, authStatus);
-        return <FinalViewSeperatedForFunctionality userId={user.userId} navigation={navigation} route={route} dispatch={dispatch}/>
+    if(userId != -1) {
+        return <FinalViewSeperatedForFunctionality userId={userId} navigation={navigation} route={route} dispatch={dispatch}/>
     }
     return <></>
     

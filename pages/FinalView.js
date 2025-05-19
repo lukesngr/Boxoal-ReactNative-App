@@ -58,7 +58,7 @@ function FinalViewSeperatedForFunctionality({userId, navigation, route, dispatch
     }, [route.params]);
 
     if(status === 'pending') return <Loading />
-    if(status === 'error') return <Text>Error: {error.message}</Text>
+    if(status === 'error') return <Alert visible={true} close={() => {}} title="Error" message={error.message}></Alert>
     if(data.length == 0) return <Welcome />
     
     

@@ -1,13 +1,8 @@
 import axios from 'axios';
-import fs from 'react-native-fs';
-import { Buffer } from 'buffer';
-
-const certPath = 'server-cert.pem';
-
-const certificate = await fs.readFile(certPath, 'utf8');
+import serverCert from './serverCert';
 
 const httpsAgent = new https.Agent({
-  ca: Buffer.from(certificate)
+  ca: serverCert
 });
 
 const httpsConnection = axios.create({

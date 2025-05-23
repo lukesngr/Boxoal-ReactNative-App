@@ -19,6 +19,7 @@ import { useProfile } from '../hooks/useProfile';
 import Auth from 'aws-amplify';
 import { getCurrentUser } from 'aws-amplify/auth';
 import { get } from 'react-native/Libraries/TurboModule/TurboModuleRegistry';
+import Alert from '../components/Alert';
 
 let theme = {
     ...MD3LightTheme,
@@ -58,7 +59,7 @@ function FinalViewSeperatedForFunctionality({userId, navigation, route, dispatch
     }, [route.params]);
 
     if(status === 'pending') return <Loading />
-    if(status === 'error') return <Alert visible={true} close={() => {}} title="Error" message={error.message}></Alert>
+    if(status === 'error') return <Alert visible={true} close={() => {}} title="Error" message={"Please contact developer"}></Alert>
     if(data.length == 0) return <Welcome />
     
     

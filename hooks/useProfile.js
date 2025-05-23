@@ -3,12 +3,13 @@ import axios from "axios";
 import { getProgressAndLevel } from "../modules/coreLogic";
 import { useDispatch } from "react-redux";
 import { useEffect } from "react";
+import httpsConnection from "../modules/httpsConnection";
 export function useProfile(userId, dispatch) {
 
     const {status, data, error, refetch} = useQuery({
         queryKey: ["XP"], 
         queryFn: async () => {
-            const response = await axios.get(serverIP+"/getProfile", { params: {userUUID: userId}});
+            const response = await httpsConnection.get(serverIP+"/getProfile", { params: {userUUID: userId}});
             return response.data;
         },
         enabled: true

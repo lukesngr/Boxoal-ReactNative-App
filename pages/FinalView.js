@@ -20,6 +20,7 @@ import Auth from 'aws-amplify';
 import { getCurrentUser } from 'aws-amplify/auth';
 import { get } from 'react-native/Libraries/TurboModule/TurboModuleRegistry';
 import Alert from '../components/Alert';
+import httpsConnection from '../modules/httpsConnection';
 
 let theme = {
     ...MD3LightTheme,
@@ -40,7 +41,7 @@ function FinalViewSeperatedForFunctionality({userId, navigation, route, dispatch
     const {status, data, error, refetch} = useQuery({
         queryKey: ["schedule"], 
         queryFn: async () => {
-            const response = await axios.get(serverIP+"/getSchedules", { params: {
+            const response = await httpsConnection.get(serverIP+"/getSchedules", { params: {
                 userUUID: userId
             }});
             return response.data;

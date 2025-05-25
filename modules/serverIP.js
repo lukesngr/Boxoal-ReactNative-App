@@ -1,2 +1,2 @@
-let serverIP = "http://54.206.85.123:3000";
+let serverIP = "https://www.boxoal.com/api";
 export default serverIP;

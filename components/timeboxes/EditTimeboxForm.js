@@ -111,7 +111,7 @@ export default function EditTimeboxForm(props) {
 
     return (
     <Portal>
-        <Dialog style={{backgroundColor: '#styles.primaryColor'}} visible={true} onDismiss={closeModal}>
+        <Dialog style={{backgroundColor: styles.primaryColor}} visible={true} onDismiss={closeModal}>
             <Dialog.Title style={{color: 'white'}}>Edit Timebox</Dialog.Title>
             <Dialog.Content>
                 <SegmentedButtons

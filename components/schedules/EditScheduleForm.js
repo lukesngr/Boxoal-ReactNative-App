@@ -51,7 +51,7 @@ export default function EditScheduleForm(props) {
     return (
     <>
         <Portal>
-          <Dialog style={{backgroundColor: '#styles.primaryColor'}} visible={props.visible} onDismiss={props.close}>
+          <Dialog style={{backgroundColor: styles.primaryColor}} visible={props.visible} onDismiss={props.close}>
             <Dialog.Title style={{color: 'white'}}>Edit Schedule</Dialog.Title>
             <Dialog.Content>
                 <TextInput label="Title" value={title} onChangeText={setTitle} {...styles.paperInput}/>

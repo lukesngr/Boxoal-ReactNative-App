@@ -112,7 +112,7 @@ export default function CreateTimeboxForm(props) {
 
     return (
     <Portal>
-        <Dialog style={{backgroundColor: '#styles.primaryColor'}} visible={props.visible} onDismiss={closeModal}>
+        <Dialog style={{backgroundColor: styles.primaryColor}} visible={props.visible} onDismiss={closeModal}>
             <Dialog.Title style={{color: 'white'}}>Create Timebox</Dialog.Title>
             <Dialog.Content>
             <SegmentedButtons

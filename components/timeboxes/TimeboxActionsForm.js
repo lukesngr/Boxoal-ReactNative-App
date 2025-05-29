@@ -61,7 +61,7 @@ export default function TimeboxActionsForm(props) {
     <>
         {showEditTimeboxForm ? ( <EditTimeboxForm data={data} previousRecording={!noPreviousRecording} back={() => setShowEditTimeboxForm(false)}></EditTimeboxForm>) : (
         <Portal>
-            <Dialog style={{backgroundColor: '#styles.primaryColor'}} visible={props.visible} onDismiss={closeModal}>
+            <Dialog style={{backgroundColor: styles.primaryColor}} visible={props.visible} onDismiss={closeModal}>
                 <Dialog.Title style={{color: 'white'}}>{data.title}</Dialog.Title>
                 <Dialog.Content>
                     <Paragraph style={{color: 'white'}}>Actions for "{data.title}" timebox</Paragraph>

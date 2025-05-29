@@ -38,7 +38,7 @@ export default function ManualEntryTimeModal(props) {
     }
 
     return (<>
-    <Dialog style={{backgroundColor: '#styles.primaryColor'}} visible={props.visible} onDismiss={props.close}>
+    <Dialog style={{backgroundColor: styles.primaryColor}} visible={props.visible} onDismiss={props.close}>
         <Dialog.Title style={{color: 'white'}}>Manual Entry Of Recorded Time</Dialog.Title>
         <Dialog.Content>
             <Button textColor="black" buttonColor="white" mode="contained" style={{marginBottom: 2}} onPress={() => setStartTimePickerVisible(true)}>Pick Recorded Start Time</Button>

@@ -3,6 +3,7 @@ import { getProgressWithGoal } from "../../modules/coreLogic";
 import { getDateWithSuffix } from "../../modules/formatters";
 import dayjs from "dayjs";
 import { View } from "react-native";
+import { styles } from "../../styles/styles";
 
 export function GoalTreeNode(props) {
     let goalDateInDayJS = dayjs(props.goal.targetDate);
@@ -15,10 +16,10 @@ export function GoalTreeNode(props) {
     const circumference = 2 * Math.PI * radius;
     const strokeDashoffset = circumference - (circumference * progress) / 100;
     let outsideColor = '#D9D9D9';
-    let insideColor = '#styles.primaryColor';
+    let insideColor = styles.primaryColor;
     let {title} = props.goal;
     if(props.goal.completed) {
-        outsideColor = '#styles.primaryColor';
+        outsideColor = styles.primaryColor;
         insideColor = '#D9D9D9';
         dateWithSuffix = getDateWithSuffix(dayjs(props.goal.completedOn).date());
     }

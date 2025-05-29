@@ -23,8 +23,8 @@ export let theme = {
   ...MD3LightTheme,
   colors: {
     ...MD3LightTheme.colors,
-    primary: '#C5C27C',
-    secondary: '#C5C27C',
+    primary: '#styles.primaryColor',
+    secondary: '#styles.primaryColor',
     background: '#FFFFFF',
     secondaryContainer: '#D9D9D9',
     onSecondaryContainer: '#1D1B20',
@@ -35,7 +35,7 @@ const MyTheme = {
   ...DefaultTheme,
   colors: {
     ...DefaultTheme.colors,
-    primary: '#C5C27C',
+    primary: '#styles.primaryColor',
   },
 };
 

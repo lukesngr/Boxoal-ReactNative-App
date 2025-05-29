@@ -106,15 +106,15 @@ export default function SplashScreen({navigation}) {
   return (
   <View style={styles.splashScreenContainer}>
     <Animated.View style={[styles.splashTextContainer, {width: firstLineDisplayed.interpolate({inputRange: [0, 100], outputRange: ['0%', '100%']}),
-    borderRightColor: blinkingCaretOne.interpolate({inputRange: [0, 0.5, 0.6, 1], outputRange: ['transparent', 'transparent', '#styles.primaryColor', '#styles.primaryColor']})}]}>
+    borderRightColor: blinkingCaretOne.interpolate({inputRange: [0, 0.5, 0.6, 1], outputRange: ['transparent', 'transparent', styles.primaryColor, styles.primaryColor]})}]}>
       <Text numberOfLines={1} style={styles.splashText}>Timeboxing</Text>
     </Animated.View>
     <Animated.View style={[styles.splashTextContainer, {width: secondLineDisplayed.interpolate({inputRange: [0, 100], outputRange: ['0%', '100%']}),
-    borderRightColor: blinkingCaretTwo.interpolate({inputRange: [0, 0.5, 0.6, 1], outputRange: ['transparent', 'transparent', '#styles.primaryColor', '#styles.primaryColor']})}]}>
+    borderRightColor: blinkingCaretTwo.interpolate({inputRange: [0, 0.5, 0.6, 1], outputRange: ['transparent', 'transparent', styles.primaryColor, styles.primaryColor]})}]}>
       <Text  numberOfLines={1} style={styles.splashText}>For The</Text>
     </Animated.View>
     <Animated.View style={[styles.splashTextContainer, {width: thirdLineDisplayed.interpolate({inputRange: [0, 100], outputRange: ['0%', '100%']}),
-    borderRightColor: blinkingCaretThree.interpolate({inputRange: [0, 0.5, 0.6, 1], outputRange: ['transparent', 'transparent', '#styles.primaryColor', '#styles.primaryColor']})}]}>
+    borderRightColor: blinkingCaretThree.interpolate({inputRange: [0, 0.5, 0.6, 1], outputRange: ['transparent', 'transparent', styles.primaryColor, styles.primaryColor]})}]}>
       <Text numberOfLines={1} style={styles.splashText}>Everyman</Text>
     </Animated.View>
     <Button mode="contained" style={styles.welcomeButtonOutlineStyle} onPress={() => navigation.navigate('Login')}>Get Started</Button>

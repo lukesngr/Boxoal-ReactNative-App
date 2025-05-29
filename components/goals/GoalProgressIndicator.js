@@ -26,7 +26,7 @@ export default function GoalProgressIndicator(props) {
                 strokeWidth={strokeWidth}
             />
             <Circle
-                stroke='#C5C27C'
+                stroke='#styles.primaryColor'
                 fill="none"
                 cx={size / 2}
                 cy={size / 2}

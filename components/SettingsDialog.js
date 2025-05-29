@@ -47,7 +47,7 @@ export default function SettingsDialog(props) {
 
     return (<>
         <Portal>
-          <Dialog style={{backgroundColor: '#C5C27C'}} visible={props.visible} onDismiss={props.hideDialog}>
+          <Dialog style={{backgroundColor: '#styles.primaryColor'}} visible={props.visible} onDismiss={props.hideDialog}>
             <Dialog.Title>Settings</Dialog.Title>
             <Dialog.Content>
                 <SegmentedButtons value={dayView} onValueChange={setOnDayView} buttons={[

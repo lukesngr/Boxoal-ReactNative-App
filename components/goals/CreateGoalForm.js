@@ -54,7 +54,7 @@ export default function CreateGoalForm(props) {
     return (
     <>
         <Portal>
-          <Dialog style={{backgroundColor: '#C5C27C'}} visible={props.visible} onDismiss={props.close}>
+          <Dialog style={{backgroundColor: '#styles.primaryColor'}} visible={props.visible} onDismiss={props.close}>
             <Dialog.Title style={{color: 'white'}}>Create Goal</Dialog.Title>
             <Dialog.Content>
                 <TextInput testID="createGoalTitle" label="Title" value={title} onChangeText={setTitle} style={{backgroundColor: 'white', marginBottom: 2}} selectionColor="black" textColor="black"/>

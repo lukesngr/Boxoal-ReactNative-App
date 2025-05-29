@@ -27,7 +27,7 @@ export function Dashboard(props) {
     <View style={{backgroundColor: '#D9D9D9', height: '100%'}}>
       <Text style={{fontFamily: 'KameronRegular', fontSize: 30, color: 'black', textAlign: 'center', marginTop: 30}}>Welcome Back</Text>
       <Text style={{fontFamily: 'KameronRegular', fontSize: 20, color: 'black', marginTop: 20, marginHorizontal: 30}}>Lvl {goalsCompleted}</Text>
-      <ProgressBar progress={averageProgress} color={'#C5C27C'} style={{marginTop: 10, marginHorizontal: 30, width: '80%'}} />
+      <ProgressBar progress={averageProgress} color={'#styles.primaryColor'} style={{marginTop: 10, marginHorizontal: 30, width: '80%'}} />
       <Statistics recordedTimeboxes={recordedTimeboxes} />
     </View>
   );

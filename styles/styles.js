@@ -84,7 +84,7 @@ export const styles = {
         backgroundColor: 'rgba(128, 128, 128, 0.2)',
     },
     welcomeButtonOutlineStyle: {
-        backgroundColor: '#C5C27C',
+        backgroundColor: '#875F9A',
         padding: 5,
         marginTop: 100,
         marginLeft: 10,
@@ -191,13 +191,14 @@ export const styles = {
     addGoalFAB: {
         width: '85%', 
         marginTop: 10, 
-        backgroundColor: '#C5C27C', 
+        backgroundColor: '#875F9A', 
         textAlign: 'center', 
     },
     timeTextWidth: 46,
     timeTextOverallWidth: 50,
     normalTimeboxHeight: 30,
     enlargedTimeboxHeight: 60,
+    primaryColor: "#875F9A"
 };
 
 export const listOfColors = ["#00E3DD", "#00C5E6", "#00A4E7", "#0081DC", "#1E5ABF", "#348D9D", "#67D6FF"];

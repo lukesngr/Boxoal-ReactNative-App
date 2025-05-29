@@ -15,10 +15,10 @@ export function GoalTreeNode(props) {
     const circumference = 2 * Math.PI * radius;
     const strokeDashoffset = circumference - (circumference * progress) / 100;
     let outsideColor = '#D9D9D9';
-    let insideColor = '#C5C27C';
+    let insideColor = '#styles.primaryColor';
     let {title} = props.goal;
     if(props.goal.completed) {
-        outsideColor = '#C5C27C';
+        outsideColor = '#styles.primaryColor';
         insideColor = '#D9D9D9';
         dateWithSuffix = getDateWithSuffix(dayjs(props.goal.completedOn).date());
     }

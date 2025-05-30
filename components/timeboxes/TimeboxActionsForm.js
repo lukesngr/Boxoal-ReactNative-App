@@ -12,6 +12,7 @@ import Alert from "../Alert";
 import { Dialog, Paragraph, Portal } from "react-native-paper";
 import { useAuthenticator } from "@aws-amplify/ui-react-native";
 import ManualEntryTimeModal from "../modals/ManualEntryTimeModal";
+import { styles } from "../../styles/styles.js";
 
 export default function TimeboxActionsForm(props) {
     const {data, date, time} = props;

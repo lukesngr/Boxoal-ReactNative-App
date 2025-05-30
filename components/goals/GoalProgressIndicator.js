@@ -3,6 +3,7 @@ import { getProgressWithGoal } from "../../modules/coreLogic";
 import { getDateWithSuffix } from "../../modules/formatters";
 import dayjs from "dayjs";
 import { View } from "react-native";
+import { styles } from "../../styles/styles";
 
 export default function GoalProgressIndicator(props) {
     let goalDateInDayJS = dayjs(props.goal.targetDate);

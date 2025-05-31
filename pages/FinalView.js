@@ -28,7 +28,7 @@ let theme = {
       primary: '#875F9A',
       secondary: '#875F9A',
       background: '#FFFFFF',
-      secondaryContainer: '#D4D28F',
+      secondaryContainer: '#9456b0',
       elevation: {...MD3LightTheme.colors.elevation, 'level2': '#FFFFFF'},
     },
   };

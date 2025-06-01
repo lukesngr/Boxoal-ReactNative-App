@@ -1,5 +1,8 @@
+import { useSelector } from "react-redux";
 import { convertToDayjs } from "./formatters";
 import dayjs from "dayjs";
+
+var hoursConversionDivisor = 3600000;
 
 export function getHeightForBoxes(numberOfBoxes) { return `calc(${(numberOfBoxes * 100)}% + ${(numberOfBoxes - 1) * 2}px)` }
 
@@ -52,7 +55,7 @@ export function calculateMaxNumberOfBoxesAfterTimeIfEmpty(boxSizeUnit, boxSizeNu
 export function calculateBoxesBetweenTwoTimes(time1, time2, boxSizeUnit, boxSizeNumber) {
     let numberOfBoxes = 0;
     const minuteConversionDivisor = 60000;
-    const hoursConversionDivisor = 3600000;
+    
 
     if(boxSizeUnit == "min") {
         numberOfBoxes += Math.floor(((time2.valueOf() - time1.valueOf()) / minuteConversionDivisor) / boxSizeNumber);
@@ -195,12 +198,16 @@ export function findSmallestTimeBoxLengthInSpace(timeboxGridFilteredByDate, time
     return smallestTimeboxLength;
 } 
 
-export function getStatistics(recordedTimeboxes) {
+export function getStatistics(recordedTimeboxes, timeboxes) {
+    const {wakeupTime} = useSelector((state) => state.profile.value);
     let reschedules = 0;
     let minutesOverBy = 0;
     let averageTimeStartedOffBy = 0;
     let timeboxesThatMatchPredictedStart = 0;
     let timeboxesThatMatchCorrectTime = 0;
+    let today = dayjs()
+    let hoursLeftToday = (today.toDate() - convertToDayjs(wakeupTime, today.date()+'/'+today.month()).toDate()) / hoursConversionDivisor;
+
     for(let i = 0; i < recordedTimeboxes.length; i++) {
         let recordedTimebox = recordedTimeboxes[i];
         let recordedTimeboxStartTime = new Date(recordedTimebox.recordedStartTime);
@@ -243,5 +250,24 @@ export function getStatistics(recordedTimeboxes) {
         percentageCorrectTime = 0;
         percentageRescheduled = 0;
     }
-    return {averageTimeOverBy, averageTimeStartedOffBy, percentagePredictedStart, percentageCorrectTime, percentageRescheduled};
+
+    for(let timebox of props.timeboxes) {
+
+        let isSameDate = dayjs(timebox.startTime).isSame(today, 'date');
+        let isReoccuringDaily = timebox.reoccuring != null && timebox.reoccuring.reoccurFrequency === "daily";
+        let isReoccuringWeeklyAndToday = timebox.reoccuring != null && timebox.reoccuring.reoccurFrequency === "weekly" && timebox.reoccuring.weeklyDay == new Date().getDay();
+        let isReoccuringDailyOrWeeklyAndToday = isReoccuringDaily || isReoccuringWeeklyAndToday;
+
+        if(timebox.isTimeblock && (isSameDate || isReoccuringDailyOrWeeklyAndToday)) {
+            if(dayjs(timebox.startTime).isAfter(today)) {
+                hoursLeftToday -= ((new Date(timebox.endTime) - new Date(timebox.startTime)) / hoursConversionDivisor)
+            }else if(dayjs(timebox.endTime).isAfter(today)) {
+                hoursLeftToday -= ((new Date(timebox.endTime) - new Date()) / hoursConversionDivisor)
+            }
+        }   
+    }
+
+    hoursLeftToday = Math.round(hoursLeftToday)
+
+    return {averageTimeOverBy, averageTimeStartedOffBy, percentagePredictedStart, percentageCorrectTime, percentageRescheduled, hoursLeftToday};
 }

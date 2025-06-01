@@ -45,12 +45,9 @@ export function Statistics(props) {
         </Surface>
 
         <Surface style={{backgroundColor: styles.primaryColor, height: 'fit-content', width: '80%', marginTop: 30, marginHorizontal: 30}}  elevation={4}>
-            <Text style={{fontFamily: 'Roboto', fontSize: 15, color: 'black', marginTop: 20, marginHorizontal: 20}}>Average Time Started Off By: {averageTimeStartedOffBy.toFixed(2)}min</Text>
-            <View style={{flexDirection: 'row', justifyContent: 'space-around', marginTop: 20, marginBottom: 20}}>
                 <StatisticsProgressIndicator percentage={percentagePredictedStart} text="Predicted Start"/>
                 <StatisticsProgressIndicator percentage={percentageCorrectTime} text="Correct Time"/>
                 <StatisticsProgressIndicator percentage={percentageRescheduled} text="Rescheduled"/>
-            </View>
         </Surface>
         </ScrollView>
     )

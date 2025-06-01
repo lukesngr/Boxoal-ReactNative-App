@@ -3,12 +3,11 @@ import { View } from "react-native";
 
 export function StatisticsGraph(props) {
     let {percentage, text} = props;
-    let realPercentage = percentage * 100;
     const size = 200;
     let strokeWidth = 4;
     const radius = (size - strokeWidth) / 2;
     const circumference = 2 * Math.PI * radius;
-    const strokeDashoffset = circumference - (circumference * realPercentage) / 100;
+    const strokeDashoffset = circumference - (circumference * percentage);
     return (
         <View style={{marginLeft: 10, marginRight: 10}}>             
     <Svg width={size} height={size}>                 

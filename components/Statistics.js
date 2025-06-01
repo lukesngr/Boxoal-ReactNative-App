@@ -37,11 +37,11 @@ export function Statistics(props) {
         </Surface>
 
         <Surface style={{backgroundColor: styles.primaryColor, height: 'fit-content', width: '80%', marginTop: 30, marginHorizontal: 30}} elevation={4}>
-            <Text style={{fontFamily: 'Koulen-Regular', fontSize: 19, color: 'white', marginTop: 20, marginHorizontal: 10}}>Hours Left In A Day</Text>
+            <Text style={{fontFamily: 'Koulen-Regular', fontSize: 19, color: 'white', marginTop: 20, marginHorizontal: 10}}>Hours Available Today</Text>
             <View style={{backgroundColor: '#1A0124', marginHorizontal: 10}}>
                 <Text style={{fontFamily: 'digital-7', fontSize: 80, color: '#6145B5', textAlign: 'center'}}>{hoursLeftInDay}</Text>
             </View>
-            <Text style={{fontFamily: 'Koulen-Regular', textAlign: 'right', marginHorizontal: 10, fontSize: 20, color: 'white'}}>Minutes</Text>
+            <Text style={{fontFamily: 'Koulen-Regular', textAlign: 'right', marginHorizontal: 10, fontSize: 20, color: 'white'}}>Hours</Text>
         </Surface>
 
         <Surface style={{backgroundColor: styles.primaryColor, height: 'fit-content', width: '80%', marginTop: 30, marginHorizontal: 30}}  elevation={4}>

@@ -9,6 +9,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { Statistics } from "../components/Statistics";
 import { getProgressWithGoal } from "../modules/coreLogic";
 import { styles } from "../styles/styles";
+import {IconButton} from 'react-native-paper'
+
 export function Dashboard(props) {
 
   const {scheduleIndex} = useSelector(state => state.profile.value);
@@ -25,9 +27,17 @@ export function Dashboard(props) {
   let recordedTimeboxes = props.data[scheduleIndex].recordedTimeboxes;
   let timeboxes = props.data[scheduleIndex].timeboxes;
 
+  async function logout() {
+    await signOut();
+    props.navigation.navigate('Login');
+  }
+
   return (
     <View style={{backgroundColor: '#D9D9D9', height: '100%'}}>
-      <Text style={{fontFamily: 'KameronRegular', fontSize: 30, color: 'black', textAlign: 'center', marginTop: 30}}>Welcome Back</Text>
+      <View style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'center', marginTop: 30}}> 
+        <Text style={{fontFamily: 'KameronRegular', fontSize: 30, color: 'black', textAlign: 'center' }}>Welcome Back</Text>
+        <IconButton icon="logout" size={40} onPress={logout}></IconButton>
+      </View>
       <Text style={{fontFamily: 'KameronRegular', fontSize: 20, color: 'black', marginTop: 20, marginHorizontal: 30}}>Lvl {goalsCompleted}</Text>
       <ProgressBar progress={averageProgress} color={styles.primaryColor} style={{marginTop: 10, marginHorizontal: 30, width: '80%'}} />
       <Statistics timeboxes={timeboxes} recordedTimeboxes={recordedTimeboxes} />

@@ -31,7 +31,7 @@ export default function TimeboxHeading(props) {
                 }
                 onCancel={() => setDatePickerVisible(false)}>
             </DatePicker>
-            <SettingsDialog navigation={props.navigation} data={props.data} visible={dialogVisible} hideDialog={() => setDialogVisible(false)}></SettingsDialog>
+            <SettingsDialog data={props.data} visible={dialogVisible} hideDialog={() => setDialogVisible(false)}></SettingsDialog>
         </View>
     )
 }

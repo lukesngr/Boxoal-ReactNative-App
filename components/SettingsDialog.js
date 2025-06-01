@@ -38,12 +38,6 @@ export default function SettingsDialog(props) {
         dispatch({type: 'profile/set', payload: {scheduleIndex: (scheduleIndex-1), scheduleID: data[scheduleIndex-1].id, boxSizeNumber: convertedBackBoxSizeNumber, boxSizeUnit, wakeupTime: wakeupTimeAsText}});
         props.hideDialog();
     }
-    
-    async function logOut() {
-        await signOut();
-        props.hideDialog();
-        props.navigation.navigate('Login');
-    }
 
     return (<>
         <Portal>
@@ -82,7 +76,6 @@ export default function SettingsDialog(props) {
                 </Pressable>
             </Dialog.Content>
             <Dialog.Actions>
-                <Button textColor="black" buttonColor="white" mode="contained" onPress={logOut}>Logout</Button>
                 <Button textColor="black" buttonColor="white" mode="contained" onPress={updateProfile}>Update</Button>
                 <Button testID="exitSettings" textColor='white' onPress={props.hideDialog}>Exit</Button>
             </Dialog.Actions>

@@ -67,14 +67,14 @@ function FinalViewSeperatedForFunctionality({userId, navigation, route, dispatch
           <Tab.Navigator theme={theme}>
             <Tab.Screen 
                 name="Dashboard" 
-                children={() => <Dashboard data={data} userID={userId}></Dashboard>} 
+                children={() => <Dashboard navigation={navigation} data={data} userID={userId}></Dashboard>} 
                 options={{headerShown: false, tabBarIcon: ({color}) => (
                     <MaterialCommunityIcons name="circle-outline" size={20} color='black' />
                 )}}
             />
             <Tab.Screen 
                 name="Timeboxes" 
-                children={() => <Timeboxes navigation={navigation} data={data}></Timeboxes>} 
+                children={() => <Timeboxes data={data}></Timeboxes>} 
                 options={{headerShown: false, tabBarIcon: ({color}) => (
                     <MaterialCommunityIcons testID='timeboxesTab' name="checkbox-blank-outline" size={20} color='black' />
                 )}}/>

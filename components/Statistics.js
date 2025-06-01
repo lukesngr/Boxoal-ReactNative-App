@@ -45,9 +45,9 @@ export function Statistics(props) {
         </Surface>
 
         
-        <StatisticsGraph percentage={percentagePredictedStart} text="Predicted Start"/>
-        <StatisticsGraph percentage={percentageCorrectTime} text="Correct Time"/>
-        <StatisticsGraph percentage={percentageRescheduled} text="Rescheduled"/>
+        <StatisticsGraph percentage={percentagePredictedStart} title="Matching Scheduled Start" property="Scheduled Start"/>
+        <StatisticsGraph percentage={percentageCorrectTime} title="Matching Scheduled Time" property="Scheduled Time"/>
+        <StatisticsGraph percentage={percentageRescheduled} title="Rescheduled" property="Rescheduled"/>
         </ScrollView>
     )
 }

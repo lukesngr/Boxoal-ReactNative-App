@@ -9,7 +9,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { Statistics } from "../components/Statistics";
 import { getProgressWithGoal } from "../modules/coreLogic";
 import { styles } from "../styles/styles";
-import {IconButton} from 'react-native-paper'
+import {IconButton} from 'react-native-paper';
+import { signOut } from "aws-amplify/auth";
 
 export function Dashboard(props) {
 
@@ -39,7 +40,7 @@ export function Dashboard(props) {
         <IconButton icon="logout" size={40} onPress={logout}></IconButton>
       </View>
       <Text style={{fontFamily: 'KameronRegular', fontSize: 20, color: 'black', marginTop: 20, marginHorizontal: 30}}>Lvl {goalsCompleted}</Text>
-      <ProgressBar progress={averageProgress} color={styles.primaryColor} style={{marginTop: 10, marginHorizontal: 30, width: '80%'}} />
+      <ProgressBar progress={averageProgress} theme={{ colors: { primary: styles.primary, surfaceVariant: '#d1c2d8' } }} style={{marginTop: 10, marginHorizontal: 30, width: '80%'}} />
       <Statistics timeboxes={timeboxes} recordedTimeboxes={recordedTimeboxes} />
     </View>
   );

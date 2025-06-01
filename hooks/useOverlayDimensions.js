@@ -5,7 +5,7 @@ import { styles } from "../styles/styles";
 
 export default function useOverlayDimensions(headerHeight, headerWidth, onDayView) {
     const dispatch = useDispatch();
-    const {boxSizeUnit, boxSizeNumber, wakeupTime} = useSelector(state => state.profile.value);
+    const profile = useSelector(state => state.profile.value);
     let timeboxHeight = styles.normalTimeboxHeight;
     
     if(onDayView) {
@@ -16,10 +16,10 @@ export default function useOverlayDimensions(headerHeight, headerWidth, onDayVie
         if (headerHeight != 0 && headerWidth != 0) {
             
             let overlayHeight = 0;
-            if(boxSizeUnit == 'min') {
-                overlayHeight = Math.floor(24*60 / boxSizeNumber) * timeboxHeight;
-            }else if(boxSizeUnit == 'hr') {
-                overlayHeight = Math.floor(24 / boxSizeNumber) * timeboxHeight;
+            if(profile.boxSizeUnit == 'min') {
+                overlayHeight = Math.floor(24*60 / profile.boxSizeNumber) * timeboxHeight;
+            }else if(profile.boxSizeUnit == 'hr') {
+                overlayHeight = Math.floor(24 / profile.boxSizeNumber) * timeboxHeight;
             }
 
             dispatch({type: 'overlayDimensions/set', payload: {headerWidth: headerWidth, overlayHeight: overlayHeight, timeboxHeight: timeboxHeight, headerHeight: headerHeight}});
@@ -34,7 +34,7 @@ export default function useOverlayDimensions(headerHeight, headerWidth, onDayVie
 
     useEffect(() => {
         calculateOverlayDimensions();
-    }, [headerHeight, headerWidth]);
+    }, [headerHeight, headerWidth, profile]);
 
     return;
 }

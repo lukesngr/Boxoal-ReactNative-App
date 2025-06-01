@@ -20,11 +20,11 @@ export function StatisticsGraph(props) {
                 <PieChart widthAndHeight={widthAndHeight} series={series} />
                 <View style={{flexDirection: 'row', marginLeft: 10, marginTop: 20}}>
                     <View style={{height: 20, width: 20, backgroundColor: "#000", marginRight: 10, marginTop: 7}}></View>
-                    <Text style={{fontFamily: 'Koulen-Regular', fontSize: 19, color: 'white'}}>{property}</Text>
+                    <Text style={{fontFamily: 'Koulen-Regular', fontSize: 19, color: 'white'}}>{Math.round(percentage*100)}% {property}</Text>
                 </View>
                 <View style={{flexDirection: 'row', marginLeft: 10, marginTop: 5}}>
                     <View style={{height: 20, width: 20, backgroundColor: "#495057", marginRight: 10, marginTop: 7}}></View>
-                    <Text style={{fontFamily: 'Koulen-Regular', fontSize: 19, color: 'white'}}>Not {property}</Text>
+                    <Text style={{fontFamily: 'Koulen-Regular', fontSize: 19, color: 'white'}}>{Math.round((1-percentage)*100)}% Not {property}</Text>
                 </View>
             </View>
         </Surface>

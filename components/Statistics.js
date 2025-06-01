@@ -44,11 +44,10 @@ export function Statistics(props) {
             <Text style={{fontFamily: 'Koulen-Regular', textAlign: 'right', marginHorizontal: 10, fontSize: 20, color: 'white'}}>Hours</Text>
         </Surface>
 
-        <Surface style={{backgroundColor: styles.primaryColor, height: 'fit-content', width: '80%', marginTop: 30, marginHorizontal: 30}}  elevation={4}>
-                <StatisticsGraph percentage={percentagePredictedStart} text="Predicted Start"/>
-                <StatisticsGraph percentage={percentageCorrectTime} text="Correct Time"/>
-                <StatisticsGraph percentage={percentageRescheduled} text="Rescheduled"/>
-        </Surface>
+        
+        <StatisticsGraph percentage={percentagePredictedStart} text="Predicted Start"/>
+        <StatisticsGraph percentage={percentageCorrectTime} text="Correct Time"/>
+        <StatisticsGraph percentage={percentageRescheduled} text="Rescheduled"/>
         </ScrollView>
     )
 }

@@ -34,15 +34,15 @@ export default function SettingsDialog(props) {
     function updateProfile() {
         let wakeupTimeAsText = convertToTimeAndDate(wakeupTime)[0];
         let convertedBackBoxSizeNumber = Number(boxSizeNumber);
-        axios.post(serverIP+'/updateProfile', {scheduleIndex: (scheduleIndex-1), scheduleID: data[scheduleIndex-1].id, boxSizeUnit, boxSizeNumber: convertedBackBoxSizeNumber, wakeupTime: wakeupTimeAsText, userUUID: user.userId}).catch(function(error) { console.log(error); });
         dispatch({type: 'profile/set', payload: {scheduleIndex: (scheduleIndex-1), scheduleID: data[scheduleIndex-1].id, boxSizeNumber: convertedBackBoxSizeNumber, boxSizeUnit, wakeupTime: wakeupTimeAsText}});
+        axios.post(serverIP+'/updateProfile', {scheduleIndex: (scheduleIndex-1), scheduleID: data[scheduleIndex-1].id, boxSizeUnit, boxSizeNumber: convertedBackBoxSizeNumber, wakeupTime: wakeupTimeAsText, userUUID: user.userId}).catch(function(error) { console.log(error); });
         props.hideDialog();
     }
 
     return (<>
         <Portal>
           <Dialog style={{backgroundColor: styles.primaryColor}} visible={props.visible} onDismiss={props.hideDialog}>
-            <Dialog.Title>Settings</Dialog.Title>
+            <Dialog.Title style={{color: 'white'}}>Settings</Dialog.Title>
             <Dialog.Content>
                 <SegmentedButtons value={dayView} onValueChange={setOnDayView} buttons={[
                     {value: true, label: 'Day', style: !onDayView ? {backgroundColor: 'white'} : {}}, 

@@ -41,14 +41,31 @@ export default function SettingsDialog(props) {
 
     return (<>
         <Portal>
-          <Dialog style={{backgroundColor: styles.primaryColor}} visible={props.visible} onDismiss={props.hideDialog}>
-            <Dialog.Title style={{color: 'white'}}>Settings</Dialog.Title>
+          <Dialog style={{backgroundColor: styles.primaryColor, borderRadius: 0}} visible={props.visible} onDismiss={props.hideDialog}>
+            <Dialog.Title style={{color: 'white', fontFamily: 'Koulen-Regular'}}>Settings</Dialog.Title>
             <Dialog.Content>
-                <SegmentedButtons value={dayView} onValueChange={setOnDayView} buttons={[
-                    {value: true, label: 'Day', style: !onDayView ? {backgroundColor: 'white'} : {}}, 
-                    {value: false, label: 'Week', style: onDayView ? {backgroundColor: 'white'} : {}}]}>
+                <SegmentedButtons theme={
+                    {
+                        roundness: 0, 
+                        fonts: {
+                            labelLarge: {
+                                fontFamily: 'KameronRegular',
+                                fontSize: 20,
+                                fontWeight: '500',
+                            },
+                        },
+                        colors: {
+                            secondaryContainer: '#000000', 
+                            onSecondaryContainer: '#FFFFFF', 
+                            surface: '#FFFFFF', 
+                            onSurface: '#000000'
+                        }
+            
+                    }
+                } 
+                value={dayView} style={{backgroundColor: 'white'}} onValueChange={setOnDayView} buttons={[{value: true, label: 'Day'}, {value: false, label: 'Week'}]}>
                 </SegmentedButtons>
-                <TextInput label="Schedule" value={String(scheduleIndex)} style={{backgroundColor: 'white', marginTop: 10}} selectionColor="black" textColor="black"
+                <TextInput label="Schedule" value={String(scheduleIndex)} style={{backgroundColor: 'white', marginTop: 10, fontFamily: 'KameronRegular'}} selectionColor="black" textColor="black"
 	                render={(props) => (
                         <Picker style={{color: 'black', marginTop: 5}} dropdownIconColor='black' selectedValue={scheduleIndex} onValueChange={setScheduleIndex}>
                             {data && data.map((schedule, index) => {

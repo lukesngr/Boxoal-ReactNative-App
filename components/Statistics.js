@@ -1,7 +1,7 @@
 import { Text, Surface } from "react-native-paper";
 import { getStatistics } from "../modules/boxCalculations";
 import { ScrollView, View } from "react-native";
-import { StatisticsProgressIndicator } from "./StatisticsProgressIndicator";
+import { StatisticsGraph } from "./StatisticsGraph";
 import { styles } from "../styles/styles";
 
 export function Statistics(props) {
@@ -45,9 +45,9 @@ export function Statistics(props) {
         </Surface>
 
         <Surface style={{backgroundColor: styles.primaryColor, height: 'fit-content', width: '80%', marginTop: 30, marginHorizontal: 30}}  elevation={4}>
-                <StatisticsProgressIndicator percentage={percentagePredictedStart} text="Predicted Start"/>
-                <StatisticsProgressIndicator percentage={percentageCorrectTime} text="Correct Time"/>
-                <StatisticsProgressIndicator percentage={percentageRescheduled} text="Rescheduled"/>
+                <StatisticsGraph percentage={percentagePredictedStart} text="Predicted Start"/>
+                <StatisticsGraph percentage={percentageCorrectTime} text="Correct Time"/>
+                <StatisticsGraph percentage={percentageRescheduled} text="Rescheduled"/>
         </Surface>
         </ScrollView>
     )

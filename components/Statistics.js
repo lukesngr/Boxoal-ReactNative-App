@@ -16,28 +16,28 @@ export function Statistics(props) {
 
     return (
     <ScrollView>
-        <Surface style={{backgroundColor: styles.primaryColor, height: 'fit-content', width: '80%', marginTop: 30, marginHorizontal: 30}} elevation={4}>
-            <Text style={{fontFamily: 'Koulen-Regular', fontSize: 19, color: 'white', marginTop: 20, marginHorizontal: 10}}>{averageTimeOverBy > 0 ? "Time On Average Recordings Are Over By" : "Time On Average Recordings Are Under By"}</Text>
-            <View style={{backgroundColor: '#1A0124', marginHorizontal: 10}}>
-                <Text style={{fontFamily: 'digital-7', fontSize: 80, color: '#6145B5', textAlign: 'center'}}>{averageTimeOverBy > 0 ? averageTimeOverBy.toFixed(2) : -averageTimeOverBy.toFixed(2)}</Text>
+        <Surface style={styles.dashboard.statTextSurface} elevation={4}>
+            <Text style={styles.dashboard.statHeading}>Average Recordings Are {averageTimeOverBy > 0 ? "Over" : "Under"} By</Text>
+            <View style={styles.dashboard.statTextContainer}>
+                <Text style={styles.dashboard.statText}>{averageTimeOverBy > 0 ? averageTimeOverBy.toFixed(2) : -averageTimeOverBy.toFixed(2)}</Text>
             </View>
-            <Text style={{fontFamily: 'Koulen-Regular', textAlign: 'right', marginHorizontal: 10, fontSize: 20, color: 'white'}}>Minutes</Text>
+            <Text style={styles.dashboard.statDenominationLabel}>Minutes</Text>
         </Surface>
 
-        <Surface style={{backgroundColor: styles.primaryColor, height: 'fit-content', width: '80%', marginTop: 30, marginHorizontal: 30}} elevation={4}>
-            <Text style={{fontFamily: 'Koulen-Regular', fontSize: 19, color: 'white', marginTop: 20, marginHorizontal: 10}}>{averageTimeStartedOffBy > 0 ? "Time Average Recordings Are Late By" : "Time On Average Recordings Are Early By"}</Text>
-            <View style={{backgroundColor: '#1A0124', marginHorizontal: 10}}>
-                <Text style={{fontFamily: 'digital-7', fontSize: 80, color: '#6145B5', textAlign: 'center'}}>{averageTimeStartedOffBy > 0 ? averageTimeStartedOffBy.toFixed(2) : -averageTimeStartedOffBy.toFixed(2)}</Text>
+        <Surface style={styles.dashboard.statTextSurface} elevation={4}>
+            <Text style={styles.dashboard.statHeading}>Average Recordings Are {averageTimeStartedOffBy > 0 ? "Late" : "Early"} By</Text>
+            <View style={styles.dashboard.statTextContainer}>
+                <Text style={styles.dashboard.statText}>{averageTimeStartedOffBy > 0 ? averageTimeStartedOffBy.toFixed(2) : -averageTimeStartedOffBy.toFixed(2)}</Text>
             </View>
-            <Text style={{fontFamily: 'Koulen-Regular', textAlign: 'right', marginHorizontal: 10, fontSize: 20, color: 'white'}}>Minutes</Text>
+            <Text style={styles.dashboard.statDenominationLabel}>Minutes</Text>
         </Surface>
 
-        <Surface style={{backgroundColor: styles.primaryColor, height: 'fit-content', width: '80%', marginTop: 30, marginHorizontal: 30}} elevation={4}>
-            <Text style={{fontFamily: 'Koulen-Regular', fontSize: 19, color: 'white', marginTop: 20, marginHorizontal: 10}}>Hours Available Today</Text>
-            <View style={{backgroundColor: '#1A0124', marginHorizontal: 10}}>
-                <Text style={{fontFamily: 'digital-7', fontSize: 80, color: '#6145B5', textAlign: 'center'}}>{hoursLeftToday}</Text>
+        <Surface style={styles.dashboard.statTextSurface} elevation={4}>
+            <Text style={styles.dashboard.statHeading}>Hours Available Today</Text>
+            <View style={styles.dashboard.statTextContainer}>
+                <Text style={styles.dashboard.statText}>{hoursLeftToday}</Text>
             </View>
-            <Text style={{fontFamily: 'Koulen-Regular', textAlign: 'right', marginHorizontal: 10, fontSize: 20, color: 'white'}}>Hours</Text>
+            <Text style={styles.dashboard.statDenominationLabel}>Hours</Text>
         </Surface>
 
         

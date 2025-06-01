@@ -5,18 +5,14 @@ import { StatisticsGraph } from "./StatisticsGraph";
 import { styles } from "../styles/styles";
 
 export function Statistics(props) {
-    let hoursLeftInDay = 24; 
-    let {averageTimeOverBy, averageTimeStartedOffBy, percentagePredictedStart, percentageCorrectTime, percentageRescheduled} = getStatistics(props.recordedTimeboxes);
-    for(let timebox of props.timeboxes) {
-        let isSameDate = (new Date(timebox.startTime).getDate() == new Date().getDate()) && (new Date(timebox.startTime).getMonth() == new Date().getMonth()) && (new Date(timebox.startTime).getFullYear() == new Date().getFullYear());
-        let isReoccuringDaily = timebox.reoccuring != null && timebox.reoccuring.reoccurFrequency === "daily";
-        let isReoccuringWeeklyAndToday = timebox.reoccuring != null && timebox.reoccuring.reoccurFrequency === "weekly" && timebox.reoccuring.weeklyDay == new Date().getDay();
-        let isReoccuringDailyOrWeeklyAndToday = isReoccuringDaily || isReoccuringWeeklyAndToday;
-        if(timebox.isTimeblock && (isSameDate || isReoccuringDailyOrWeeklyAndToday)) {
-            let hoursConversionDivider = 3600000;
-            hoursLeftInDay -= ((new Date(timebox.endTime) - new Date(timebox.startTime)) / hoursConversionDivider);
-        }   
-    }
+    
+    let {averageTimeOverBy, 
+        averageTimeStartedOffBy, 
+        percentagePredictedStart, 
+        percentageCorrectTime, 
+        percentageRescheduled, 
+        hoursLeftToday} = getStatistics(props.recordedTimeboxes, props.timeboxes);
+    
 
     return (
     <ScrollView>
@@ -39,7 +35,7 @@ export function Statistics(props) {
         <Surface style={{backgroundColor: styles.primaryColor, height: 'fit-content', width: '80%', marginTop: 30, marginHorizontal: 30}} elevation={4}>
             <Text style={{fontFamily: 'Koulen-Regular', fontSize: 19, color: 'white', marginTop: 20, marginHorizontal: 10}}>Hours Available Today</Text>
             <View style={{backgroundColor: '#1A0124', marginHorizontal: 10}}>
-                <Text style={{fontFamily: 'digital-7', fontSize: 80, color: '#6145B5', textAlign: 'center'}}>{hoursLeftInDay}</Text>
+                <Text style={{fontFamily: 'digital-7', fontSize: 80, color: '#6145B5', textAlign: 'center'}}>{hoursLeftToday}</Text>
             </View>
             <Text style={{fontFamily: 'Koulen-Regular', textAlign: 'right', marginHorizontal: 10, fontSize: 20, color: 'white'}}>Hours</Text>
         </Surface>

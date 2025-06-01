@@ -1,5 +1,7 @@
 import { useSelector } from "react-redux";
 import { convertToDayjs } from "./formatters";
+var isSameOrAfter = require("dayjs/plugin/isSameOrAfter");
+dayjs.extend(isSameOrAfter);
 import dayjs from "dayjs";
 
 var hoursConversionDivisor = 3600000;
@@ -206,7 +208,8 @@ export function getStatistics(recordedTimeboxes, timeboxes) {
     let timeboxesThatMatchPredictedStart = 0;
     let timeboxesThatMatchCorrectTime = 0;
     let today = dayjs()
-    let hoursLeftToday = (today.toDate() - convertToDayjs(wakeupTime, today.date()+'/'+today.month()).toDate()) / hoursConversionDivisor;
+    let nextDayWakeup = convertToDayjs(wakeupTime, (today.date()+1)+'/'+(today.month()+1));
+    let hoursLeftToday = (nextDayWakeup.toDate() - today.toDate()) / hoursConversionDivisor;
 
     for(let i = 0; i < recordedTimeboxes.length; i++) {
         let recordedTimebox = recordedTimeboxes[i];
@@ -251,16 +254,20 @@ export function getStatistics(recordedTimeboxes, timeboxes) {
         percentageRescheduled = 0;
     }
 
-    for(let timebox of props.timeboxes) {
+    for(let timebox of timeboxes) {
 
-        let isSameDate = dayjs(timebox.startTime).isSame(today, 'date');
+        let isSameDay = dayjs(timebox.startTime).isSameOrAfter(today, 'date') && dayjs(timebox.startTime).isBefore(nextDayWakeup);
         let isReoccuringDaily = timebox.reoccuring != null && timebox.reoccuring.reoccurFrequency === "daily";
-        let isReoccuringWeeklyAndToday = timebox.reoccuring != null && timebox.reoccuring.reoccurFrequency === "weekly" && timebox.reoccuring.weeklyDay == new Date().getDay();
+        let isReoccuringWeeklyAndToday = timebox.reoccuring != null && timebox.reoccuring.reoccurFrequency === "weekly" && timebox.reoccuring.weeklyDay == today.day();
         let isReoccuringDailyOrWeeklyAndToday = isReoccuringDaily || isReoccuringWeeklyAndToday;
 
-        if(timebox.isTimeblock && (isSameDate || isReoccuringDailyOrWeeklyAndToday)) {
-            if(dayjs(timebox.startTime).isAfter(today)) {
-                hoursLeftToday -= ((new Date(timebox.endTime) - new Date(timebox.startTime)) / hoursConversionDivisor)
+        if(timebox.isTimeblock && (isSameDay || isReoccuringDailyOrWeeklyAndToday)) {
+            if(dayjs(timebox.startTime).isSameOrAfter(today)) {
+                if(dayjs(timebox.endTime).isAfter(nextDayWakeup)) {
+                    hoursLeftToday -= ((nextDayWakeup.toDate() - new Date(timebox.startTime)) / hoursConversionDivisor)
+                }else{
+                    hoursLeftToday -= ((new Date(timebox.endTime) - new Date(timebox.startTime)) / hoursConversionDivisor)
+                }
             }else if(dayjs(timebox.endTime).isAfter(today)) {
                 hoursLeftToday -= ((new Date(timebox.endTime) - new Date()) / hoursConversionDivisor)
             }

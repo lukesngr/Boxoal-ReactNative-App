@@ -39,47 +39,59 @@ export default function SettingsDialog(props) {
         props.hideDialog();
     }
 
+    function safeSetBoxSizeNumber(number) {
+        let boxSizeNumber;
+        
+        if(number != '') {
+            
+            boxSizeNumber = Number(number)
+            if(Number.isNaN(boxSizeNumber)) {
+                boxSizeNumber = 1;
+            }
+            
+        
+            if(boxSizeUnit == "min") {
+                if(boxSizeNumber > 59){
+                    boxSizeNumber = 59;
+                }else if(boxSizeNumber < 0) {
+                    boxSizeNumber = 0;
+                }
+            }else if(boxSizeUnit == "hr") {
+                while((24 % boxSizeNumber) > 0) {
+                    boxSizeNumber--;
+                }
+                setBoxSizeNumber(boxSizeNumber);
+            }
+
+            setBoxSizeNumber(String(boxSizeNumber));
+        }else{
+            setBoxSizeNumber('');
+        }
+    }
+
     return (<>
         <Portal>
           <Dialog style={{backgroundColor: styles.primaryColor, borderRadius: 0}} visible={props.visible} onDismiss={props.hideDialog}>
             <Dialog.Title style={{color: 'white', fontFamily: 'Koulen-Regular'}}>Settings</Dialog.Title>
             <Dialog.Content>
-                <SegmentedButtons theme={
-                    {
-                        roundness: 0, 
-                        fonts: {
-                            labelLarge: {
-                                fontFamily: 'KameronRegular',
-                                fontSize: 20,
-                                fontWeight: '500',
-                            },
-                        },
-                        colors: {
-                            secondaryContainer: '#000000', 
-                            onSecondaryContainer: '#FFFFFF', 
-                            surface: '#FFFFFF', 
-                            onSurface: '#000000'
-                        }
-            
-                    }
-                } 
+                <SegmentedButtons theme={styles.forms.segmentedButtonsTheme} 
                 value={dayView} style={{backgroundColor: 'white'}} onValueChange={setOnDayView} buttons={[{value: true, label: 'Day'}, {value: false, label: 'Week'}]}>
                 </SegmentedButtons>
-                <TextInput label="Schedule" value={String(scheduleIndex)} style={{backgroundColor: 'white', marginTop: 10, fontFamily: 'KameronRegular'}} selectionColor="black" textColor="black"
+                <TextInput label="Schedule" value={String(scheduleIndex)} {...styles.paperInput}
 	                render={(props) => (
-                        <Picker style={{color: 'black', marginTop: 5}} dropdownIconColor='black' selectedValue={scheduleIndex} onValueChange={setScheduleIndex}>
+                        <Picker style={styles.forms.pickerParentStyle} dropdownIconColor='black' selectedValue={scheduleIndex} onValueChange={setScheduleIndex}>
                             {data && data.map((schedule, index) => {
-                                return <Picker.Item key={index} label={schedule.title} value={index+1} />
+                                return <Picker.Item style={styles.forms.pickerItemStyle} key={index} label={schedule.title} value={index+1} />
                             })}
                         </Picker>
 	                )}
                 />
-                <TextInput label="Timebox Duration" value={boxSizeNumber} onChangeText={setBoxSizeNumber} {...styles.paperInput}/>
+                <TextInput label="Timebox Duration" value={boxSizeNumber} onChangeText={safeSetBoxSizeNumber} {...styles.paperInput}/>
                 <TextInput label="Timebox Unit"  value={boxSizeUnit} {...styles.paperInput}
                     render={(props) => (
-                        <Picker style={{color: 'black', marginTop: 5}} dropdownIconColor='black' selectedValue={boxSizeUnit} onValueChange={setBoxSizeUnit}>
-                            <Picker.Item label="Min" value="min" />
-                            <Picker.Item label="Hour" value="hr" />
+                        <Picker style={styles.forms.pickerParentStyle} dropdownIconColor='black' selectedValue={boxSizeUnit} onValueChange={setBoxSizeUnit}>
+                            <Picker.Item style={styles.forms.pickerItemStyle} label="Min" value="min" />
+                            <Picker.Item style={styles.forms.pickerItemStyle} label="Hour" value="hr" />
                         </Picker>
                     )}
                 />

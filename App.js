@@ -29,6 +29,7 @@ export let theme = {
     secondaryContainer: '#D9D9D9',
     onSecondaryContainer: '#1D1B20',
   },
+  roundness: 0
 };
 
 const MyTheme = {

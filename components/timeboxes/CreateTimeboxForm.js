@@ -176,9 +176,9 @@ export default function CreateTimeboxForm(props) {
             </Dialog.Content>
             <Dialog.Actions>
                 <Button {...styles.forms.actionButton} onPress={handleSubmit}>Create</Button>
-                {!moreOptionsVisible && <Button textColor="white" onPress={() => setMoreOptionsVisible(true)}>More Options</Button>}
-                {moreOptionsVisible && <Button textColor="white" onPress={() => setMoreOptionsVisible(false)}>Less Options</Button>}
-                <Button textColor="white" onPress={closeModal}>Exit</Button>
+                {!moreOptionsVisible && <Button {...styles.forms.nonActionButton} onPress={() => setMoreOptionsVisible(true)}>More Options</Button>}
+                {moreOptionsVisible && <Button {...styles.forms.nonActionButton} onPress={() => setMoreOptionsVisible(false)}>Less Options</Button>}
+                <Button {...styles.forms.nonActionButton} onPress={closeModal}>Exit</Button>
             </Dialog.Actions>
         </Dialog>
         {alert.shown && <Alert visible={alert.shown} close={() => setAlert({...alert, shown: false})} title={alert.title} message={alert.message}/> }

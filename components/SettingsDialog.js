@@ -107,7 +107,7 @@ export default function SettingsDialog(props) {
             </Dialog.Content>
             <Dialog.Actions>
                 <Button {...styles.forms.actionButton} onPress={updateProfile}>Update</Button>
-                <Button testID="exitSettings"  onPress={props.hideDialog}>Exit</Button>
+                <Button testID="exitSettings" {...styles.forms.nonActionButton} onPress={props.hideDialog}>Exit</Button>
             </Dialog.Actions>
           </Dialog>
         </Portal>

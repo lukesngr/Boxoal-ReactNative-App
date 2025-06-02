@@ -7,6 +7,7 @@ import Alert from "../Alert";
 import { queryClient } from '../../modules/queryClient.js';
 import { useDispatch } from "react-redux";
 import { convertToTimeAndDate } from "../../modules/formatters.js";
+import { styles } from "../../styles/styles.js";
 
 export default function ManualEntryTimeModal(props) {
     const [recordedStartTime, setRecordedStartTime] = useState(new Date(props.data.startTime));

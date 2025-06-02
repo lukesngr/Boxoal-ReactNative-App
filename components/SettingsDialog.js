@@ -103,10 +103,11 @@ export default function SettingsDialog(props) {
                     editable={false} 
                     {...styles.paperInput}/>
                 </Pressable>
+                
             </Dialog.Content>
             <Dialog.Actions>
-                <Button textColor="black" buttonColor="white" mode="contained" onPress={updateProfile}>Update</Button>
-                <Button testID="exitSettings" textColor='white' onPress={props.hideDialog}>Exit</Button>
+                <Button textColor="black" style={{borderRadius: 0}} contentStyle={{height: 50}} labelStyle={{fontFamily: 'Koulen-Regular', fontSize: 16}} buttonColor="white" mode="contained" onPress={updateProfile}>Update</Button>
+                <Button testID="exitSettings" textColor='white' contentStyle={{height: 50}} labelStyle={{fontFamily: 'Koulen-Regular', fontSize: 16}} onPress={props.hideDialog}>Exit</Button>
             </Dialog.Actions>
           </Dialog>
         </Portal>

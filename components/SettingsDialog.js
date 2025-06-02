@@ -71,8 +71,8 @@ export default function SettingsDialog(props) {
 
     return (<>
         <Portal>
-          <Dialog style={{backgroundColor: styles.primaryColor, borderRadius: 0}} visible={props.visible} onDismiss={props.hideDialog}>
-            <Dialog.Title style={{color: 'white', fontFamily: 'Koulen-Regular'}}>Settings</Dialog.Title>
+          <Dialog style={styles.forms.dialogStyle} visible={props.visible} onDismiss={props.hideDialog}>
+            <Dialog.Title style={styles.forms.dialogTitleStyle}>Settings</Dialog.Title>
             <Dialog.Content>
                 <SegmentedButtons theme={styles.forms.segmentedButtonsTheme} 
                 value={dayView} style={{backgroundColor: 'white'}} onValueChange={setOnDayView} buttons={[{value: true, label: 'Day'}, {value: false, label: 'Week'}]}>
@@ -106,8 +106,8 @@ export default function SettingsDialog(props) {
                 
             </Dialog.Content>
             <Dialog.Actions>
-                <Button textColor="black" style={{borderRadius: 0}} contentStyle={{height: 50}} labelStyle={{fontFamily: 'Koulen-Regular', fontSize: 16}} buttonColor="white" mode="contained" onPress={updateProfile}>Update</Button>
-                <Button testID="exitSettings" textColor='white' contentStyle={{height: 50}} labelStyle={{fontFamily: 'Koulen-Regular', fontSize: 16}} onPress={props.hideDialog}>Exit</Button>
+                <Button {...styles.forms.actionButton} onPress={updateProfile}>Update</Button>
+                <Button testID="exitSettings"  onPress={props.hideDialog}>Exit</Button>
             </Dialog.Actions>
           </Dialog>
         </Portal>

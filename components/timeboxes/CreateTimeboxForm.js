@@ -13,7 +13,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import Alert from '../Alert';
 var utc = require("dayjs/plugin/utc");
 import dayjs from 'dayjs';
-import { set } from '../../redux/activeOverlayInterval.js';
 
 dayjs.extend(utc);
 
@@ -112,11 +111,13 @@ export default function CreateTimeboxForm(props) {
 
     return (
     <Portal>
-        <Dialog style={{backgroundColor: styles.primaryColor}} visible={props.visible} onDismiss={closeModal}>
-            <Dialog.Title style={{color: 'white'}}>Create Timebox</Dialog.Title>
+        <Dialog style={styles.forms.dialogStyle} visible={props.visible} onDismiss={closeModal}>
+            <Dialog.Title style={styles.forms.dialogTitleStyle}>Create Timebox</Dialog.Title>
             <Dialog.Content>
             <SegmentedButtons
                 value={isTimeblock}
+                theme={styles.forms.segmentedButtonsTheme}
+                style={{backgroundColor: 'white'}}
                 onValueChange={setIsTimeBlock}
                 buttons={[
                 {
@@ -134,9 +135,9 @@ export default function CreateTimeboxForm(props) {
                 <TextInput label="Number of Boxes" testID='createTimeboxBoxes' value={numberOfBoxes} onChangeText={safeSetNumberOfBoxes} {...styles.paperInput}/>
                 {!isTimeblock && <TextInput label="Goal" value={goalSelected} {...styles.paperInput}
                     render={(props) => (
-                        <Picker style={{color: 'black', marginTop: 5}} dropdownIconColor='black' selectedValue={goalSelected} onValueChange={setGoalSelected}>
+                        <Picker style={styles.forms.pickerParentStyle} dropdownIconColor='black' selectedValue={goalSelected} onValueChange={setGoalSelected}>
                             {activeGoals.map((goal, index) => {
-                                return <Picker.Item key={index} label={goal.title} value={String(goal.id)} />
+                                return <Picker.Item key={index} style={styles.forms.pickerItemStyle} label={goal.title} value={String(goal.id)} />
                             })}
                         </Picker>
                     )}
@@ -144,27 +145,27 @@ export default function CreateTimeboxForm(props) {
                 {moreOptionsVisible && <>
                     <TextInput label="Reoccurring"  value={reoccuring ? "Yes" : "No"} {...styles.paperInput}
                         render={(props) => (
-                            <Picker style={{color: 'black', marginTop: 5}} dropdownIconColor='black' selectedValue={reoccuring} onValueChange={setReoccuring}>
-                                <Picker.Item label="No" value={false} />
-                                <Picker.Item label="Yes" value={true} />
+                            <Picker style={styles.forms.pickerParentStyle}  dropdownIconColor='black' selectedValue={reoccuring} onValueChange={setReoccuring}>
+                                <Picker.Item label="No" style={styles.forms.pickerItemStyle} value={false} />
+                                <Picker.Item label="Yes" style={styles.forms.pickerItemStyle} value={true} />
                             </Picker>
                         )}
                     />
                     {reoccuring && <>
                         <TextInput label="Start Day"  value={dayToName[startOfDayRange]} {...styles.paperInput}
                             render={(props) => (
-                                <Picker style={{color: 'black', marginTop: 5}} dropdownIconColor='black' selectedValue={startOfDayRange} onValueChange={setStartOfDayRange}>
+                                <Picker style={styles.forms.pickerParentStyle}  dropdownIconColor='black' selectedValue={startOfDayRange} onValueChange={setStartOfDayRange}>
                                     {dayToName.map((day, index) => {
-                                        return <Picker.Item key={index} label={day} value={index} />
+                                        return <Picker.Item style={styles.forms.pickerItemStyle} key={index} label={day} value={index} />
                                     })}
                                 </Picker>
                             )}
                         />
-                        <TextInput label="End Day"  value={dayToName[endOfDayRange]} {...styles.paperInput}
+                        <TextInput label="End Day" style={styles.forms.pickerParentStyle}  value={dayToName[endOfDayRange]} {...styles.paperInput}
                             render={(props) => (
                                 <Picker style={{color: 'black', marginTop: 5}} dropdownIconColor='black' selectedValue={endOfDayRange} onValueChange={setEndOfDayRange}>
                                     {dayToName.map((day, index) => {
-                                        return <Picker.Item key={index} label={day} value={index} />
+                                        return <Picker.Item style={styles.forms.pickerItemStyle} key={index} label={day} value={index} />
                                     })}
                                 </Picker>
                             )}
@@ -174,10 +175,10 @@ export default function CreateTimeboxForm(props) {
                 </>}
             </Dialog.Content>
             <Dialog.Actions>
-                <Button textColor="white" onPress={closeModal}>Close</Button>
+                <Button {...styles.forms.actionButton} onPress={handleSubmit}>Create</Button>
                 {!moreOptionsVisible && <Button textColor="white" onPress={() => setMoreOptionsVisible(true)}>More Options</Button>}
                 {moreOptionsVisible && <Button textColor="white" onPress={() => setMoreOptionsVisible(false)}>Less Options</Button>}
-                <Button textColor="black" testID='createTimebox' buttonColor="white" mode="contained" onPress={handleSubmit}>Create</Button>
+                <Button textColor="white" onPress={closeModal}>Exit</Button>
             </Dialog.Actions>
         </Dialog>
         {alert.shown && <Alert visible={alert.shown} close={() => setAlert({...alert, shown: false})} title={alert.title} message={alert.message}/> }

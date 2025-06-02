@@ -235,7 +235,10 @@ export const styles = {
             
             },
         pickerItemStyle: {fontFamily: 'KameronRegular', fontSize: 20},
-        pickerParentStyle: {color: 'black', marginTop: 5, fontFamily: 'KameronRegular'}
+        pickerParentStyle: {color: 'black', marginTop: 5, fontFamily: 'KameronRegular'},
+        dialogStyle: {backgroundColor: '#875F9A', borderRadius: 0},
+        dialogTitleStyle: {color: 'white', fontFamily: 'Koulen-Regular'},
+        actionButton: {textColor: "black", style: {borderRadius: 0}, contentStyle: {height: 50}, labelStyle: {fontFamily: 'Koulen-Regular', fontSize: 16}, buttonColor: "white", mode: "contained"}
     }
 };
 

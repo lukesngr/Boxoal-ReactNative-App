@@ -183,7 +183,16 @@ export const styles = {
     paperInput: {
         style: {
             backgroundColor: 'white',
-            marginBottom: 2,
+            marginTop: 10,
+            fontFamily: 'KameronRegular', 
+            fontSize: 20,
+            fontWeight: 'normal'
+        },
+        contentStyle: {
+            fontFamily: 'KameronRegular',
+        },
+        outlineStyle: {
+            fontFamily: 'KameronRegular',
         },
         selectionColor: 'black',
         textColor: 'black',
@@ -205,6 +214,28 @@ export const styles = {
         statTextContainer: {backgroundColor: '#1A0124', marginHorizontal: 10},
         statText: {fontFamily: 'digital-7', fontSize: 80, color: '#6145B5', textAlign: 'center'},
         statDenominationLabel: {fontFamily: 'Koulen-Regular', textAlign: 'right', marginHorizontal: 10, fontSize: 20, color: 'white'}
+    },
+    forms: {
+        segmentedButtonsTheme: 
+                    {
+                        roundness: 0, 
+                        fonts: {
+                            labelLarge: {
+                                fontFamily: 'KameronRegular',
+                                fontSize: 20,
+                                fontWeight: '500',
+                            },
+                        },
+                        colors: {
+                            secondaryContainer: '#000000', 
+                            onSecondaryContainer: '#FFFFFF', 
+                            surface: '#FFFFFF', 
+                            onSurface: '#000000'
+                        }
+            
+            },
+        pickerItemStyle: {fontFamily: 'KameronRegular', fontSize: 20},
+        pickerParentStyle: {color: 'black', marginTop: 5, fontFamily: 'KameronRegular'}
     }
 };
 

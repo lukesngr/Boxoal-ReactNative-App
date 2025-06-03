@@ -111,12 +111,13 @@ export default function EditTimeboxForm(props) {
 
     return (
     <Portal>
-        <Dialog style={{backgroundColor: styles.primaryColor}} visible={true} onDismiss={closeModal}>
-            <Dialog.Title style={{color: 'white'}}>Edit Timebox</Dialog.Title>
+        <Dialog style={styles.forms.dialogStyle} visible={true} onDismiss={closeModal}>
+            <Dialog.Title style={styles.forms.dialogTitleStyle}>Edit Timebox</Dialog.Title>
             <Dialog.Content>
                 <SegmentedButtons
                     value={isTimeblock}
                     onValueChange={setIsTimeBlock}
+                    style={{backgroundColor: 'white'}}
                     buttons={[
                     {
                         value: false,
@@ -127,16 +128,17 @@ export default function EditTimeboxForm(props) {
                         label: 'Timeblock',
                     },
                     ]}
+                    theme={styles.forms.segmentedButtonsTheme}
                 />
                 <TextInput label="Title" value={title} testID="editTitle" onChangeText={setTitle} {...styles.paperInput}/>
                 <TextInput label="Description" value={description} onChangeText={setDescription} {...styles.paperInput}/>
                 <TextInput label="Number of Boxes" value={numberOfBoxes} onChangeText={safeSetNumberOfBoxes} {...styles.paperInput}/>
                 {!isTimeblock && <TextInput label="Goal" value={goalSelected} {...styles.paperInput}
                     render={(props) => (
-                        <Picker style={{color: 'black', marginTop: 5}} dropdownIconColor='black' selectedValue={goalSelected} onValueChange={setGoalSelected}>
+                        <Picker style={styles.forms.pickerParentStyle} dropdownIconColor='black' selectedValue={goalSelected} onValueChange={setGoalSelected}>
                             {goals.map((goal, index) => {
                                 if(goal.active) {
-                                    return ( <Picker.Item key={index} label={goal.title} value={String(goal.id)} />)
+                                    return ( <Picker.Item key={index}  style={styles.forms.pickerItemStyle} label={goal.title} value={String(goal.id)} />)
                                 }
                             })}
                         </Picker>
@@ -144,27 +146,27 @@ export default function EditTimeboxForm(props) {
                 ></TextInput>}
                 <TextInput label="Reoccurring" value={reoccuring ? "Yes" : "No"} {...styles.paperInput}
                         render={(props) => (
-                            <Picker style={{color: 'black', marginTop: 5}} dropdownIconColor='black' selectedValue={reoccuring} onValueChange={setReoccuring}>
-                                <Picker.Item label="No" value={false} />
-                                <Picker.Item label="Yes" value={true} />
+                            <Picker style={styles.forms.pickerParentStyle} dropdownIconColor='black' selectedValue={reoccuring} onValueChange={setReoccuring}>
+                                <Picker.Item  style={styles.forms.pickerItemStyle} label="No" value={false} />
+                                <Picker.Item  style={styles.forms.pickerItemStyle} label="Yes" value={true} />
                             </Picker>
                         )}
                     />
                     {reoccuring && <>
                         <TextInput label="Start Day"  value={dayToName[startOfDayRange]} {...styles.paperInput}
                             render={(props) => (
-                                <Picker style={{color: 'black', marginTop: 5}} dropdownIconColor='black' selectedValue={startOfDayRange} onValueChange={setStartOfDayRange}>
+                                <Picker style={styles.forms.pickerParentStyle} dropdownIconColor='black' selectedValue={startOfDayRange} onValueChange={setStartOfDayRange}>
                                     {dayToName.map((day, index) => {
-                                        return <Picker.Item key={index} label={day} value={index} />
+                                        return <Picker.Item  style={styles.forms.pickerItemStyle} key={index} label={day} value={index} />
                                     })}
                                 </Picker>
                             )}
                         />
                         <TextInput label="End Day"  value={dayToName[endOfDayRange]} {...styles.paperInput}
                             render={(props) => (
-                                <Picker style={{color: 'black', marginTop: 5}} dropdownIconColor='black' selectedValue={endOfDayRange} onValueChange={setEndOfDayRange}>
+                                <Picker style={styles.forms.pickerParentStyle} dropdownIconColor='black' selectedValue={endOfDayRange} onValueChange={setEndOfDayRange}>
                                     {dayToName.map((day, index) => {
-                                        return <Picker.Item key={index} label={day} value={index} />
+                                        return <Picker.Item  style={styles.forms.pickerItemStyle} key={index} label={day} value={index} />
                                     })}
                                 </Picker>
                             )}
@@ -173,10 +175,10 @@ export default function EditTimeboxForm(props) {
                     {!isTimeblock && <TextInput label="Percentage of Goal" value={goalPercentage} onChangeText={setGoalPercentage} {...styles.paperInput}/>}
             </Dialog.Content>
             <Dialog.Actions>
-                <Button textColor="white" onPress={props.back}>Back</Button>
-                <Button textColor="black"  buttonColor="white" mode="contained" testID="deleteTimebox" onPress={deleteTimeBox}>Delete</Button>
-                {props.previousRecording && <Button textColor="black" testID="clearRecording" buttonColor="white" mode="contained" onPress={clearRecording}>Clear Recording</Button>}
-                <Button textColor="black"  buttonColor="white" mode="contained" onPress={updateTimeBox}>Update</Button>
+                <Button {...styles.forms.actionButton}  mode="contained" onPress={updateTimeBox}>Update</Button>
+                {props.previousRecording && <Button testID="clearRecording" {...styles.forms.actionButton}  mode="contained" onPress={clearRecording}>Clear Recording</Button>}
+                <Button {...styles.forms.actionButton} mode="contained" testID="deleteTimebox" onPress={deleteTimeBox}>Delete</Button>
+                <Button {...styles.forms.nonActionButton} onPress={props.back}>Back</Button>
             </Dialog.Actions>
         </Dialog>
         {alert.shown && <Alert visible={alert.shown} close={() => setAlert({...alert, shown: false})} title={alert.title} message={alert.message}/> }

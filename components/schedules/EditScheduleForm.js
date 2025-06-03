@@ -51,16 +51,16 @@ export default function EditScheduleForm(props) {
     return (
     <>
         <Portal>
-          <Dialog style={{backgroundColor: styles.primaryColor}} visible={props.visible} onDismiss={props.close}>
-            <Dialog.Title style={{color: 'white'}}>Edit Schedule</Dialog.Title>
+          <Dialog style={styles.forms.dialogStyle} visible={props.visible} onDismiss={props.close}>
+            <Dialog.Title style={styles.forms.dialogTitleStyle}>Edit Schedule</Dialog.Title>
             <Dialog.Content>
                 <TextInput label="Title" value={title} onChangeText={setTitle} {...styles.paperInput}/>
                 
             </Dialog.Content>
             <Dialog.Actions>
-                <Button textColor="white" onPress={props.close}>Close</Button>
-                <Button testID="deleteSchedule" textColor="white" onPress={deleteSchedule}>Delete</Button>
-                <Button textColor="black" buttonColor="white" mode="contained" onPress={updateSchedule}>Update</Button>
+                <Button textColor="black" {...styles.forms.actionButton} mode="contained" onPress={updateSchedule}>Update</Button>
+                <Button testID="deleteSchedule" {...styles.forms.actionButton} onPress={deleteSchedule}>Delete</Button>
+                <Button textColor="white" {...styles.forms.nonActionButton} onPress={props.close}>Close</Button>
             </Dialog.Actions>
           </Dialog>
             {alert.shown && <Alert visible={alert.shown} close={() => setAlert({...alert, shown: false})} title={alert.title} message={alert.message}/> }

@@ -54,11 +54,11 @@ export default function CreateGoalForm(props) {
     return (
     <>
         <Portal>
-          <Dialog style={{backgroundColor: styles.primaryColor}} visible={props.visible} onDismiss={props.close}>
-            <Dialog.Title style={{color: 'white'}}>Create Goal</Dialog.Title>
+          <Dialog style={styles.forms.dialogStyle} visible={props.visible} onDismiss={props.close}>
+            <Dialog.Title style={styles.forms.dialogTitleStyle}>Create Goal</Dialog.Title>
             <Dialog.Content>
-                <TextInput testID="createGoalTitle" label="Title" value={title} onChangeText={setTitle} style={{backgroundColor: 'white', marginBottom: 2}} selectionColor="black" textColor="black"/>
-                <TextInput label="Priority(1-10)" value={priority} onChangeText={setPriority} style={{backgroundColor: 'white', marginBottom: 2}} 
+                <TextInput testID="createGoalTitle" label="Title" value={title} onChangeText={setTitle} {...styles.paperInput}/>
+                <TextInput label="Priority(1-10)" value={priority} onChangeText={setPriority} {...styles.paperInput} 
                 selectionColor="black" textColor="black"/>
                 <Pressable onPress={() => setDatePickerVisible(true)}>
                     <TextInput 
@@ -66,14 +66,12 @@ export default function CreateGoalForm(props) {
                     value={targetDateText}
                     right={<TextInput.Icon onPress={() => setDatePickerVisible(true)} icon="calendar-edit" />} 
                     editable={false} 
-                    style={{backgroundColor: 'white', marginBottom: 2}} 
-                    selectionColor="black" 
-                    textColor="black"/>
+                    {...styles.paperInput} />
                 </Pressable>
             </Dialog.Content>
             <Dialog.Actions>
-                <Button textColor="white" onPress={props.close}>Close</Button>
-                <Button textColor="black" testID="createGoalButton" buttonColor="white" mode="contained" onPress={createGoal}>Create</Button>
+                <Button testID="createGoalButton" {...styles.forms.actionButton} mode="contained" onPress={createGoal}>Create</Button>
+                <Button {...styles.forms.actionButton} onPress={props.close}>Close</Button>
             </Dialog.Actions>
           </Dialog>
             {alert.shown && <Alert visible={alert.shown} close={() => setAlert({...alert, shown: false})} title={alert.title} message={alert.message}/> }

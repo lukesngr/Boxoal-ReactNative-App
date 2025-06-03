@@ -65,31 +65,33 @@ export default function EditGoalForm(props) {
     return (
     <>
         <Portal>
-          <Dialog style={{backgroundColor: styles.primaryColor}} visible={props.visible} onDismiss={props.close}>
-            <Dialog.Title style={{color: 'white'}}>Edit Goal</Dialog.Title>
+          <Dialog style={styles.forms.dialogStyle} visible={props.visible} onDismiss={props.close}>
+            <Dialog.Title style={styles.forms.dialogTitleStyle}>Edit Goal</Dialog.Title>
             <Dialog.Content>
-                <TextInput label="Title" value={title} onChangeText={setTitle} style={{backgroundColor: 'white', marginBottom: 2}} selectionColor="black" textColor="black"/>
-                <TextInput label="Priority(1-10)" value={priority} onChangeText={setPriority} style={{backgroundColor: 'white', marginBottom: 2}} 
-                selectionColor="black" textColor="black"/>
+                <TextInput label="Title" value={title} onChangeText={setTitle} {...styles.paperInput}/>
+                <TextInput label="Priority(1-10)" value={priority} onChangeText={setPriority} {...styles.paperInput}/>
                 <Pressable onPress={() => setDatePickerVisible(true)}>
                     <TextInput 
                     label="Target date" 
                     value={targetDateText}
                     right={<TextInput.Icon onPress={() => setDatePickerVisible(true)} icon="calendar-edit" />} 
-                    editable={false} 
-                    style={{backgroundColor: 'white', marginBottom: 2}} 
-                    selectionColor="black" 
-                    textColor="black"/>
+                    editable={false} {...styles.paperInput}/>
                 </Pressable>
-                <Picker style={{color: 'black', backgroundColor: 'white'}} dropdownIconColor='black' selectedValue={completed} onValueChange={setCompleted}>
-                    <Picker.Item label="False" value={false} />
-                    <Picker.Item label="True" value={true} />
-                </Picker>
+                <TextInput 
+                    label="Completed" 
+                    value={completed ? "Yes" : "No"} 
+                    {...styles.paperInput}
+                    render={(props) => (
+                        <Picker style={styles.forms.pickerParentStyle} dropdownIconColor='black' selectedValue={completed} onValueChange={setCompleted}>
+                            <Picker.Item styles={styles.forms.pickerItemStyle} label="False" value={false} />
+                            <Picker.Item styles={styles.forms.pickerItemStyle} label="True" value={true} />
+                        </Picker>
+                    )}></TextInput>
             </Dialog.Content>
             <Dialog.Actions>
-                <Button textColor="white" onPress={props.close}>Close</Button>
-                <Button textColor="white" onPress={deleteGoal}>Delete</Button>
-                <Button textColor="black"  buttonColor="white" mode="contained" onPress={updateGoal}>Update</Button>
+                <Button {...styles.forms.actionButton} mode="contained" onPress={updateGoal}>Update</Button>
+                <Button {...styles.forms.nonActionButton} onPress={deleteGoal}>Delete</Button>
+                <Button {...styles.forms.nonActionButton} onPress={props.close}>Close</Button>
             </Dialog.Actions>
           </Dialog>
             {alert.shown && <Alert visible={alert.shown} close={() => setAlert({...alert, shown: false})} title={alert.title} message={alert.message}/> }

@@ -62,21 +62,20 @@ export default function TimeboxActionsForm(props) {
     <>
         {showEditTimeboxForm ? ( <EditTimeboxForm data={data} previousRecording={!noPreviousRecording} back={() => setShowEditTimeboxForm(false)}></EditTimeboxForm>) : (
         <Portal>
-            <Dialog style={{backgroundColor: styles.primaryColor}} visible={props.visible} onDismiss={closeModal}>
-                <Dialog.Title style={{color: 'white'}}>{data.title}</Dialog.Title>
+            <Dialog style={styles.forms.dialogStyle} visible={props.visible} onDismiss={closeModal}>
+                <Dialog.Title style={styles.forms.dialogTitleStyle}>{data.title}</Dialog.Title>
                 <Dialog.Content>
-                    <Paragraph style={{color: 'white'}}>Actions for "{data.title}" timebox</Paragraph>
+                    <Paragraph style={{color: 'white', fontFamily: 'KameronRegular', fontSize: 20}}>Actions for "{data.title}" timebox</Paragraph>
                 </Dialog.Content>
                 <Dialog.Actions>
-                    <Button textColor="white" onPress={closeModal}>Close</Button>
                     {noPreviousRecording && timeboxIsntRecording && <>
-                        <Button textColor="black"  buttonColor="white" mode="contained" style={{marginRight: 2}} onPress={() => setManualEntryModalShown(true)}>Time Entry</Button> 
-                        <Button textColor="black"  buttonColor="white" testID="recordButton" mode="contained" onPress={startRecording}>Record</Button>
+                        <Button {...styles.forms.actionButton} mode="contained" onPress={() => setManualEntryModalShown(true)}>Time Entry</Button> 
+                        <Button {...styles.forms.actionButton} testID="recordButton" mode="contained" onPress={startRecording}>Record</Button>
                     </>}
                     {noPreviousRecording && timeboxIsRecording && 
-                    <Button textColor="black"  buttonColor="white" mode="contained" onPress={stopRecording}>Stop Recording</Button>}
-                    {timeboxIsntRecording && <Button textColor="black" style={{marginLeft: 2}} testID="editTimebox" buttonColor="white" mode="contained" onPress={() => setShowEditTimeboxForm(true)}>Edit</Button>}
-                    
+                    <Button {...styles.forms.actionButton} mode="contained" onPress={stopRecording}>Stop Recording</Button>}
+                    {timeboxIsntRecording && <Button textColor="black" {...styles.forms.actionButton} testID="editTimebox" buttonColor="white" mode="contained" onPress={() => setShowEditTimeboxForm(true)}>Edit</Button>}
+                    <Button {...styles.forms.nonActionButton} onPress={closeModal}>Close</Button>
                 </Dialog.Actions>
             </Dialog>
             <ManualEntryTimeModal dispatch={dispatch} visible={manualEntryModalShown} close={() => setManualEntryModalShown(false)} data={data} scheduleID={scheduleID}></ManualEntryTimeModal>

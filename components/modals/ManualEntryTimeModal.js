@@ -39,15 +39,15 @@ export default function ManualEntryTimeModal(props) {
     }
 
     return (<>
-    <Dialog style={{backgroundColor: styles.primaryColor}} visible={props.visible} onDismiss={props.close}>
-        <Dialog.Title style={{color: 'white'}}>Manual Entry Of Recorded Time</Dialog.Title>
+    <Dialog style={styles.forms.dialogStyle} visible={props.visible} onDismiss={props.close}>
+        <Dialog.Title style={styles.forms.dialogTitleStyle}>Manual Entry Of Recorded Time</Dialog.Title>
         <Dialog.Content>
-            <Button textColor="black" buttonColor="white" mode="contained" style={{marginBottom: 2}} onPress={() => setStartTimePickerVisible(true)}>Pick Recorded Start Time</Button>
-            <Button textColor="black" buttonColor="white" mode="contained" onPress={() => setEndTimePickerVisible(true)}>Pick Recorded End Time</Button>
+            <Button {...styles.forms.actionButton} style={{marginBottom: 2}} onPress={() => setStartTimePickerVisible(true)}>Pick Recorded Start Time</Button>
+            <Button {...styles.forms.actionButton} mode="contained" onPress={() => setEndTimePickerVisible(true)}>Pick Recorded End Time</Button>
         </Dialog.Content>
         <Dialog.Actions>
-            <Button textColor="white" onPress={props.close}>Close</Button>
-            <Button textColor="black" buttonColor="white" mode="contained" onPress={submitManualEntry}>Enter</Button>
+            <Button {...styles.forms.actionButton} mode="contained" onPress={submitManualEntry}>Enter</Button>
+            <Button {...styles.forms.nonActionButton} textColor="white" onPress={props.close}>Close</Button>
         </Dialog.Actions>
     </Dialog>
     <DatePicker modal mode="datetime" date={recordedStartTime}

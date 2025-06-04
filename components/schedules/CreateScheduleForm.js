@@ -32,8 +32,8 @@ export default function CreateScheduleForm(props) {
     return (
     <>
         <Portal>
-          <Dialog style={{backgroundColor: styles.primaryColor}} visible={props.visible} onDismiss={props.close}>
-            <Dialog.Title style={styles.forms.dialogStyle}>Create Schedule</Dialog.Title>
+          <Dialog style={styles.forms.dialogStyle} visible={props.visible} onDismiss={props.close}>
+            <Dialog.Title style={styles.forms.dialogTitleStyle}>Create Schedule</Dialog.Title>
             <Dialog.Content>
                 <TextInput label="Title" testID="scheduleTitle" value={title} onChangeText={setTitle} {...styles.paperInput}/>
             </Dialog.Content>

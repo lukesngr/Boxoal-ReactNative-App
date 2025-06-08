@@ -68,7 +68,7 @@ export function getProgressWithGoal(timeboxes) {
         }
     });
 
-    return Math.round(percentage);
+    return percentage.toFixed(1);
 }
 
 export function goToDay(dispatch, daySelected, direction) {

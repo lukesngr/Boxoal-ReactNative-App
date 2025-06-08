@@ -30,10 +30,12 @@ export function Dashboard({navigation, data}) {
       }
     }
 
-    if(data.goals.length != 0) { averageProgress = averageProgress / dataForSchedule.goals.length; }
+    if(dataForSchedule.goals.length != 0) { averageProgress = averageProgress / dataForSchedule.goals.length; }
     recordedTimeboxes = dataForSchedule.recordedTimeboxes;
     timeboxes = dataForSchedule.timeboxes;
   }
+
+  console.log(averageProgress)
 
   async function logout() {
     await signOut();
@@ -47,7 +49,7 @@ export function Dashboard({navigation, data}) {
         <IconButton icon="logout" size={40} onPress={logout}></IconButton>
       </View>
       <Text style={{fontFamily: 'KameronRegular', fontSize: 20, color: 'black', marginTop: 20, marginHorizontal: 30}}>Lvl {goalsCompleted}</Text>
-      <ProgressBar progress={averageProgress} theme={{ colors: { primary: styles.primary, surfaceVariant: '#d1c2d8' } }} style={{marginTop: 10, marginHorizontal: 30, width: '80%'}} />
+      <ProgressBar progress={averageProgress} theme={{ colors: { primary: styles.primaryColor, surfaceVariant: '#d1c2d8' } }} style={{marginTop: 10, marginHorizontal: 30, width: '80%'}} />
       <Statistics timeboxes={timeboxes} recordedTimeboxes={recordedTimeboxes} />
     </View>
   );

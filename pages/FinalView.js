@@ -67,7 +67,7 @@ function FinalViewSeperatedForFunctionality({userId, navigation, route, dispatch
           <Tab.Navigator theme={theme}>
             <Tab.Screen 
                 name="Dashboard" 
-                children={() => <Dashboard navigation={navigation} data={data} userID={userId}></Dashboard>} 
+                children={() => <Dashboard navigation={navigation} data={data}></Dashboard>} 
                 options={{headerShown: false, tabBarIcon: ({color}) => (
                     <MaterialCommunityIcons name="circle-outline" size={20} color='black' />
                 )}}

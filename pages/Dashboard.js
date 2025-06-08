@@ -12,21 +12,28 @@ import { styles } from "../styles/styles";
 import {IconButton} from 'react-native-paper';
 import { signOut } from "aws-amplify/auth";
 
-export function Dashboard(props) {
+export function Dashboard({navigation, data}) {
 
   const {scheduleIndex} = useSelector(state => state.profile.value);
-  let userID = props.userID;
-  let data = props.data[scheduleIndex]
-  let goalsCompleted = data.goals.reduce((count, item) => item.completed ? count + 1 : count, 0);
+  let goalsCompleted = 0;
   let averageProgress = 0;
-  for(let goal of data.goals) {
-    if(!goal.completed) {
-      averageProgress += getProgressWithGoal(goal.timeboxes);
+  let recordedTimeboxes = [];
+  let timeboxes = [];
+
+  if(data.length != 0) {
+    let dataForSchedule = data[scheduleIndex]
+    goalsCompleted = dataForSchedule.goals.reduce((count, item) => item.completed ? count + 1 : count, 0);
+    
+    for(let goal of dataForSchedule.goals) {
+      if(!goal.completed) {
+        averageProgress += getProgressWithGoal(goal.timeboxes);
+      }
     }
+
+    if(data.goals.length != 0) { averageProgress = averageProgress / dataForSchedule.goals.length; }
+    recordedTimeboxes = dataForSchedule.recordedTimeboxes;
+    timeboxes = dataForSchedule.timeboxes;
   }
-  if(data.goals.length != 0) { averageProgress = averageProgress / data.goals.length; }
-  let recordedTimeboxes = props.data[scheduleIndex].recordedTimeboxes;
-  let timeboxes = props.data[scheduleIndex].timeboxes;
 
   async function logout() {
     await signOut();

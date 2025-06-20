@@ -13,9 +13,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import Alert from '../Alert';
 var utc = require("dayjs/plugin/utc");
 import dayjs from 'dayjs';
+import * as Sentry from "@sentry/nextjs";
 
 dayjs.extend(utc);
-
 
 export default function CreateTimeboxForm(props) {
     
@@ -29,18 +29,55 @@ export default function CreateTimeboxForm(props) {
     const [goalSelected, setGoalSelected] = useState(activeGoals.length == 0 ? -1 : activeGoals[0].id);
     
     const [moreOptionsVisible, setMoreOptionsVisible] = useState(false);
-    const [goalPercentage, setGoalPercentage] = useState('0');
     const [isTimeblock, setIsTimeBlock] = useState(false);
     const [reoccuring, setReoccuring] = useState(false);
     const [startOfDayRange, setStartOfDayRange] = useState(0);
     const [endOfDayRange, setEndOfDayRange] = useState(6);
-    
+    const {scheduleIndex} = useSelector(state => state.profile.value);
     const [alert, setAlert] = useState({shown: false, title: "", message: ""});
 
     
     let {time, date} = props;
 
     let maxNumberOfBoxes = calculateMaxNumberOfBoxes(wakeupTime, boxSizeUnit, boxSizeNumber, timeboxes, time, date);
+
+    const createTimeboxMutation = useMutation({
+        mutationFn: (timeboxData) => axios.post(serverIP+'/api/createTimebox', timeboxData),
+        onMutate: async (timeboxData) => {
+            await queryClient.cancelQueries(['schedule']); 
+            
+            const previousSchedule = queryClient.getQueryData(['schedule']);
+            
+            queryClient.setQueryData(['schedule'], (old) => {
+                if (!old) return old;
+                let copyOfOld = structuredClone(old);
+                copyOfOld[scheduleIndex].timeboxes.push({...timeboxData, recordedTimeBoxes: []});
+                let goalIndex = copyOfOld[scheduleIndex].goals.findIndex(element => element.id == Number(goalSelected));
+                copyOfOld[scheduleIndex].goals[goalIndex].timeboxes.push({...timeboxData, recordedTimeBoxes: []})
+                return copyOfOld;
+            });
+            
+            
+            return { previousSchedule };
+        },
+        onSuccess: () => {
+            setAlert({
+                open: true,
+                title: "Timebox",
+                message: "Added timebox!"
+            });
+            queryClient.invalidateQueries(['schedule']); // Refetch to get real data
+            closeModal();
+        },
+        onError: (error, context) => {
+            queryClient.setQueryData(['schedule'], context.previousGoals);
+            Sentry.captureException(error);
+            setAlert({ open: true, title: "Error", message: "An error occurred, please try again or contact the developer" });
+            queryClient.invalidateQueries(['schedule']);
+            closeModal();
+        }
+    });
+
     function closeModal() {
         dispatch({type: 'modalVisible/set', payload: {visible: false, props: {}}});
     }
@@ -50,40 +87,33 @@ export default function CreateTimeboxForm(props) {
         if(goalSelected == -1 && !isTimeblock) {
             setAlert({shown: true, title: "Error", message: "Please create a goal before creating a timebox"});
             return;
-        }
+        }else{
 
-        let startTime = convertToDayjs(time, date).utc().format();
-        let endTime = convertToDayjs(addBoxesToTime(boxSizeUnit, boxSizeNumber, time, numberOfBoxes), date).utc().format(); //add boxes to start time to get end time
-        let color = listOfColors[Math.floor(Math.random() * listOfColors.length)]; //randomly pick a box color     
-        let data = {
-            isTimeblock,
-            title, 
-            description, 
-            startTime, 
-            endTime, 
-            numberOfBoxes: parseInt(numberOfBoxes), 
-            color, 
-            schedule: {connect: {id: scheduleID}}, 
-            goalPercentage: parseInt(goalPercentage)
-        }
+            let startTime = convertToDayjs(time, date).utc().format();
+            let endTime = convertToDayjs(addBoxesToTime(boxSizeUnit, boxSizeNumber, time, numberOfBoxes), date).utc().format(); //add boxes to start time to get end time
+            let color = isTimeblock ? ('black') : (listOfColors[Math.floor(Math.random() * listOfColors.length)]);    
+            let data = {
+                isTimeblock,
+                title, 
+                description, 
+                startTime, 
+                endTime, 
+                numberOfBoxes: parseInt(numberOfBoxes), 
+                color, 
+                schedule: {connect: {id: scheduleID}}, 
+                objectUUID: crypto.randomUUID()
+            }
 
-        if (!isTimeblock) {
-            data["goal"] = { connect: { id: goalSelected } };
-        }
+            if (!isTimeblock) {
+                data["goal"] = { connect: { id: goalSelected } };
+            }
 
-        if (reoccuring) {
-            data["reoccuring"] = { create: { startOfDayRange, endOfDayRange } };
-        } 
-        
-        axios.post(serverIP+'/createTimebox', data).then(async () => {
-            closeModal();
-            setAlert({shown: true, title: "Timebox", message: "Added timebox!"});
-            await queryClient.refetchQueries();
-        }).catch(function(error) {
-            closeModal();
-            setAlert({shown: true, title: "Error", message: "An error occurred, please try again or contact the developer"});
-            console.log(error); 
-        })
+            if (reoccuring) {
+                data["reoccuring"] = { create: { startOfDayRange, endOfDayRange } };
+            }
+            
+            createTimeboxMutation.mutate(data);
+        }
 
     }
 
@@ -171,7 +201,6 @@ export default function CreateTimeboxForm(props) {
                             )}
                         />
                     </>}
-                    {!isTimeblock && <TextInput label="Percentage of Goal" value={goalPercentage} onChangeText={setGoalPercentage} {...styles.paperInput}/>}
                 </>}
             </Dialog.Content>
             <Dialog.Actions>

@@ -8,6 +8,7 @@ import { Dialog, Portal, TextInput, Button } from "react-native-paper";
 import Alert from "../Alert";
 import { styles } from "../../styles/styles";
 import { useAuthenticator } from "@aws-amplify/ui-react-native";
+import * as Sentry from "@sentry/nextjs";
 
 export default function CreateScheduleForm(props) {
     const [title, setTitle] = useState("");
@@ -25,7 +26,7 @@ export default function CreateScheduleForm(props) {
         }).catch(function(error) {
             props.close();
             setAlert({shown: true, title: "Error", message: "An error occurred, please try again or contact the developer"});
-            console.log(error); 
+            Sentry.captureException(error);
         })
     }
 

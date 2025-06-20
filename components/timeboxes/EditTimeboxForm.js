@@ -10,6 +10,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { styles } from "../../styles/styles";
 import Alert from "../Alert";
 import { dayToName } from "../../modules/dateCode";
+import * as Sentry from "@sentry/nextjs";
 
 export default function EditTimeboxForm(props) {
     const dispatch = useDispatch();
@@ -21,20 +22,93 @@ export default function EditTimeboxForm(props) {
     const [reoccuring, setReoccuring] = useState(props.data.reoccuring != null);
     const [startOfDayRange, setStartOfDayRange] = useState(props.data.reoccuring != null ? (props.data.reoccuring.startOfDayRange) : 0);
     const [endOfDayRange, setEndOfDayRange] = useState(props.data.reoccuring != null ? props.data.reoccuring.endOfDayRange : 0);
-    const [goalPercentage, setGoalPercentage] = useState(String(props.data.goalPercentage));
     const [isTimeblock, setIsTimeBlock] = useState(false);
     
     const [alert, setAlert] = useState({shown: false, title: "", message: ""});
 
     const {id, wakeupTime, boxSizeUnit, boxSizeNumber} = useSelector(state => state.profile.value);
     const {timeboxes, goals} = useSelector(state => state.scheduleData.value);
-
+    const {scheduleIndex} = useSelector(state => state.profile.value);
     let [time, date] = convertToTimeAndDate(props.data.startTime);
     let maxNumberOfBoxes = calculateMaxNumberOfBoxes(wakeupTime, boxSizeUnit, boxSizeNumber, timeboxes, time, date);
 
     function closeModal() {
         dispatch({type: 'modalVisible/set', payload: {visible: false, props: {}}});
     }
+
+    const updateTimeboxMutation = useMutation({
+        mutationFn: (timeboxData) => axios.put(serverIP+'/api/updateTimeBox', timeboxData),
+        onMutate: async (timeboxData) => {
+            await queryClient.cancelQueries(['schedule']); 
+            
+            const previousSchedule = queryClient.getQueryData(['schedule']);
+            
+            queryClient.setQueryData(['schedule'], (old) => {
+                if (!old) return old;
+                let copyOfOld = structuredClone(old);
+                let timeboxIndex = copyOfOld[scheduleIndex].timeboxes.findIndex(element => element.objectUUID == data.objectUUID);
+                copyOfOld[scheduleIndex].timeboxes[timeboxIndex] = {...timeboxData, recordedTimeBoxes: []};
+                let goalIndex = copyOfOld[scheduleIndex].goals.findIndex(element => element.id == Number(goalSelected));
+                let timeboxGoalIndex = copyOfOld[scheduleIndex].goals[goalIndex].timeboxes.findIndex(element => element.objectUUID == data.objectUUID);
+                copyOfOld[scheduleIndex].goals[goalIndex].timeboxes[timeboxGoalIndex] = {...timeboxData, recordedTimeBoxes: []};
+                return copyOfOld;
+            });
+            
+            
+            return { previousSchedule };
+        },
+        onSuccess: () => {
+            setAlert({
+                    open: true,
+                    title: "Timebox",
+                    message: "Updated timebox!"
+            });
+            queryClient.invalidateQueries(['schedule']); // Refetch to get real data
+        },
+        onError: (error, goalData, context) => {
+            queryClient.setQueryData(['schedule'], context.previousGoals);
+            setAlert({ open: true, title: "Error", message: "An error occurred, please try again or contact the developer" });
+            Sentry.captureException(error);
+            queryClient.invalidateQueries(['schedule']);
+        }
+    });
+
+    const deleteTimeboxMutation = useMutation({
+        mutationFn: (objectUUID) => axios.post(serverIP+'/api/deleteTimebox', {objectUUID: objectUUID}),
+        onMutate: async (objectUUID) => {
+            await queryClient.cancelQueries(['schedule']); 
+            
+            const previousSchedule = queryClient.getQueryData(['schedule']);
+            
+            queryClient.setQueryData(['schedule'], (old) => {
+                if (!old) return old;
+                let copyOfOld = structuredClone(old);
+                let timeboxIndex = copyOfOld[scheduleIndex].timeboxes.findIndex(element => element.objectUUID == objectUUID);
+                copyOfOld[scheduleIndex].timeboxes.splice(timeboxIndex, 1);
+                let goalIndex = copyOfOld[scheduleIndex].goals.findIndex(element => element.id == Number(goalSelected));
+                let timeboxGoalIndex = copyOfOld[scheduleIndex].goals[goalIndex].timeboxes.findIndex(element => element.objectUUID == objectUUID);
+                copyOfOld[scheduleIndex].goals[goalIndex].timeboxes.splice(timeboxGoalIndex, 1);
+                return copyOfOld;
+            });
+            
+            
+            return { previousSchedule };
+        },
+        onSuccess: () => {
+            setAlert({
+                open: true,
+                title: "Timebox",
+                message: "Deleted timebox!"
+            });
+            queryClient.invalidateQueries(['schedule']); // Refetch to get real data
+        },
+        onError: (error, goalData, context) => {
+            queryClient.setQueryData(['schedule'], context.previousGoals);
+            Sentry.captureException(error);
+            setAlert({ open: true, title: "Error", message: "An error occurred, please try again or contact the developer" });
+            queryClient.invalidateQueries(['schedule']);
+        }
+    });
 
     function updateTimeBox() {
         let endTime = convertToDayjs(addBoxesToTime(boxSizeUnit, boxSizeNumber, time, numberOfBoxes), date).utc().format(); //add boxes to start time to get end time
@@ -46,8 +120,9 @@ export default function EditTimeboxForm(props) {
             startTime: props.data.startTime, 
             endTime, 
             numberOfBoxes: parseInt(numberOfBoxes), 
-            goalPercentage: parseInt(goalPercentage),
             isTimeblock,
+            objectUUID: props.data.objectUUID,
+            color: props.data.color
         }
 
         if (!isTimeblock) {
@@ -58,26 +133,11 @@ export default function EditTimeboxForm(props) {
             updateData["reoccuring"] = { create: { startOfDayRange, endOfDayRange } };
         } 
 
-        axios.put(serverIP+'/updateTimeBox', data).then(async () => {
-            setAlert({shown: true, title: "Timebox", message: "Updated timebox!"});
-            await queryClient.refetchQueries();
-        }).catch(function(error) {
-            setAlert({shown: true, title: "Error", message: "An error occurred, please try again or contact the developer"});
-            console.log(error);  
-        })
+        updateTimeboxMutation.mutate(data);
     }
     
     function deleteTimeBox() {
-        
-        axios.post(serverIP+'/deleteTimebox', {
-            id: props.data.id
-        }).then(async () => {   
-            setAlert({shown: true, title: "Timebox", message: "Deleted timebox!"});
-            await queryClient.refetchQueries();
-        }).catch(function(error) {
-            setAlert({shown: true, title: "Error", message: "An error occurred, please try again or contact the developer"});
-            console.log(error); 
-        });
+        deleteTimeboxMutation.mutate(props.data.objectUUID);
     }
 
     function clearRecording() {
@@ -172,7 +232,6 @@ export default function EditTimeboxForm(props) {
                             )}
                         />
                     </>}
-                    {!isTimeblock && <TextInput label="Percentage of Goal" value={goalPercentage} onChangeText={setGoalPercentage} {...styles.paperInput}/>}
             </Dialog.Content>
             <Dialog.Actions>
                 <Button {...styles.forms.actionButton}  mode="contained" onPress={updateTimeBox}>Update</Button>

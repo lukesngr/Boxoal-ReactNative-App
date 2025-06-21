@@ -13,6 +13,7 @@ import { Dialog, Paragraph, Portal } from "react-native-paper";
 import { useAuthenticator } from "@aws-amplify/ui-react-native";
 import ManualEntryTimeModal from "../modals/ManualEntryTimeModal";
 import { styles } from "../../styles/styles.js";
+import * as Sentry from "@sentry/nextjs";
 
 export default function TimeboxActionsForm(props) {
     const {data, date, time} = props;
@@ -20,7 +21,7 @@ export default function TimeboxActionsForm(props) {
     const [showEditTimeboxForm, setShowEditTimeboxForm] = useState(false);
     const [alert, setAlert] = useState({shown: false, title: "", message: ""});
     const timeboxRecording = useSelector(state => state.timeboxRecording.value);
-    const {boxSizeUnit, boxSizeNumber, scheduleID} = useSelector(state => state.profile.value);
+    const {boxSizeUnit, boxSizeNumber, scheduleID, scheduleIndex} = useSelector(state => state.profile.value);
     const dispatch = useDispatch();
     
     const noPreviousRecording = thereIsNoRecording(data.recordedTimeBoxes, data.reoccuring, date, time);
@@ -30,6 +31,54 @@ export default function TimeboxActionsForm(props) {
     function closeModal() {
         dispatch({type: 'modalVisible/set', payload: {visible: false, props: {}}});
     }
+
+    const createRecordingMutation = useMutation({
+        mutationFn: (recordingData) => axios.post(serverIP+'/api/createRecordedTimebox', recordingData),
+        onMutate: async (recordingData) => {
+            await queryClient.cancelQueries(['schedule']); 
+            
+            const previousSchedule = queryClient.getQueryData(['schedule']);
+            
+            queryClient.setQueryData(['schedule'], (old) => {
+                if (!old) return old;
+                //recordedTimeBoxes in schedule
+                let copyOfOld = structuredClone(old);
+                let recordingDataCopy = structuredClone(recordingData);
+                recordingDataCopy.timeBox = data
+                copyOfOld[scheduleIndex].recordedTimeboxes.push(recordingDataCopy);
+
+                //recordedTimeboxes in timeboxes
+                let timeboxIndex = copyOfOld[scheduleIndex].timeboxes.findIndex(element => element.objectUUID == data.objectUUID);
+                copyOfOld[scheduleIndex].timeboxes[timeboxIndex].recordedTimeBoxes.push(recordingDataCopy);
+
+                //recordedTimeBoxes in goals
+                let goalIndex = copyOfOld[scheduleIndex].goals.findIndex(element => element.id == Number(data.goalID));
+                let timeboxGoalIndex = copyOfOld[scheduleIndex].goals[goalIndex].timeboxes.findIndex(element => element.objectUUID == data.objectUUID);
+                
+                copyOfOld[scheduleIndex].goals[goalIndex].timeboxes[timeboxGoalIndex].recordedTimeBoxes.push(recordingDataCopy);
+                return copyOfOld;
+            });
+            
+            
+            return { previousSchedule };
+        },
+        onSuccess: () => {
+            closeModal();
+            setAlert({
+                open: true,
+                title: "Timebox",
+                message: "Added recorded timebox!"
+            });
+            queryClient.invalidateQueries(['schedule']); // Refetch to get real data
+        },
+        onError: (error, goalData, context) => {
+            queryClient.setQueryData(['schedule'], context.previousGoals);
+            setAlert({ open: true, title: "Error", message: "An error occurred, please try again or contact the developer" });
+            queryClient.invalidateQueries(['schedule']);
+            Sentry.captureException(error);
+            closeModal();
+        }
+    });
 
     async function startRecording() {
         NativeModules.BackgroundWorkManager.startBackgroundWork(JSON.stringify(data), JSON.stringify({id: scheduleID, boxSizeNumber, boxSizeUnit}), new Date().toISOString());
@@ -42,20 +91,14 @@ export default function TimeboxActionsForm(props) {
         let recordedStartTime = new Date(timeboxRecording.recordingStartTime);
         dispatch({type: 'timeboxRecording/set', payload: {timeboxID: -1, timeboxDate: 0, recordingStartTime: 0}});
         dispatch(setActiveOverlayInterval());
-        axios.post(serverIP+'/createRecordedTimebox', {
+        let recordingData = {
             recordedStartTime: recordedStartTime, 
             recordedEndTime: new Date(), 
-            timeBox: {connect: {id: data.id}}, 
-            schedule: {connect: {id: scheduleID}}},
-        ).then(async () => {
-            closeModal();
-            setAlert({shown: true, title: "Timebox", message: "Added recorded timebox!"});
-            await queryClient.refetchQueries();
-        }).catch(function(error) {
-            closeModal();
-            setAlert({shown: true, title: "Error", message: "An error occurred, please try again or contact the developer"});
-            console.log(error); 
-        })  
+            timeBox: { connect: { id: data.id, objectUUID: data.objectUUID } }, 
+            schedule: { connect: { id: scheduleID } },
+            objectUUID: crypto.randomUUID(),
+        };
+        createRecordingMutation.mutate(recordingData);
     }
     
     return (

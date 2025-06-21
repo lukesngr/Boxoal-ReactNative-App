@@ -7,6 +7,7 @@ import { Dialog, Portal, TextInput, Button, Text } from "react-native-paper";
 import Alert from "../Alert";
 import { styles } from "../../styles/styles";
 import { useDispatch, useSelector } from "react-redux";
+import * as Sentry from "@sentry/nextjs";
 
 export default function EditScheduleForm(props) {
     const dispatch = useDispatch();

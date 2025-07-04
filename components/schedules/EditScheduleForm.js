@@ -8,45 +8,103 @@ import Alert from "../Alert";
 import { styles } from "../../styles/styles";
 import { useDispatch, useSelector } from "react-redux";
 import * as Sentry from "@sentry/nextjs";
+import { useAuthenticator } from "@aws-amplify/ui-react-native";
 
 export default function EditScheduleForm(props) {
     const dispatch = useDispatch();
     const [title, setTitle] = useState(props.data.title);
     const [alert, setAlert] = useState({shown: false, title: "", message: ""});
     const profile = useSelector(state => state.profile.value);
-    
-    async function updateSchedule() {
-        axios.put(serverIP+'/updateSchedule', {
-            title,
-            id: props.data.id, 
-        }).then(async () => {
-            props.close();
-            setAlert({shown: true, title: "Timebox", message: "Updated schedule!"});
-            await queryClient.refetchQueries();
+    const { user } = useAuthenticator();
+
+    const updateScheduleMutation = useMutation({
+        mutationFn: (scheduleData) => axios.put(serverIP+'/api/updateSchedule', scheduleData),
+        onMutate: async (scheduleData) => {
+            await queryClient.cancelQueries(['schedule']); 
             
-        }).catch(function(error) {
-            props.close();
-            setAlert({shown: true, title: "Error", message: "An error occurred, please try again or contact the developer"});
-            console.log(error); 
-        })
+            const previousSchedule = queryClient.getQueryData(['schedule']);
+            
+            queryClient.setQueryData(['schedule'], (old) => {
+                if (!old) return old;
+                let copyOfOld = structuredClone(old);
+                copyOfOld[profile.scheduleIndex].title = scheduleData.title; 
+                return copyOfOld;
+            });
+            
+            
+            return { previousSchedule };
+        },
+        onSuccess: () => {
+            onClose();
+            setAlert({
+                open: true,
+                title: "Timebox",
+                message: "Updated schedule!"
+            });
+            queryClient.invalidateQueries(['schedule']); // Refetch to get real data
+        },
+        onError: (error, scheduleData, context) => {
+            queryClient.setQueryData(['schedule'], context.previousGoals);
+            setAlert({ open: true, title: "Error", message: "An error occurred, please try again or contact the developer" });
+            queryClient.invalidateQueries(['schedule']);
+            onClose();
+        }
+    });
+
+    const deleteScheduleMutation = useMutation({
+        mutationFn: (scheduleData) => axios.post(serverIP+'/api/deleteSchedule', scheduleData),
+        onMutate: async (scheduleData) => {
+            await queryClient.cancelQueries(['schedule']); 
+            
+            const previousSchedule = queryClient.getQueryData(['schedule']);
+            
+            queryClient.setQueryData(['schedule'], (old) => {
+                if (!old) return old;
+                let copyOfOld = structuredClone(old);
+                copyOfOld.splice(profile.scheduleIndex, 1); 
+                return copyOfOld;
+            });
+            
+            
+            return { previousSchedule };
+        },
+        onSuccess: () => {
+            let scheduleBefore = (profile.scheduleIndex-1);
+            if(profile.scheduleIndex > 0) {
+                    dispatch({type: 'profile/set', payload: {...profile, scheduleIndex: scheduleBefore}});
+            }
+            onClose();
+            setAlert({
+                open: true,
+                title: "Timebox",
+                message: "Delete schedule!"
+            });
+            queryClient.invalidateQueries(['schedule']); // Refetch to get real data
+        },
+        onError: (error, scheduleData, context) => {
+            queryClient.setQueryData(['schedule'], context.previousGoals);
+            setAlert({ open: true, title: "Error", message: "An error occurred, please try again or contact the developer" });
+            queryClient.invalidateQueries(['schedule']);
+            Sentry.captureException(error);
+            onClose();
+        }
+    });
+
+    async function updateSchedule() {
+       updateScheduleMutation.mutate({
+                title,
+                userUUID: user.userId,
+                id: props.data.id
+        });
     }
 
     async function deleteSchedule() {
-        let scheduleBefore = (profile.scheduleIndex-1);
-        axios.post(serverIP+'/deleteSchedule', {
-            id: props.data.id
-        },).then(async () => {
-            props.close();
-            if(profile.scheduleIndex > 0) {
-                dispatch({type: 'profile/set', payload: {...profile, scheduleIndex: scheduleBefore}});
-            }
-            setAlert({shown: true, title: "Timebox", message: "Deleted schedule!"});
-            await queryClient.refetchQueries();
-        }).catch(function(error) {
-            props.close();
-            setAlert({shown: true, title: "Error", message: "An error occurred, please try again or contact the developer"});
-            console.log(error); 
-        })
+        
+        deleteScheduleMutation.mutate({
+                userUUID: user.userId,
+                id: props.data.id
+        });
+            
     }
 
     return (

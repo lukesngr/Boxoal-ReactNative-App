@@ -8,6 +8,7 @@ import { queryClient } from '../../modules/queryClient.js';
 import { useDispatch } from "react-redux";
 import { convertToTimeAndDate } from "../../modules/formatters.js";
 import { styles } from "../../styles/styles.js";
+import * as Sentry from "@sentry/nextjs";
 
 export default function ManualEntryTimeModal(props) {
     const [recordedStartTime, setRecordedStartTime] = useState(new Date(props.data.startTime));
@@ -16,22 +17,65 @@ export default function ManualEntryTimeModal(props) {
     const [endTimePickerVisible, setEndTimePickerVisible] = useState(false);
     const [alert, setAlert] = useState({shown: false, title: "", message: ""});
 
+    const createRecordingMutation = useMutation({
+        mutationFn: (recordingData) => axios.post(serverIP+'/api/createRecordedTimebox', recordingData),
+        onMutate: async (recordingData) => {
+            await queryClient.cancelQueries(['schedule']); 
+            
+            const previousSchedule = queryClient.getQueryData(['schedule']);
+            
+            queryClient.setQueryData(['schedule'], (old) => {
+                if (!old) return old;
+                //recordedTimeBoxes in schedule
+                let copyOfOld = structuredClone(old);
+                let recordingDataCopy = structuredClone(recordingData);
+                recordingDataCopy.timeBox = data
+                copyOfOld[scheduleIndex].recordedTimeboxes.push(recordingDataCopy);
+
+                //recordedTimeboxes in timeboxes
+                let timeboxIndex = copyOfOld[scheduleIndex].timeboxes.findIndex(element => element.objectUUID == data.objectUUID);
+                copyOfOld[scheduleIndex].timeboxes[timeboxIndex].recordedTimeBoxes.push(recordingDataCopy);
+
+                //recordedTimeBoxes in goals
+                let goalIndex = copyOfOld[scheduleIndex].goals.findIndex(element => element.id == Number(data.goalID));
+                let timeboxGoalIndex = copyOfOld[scheduleIndex].goals[goalIndex].timeboxes.findIndex(element => element.objectUUID == data.objectUUID);
+                
+                copyOfOld[scheduleIndex].goals[goalIndex].timeboxes[timeboxGoalIndex].recordedTimeBoxes.push(recordingDataCopy);
+                return copyOfOld;
+            });
+            
+            
+            return { previousSchedule };
+        },
+        onSuccess: () => {
+            props.close()
+            setAlert({
+                open: true,
+                title: "Timebox",
+                message: "Added recorded timebox!"
+            });
+            queryClient.invalidateQueries(['schedule']); // Refetch to get real data
+        },
+        onError: (error, goalData, context) => {
+            queryClient.setQueryData(['schedule'], context.previousGoals);
+            setAlert({ open: true, title: "Error", message: "An error occurred, please try again or contact the developer" });
+            queryClient.invalidateQueries(['schedule']);
+            Sentry.captureException(error);
+            props.close();
+        }
+    });
+
     function submitManualEntry() {
-        axios.post(serverIP+'/createRecordedTimebox', {
-            recordedStartTime, 
-            recordedEndTime,
-            timeBox: {connect: {id: props.data.id}}, 
-            schedule: {connect: {id: props.scheduleID}}
-        }).then(async () => {
-            props.close();
-            setAlert({shown: true, title: "Timebox", message: "Added recorded timebox!"});
-            await queryClient.refetchQueries();
-        }).catch(function(error) {
-            props.close();
-            setAlert({shown: true, title: "Error", message: "An error occurred, please try again or contact the developer"});
-            console.log(error.message); 
-        })
+        let recordingData = {
+            recordedStartTime: recordedStartTime.toDate(), 
+            recordedEndTime: recordedEndTime.toDate(), 
+            timeBox: { connect: { id: props.data.id, objectUUID: props.data.objectUUID } }, 
+            schedule: { connect: { id: props.scheduleID } },
+            objectUUID: crypto.randomUUID(),
+        };
+        createRecordingMutation.mutate(recordingData);
         
+        //confused as to what this codes does will test later
         let [date, time] = convertToTimeAndDate(props.data.startTime);
         let timeboxTitle = props.data.title;
         let timebox = {...props.data, recordedTimeBoxes: [{recordedStartTime, recordedEndTime, title: timeboxTitle}]};

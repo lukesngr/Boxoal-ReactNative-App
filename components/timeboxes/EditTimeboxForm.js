@@ -37,7 +37,7 @@ export default function EditTimeboxForm(props) {
     }
 
     const updateTimeboxMutation = useMutation({
-        mutationFn: (timeboxData) => axios.put(serverIP+'/api/updateTimeBox', timeboxData),
+        mutationFn: (timeboxData) => axios.put(serverIP+'/updateTimeBox', timeboxData),
         onMutate: async (timeboxData) => {
             await queryClient.cancelQueries(['schedule']); 
             
@@ -74,7 +74,7 @@ export default function EditTimeboxForm(props) {
     });
 
     const deleteTimeboxMutation = useMutation({
-        mutationFn: (objectUUID) => axios.post(serverIP+'/api/deleteTimebox', {objectUUID: objectUUID}),
+        mutationFn: (objectUUID) => axios.post(serverIP+'/deleteTimebox', {objectUUID: objectUUID}),
         onMutate: async (objectUUID) => {
             await queryClient.cancelQueries(['schedule']); 
             

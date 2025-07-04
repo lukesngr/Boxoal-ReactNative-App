@@ -33,7 +33,7 @@ export default function TimeboxActionsForm(props) {
     }
 
     const createRecordingMutation = useMutation({
-        mutationFn: (recordingData) => axios.post(serverIP+'/api/createRecordedTimebox', recordingData),
+        mutationFn: (recordingData) => axios.post(serverIP+'/createRecordedTimebox', recordingData),
         onMutate: async (recordingData) => {
             await queryClient.cancelQueries(['schedule']); 
             

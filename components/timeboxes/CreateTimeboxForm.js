@@ -42,7 +42,7 @@ export default function CreateTimeboxForm(props) {
     let maxNumberOfBoxes = calculateMaxNumberOfBoxes(wakeupTime, boxSizeUnit, boxSizeNumber, timeboxes, time, date);
 
     const createTimeboxMutation = useMutation({
-        mutationFn: (timeboxData) => axios.post(serverIP+'/api/createTimebox', timeboxData),
+        mutationFn: (timeboxData) => axios.post(serverIP+'/createTimebox', timeboxData),
         onMutate: async (timeboxData) => {
             await queryClient.cancelQueries(['schedule']); 
             

@@ -18,7 +18,7 @@ export default function EditScheduleForm(props) {
     const { user } = useAuthenticator();
 
     const updateScheduleMutation = useMutation({
-        mutationFn: (scheduleData) => axios.put(serverIP+'/api/updateSchedule', scheduleData),
+        mutationFn: (scheduleData) => axios.put(serverIP+'/updateSchedule', scheduleData),
         onMutate: async (scheduleData) => {
             await queryClient.cancelQueries(['schedule']); 
             
@@ -52,7 +52,7 @@ export default function EditScheduleForm(props) {
     });
 
     const deleteScheduleMutation = useMutation({
-        mutationFn: (scheduleData) => axios.post(serverIP+'/api/deleteSchedule', scheduleData),
+        mutationFn: (scheduleData) => axios.post(serverIP+'/deleteSchedule', scheduleData),
         onMutate: async (scheduleData) => {
             await queryClient.cancelQueries(['schedule']); 
             

@@ -18,7 +18,7 @@ export default function ManualEntryTimeModal(props) {
     const [alert, setAlert] = useState({shown: false, title: "", message: ""});
 
     const createRecordingMutation = useMutation({
-        mutationFn: (recordingData) => axios.post(serverIP+'/api/createRecordedTimebox', recordingData),
+        mutationFn: (recordingData) => axios.post(serverIP+'/createRecordedTimebox', recordingData),
         onMutate: async (recordingData) => {
             await queryClient.cancelQueries(['schedule']); 
             

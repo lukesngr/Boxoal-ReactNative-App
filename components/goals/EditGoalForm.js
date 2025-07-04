@@ -8,6 +8,8 @@ import { styles } from "../../styles/styles";
 import { Dialog, Portal, TextInput, Button } from "react-native-paper";
 import { Picker } from "@react-native-picker/picker";
 import Alert from "../Alert";
+import { useMutation } from "@tanstack/react-query";
+import * as Sentry from "@sentry/nextjs";
 
 export default function EditGoalForm(props) {
     const [title, setTitle] = useState(props.data.title);
@@ -18,25 +20,50 @@ export default function EditGoalForm(props) {
     const [datePickerVisible, setDatePickerVisible] = useState(false);
     const [alert, setAlert] = useState(false);
 
+    const updateGoalMutation = useMutation({
+        mutationFn: (goalData) => axios.put(serverIP+'/updateGoal', goalData),
+        onMutate: async (goalData) => {
+            await queryClient.cancelQueries(['schedule']); 
+            
+            const previousGoals = queryClient.getQueryData(['schedule']);
+            
+            queryClient.setQueryData(['schedule'], (old) => {
+                if (!old) return old;
+                let copyOfOld = structuredClone(old);
+                let goalIndex = copyOfOld[scheduleIndex].goals.findIndex(element => element.objectUUID == props.data.objectUUID);
+                copyOfOld[scheduleIndex].goals[goalIndex] = {...goalData, timeboxes: copyOfOld[scheduleIndex].goals[goalIndex].timeboxes};
+                return copyOfOld;
+            });
+            
+            
+            return { previousGoals };
+        },
+        onSuccess: () => {
+            props.close();
+            setAlert({ open: true, title: "Timebox", message: "Updated goal!" });
+            queryClient.invalidateQueries(['schedule']); // Refetch to get real data
+        },
+        onError: (error, goalData, context) => {
+            queryClient.setQueryData(['schedule'], context.previousGoals);
+            props.close();
+            Sentry.captureException(error);
+            setAlert({ open: true, title: "Error", message: "An error occurred, please try again or contact the developer" });
+            queryClient.invalidateQueries(['schedule']);
+        }
+    });
+
     function updateGoal() {
-        axios.put(serverIP+'/updateGoal', {
+        let goalData = {
             title,
-            priority: parseInt(priority), //damn thing won't convert auto even with number input
-            targetDate: targetDate.toISOString(), 
-            id: props.data.id,
+            priority: parseInt(priority),
+            targetDate: targetDate.toISOString(),
+            objectUUID: props.data.objectUUID,
             completed,
             completedOn: new Date().toISOString(),
             active: !completed
         }
-        ).then(async () => {
-            props.close();
-            setAlert({shown: true, title: "Timebox", message: "Updated goal!"});
-            await queryClient.refetchQueries();
-        }).catch(function(error) {
-            props.close();
-            setAlert({shown: true, title: "Error", message: "An error occurred, please try again or contact the developer"});
-            console.log(error);
-        })
+        
+        updateGoalMutation.mutate(goalData);
 
         if(completed) {
             axios.get(serverIP+'/setNextGoalToActive', {line: props.data.partOfLine}).then(async () => {

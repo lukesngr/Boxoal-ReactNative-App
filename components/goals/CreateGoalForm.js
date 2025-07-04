@@ -8,6 +8,7 @@ import { styles } from "../../styles/styles";
 import { Dialog, Portal, TextInput, Button } from "react-native-paper";
 import Alert from "../Alert";
 import { getMaxNumberOfGoals } from "../../modules/coreLogic.js";
+import * as Sentry from "@sentry/nextjs";
 
 export default function CreateGoalForm(props) {
     const [title, setTitle] = useState("");
@@ -20,32 +21,57 @@ export default function CreateGoalForm(props) {
     let goalsNotCompleted = props.goals.length - goalsCompleted;
     let maxNumberOfGoals = getMaxNumberOfGoals(goalsCompleted);
 
+    const createGoalMutation = useMutation({
+        mutationFn: (goalData) => axios.post(serverIP+'/createGoal', goalData),
+        onMutate: async (goalData) => {
+            await queryClient.cancelQueries(['schedule']); 
+            
+            const previousGoals = queryClient.getQueryData(['schedule']);
+            
+            queryClient.setQueryData(['schedule'], (old) => {
+                if (!old) return old;
+                let copyOfOld = structuredClone(old);
+                copyOfOld[scheduleIndex].goals.push({...goalData, timeboxes: []});
+                console.log(copyOfOld)
+                return copyOfOld;
+            });
+            
+            
+            return { previousGoals };
+        },
+        onSuccess: () => {
+            props.close();
+            setAlert({ open: true, title: "Timebox", message: "Created goal!" });
+            queryClient.invalidateQueries(['schedule']); // Refetch to get real data
+        },
+        onError: (error, goalData, context) => {
+            queryClient.setQueryData(['schedule'], context.previousGoals);
+            props.close();
+            setAlert({ open: true, title: "Error", message: "An error occurred, please try again or contact the developer" });
+            queryClient.invalidateQueries(['schedule']);
+            Sentry.captureException(error);
+        }
+    });
+
     function createGoal() {
-        if(maxNumberOfGoals > goalsNotCompleted | !(props.active)) {
-            axios.post(serverIP+'/createGoal', {
-                title,
-                priority: parseInt(priority), //damn thing won't convert auto even with number input
-                targetDate: new Date(targetDate).toISOString(),
-                schedule: {
-                    connect: 
-                    {
-                        id: props.id
-                    }
-                },
-                completed: false,
-                completedOn: new Date().toISOString(),
-                partOfLine: props.line,
-                active: props.active 
+        let goalData = {
+            title,
+            priority: parseInt(priority),
+            targetDate: targetDate.toISOString(),
+            schedule: {
+                connect: {
+                    id: props.id
+                }
             },
-            ).then(async () => {
-                props.close();
-                setAlert({shown: true, title: "Timebox", message: "Created goal!"});
-                await queryClient.refetchQueries();
-            }).catch(function(error) {
-                props.close();
-                setAlert({shown: true, title: "Error", message: "An error occurred, please try again or contact the developer"});
-                console.log(error);
-            })
+            completed: false,
+            completedOn: new Date().toISOString(),
+            partOfLine: props.line,
+            active: props.active,
+            objectUUID: crypto.randomUUID()
+        }
+
+        if(maxNumberOfGoals > goalsNotCompleted | !(props.active)) {
+            createGoalMutation.mutate(goalData);
         }else{
             setAlert({shown: true, title: "Error", message: "Please complete more goals and we will unlock more goal slots for you!"});
         }

@@ -105,7 +105,7 @@ export default function TimeboxActionsForm(props) {
     
     return (
     <>
-        {showEditTimeboxForm ? ( <EditTimeboxForm data={data} previousRecording={!noPreviousRecording} back={() => setShowEditTimeboxForm(false)}></EditTimeboxForm>) : (
+        {showEditTimeboxForm ? ( <EditTimeboxForm data={data} previousRecording={!noPreviousRecording} back={() => setShowEditTimeboxForm(false)}></EditTimeboxForm>) : (<>
         <Portal>
             <Dialog style={styles.forms.dialogStyle} visible={props.visible} onDismiss={closeModal}>
                 <Dialog.Title style={styles.forms.dialogTitleStyle}>{data.title}</Dialog.Title>
@@ -123,8 +123,10 @@ export default function TimeboxActionsForm(props) {
                     <Button {...styles.forms.nonActionButton} onPress={closeModal}>Close</Button>
                 </Dialog.Actions>
             </Dialog>
-            <ManualEntryTimeModal dispatch={dispatch} visible={manualEntryModalShown} close={() => setManualEntryModalShown(false)} data={data} scheduleID={scheduleID}></ManualEntryTimeModal>
+            
             {alert.shown && <Alert visible={alert.shown} close={() => setAlert({...alert, shown: false})} title={alert.title} message={alert.message}/> }
-        </Portal>)}
+        </Portal>
+        <ManualEntryTimeModal dispatch={dispatch} visible={manualEntryModalShown} close={() => setManualEntryModalShown(false)} data={data} scheduleID={scheduleID}></ManualEntryTimeModal>
+        </>)}
     </>);
 }

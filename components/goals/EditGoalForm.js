@@ -10,15 +10,18 @@ import { Picker } from "@react-native-picker/picker";
 import Alert from "../Alert";
 import { useMutation } from "@tanstack/react-query";
 import * as Sentry from "@sentry/react-native";
+import dayjs from "dayjs";
+import { useSelector } from "react-redux";
 
 export default function EditGoalForm(props) {
     const [title, setTitle] = useState(props.data.title);
     const [priority, setPriority] = useState(""+props.data.priority);
     const [targetDate, setTargetDate] = useState(new Date(props.data.targetDate));
     const [completed, setCompleted] = useState(props.data.completed);
-    const [targetDateText, setTargetDateText] = useState(targetDate.toISOString());
+    const [targetDateText, setTargetDateText] = useState(dayjs(targetDate).format('D MMMM YYYY'));
     const [datePickerVisible, setDatePickerVisible] = useState(false);
     const [alert, setAlert] = useState(false);
+    const {scheduleIndex} = useSelector(state => state.profile.value);
 
     const updateGoalMutation = useMutation({
         mutationFn: (goalData) => axios.put(serverIP+'/updateGoal', goalData),
@@ -69,7 +72,7 @@ export default function EditGoalForm(props) {
             axios.get(serverIP+'/setNextGoalToActive', {line: props.data.partOfLine}).then(async () => {
                 await queryClient.refetchQueries();
             }).catch(function(error) {
-                console.log(error);
+                Sentry.captureException(error);
             })
         };
     }
@@ -85,7 +88,7 @@ export default function EditGoalForm(props) {
         }).catch(function(error) {
             props.close();
             setAlert({shown: true, title: "Error", message: "An error occurred, please try again or contact the developer"});
-            console.log(error);
+            Sentry.captureException(error);
         });
     }
 
@@ -121,7 +124,7 @@ export default function EditGoalForm(props) {
                 <Button {...styles.forms.nonActionButton} onPress={props.close}>Close</Button>
             </Dialog.Actions>
           </Dialog>
-            {alert.shown && <Alert visible={alert.shown} close={() => setAlert({...alert, shown: false})} title={alert.title} message={alert.message}/> }
+            {alert.open && <Alert visible={alert.open} close={() => setAlert({...alert, open: false})} title={alert.title} message={alert.message}/> }
         </Portal>
         <DatePicker 
             modal 
@@ -130,14 +133,14 @@ export default function EditGoalForm(props) {
             onDateChange={
                 (date) => {
                     setTargetDate(date);
-                    setTargetDateText(date.toISOString());
+                    setTargetDateText(dayjs(date).format('D MMMM YYYY'));
                 }
             } 
             open={datePickerVisible} 
             onConfirm={(date) => { 
                 setTargetDate(date); 
                 setDatePickerVisible(false);
-                setTargetDateText(date.toISOString());
+                setTargetDateText(dayjs(date).format('D MMMM YYYY'));
             }} 
             onCancel={() => setDatePickerVisible(false)}>
         </DatePicker>

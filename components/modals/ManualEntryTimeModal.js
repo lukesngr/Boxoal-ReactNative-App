@@ -1,5 +1,5 @@
 import axios from "axios";
-import { Dialog, Button } from "react-native-paper";
+import { Dialog, Button, Portal } from "react-native-paper";
 import { useState } from "react";
 import DatePicker from "react-native-date-picker";
 import serverIP from "../../modules/serverIP";
@@ -84,7 +84,7 @@ export default function ManualEntryTimeModal(props) {
         props.dispatch({type: 'modalVisible/set', payload: {visible: true, props: {data: timebox, date, time}}});
     }
 
-    return (<>
+    return (<Portal>
     <Dialog style={styles.forms.dialogStyle} visible={props.visible} onDismiss={props.close}>
         <Dialog.Title style={styles.forms.dialogTitleStyle}>Manual Entry Of Recorded Time</Dialog.Title>
         <Dialog.Content>
@@ -119,5 +119,5 @@ export default function ManualEntryTimeModal(props) {
         onCancel={() => setEndTimePickerVisible(false)}>
     </DatePicker>
     {alert.shown && <Alert visible={alert.shown} close={() => setAlert({...alert, shown: false})} title={alert.title} message={alert.message}/> }
-    </>)
+    </Portal>)
 }

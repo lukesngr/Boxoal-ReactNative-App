@@ -9,6 +9,7 @@ import { Dialog, Portal, TextInput, Button } from "react-native-paper";
 import Alert from "../Alert";
 import { getMaxNumberOfGoals } from "../../modules/coreLogic.js";
 import * as Sentry from "@sentry/react-native";
+import { useMutation } from "@tanstack/react-query";
 
 export default function CreateGoalForm(props) {
     const [title, setTitle] = useState("");

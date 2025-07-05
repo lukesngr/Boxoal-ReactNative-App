@@ -14,6 +14,23 @@ import { configureAmplify } from './modules/awsConfig';
 import { PaperProvider, MD3LightTheme  } from 'react-native-paper';
 import { Authenticator } from '@aws-amplify/ui-react-native';
 import { queryClient } from './modules/queryClient.js';
+import * as Sentry from '@sentry/react-native';
+
+Sentry.init({
+  dsn: 'https://902123d7102e3995a2a1ee5418959618@o4509511383842816.ingest.us.sentry.io/4509612901531648',
+
+  // Adds more context data to events (IP address, cookies, user, etc.)
+  // For more information, visit: https://docs.sentry.io/platforms/react-native/data-management/data-collected/
+  sendDefaultPii: true,
+
+  // Configure Session Replay
+  replaysSessionSampleRate: 0.1,
+  replaysOnErrorSampleRate: 1,
+  integrations: [Sentry.mobileReplayIntegration()],
+
+  // uncomment the line below to enable Spotlight (https://spotlightjs.com)
+  // spotlight: __DEV__,
+});
 configureAmplify();
 
 const Stack = createNativeStackNavigator();
@@ -52,7 +69,7 @@ export const linking = {
   }
 };
 
-export default function App() {
+export default Sentry.wrap(function App() {
   return (
     <Authenticator.Provider>
     <PaperProvider theme={theme}>
@@ -93,4 +110,4 @@ export default function App() {
     </PaperProvider>
     </Authenticator.Provider>
   );
-}
+});

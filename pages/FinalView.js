@@ -20,6 +20,8 @@ import Auth from 'aws-amplify';
 import { getCurrentUser } from 'aws-amplify/auth';
 import { get } from 'react-native/Libraries/TurboModule/TurboModuleRegistry';
 import Alert from '../components/Alert';
+import * as Sentry from "@sentry/react-native";
+import Erroring from '../components/Erroring';
 
 let theme = {
     ...MD3LightTheme,
@@ -59,7 +61,10 @@ function FinalViewSeperatedForFunctionality({userId, navigation, route, dispatch
     }, [route.params]);
 
     if(status === 'pending') return <Loading />
-    if(status === 'error') return <Alert visible={true} close={() => {}} title="Error" message={"Please contact developer"}></Alert>
+    if(status === 'error') {
+        Sentry.captureException(error);
+        return <Erroring></Erroring>
+    }
     if(data.length == 0) return <Welcome />
     
     

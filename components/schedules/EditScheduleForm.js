@@ -14,7 +14,7 @@ import { useMutation } from "@tanstack/react-query";
 export default function EditScheduleForm(props) {
     const dispatch = useDispatch();
     const [title, setTitle] = useState(props.data.title);
-    const [alert, setAlert] = useState({shown: false, title: "", message: ""});
+    const [alert, setAlert] = useState({open: false, title: "", message: ""});
     const profile = useSelector(state => state.profile.value);
     const { user } = useAuthenticator();
 
@@ -23,12 +23,12 @@ export default function EditScheduleForm(props) {
         onMutate: async (scheduleData) => {
             await queryClient.cancelQueries(['schedule']); 
             
-            const previousSchedule = queryClient.getQueryData(['schedule']);
-            
+            const previousSchedule = queryClient.getQueryData(['schedule']);;
             queryClient.setQueryData(['schedule'], (old) => {
                 if (!old) return old;
-                let copyOfOld = structuredClone(old);
+                let copyOfOld = JSON.parse(JSON.stringify(old));
                 copyOfOld[profile.scheduleIndex].title = scheduleData.title; 
+                
                 return copyOfOld;
             });
             
@@ -36,7 +36,7 @@ export default function EditScheduleForm(props) {
             return { previousSchedule };
         },
         onSuccess: () => {
-            onClose();
+            props.close();
             setAlert({
                 open: true,
                 title: "Timebox",
@@ -45,10 +45,10 @@ export default function EditScheduleForm(props) {
             queryClient.invalidateQueries(['schedule']); // Refetch to get real data
         },
         onError: (error, scheduleData, context) => {
-            queryClient.setQueryData(['schedule'], context.previousGoals);
+            queryClient.setQueryData(['schedule'], context.previousSchedule);
             setAlert({ open: true, title: "Error", message: "An error occurred, please try again or contact the developer" });
             queryClient.invalidateQueries(['schedule']);
-            onClose();
+            props.close();
         }
     });
 
@@ -61,8 +61,9 @@ export default function EditScheduleForm(props) {
             
             queryClient.setQueryData(['schedule'], (old) => {
                 if (!old) return old;
-                let copyOfOld = structuredClone(old);
+                let copyOfOld = JSON.parse(JSON.stringify(old));
                 copyOfOld.splice(profile.scheduleIndex, 1); 
+                
                 return copyOfOld;
             });
             
@@ -74,20 +75,20 @@ export default function EditScheduleForm(props) {
             if(profile.scheduleIndex > 0) {
                     dispatch({type: 'profile/set', payload: {...profile, scheduleIndex: scheduleBefore}});
             }
-            onClose();
+            props.close();
             setAlert({
                 open: true,
                 title: "Timebox",
-                message: "Delete schedule!"
+                message: "Deleted schedule!"
             });
             queryClient.invalidateQueries(['schedule']); // Refetch to get real data
         },
         onError: (error, scheduleData, context) => {
-            queryClient.setQueryData(['schedule'], context.previousGoals);
+            queryClient.setQueryData(['schedule'], context.previousSchedule);
             setAlert({ open: true, title: "Error", message: "An error occurred, please try again or contact the developer" });
             queryClient.invalidateQueries(['schedule']);
             Sentry.captureException(error);
-            onClose();
+            props.close();
         }
     });
 
@@ -123,7 +124,7 @@ export default function EditScheduleForm(props) {
                 <Button textColor="white" {...styles.forms.nonActionButton} onPress={props.close}>Close</Button>
             </Dialog.Actions>
           </Dialog>
-            {alert.shown && <Alert visible={alert.shown} close={() => setAlert({...alert, shown: false})} title={alert.title} message={alert.message}/> }
+            {alert.open && <Alert visible={alert.open} close={() => setAlert({...alert, open: false})} title={alert.title} message={alert.message}/> }
         </Portal>
     </>)
 }

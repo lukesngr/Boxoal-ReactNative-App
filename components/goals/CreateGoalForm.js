@@ -31,7 +31,7 @@ export default function CreateGoalForm(props) {
             
             queryClient.setQueryData(['schedule'], (old) => {
                 if (!old) return old;
-                let copyOfOld = structuredClone(old);
+                let copyOfOld = JSON.parse(JSON.stringify(old));
                 copyOfOld[scheduleIndex].goals.push({...goalData, timeboxes: []});
                 console.log(copyOfOld)
                 return copyOfOld;

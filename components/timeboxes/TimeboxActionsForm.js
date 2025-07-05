@@ -43,8 +43,8 @@ export default function TimeboxActionsForm(props) {
             queryClient.setQueryData(['schedule'], (old) => {
                 if (!old) return old;
                 //recordedTimeBoxes in schedule
-                let copyOfOld = structuredClone(old);
-                let recordingDataCopy = structuredClone(recordingData);
+                let copyOfOld = JSON.parse(JSON.stringify(old));
+                let recordingDataCopy = JSON.parse(JSON.stringify(recordingData));
                 recordingDataCopy.timeBox = data
                 copyOfOld[scheduleIndex].recordedTimeboxes.push(recordingDataCopy);
 

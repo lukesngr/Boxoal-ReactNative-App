@@ -8,7 +8,7 @@ import { queryClient } from '../../modules/queryClient.js';
 import { useDispatch } from "react-redux";
 import { convertToTimeAndDate } from "../../modules/formatters.js";
 import { styles } from "../../styles/styles.js";
-import * as Sentry from "@sentry/nextjs";
+import * as Sentry from "@sentry/react-native";
 
 export default function ManualEntryTimeModal(props) {
     const [recordedStartTime, setRecordedStartTime] = useState(new Date(props.data.startTime));

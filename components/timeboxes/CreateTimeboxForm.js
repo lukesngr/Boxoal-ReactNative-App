@@ -13,7 +13,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import Alert from '../Alert';
 var utc = require("dayjs/plugin/utc");
 import dayjs from 'dayjs';
-import * as Sentry from "@sentry/nextjs";
+import * as Sentry from "@sentry/react-native";
 
 dayjs.extend(utc);
 

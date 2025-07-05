@@ -9,7 +9,7 @@ import { Dialog, Portal, TextInput, Button } from "react-native-paper";
 import { Picker } from "@react-native-picker/picker";
 import Alert from "../Alert";
 import { useMutation } from "@tanstack/react-query";
-import * as Sentry from "@sentry/nextjs";
+import * as Sentry from "@sentry/react-native";
 
 export default function EditGoalForm(props) {
     const [title, setTitle] = useState(props.data.title);

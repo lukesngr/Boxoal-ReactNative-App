@@ -10,7 +10,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { styles } from "../../styles/styles";
 import Alert from "../Alert";
 import { dayToName } from "../../modules/dateCode";
-import * as Sentry from "@sentry/nextjs";
+import * as Sentry from "@sentry/react-native";
 
 export default function EditTimeboxForm(props) {
     const dispatch = useDispatch();

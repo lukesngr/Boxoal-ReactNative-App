@@ -8,7 +8,7 @@ import { Dialog, Portal, TextInput, Button } from "react-native-paper";
 import Alert from "../Alert";
 import { styles } from "../../styles/styles";
 import { useAuthenticator } from "@aws-amplify/ui-react-native";
-import * as Sentry from "@sentry/nextjs";
+import * as Sentry from "@sentry/react-native";
 
 export default function CreateScheduleForm(props) {
     const [title, setTitle] = useState("");

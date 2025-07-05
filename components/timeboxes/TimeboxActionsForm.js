@@ -15,6 +15,7 @@ import ManualEntryTimeModal from "../modals/ManualEntryTimeModal";
 import { styles } from "../../styles/styles.js";
 import * as Sentry from "@sentry/react-native";
 import { useMutation } from "@tanstack/react-query";
+import uuid from 'react-native-uuid';
 
 export default function TimeboxActionsForm(props) {
     const {data, date, time} = props;
@@ -97,7 +98,7 @@ export default function TimeboxActionsForm(props) {
             recordedEndTime: new Date(), 
             timeBox: { connect: { id: data.id, objectUUID: data.objectUUID } }, 
             schedule: { connect: { id: scheduleID } },
-            objectUUID: crypto.randomUUID(),
+            objectUUID: uuid.v4(),
         };
         createRecordingMutation.mutate(recordingData);
     }

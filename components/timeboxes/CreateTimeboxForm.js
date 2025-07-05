@@ -15,6 +15,7 @@ var utc = require("dayjs/plugin/utc");
 import dayjs from 'dayjs';
 import * as Sentry from "@sentry/react-native";
 import { useMutation } from "@tanstack/react-query";
+import uuid from 'react-native-uuid';
 
 dayjs.extend(utc);
 
@@ -102,7 +103,7 @@ export default function CreateTimeboxForm(props) {
                 numberOfBoxes: parseInt(numberOfBoxes), 
                 color, 
                 schedule: {connect: {id: scheduleID}}, 
-                objectUUID: crypto.randomUUID()
+                objectUUID: uuid.v4()
             }
 
             if (!isTimeblock) {

@@ -10,6 +10,7 @@ import { convertToTimeAndDate } from "../../modules/formatters.js";
 import { styles } from "../../styles/styles.js";
 import * as Sentry from "@sentry/react-native";
 import { useMutation } from "@tanstack/react-query";
+import uuid from 'react-native-uuid';
 
 export default function ManualEntryTimeModal(props) {
     const [recordedStartTime, setRecordedStartTime] = useState(new Date(props.data.startTime));
@@ -72,7 +73,7 @@ export default function ManualEntryTimeModal(props) {
             recordedEndTime: recordedEndTime.toDate(), 
             timeBox: { connect: { id: props.data.id, objectUUID: props.data.objectUUID } }, 
             schedule: { connect: { id: props.scheduleID } },
-            objectUUID: crypto.randomUUID(),
+            objectUUID: uuid.v4(),
         };
         createRecordingMutation.mutate(recordingData);
         

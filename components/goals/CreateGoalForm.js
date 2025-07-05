@@ -10,14 +10,18 @@ import Alert from "../Alert";
 import { getMaxNumberOfGoals } from "../../modules/coreLogic.js";
 import * as Sentry from "@sentry/react-native";
 import { useMutation } from "@tanstack/react-query";
+import dayjs from "dayjs";
+import uuid from 'react-native-uuid';
+import { useSelector } from "react-redux";
 
 export default function CreateGoalForm(props) {
     const [title, setTitle] = useState("");
     const [priority, setPriority] = useState("1");
     const [targetDate, setTargetDate] = useState(new Date());
-    const [targetDateText, setTargetDateText] = useState(targetDate.toISOString());
+    const [targetDateText, setTargetDateText] = useState(dayjs(targetDate).format('D MMMM YYYY'));
     const [datePickerVisible, setDatePickerVisible] = useState(false);
     const [alert, setAlert] = useState(false);
+    const {scheduleIndex} = useSelector(state => state.profile.value);
     let goalsCompleted = props.goals.reduce((count, item) => item.completed ? count + 1 : count, 0);
     let goalsNotCompleted = props.goals.length - goalsCompleted;
     let maxNumberOfGoals = getMaxNumberOfGoals(goalsCompleted);
@@ -33,7 +37,6 @@ export default function CreateGoalForm(props) {
                 if (!old) return old;
                 let copyOfOld = JSON.parse(JSON.stringify(old));
                 copyOfOld[scheduleIndex].goals.push({...goalData, timeboxes: []});
-                console.log(copyOfOld)
                 return copyOfOld;
             });
             
@@ -68,7 +71,7 @@ export default function CreateGoalForm(props) {
             completedOn: new Date().toISOString(),
             partOfLine: props.line,
             active: props.active,
-            objectUUID: crypto.randomUUID()
+            objectUUID: uuid.v4()
         }
 
         if(maxNumberOfGoals > goalsNotCompleted | !(props.active)) {
@@ -110,14 +113,14 @@ export default function CreateGoalForm(props) {
             onDateChange={
                 (date) => {
                     setTargetDate(date);
-                    setTargetDateText(date.toISOString());
+                    setTargetDateText(dayjs(date).format('D MMMM YYYY'));
                 }
             } 
             open={datePickerVisible} 
             onConfirm={(date) => { 
                 setTargetDate(date); 
                 setDatePickerVisible(false);
-                setTargetDateText(date.toISOString());
+                setTargetDateText(dayjs(date).format('D MMMM YYYY'));
             }} 
             onCancel={() => setDatePickerVisible(false)}>
         </DatePicker>

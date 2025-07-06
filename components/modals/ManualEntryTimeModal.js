@@ -59,7 +59,7 @@ export default function ManualEntryTimeModal(props) {
             queryClient.invalidateQueries(['schedule']); // Refetch to get real data
         },
         onError: (error, goalData, context) => {
-            queryClient.setQueryData(['schedule'], context.previousGoals);
+            queryClient.setQueryData(['schedule'], context.previousSchedule);
             setAlert({ open: true, title: "Error", message: "An error occurred, please try again or contact the developer" });
             queryClient.invalidateQueries(['schedule']);
             Sentry.captureException(error);

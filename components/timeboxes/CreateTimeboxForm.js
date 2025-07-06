@@ -72,7 +72,7 @@ export default function CreateTimeboxForm(props) {
             closeModal();
         },
         onError: (error, context) => {
-            queryClient.setQueryData(['schedule'], context.previousGoals);
+            queryClient.setQueryData(['schedule'], context.previousSchedule);
             Sentry.captureException(error);
             setAlert({ open: true, title: "Error", message: "An error occurred, please try again or contact the developer" });
             queryClient.invalidateQueries(['schedule']);

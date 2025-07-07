@@ -9,7 +9,7 @@ import { Dialog, Portal, TextInput, Button } from "react-native-paper";
 import { Picker } from "@react-native-picker/picker";
 import Alert from "../Alert";
 import { useMutation } from "@tanstack/react-query";
-import * as Sentry from "@sentry/react-native";
+
 import dayjs from "dayjs";
 import { useSelector } from "react-redux";
 
@@ -49,7 +49,7 @@ export default function EditGoalForm(props) {
         onError: (error, goalData, context) => {
             queryClient.setQueryData(['schedule'], context.previousGoals);
             props.close();
-            Sentry.captureException(error);
+            
             setAlert({ open: true, title: "Error", message: "An error occurred, please try again or contact the developer" });
             queryClient.invalidateQueries(['schedule']);
         }
@@ -72,7 +72,7 @@ export default function EditGoalForm(props) {
             axios.get(serverIP+'/setNextGoalToActive', {line: props.data.partOfLine}).then(async () => {
                 await queryClient.refetchQueries();
             }).catch(function(error) {
-                Sentry.captureException(error);
+                
             })
         };
     }
@@ -88,7 +88,7 @@ export default function EditGoalForm(props) {
         }).catch(function(error) {
             props.close();
             setAlert({shown: true, title: "Error", message: "An error occurred, please try again or contact the developer"});
-            Sentry.captureException(error);
+            
         });
     }
 

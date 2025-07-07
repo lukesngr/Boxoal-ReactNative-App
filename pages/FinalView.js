@@ -21,6 +21,7 @@ import { getCurrentUser } from 'aws-amplify/auth';
 import { get } from 'react-native/Libraries/TurboModule/TurboModuleRegistry';
 import Alert from '../components/Alert';
 import * as Sentry from "@sentry/react-native";
+
 import Erroring from '../components/Erroring';
 
 let theme = {
@@ -62,7 +63,7 @@ function FinalViewSeperatedForFunctionality({userId, navigation, route, dispatch
 
     if(status === 'pending') return <Loading />
     if(status === 'error') {
-        Sentry.captureException(error);
+        Sentry.captureException(error)
         return <Erroring></Erroring>
     }
     if(data.length == 0) return <Welcome />

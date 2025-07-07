@@ -10,7 +10,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { styles } from "../../styles/styles";
 import Alert from "../Alert";
 import { dayToName } from "../../modules/dateCode";
-import * as Sentry from "@sentry/react-native";
+
 import { useMutation } from "@tanstack/react-query";
 
 export default function EditTimeboxForm(props) {
@@ -69,7 +69,7 @@ export default function EditTimeboxForm(props) {
         onError: (error, goalData, context) => {
             queryClient.setQueryData(['schedule'], context.previousGoals);
             setAlert({ open: true, title: "Error", message: "An error occurred, please try again or contact the developer" });
-            Sentry.captureException(error);
+            
             queryClient.invalidateQueries(['schedule']);
         }
     });
@@ -105,7 +105,7 @@ export default function EditTimeboxForm(props) {
         },
         onError: (error, goalData, context) => {
             queryClient.setQueryData(['schedule'], context.previousGoals);
-            Sentry.captureException(error);
+            
             setAlert({ open: true, title: "Error", message: "An error occurred, please try again or contact the developer" });
             queryClient.invalidateQueries(['schedule']);
         }

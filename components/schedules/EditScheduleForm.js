@@ -7,7 +7,7 @@ import { Dialog, Portal, TextInput, Button, Text } from "react-native-paper";
 import Alert from "../Alert";
 import { styles } from "../../styles/styles";
 import { useDispatch, useSelector } from "react-redux";
-import * as Sentry from "@sentry/react-native";
+
 import { useAuthenticator } from "@aws-amplify/ui-react-native";
 import { useMutation } from "@tanstack/react-query";
 
@@ -87,7 +87,7 @@ export default function EditScheduleForm(props) {
             queryClient.setQueryData(['schedule'], context.previousSchedule);
             setAlert({ open: true, title: "Error", message: "An error occurred, please try again or contact the developer" });
             queryClient.invalidateQueries(['schedule']);
-            Sentry.captureException(error);
+            
             props.close();
         }
     });

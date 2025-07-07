@@ -13,7 +13,7 @@ import { Dialog, Paragraph, Portal } from "react-native-paper";
 import { useAuthenticator } from "@aws-amplify/ui-react-native";
 import ManualEntryTimeModal from "../modals/ManualEntryTimeModal";
 import { styles } from "../../styles/styles.js";
-import * as Sentry from "@sentry/react-native";
+
 import { useMutation } from "@tanstack/react-query";
 import uuid from 'react-native-uuid';
 
@@ -77,7 +77,7 @@ export default function TimeboxActionsForm(props) {
             queryClient.setQueryData(['schedule'], context.previousSchedule);
             setAlert({ open: true, title: "Error", message: "An error occurred, please try again or contact the developer" });
             queryClient.invalidateQueries(['schedule']);
-            Sentry.captureException(error);
+            
             closeModal();
         }
     });

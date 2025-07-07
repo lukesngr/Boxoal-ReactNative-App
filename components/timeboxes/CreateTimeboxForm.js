@@ -13,7 +13,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import Alert from '../Alert';
 var utc = require("dayjs/plugin/utc");
 import dayjs from 'dayjs';
-import * as Sentry from "@sentry/react-native";
+
 import { useMutation } from "@tanstack/react-query";
 import uuid from 'react-native-uuid';
 
@@ -73,7 +73,7 @@ export default function CreateTimeboxForm(props) {
         },
         onError: (error, context) => {
             queryClient.setQueryData(['schedule'], context.previousSchedule);
-            Sentry.captureException(error);
+            
             setAlert({ open: true, title: "Error", message: "An error occurred, please try again or contact the developer" });
             queryClient.invalidateQueries(['schedule']);
             closeModal();

@@ -8,7 +8,7 @@ import { queryClient } from '../../modules/queryClient.js';
 import { useDispatch } from "react-redux";
 import { convertToTimeAndDate } from "../../modules/formatters.js";
 import { styles } from "../../styles/styles.js";
-import * as Sentry from "@sentry/react-native";
+
 import { useMutation } from "@tanstack/react-query";
 import uuid from 'react-native-uuid';
 
@@ -62,7 +62,7 @@ export default function ManualEntryTimeModal(props) {
             queryClient.setQueryData(['schedule'], context.previousSchedule);
             setAlert({ open: true, title: "Error", message: "An error occurred, please try again or contact the developer" });
             queryClient.invalidateQueries(['schedule']);
-            Sentry.captureException(error);
+            
             props.close();
         }
     });

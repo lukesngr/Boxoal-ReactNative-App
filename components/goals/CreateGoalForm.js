@@ -8,7 +8,7 @@ import { styles } from "../../styles/styles";
 import { Dialog, Portal, TextInput, Button } from "react-native-paper";
 import Alert from "../Alert";
 import { getMaxNumberOfGoals } from "../../modules/coreLogic.js";
-import * as Sentry from "@sentry/react-native";
+
 import { useMutation } from "@tanstack/react-query";
 import dayjs from "dayjs";
 import uuid from 'react-native-uuid';
@@ -53,7 +53,7 @@ export default function CreateGoalForm(props) {
             props.close();
             setAlert({ open: true, title: "Error", message: "An error occurred, please try again or contact the developer" });
             queryClient.invalidateQueries(['schedule']);
-            Sentry.captureException(error);
+            
         }
     });
 

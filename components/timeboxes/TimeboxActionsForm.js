@@ -16,6 +16,7 @@ import { styles } from "../../styles/styles.js";
 
 import { useMutation } from "@tanstack/react-query";
 import uuid from 'react-native-uuid';
+import TimelineRecording from "./TimelineRecording.js";
 
 export default function TimeboxActionsForm(props) {
     const {data, date, time} = props;
@@ -114,6 +115,10 @@ export default function TimeboxActionsForm(props) {
                        {noPreviousRecording ? (`Actions for ${data.title} ${data.isTimeblock ? "timeblock" : "timebox"}`) :
                         ("Timebox and recording comparison")}
                     </Paragraph>
+                    {!noPreviousRecording && <TimelineRecording timeboxStart={data.startTime}
+                            timeboxEnd={data.endTime}
+                            recordingStart={data.recordedTimeBoxes[0].recordedStartTime}
+                            recordingEnd={data.recordedTimeBoxes[0].recordedEndTime}></TimelineRecording>}
                 </Dialog.Content>
                 <Dialog.Actions>
                     {noPreviousRecording && timeboxIsntRecording && <>

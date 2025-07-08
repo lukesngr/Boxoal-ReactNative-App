@@ -110,7 +110,10 @@ export default function TimeboxActionsForm(props) {
             <Dialog style={styles.forms.dialogStyle} visible={props.visible} onDismiss={closeModal}>
                 <Dialog.Title style={styles.forms.dialogTitleStyle}>{data.title}</Dialog.Title>
                 <Dialog.Content>
-                    <Paragraph style={{color: 'white', fontFamily: 'KameronRegular', fontSize: 20}}>Actions for "{data.title}" timebox</Paragraph>
+                    <Paragraph style={{color: 'white', fontFamily: 'KameronRegular', fontSize: 20}}>
+                       {noPreviousRecording ? (`Actions for ${data.title} ${data.isTimeblock ? "timeblock" : "timebox"}`) :
+                        ("Timebox and recording comparison")}
+                    </Paragraph>
                 </Dialog.Content>
                 <Dialog.Actions>
                     {noPreviousRecording && timeboxIsntRecording && <>

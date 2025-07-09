@@ -144,7 +144,8 @@ export default function EditTimeboxForm(props) {
     function clearRecording() {
         
         axios.post(serverIP+'/clearRecording', {
-            id: props.data.id
+            id: props.data.id,
+            objectUUID: props.data.objectUUID,
         }).then(async () => {   
             setAlert({shown: true, title: "Timebox", message: "Cleared recording!"});
             await queryClient.refetchQueries();

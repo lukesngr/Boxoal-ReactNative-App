@@ -5,7 +5,7 @@ import DatePicker from "react-native-date-picker";
 import serverIP from "../../modules/serverIP";
 import Alert from "../Alert";
 import { queryClient } from '../../modules/queryClient.js';
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { convertToTimeAndDate } from "../../modules/formatters.js";
 import { styles } from "../../styles/styles.js";
 
@@ -17,7 +17,8 @@ export default function ManualEntryTimeModal(props) {
     const [recordedEndTime, setRecordedEndTime] = useState(new Date(props.data.endTime));
     const [startTimePickerVisible, setStartTimePickerVisible] = useState(false);
     const [endTimePickerVisible, setEndTimePickerVisible] = useState(false);
-    const [alert, setAlert] = useState({shown: false, title: "", message: ""});
+    const [alert, setAlert] = useState({open: false, title: "", message: ""});
+    const {scheduleIndex} = useSelector(state => state.profile.value);
 
     const createRecordingMutation = useMutation({
         mutationFn: (recordingData) => axios.post(serverIP+'/createRecordedTimebox', recordingData),
@@ -31,16 +32,16 @@ export default function ManualEntryTimeModal(props) {
                 //recordedTimeBoxes in schedule
                 let copyOfOld = JSON.parse(JSON.stringify(old));
                 let recordingDataCopy = JSON.parse(JSON.stringify(recordingData));
-                recordingDataCopy.timeBox = data
+                recordingDataCopy.timeBox = props.data
                 copyOfOld[scheduleIndex].recordedTimeboxes.push(recordingDataCopy);
 
                 //recordedTimeboxes in timeboxes
-                let timeboxIndex = copyOfOld[scheduleIndex].timeboxes.findIndex(element => element.objectUUID == data.objectUUID);
+                let timeboxIndex = copyOfOld[scheduleIndex].timeboxes.findIndex(element => element.objectUUID == props.data.objectUUID);
                 copyOfOld[scheduleIndex].timeboxes[timeboxIndex].recordedTimeBoxes.push(recordingDataCopy);
 
                 //recordedTimeBoxes in goals
-                let goalIndex = copyOfOld[scheduleIndex].goals.findIndex(element => element.id == Number(data.goalID));
-                let timeboxGoalIndex = copyOfOld[scheduleIndex].goals[goalIndex].timeboxes.findIndex(element => element.objectUUID == data.objectUUID);
+                let goalIndex = copyOfOld[scheduleIndex].goals.findIndex(element => element.id == Number(props.data.goalID));
+                let timeboxGoalIndex = copyOfOld[scheduleIndex].goals[goalIndex].timeboxes.findIndex(element => element.objectUUID == props.data.objectUUID);
                 
                 copyOfOld[scheduleIndex].goals[goalIndex].timeboxes[timeboxGoalIndex].recordedTimeBoxes.push(recordingDataCopy);
                 return copyOfOld;
@@ -68,12 +69,13 @@ export default function ManualEntryTimeModal(props) {
     });
 
     function submitManualEntry() {
+        let objectUUID = uuid.v4();
         let recordingData = {
-            recordedStartTime: recordedStartTime.toDate(), 
-            recordedEndTime: recordedEndTime.toDate(), 
+            recordedStartTime: recordedStartTime, 
+            recordedEndTime: recordedEndTime, 
             timeBox: { connect: { id: props.data.id, objectUUID: props.data.objectUUID } }, 
             schedule: { connect: { id: props.scheduleID } },
-            objectUUID: uuid.v4(),
+            objectUUID,
         };
         createRecordingMutation.mutate(recordingData);
         
@@ -118,6 +120,6 @@ export default function ManualEntryTimeModal(props) {
         }
         onCancel={() => setEndTimePickerVisible(false)}>
     </DatePicker>
-    {alert.shown && <Alert visible={alert.shown} close={() => setAlert({...alert, shown: false})} title={alert.title} message={alert.message}/> }
+    {alert.open && <Alert visible={alert.open} close={() => setAlert({...alert, open: false})} title={alert.title} message={alert.message}/> }
     </Portal>)
 }

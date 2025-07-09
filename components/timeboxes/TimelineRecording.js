@@ -77,6 +77,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: 'red',
     overflow: 'hidden',
+    zIndex: 2,
   },
   patternImage: {
     width: '100%',
@@ -84,6 +85,7 @@ const styles = StyleSheet.create({
   },
   timelineTimeboxBar: {
     position: 'absolute',
+    zIndex: 1,
     height: '100%',
     backgroundColor: 'black',
   },

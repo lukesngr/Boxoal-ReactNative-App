@@ -15,7 +15,6 @@ import { useSelector } from "react-redux";
 
 export default function EditGoalForm(props) {
     const [title, setTitle] = useState(props.data.title);
-    const [priority, setPriority] = useState(""+props.data.priority);
     const [targetDate, setTargetDate] = useState(new Date(props.data.targetDate));
     const [completed, setCompleted] = useState(props.data.completed);
     const [targetDateText, setTargetDateText] = useState(dayjs(targetDate).format('D MMMM YYYY'));
@@ -58,7 +57,6 @@ export default function EditGoalForm(props) {
     function updateGoal() {
         let goalData = {
             title,
-            priority: parseInt(priority),
             targetDate: targetDate.toISOString(),
             objectUUID: props.data.objectUUID,
             completed,
@@ -99,7 +97,6 @@ export default function EditGoalForm(props) {
             <Dialog.Title style={styles.forms.dialogTitleStyle}>Edit Goal</Dialog.Title>
             <Dialog.Content>
                 <TextInput label="Title" value={title} onChangeText={setTitle} {...styles.paperInput}/>
-                <TextInput label="Priority(1-10)" value={priority} onChangeText={setPriority} {...styles.paperInput}/>
                 <Pressable onPress={() => setDatePickerVisible(true)}>
                     <TextInput 
                     label="Target date" 

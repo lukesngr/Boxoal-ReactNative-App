@@ -16,7 +16,7 @@ import { useSelector } from "react-redux";
 export default function EditGoalForm(props) {
     const [title, setTitle] = useState(props.data.title);
     const [targetDate, setTargetDate] = useState(new Date(props.data.targetDate));
-    const [completed, setCompleted] = useState(props.data.completed);
+    const [completed, setCompleted] = useState(props.data.state == 'completed');
     const [targetDateText, setTargetDateText] = useState(dayjs(targetDate).format('D MMMM YYYY'));
     const [datePickerVisible, setDatePickerVisible] = useState(false);
     const [alert, setAlert] = useState(false);
@@ -61,7 +61,8 @@ export default function EditGoalForm(props) {
             objectUUID: props.data.objectUUID,
             completed,
             completedOn: new Date().toISOString(),
-            active: !completed
+            active: !completed,
+            state: completed ? "completed" : "active",
         }
         
         updateGoalMutation.mutate(goalData);
@@ -109,7 +110,7 @@ export default function EditGoalForm(props) {
                     value={completed ? "Yes" : "No"} 
                     {...styles.paperInput}
                     render={(props) => (
-                        <Picker style={styles.forms.pickerParentStyle} dropdownIconColor='black' selectedValue={completed} onValueChange={setCompleted}>
+                        <Picker style={styles.forms.pickerParentStyle} dropdownIconColor='black' selectedValue={[i]} onValueChange={setCompleted}>
                             <Picker.Item styles={styles.forms.pickerItemStyle} label="False" value={false} />
                             <Picker.Item styles={styles.forms.pickerItemStyle} label="True" value={true} />
                         </Picker>

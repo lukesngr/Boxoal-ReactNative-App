@@ -69,6 +69,7 @@ export default function CreateGoalForm(props) {
             completedOn: new Date().toISOString(),
             partOfLine: props.line,
             active: props.active,
+            state: props.active ? 'active' : 'waiting',
             objectUUID: uuid.v4()
         }
 

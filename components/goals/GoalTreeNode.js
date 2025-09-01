@@ -18,7 +18,7 @@ export function GoalTreeNode(props) {
     let outsideColor = '#D9D9D9';
     let insideColor = styles.primaryColor;
     let {title} = props.goal;
-    if(props.goal.completed) {
+    if(props.goal.state == 'completed') {
         outsideColor = styles.primaryColor;
         insideColor = '#D9D9D9';
         dateWithSuffix = getDateWithSuffix(dayjs(props.goal.completedOn).date());

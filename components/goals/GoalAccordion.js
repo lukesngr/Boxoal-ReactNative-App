@@ -20,7 +20,8 @@ export default function GoalAccordion(props) {
             id: props.goal.id,
             completed: true,
             completedOn: new Date().toISOString(),
-            active: false
+            active: false,
+            state: 'completed'
         }
         ).then(async () => {
             setAlert({shown: true, title: "Timebox", message: "Updated goal!"});
@@ -37,7 +38,7 @@ export default function GoalAccordion(props) {
         })
     }
 
-    return (!props.goal.active ? <></> : ( <>
+    return (!(props.goal.state == 'active') ? <></> : ( <>
         <Surface style={{flexDirection: 'row', width: '100%', backgroundColor: 'white', borderRadius: 0}} elevation={accordionOpen ? 1 : 0}>
             <GoalProgressIndicator goal={props.goal}></GoalProgressIndicator>         
             <TouchableRipple onPress={() => setAccordionOpen(!accordionOpen)}>

@@ -21,7 +21,7 @@ export default function CreateGoalForm(props) {
     const [datePickerVisible, setDatePickerVisible] = useState(false);
     const [alert, setAlert] = useState(false);
     const [hasMetric, setHasMetric] = useState(false);
-    const [metric, setMetric] = useState(false);
+    const [metric, setMetric] = useState(0);
     const {scheduleIndex, wakeupTime} = useSelector(state => state.profile.value);
     let goalsCompleted = props.goals.reduce((count, item) => item.state == 'completed' ? count + 1 : count, 0);
     let goalsNotCompleted = props.goals.length - goalsCompleted;

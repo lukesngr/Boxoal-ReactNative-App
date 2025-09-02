@@ -21,8 +21,9 @@ export default function EditGoalForm(props) {
     const [datePickerVisible, setDatePickerVisible] = useState(false);
     const [alert, setAlert] = useState(false);
     const {scheduleIndex, wakeupTime} = useSelector(state => state.profile.value);
-    const [hasMetric, setHasMetric] = useState(true);
-    const [metric, setMetric] = useState(false);
+    const [hasMetric, setHasMetric] = useState(props.data.metric === null ? (false) : (true));
+    const [metric, setMetric] = useState(props.data.metric);
+    const [onLogMetricView, setOnLogMetricView] = useState(false);
 
     const updateGoalMutation = useMutation({
         mutationFn: (goalData) => axios.put(serverIP+'/updateGoal', goalData),
@@ -100,12 +101,65 @@ export default function EditGoalForm(props) {
         });
     }
 
+    function logMetric() {
+        if(onLogMetricView) {
+            const data = {
+                date: new Date().toISOString(),
+                metric: Number(metric),
+                goal: {
+                    connect: {
+                        id: props.data.id
+                    }
+                }
+            }
+
+            if(metric >= props.data.metric) {
+                const wakeupTimeSplitted = wakeupTime.split(':');
+                const alteredDate = targetDate.hour(wakeupTimeSplitted[0]).minute(wakeupTimeSplitted[1]);
+
+                const goalData = {
+                    title,
+                    targetDate: alteredDate.toISOString(),
+                    objectUUID: props.data.objectUUID,
+                    completed: true,
+                    completedOn: new Date().toISOString(),
+                    active: !completed,
+                    state: "completed",
+                }
+                
+                updateGoalMutation.mutate(goalData);
+
+                axios.get('/api/setNextGoalToActive', {line: props.data.partOfLine}).then(async () => {
+                    await queryClient.refetchQueries();
+                }).catch(function() {
+                })
+            }else{
+
+                axios.post('/api/logMetric', data)
+                .then(async () => {
+                    close();
+                    setAlert({ shown: true, title: "Goal", message: "Logged metric!" });
+                    await queryClient.refetchQueries();
+                })
+                .catch(function() {
+                    close();
+                    setAlert({ shown: true, title: "Error", message: "An error occurred, please try again or contact the developer" });
+                });
+            }
+        }else {
+            setOnLogMetricView(true);
+        }
+    }
+
     return (
     <>
         <Portal>
           <Dialog style={styles.forms.dialogStyle} visible={props.visible} onDismiss={props.close}>
             <Dialog.Title style={styles.forms.dialogTitleStyle}>Edit Goal</Dialog.Title>
             <Dialog.Content>
+                {onLogMetricView ? (
+                    <TextInput label="Metric" value={metric} onChangeText={setMetric} {...styles.paperInput}/> 
+                ) : (<>
                 <TextInput label="Title" value={title} onChangeText={setTitle} {...styles.paperInput}/>
                 <Pressable onPress={() => setDatePickerVisible(true)}>
                     <TextInput 
@@ -135,8 +189,10 @@ export default function EditGoalForm(props) {
                         </Picker>
                 )}></TextInput>
                 {hasMetric && <TextInput label="Metric" value={metric} onChangeText={setMetric} {...styles.paperInput}/> }
+                </>)}
             </Dialog.Content>
             <Dialog.Actions>
+                {hasMetric && <Button {...styles.forms.actionButton} mode="contained" onPress={logMetric}>Log Metric</Button>}
                 <Button {...styles.forms.actionButton} mode="contained" onPress={updateGoal}>Update</Button>
                 <Button {...styles.forms.nonActionButton} onPress={deleteGoal}>Delete</Button>
                 <Button {...styles.forms.nonActionButton} onPress={props.close}>Close</Button>

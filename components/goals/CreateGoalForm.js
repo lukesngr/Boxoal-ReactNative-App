@@ -22,7 +22,7 @@ export default function CreateGoalForm(props) {
     const [alert, setAlert] = useState(false);
     const [hasMetric, setHasMetric] = useState(false);
     const [metric, setMetric] = useState(false);
-    const {scheduleIndex} = useSelector(state => state.profile.value);
+    const {scheduleIndex, wakeupTime} = useSelector(state => state.profile.value);
     let goalsCompleted = props.goals.reduce((count, item) => item.state == 'completed' ? count + 1 : count, 0);
     let goalsNotCompleted = props.goals.length - goalsCompleted;
     let maxNumberOfGoals = getMaxNumberOfGoals(goalsCompleted);

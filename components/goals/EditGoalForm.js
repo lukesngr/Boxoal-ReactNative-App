@@ -20,7 +20,7 @@ export default function EditGoalForm(props) {
     const [targetDateText, setTargetDateText] = useState(dayjs(targetDate).format('D MMMM YYYY'));
     const [datePickerVisible, setDatePickerVisible] = useState(false);
     const [alert, setAlert] = useState(false);
-    const {scheduleIndex} = useSelector(state => state.profile.value);
+    const {scheduleIndex, wakeupTime} = useSelector(state => state.profile.value);
     const [hasMetric, setHasMetric] = useState(true);
     const [metric, setMetric] = useState(false);
 
@@ -57,6 +57,9 @@ export default function EditGoalForm(props) {
     });
 
     function updateGoal() {
+        const wakeupTimeSplitted = wakeupTime.split(':');
+        const alteredDate = targetDate.hour(wakeupTimeSplitted[0]).minute(wakeupTimeSplitted[1]);
+
         let goalData = {
             title,
             targetDate: targetDate.toISOString(),
@@ -65,6 +68,10 @@ export default function EditGoalForm(props) {
             completedOn: new Date().toISOString(),
             active: !completed,
             state: completed ? "completed" : "active",
+        }
+
+        if(hasMetric) {
+            goalData.metric = Number(metric);
         }
         
         updateGoalMutation.mutate(goalData);

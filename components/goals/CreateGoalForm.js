@@ -114,7 +114,7 @@ export default function CreateGoalForm(props) {
                             <Picker.Item styles={styles.forms.pickerItemStyle} label="True" value={true} />
                         </Picker>
                 )}></TextInput>
-                {hasMetric && <TextInput label="Metric" value={title} onChangeText={hasMetric} {...styles.paperInput}/> }
+                {hasMetric && <TextInput label="Metric" value={title} onChangeText={setMetric} {...styles.paperInput}/> }
             </Dialog.Content>
             <Dialog.Actions>
                 <Button testID="createGoalButton" {...styles.forms.actionButton} mode="contained" onPress={createGoal}>Create</Button>

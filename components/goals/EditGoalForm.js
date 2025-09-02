@@ -21,6 +21,8 @@ export default function EditGoalForm(props) {
     const [datePickerVisible, setDatePickerVisible] = useState(false);
     const [alert, setAlert] = useState(false);
     const {scheduleIndex} = useSelector(state => state.profile.value);
+    const [hasMetric, setHasMetric] = useState(true);
+    const [metric, setMetric] = useState(false);
 
     const updateGoalMutation = useMutation({
         mutationFn: (goalData) => axios.put(serverIP+'/updateGoal', goalData),
@@ -115,6 +117,17 @@ export default function EditGoalForm(props) {
                             <Picker.Item styles={styles.forms.pickerItemStyle} label="True" value={true} />
                         </Picker>
                     )}></TextInput>
+                <TextInput 
+                    label="Metric?" 
+                    value={hasMetric ? "Yes" : "No"} 
+                    {...styles.paperInput}
+                    render={(props) => (
+                        <Picker style={styles.forms.pickerParentStyle} dropdownIconColor='black' selectedValue={[i]} onValueChange={setHasMetric}>
+                            <Picker.Item styles={styles.forms.pickerItemStyle} label="False" value={false} />
+                            <Picker.Item styles={styles.forms.pickerItemStyle} label="True" value={true} />
+                        </Picker>
+                )}></TextInput>
+                {hasMetric && <TextInput label="Metric" value={metric} onChangeText={setMetric} {...styles.paperInput}/> }
             </Dialog.Content>
             <Dialog.Actions>
                 <Button {...styles.forms.actionButton} mode="contained" onPress={updateGoal}>Update</Button>

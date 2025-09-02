@@ -14,6 +14,8 @@ import { combineReducers } from '@reduxjs/toolkit'
 import onDayViewReducer from './onDayView'
 import daySelectedReducer from './daySelected'
 import modalVisibleReducer from './modalVisible'
+import goalStatisticsReducer, { goalStatistics } from './goalStatistics';
+
 import {
   FLUSH,
   REHYDRATE,
@@ -36,6 +38,7 @@ const rootReducer = combineReducers({
   onDayView: onDayViewReducer,
   daySelected: daySelectedReducer,
   modalVisible: modalVisibleReducer,
+  goalStatistics: goalStatisticsReducer,
 });
 
 const persistConfig = {

@@ -20,6 +20,8 @@ export default function CreateGoalForm(props) {
     const [targetDateText, setTargetDateText] = useState(dayjs(targetDate).format('D MMMM YYYY'));
     const [datePickerVisible, setDatePickerVisible] = useState(false);
     const [alert, setAlert] = useState(false);
+    const [hasMetric, setHasMetric] = useState(false);
+    const [metric, setMetric] = useState(false);
     const {scheduleIndex} = useSelector(state => state.profile.value);
     let goalsCompleted = props.goals.reduce((count, item) => item.state == 'completed' ? count + 1 : count, 0);
     let goalsNotCompleted = props.goals.length - goalsCompleted;
@@ -57,9 +59,13 @@ export default function CreateGoalForm(props) {
     });
 
     function createGoal() {
-        let goalData = {
+        const isActiveOnInTree = props.active ? "active" : "waiting";
+        const wakeupTimeSplitted = wakeupTime.split(':');
+        const alteredDate = targetDate.hour(wakeupTimeSplitted[0]).minute(wakeupTimeSplitted[1]);
+
+        const goalData = {
             title,
-            targetDate: targetDate.toISOString(),
+            targetDate: alteredDate.toISOString(),
             schedule: {
                 connect: {
                     id: props.id
@@ -68,15 +74,18 @@ export default function CreateGoalForm(props) {
             completed: false,
             completedOn: new Date().toISOString(),
             partOfLine: props.line,
+            state: isActiveOnInTree,
             active: props.active,
-            state: props.active ? 'active' : 'waiting',
-            objectUUID: uuid.v4()
+            objectUUID: crypto.randomUUID()
         }
 
-        if(maxNumberOfGoals > goalsNotCompleted | !(props.active)) {
+        if(hasMetric) {
+            goalData.metric = Number(metric);
+        }
+        if (goalLimit > goalsNotCompleted || !props.active) {
             createGoalMutation.mutate(goalData);
-        }else{
-            setAlert({shown: true, title: "Error", message: "Please complete more goals and we will unlock more goal slots for you!"});
+        } else {
+            setAlert({ shown: true, title: "Error", message: "Please complete more goals and we will unlock more goal slots for you!" });
         }
     }
 
@@ -95,6 +104,17 @@ export default function CreateGoalForm(props) {
                     editable={false} 
                     {...styles.paperInput} />
                 </Pressable>
+                <TextInput 
+                    label="Metric?" 
+                    value={hasMetric ? "Yes" : "No"} 
+                    {...styles.paperInput}
+                    render={(props) => (
+                        <Picker style={styles.forms.pickerParentStyle} dropdownIconColor='black' selectedValue={[i]} onValueChange={setHasMetric}>
+                            <Picker.Item styles={styles.forms.pickerItemStyle} label="False" value={false} />
+                            <Picker.Item styles={styles.forms.pickerItemStyle} label="True" value={true} />
+                        </Picker>
+                )}></TextInput>
+                {hasMetric && <TextInput label="Metric" value={title} onChangeText={hasMetric} {...styles.paperInput}/> }
             </Dialog.Content>
             <Dialog.Actions>
                 <Button testID="createGoalButton" {...styles.forms.actionButton} mode="contained" onPress={createGoal}>Create</Button>

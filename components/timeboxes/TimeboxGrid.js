@@ -27,6 +27,7 @@ export default function TimeboxGrid(props) {
     useScheduleSetter(schedule); //set schedule data to redux store (timeboxes, recordedTimeboxes, goals
     useActiveOverlay(schedule);
     useDaySelected(currentDay);
+    useGoalStatistics(schedule);
 
     return (
     <ScrollView>

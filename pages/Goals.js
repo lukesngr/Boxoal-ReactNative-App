@@ -11,6 +11,8 @@ import { styles } from "../styles/styles";
 import CorrectModalDisplayer from "../components/modals/CorrectModalDisplayer";
 import { GoalTree } from "./GoalTree";
 import { getMaxNumberOfGoals } from "../modules/coreLogic";
+import useGoalStatistics from "../hooks/useGoalStatistics";
+import useGoalLimits from "../hooks/useGoalLimits";
 
 export default function Goals(props) {
     const profile = useSelector(state => state.profile.value);
@@ -19,6 +21,8 @@ export default function Goals(props) {
     const [createGoalVisible, setCreateGoalVisible] = useState(false);
     const [showSkillTree, setShowSkillTree] = useState(false);
     let schedule = props.data[profile.scheduleIndex];
+    useGoalStatistics(schedule);
+    useGoalLimits(schedule.goals);
     let highestActiveIndex = 0;
 
     for(let i = 0; i < schedule.goals.length; i++) {

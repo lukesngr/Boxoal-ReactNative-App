@@ -10,6 +10,7 @@ import { Pressable } from "react-native";
 import axios from "axios";
 import serverIP from "../modules/serverIP";
 import { useAuthenticator } from "@aws-amplify/ui-react-native";
+import dayjs from "dayjs";
 
 export default function SettingsDialog(props) {
     const {user} = useAuthenticator();
@@ -34,7 +35,7 @@ export default function SettingsDialog(props) {
     }
 
     function updateProfile() {
-        const wakeupTimeAsText = wakeupTime.format('HH:mm');
+        const wakeupTimeAsText = dayjs(wakeupTime).format('HH:mm');
         const convertedBackBoxSizeNumber = Number(boxSizeNumber);
         
         axios.put('/api/updateProfile', {

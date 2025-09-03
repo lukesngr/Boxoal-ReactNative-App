@@ -13,6 +13,7 @@ import GridBody from "./GridBody";
 import { useDaySelected } from "../../hooks/useDaySelected";
 import CorrectModalDisplayer from "../modals/CorrectModalDisplayer";
 import { filterTimeboxesBasedOnWeekRange } from "../../modules/dateCode";
+import useGoalStatistics from "../../hooks/useGoalStatistics";
 
 
 export default function TimeboxGrid(props) {

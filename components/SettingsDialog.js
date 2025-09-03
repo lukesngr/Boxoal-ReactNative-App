@@ -23,6 +23,7 @@ export default function SettingsDialog(props) {
     const [wakeupTime, setWakeupTime] = useState(convertToDayjs(profile.wakeupTime, '12/1').utc().toDate());
     const [wakeupTimeText, setWakeupTimeText] = useState(profile.wakeupTime);
     const [wakeupTimeModalVisible, setWakeupTimeModalVisible] = useState(false);
+    const [hasUserSetGoalLimit, setHasUserSetGoalLimit] = useState(false);
     
     const {data} = props;
 

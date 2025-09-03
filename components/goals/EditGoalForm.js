@@ -45,7 +45,7 @@ export default function EditGoalForm(props) {
         },
         onSuccess: () => {
             props.close();
-            setAlert({ open: true, title: "Timebox", message: "Updated goal!" });
+            setAlert({ open: true, title: "Goal", message: "Updated goal!" });
             queryClient.invalidateQueries(['schedule']); // Refetch to get real data
         },
         onError: (error, goalData, context) => {
@@ -59,11 +59,11 @@ export default function EditGoalForm(props) {
 
     function updateGoal() {
         const wakeupTimeSplitted = wakeupTime.split(':');
-        const alteredDate = targetDate.hour(wakeupTimeSplitted[0]).minute(wakeupTimeSplitted[1]);
+        const alteredDate = dayjs(targetDate).hour(wakeupTimeSplitted[0]).minute(wakeupTimeSplitted[1]);
 
         let goalData = {
             title,
-            targetDate: targetDate.toISOString(),
+            targetDate: alteredDate.toISOString(),
             objectUUID: props.data.objectUUID,
             completed,
             completedOn: new Date().toISOString(),
@@ -169,11 +169,11 @@ export default function EditGoalForm(props) {
                     editable={false} {...styles.paperInput}/>
                 </Pressable>
                 <TextInput 
-                    label="Completed" 
+                    label="Completed"
                     value={completed ? "Yes" : "No"} 
                     {...styles.paperInput}
                     render={(props) => (
-                        <Picker style={styles.forms.pickerParentStyle} dropdownIconColor='black' selectedValue={[i]} onValueChange={setCompleted}>
+                        <Picker style={styles.forms.pickerParentStyle} dropdownIconColor='black' selectedValue={completed} onValueChange={setCompleted}>
                             <Picker.Item styles={styles.forms.pickerItemStyle} label="False" value={false} />
                             <Picker.Item styles={styles.forms.pickerItemStyle} label="True" value={true} />
                         </Picker>
@@ -183,7 +183,7 @@ export default function EditGoalForm(props) {
                     value={hasMetric ? "Yes" : "No"} 
                     {...styles.paperInput}
                     render={(props) => (
-                        <Picker style={styles.forms.pickerParentStyle} dropdownIconColor='black' selectedValue={[i]} onValueChange={setHasMetric}>
+                        <Picker style={styles.forms.pickerParentStyle} dropdownIconColor='black' selectedValue={hasMetric} onValueChange={setHasMetric}>
                             <Picker.Item styles={styles.forms.pickerItemStyle} label="False" value={false} />
                             <Picker.Item styles={styles.forms.pickerItemStyle} label="True" value={true} />
                         </Picker>

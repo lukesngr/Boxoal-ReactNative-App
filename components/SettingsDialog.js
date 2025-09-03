@@ -24,6 +24,7 @@ export default function SettingsDialog(props) {
     const [wakeupTimeText, setWakeupTimeText] = useState(profile.wakeupTime);
     const [wakeupTimeModalVisible, setWakeupTimeModalVisible] = useState(false);
     const [hasUserSetGoalLimit, setHasUserSetGoalLimit] = useState(false);
+    const [goalLimit, setGoalLimit] = useState(5);
     
     const {data} = props;
 
@@ -33,11 +34,35 @@ export default function SettingsDialog(props) {
     }
 
     function updateProfile() {
-        let wakeupTimeAsText = convertToTimeAndDate(wakeupTime)[0];
-        let convertedBackBoxSizeNumber = Number(boxSizeNumber);
-        dispatch({type: 'profile/set', payload: {scheduleIndex: (scheduleIndex-1), scheduleID: data[scheduleIndex-1].id, boxSizeNumber: convertedBackBoxSizeNumber, boxSizeUnit, wakeupTime: wakeupTimeAsText}});
-        axios.post(serverIP+'/updateProfile', {scheduleIndex: (scheduleIndex-1), scheduleID: data[scheduleIndex-1].id, boxSizeUnit, boxSizeNumber: convertedBackBoxSizeNumber, wakeupTime: wakeupTimeAsText, userUUID: user.userId}).catch(function(error) { console.log(error); });
-        props.hideDialog();
+        const wakeupTimeAsText = wakeupTime.format('HH:mm');
+        const convertedBackBoxSizeNumber = Number(boxSizeNumber);
+        
+        axios.put('/api/updateProfile', {
+            scheduleIndex: (scheduleIndex - 1),
+            scheduleID: data[scheduleIndex - 1].id,
+            boxSizeUnit,
+            boxSizeNumber: convertedBackBoxSizeNumber,
+            wakeupTime: wakeupTimeAsText,
+            userUUID: user.userId,
+            goalLimit: Number(goalLimit),
+        }).then(async () => {
+            dispatch({type: 'alert/set', payload: { open: true, title: "Profile", message: "Updated profile!" }});
+            await queryClient.refetchQueries();
+        }).catch(() =>{
+            dispatch({type: 'alert/set', payload: { open: true, title: "Error", message: "An error occurred, please try again or contact the developer" }});
+        });
+
+        dispatch({
+            type: 'profile/set',
+            payload: {
+                scheduleIndex: (scheduleIndex - 1),
+                scheduleID: data[scheduleIndex - 1].id,
+                boxSizeNumber: convertedBackBoxSizeNumber,
+                boxSizeUnit,
+                wakeupTime: wakeupTimeAsText,
+                goalLimit: goalLimit,
+            }
+        });
     }
 
     function safeSetBoxSizeNumber(number) {
@@ -104,7 +129,18 @@ export default function SettingsDialog(props) {
                     editable={false} 
                     {...styles.paperInput}/>
                 </Pressable>
-                
+
+                <TextInput 
+                    label="Goal Limit?" 
+                    value={hasUserSetGoalLimit ? "Yes" : "No"} 
+                    {...styles.paperInput}
+                    render={(props) => (
+                        <Picker style={styles.forms.pickerParentStyle} dropdownIconColor='black' selectedValue={hasUserSetGoalLimit} onValueChange={setHasUserSetGoalLimit}>
+                            <Picker.Item styles={styles.forms.pickerItemStyle} label="Goals Completed" value={false} />
+                            <Picker.Item styles={styles.forms.pickerItemStyle} label="Set My Own" value={true} />
+                        </Picker>
+                )}></TextInput>
+                {hasUserSetGoalLimit && <TextInput label="Goal Limit" value={goalLimit} onChangeText={setGoalLimit} {...styles.paperInput}/> }
             </Dialog.Content>
             <Dialog.Actions>
                 <Button {...styles.forms.actionButton} onPress={updateProfile}>Update</Button>

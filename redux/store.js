@@ -15,6 +15,7 @@ import onDayViewReducer from './onDayView'
 import daySelectedReducer from './daySelected'
 import modalVisibleReducer from './modalVisible'
 import goalStatisticsReducer, { goalStatistics } from './goalStatistics';
+import alertReducer from './alert';
 
 import {
   FLUSH,
@@ -39,6 +40,7 @@ const rootReducer = combineReducers({
   daySelected: daySelectedReducer,
   modalVisible: modalVisibleReducer,
   goalStatistics: goalStatisticsReducer,
+  alert: alertReducer
 });
 
 const persistConfig = {

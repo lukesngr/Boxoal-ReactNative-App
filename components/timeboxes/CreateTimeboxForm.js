@@ -63,18 +63,18 @@ export default function CreateTimeboxForm(props) {
             return { previousSchedule };
         },
         onSuccess: () => {
-            setAlert({
+            dispatch({type: 'alert/set', payload: {
                 open: true,
                 title: "Timebox",
                 message: "Added timebox!"
-            });
+            }});
             queryClient.invalidateQueries(['schedule']); // Refetch to get real data
             closeModal();
         },
         onError: (error, context) => {
             queryClient.setQueryData(['schedule'], context.previousSchedule);
             
-            setAlert({ open: true, title: "Error", message: "An error occurred, please try again or contact the developer" });
+            dispatch({type: 'alert/set', payload: { open: true, title: "Error", message: "An error occurred, please try again or contact the developer" }});
             queryClient.invalidateQueries(['schedule']);
             closeModal();
         }

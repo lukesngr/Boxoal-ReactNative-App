@@ -59,16 +59,16 @@ export default function EditTimeboxForm(props) {
             return { previousSchedule };
         },
         onSuccess: () => {
-            setAlert({
+            dispatch({type: 'alert/set', payload: {
                     open: true,
                     title: "Timebox",
                     message: "Updated timebox!"
-            });
+            }});
             queryClient.invalidateQueries(['schedule']); // Refetch to get real data
         },
         onError: (error, goalData, context) => {
             queryClient.setQueryData(['schedule'], context.previousGoals);
-            setAlert({ open: true, title: "Error", message: "An error occurred, please try again or contact the developer" });
+            dispatch({type: 'alert/set', payload: { open: true, title: "Error", message: "An error occurred, please try again or contact the developer" }});
             
             queryClient.invalidateQueries(['schedule']);
         }
@@ -96,17 +96,17 @@ export default function EditTimeboxForm(props) {
             return { previousSchedule };
         },
         onSuccess: () => {
-            setAlert({
+            dispatch({type: 'alert/set', payload: {
                 open: true,
                 title: "Timebox",
                 message: "Deleted timebox!"
-            });
+            }});
             queryClient.invalidateQueries(['schedule']); // Refetch to get real data
         },
         onError: (error, goalData, context) => {
             queryClient.setQueryData(['schedule'], context.previousGoals);
             
-            setAlert({ open: true, title: "Error", message: "An error occurred, please try again or contact the developer" });
+            dispatch({type: 'alert/set', payload: { open: true, title: "Error", message: "An error occurred, please try again or contact the developer" }});
             queryClient.invalidateQueries(['schedule']);
         }
     });

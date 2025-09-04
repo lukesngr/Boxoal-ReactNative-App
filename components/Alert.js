@@ -2,7 +2,7 @@ import { Paragraph, Button, Dialog } from "react-native-paper";
 
 export default function Alert(props) {
     return (
-        <Dialog style={{backgroundColor: '#D9D9D9'}} visible={props.visible} onDismiss={props.close}>
+        <Dialog style={{backgroundColor: '#D9D9D9'}} visible={props.open} onDismiss={props.close}>
             <Dialog.Title>{props.title}</Dialog.Title>
             <Dialog.Content>
                 <Paragraph testID='alertMessage'>

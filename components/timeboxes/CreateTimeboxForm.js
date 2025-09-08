@@ -10,7 +10,6 @@ import { dayToName } from '../../modules/dateCode';
 import { listOfColors } from '../../styles/styles';
 import { Dialog, Portal, TextInput, Button, SegmentedButtons } from 'react-native-paper';
 import { useDispatch, useSelector } from 'react-redux';
-import Alert from '../Alert';
 var utc = require("dayjs/plugin/utc");
 import dayjs from 'dayjs';
 
@@ -36,7 +35,6 @@ export default function CreateTimeboxForm(props) {
     const [startOfDayRange, setStartOfDayRange] = useState(0);
     const [endOfDayRange, setEndOfDayRange] = useState(6);
     const {scheduleIndex} = useSelector(state => state.profile.value);
-    const [alert, setAlert] = useState({shown: false, title: "", message: ""});
 
     
     let {time, date} = props;
@@ -87,7 +85,7 @@ export default function CreateTimeboxForm(props) {
     function handleSubmit() {
 
         if(goalSelected == -1 && !isTimeblock) {
-            setAlert({shown: true, title: "Error", message: "Please create a goal before creating a timebox"});
+            dispatch({type: 'alert/set', payload: {open: true, title: "Error", message: "Please create a goal before creating a timebox"}});
             return;
         }else{
 
@@ -130,7 +128,7 @@ export default function CreateTimeboxForm(props) {
         
             if(amountOfBoxes > maxNumberOfBoxes) {
                 setNumberOfBoxes('1');
-                setAlert({shown: true, title: "Error", message: "You cannot create a timebox that exceeds the number of boxes in the schedule"});
+                dispatch({type: 'alert/set', payload: {open: true, title: "Error", message: "You cannot create a timebox that exceeds the number of boxes in the schedule"}});
             }else {
                 setNumberOfBoxes(String(amountOfBoxes));
             }
@@ -212,7 +210,6 @@ export default function CreateTimeboxForm(props) {
                 <Button {...styles.forms.nonActionButton} onPress={closeModal}>Exit</Button>
             </Dialog.Actions>
         </Dialog>
-        {alert.shown && <Alert visible={alert.shown} close={() => setAlert({...alert, shown: false})} title={alert.title} message={alert.message}/> }
     </Portal>
     );
 }

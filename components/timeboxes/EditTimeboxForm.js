@@ -24,8 +24,6 @@ export default function EditTimeboxForm(props) {
     const [startOfDayRange, setStartOfDayRange] = useState(props.data.reoccuring != null ? (props.data.reoccuring.startOfDayRange) : 0);
     const [endOfDayRange, setEndOfDayRange] = useState(props.data.reoccuring != null ? props.data.reoccuring.endOfDayRange : 0);
     const [isTimeblock, setIsTimeBlock] = useState(false);
-    
-    const [alert, setAlert] = useState({shown: false, title: "", message: ""});
 
     const {id, wakeupTime, boxSizeUnit, boxSizeNumber} = useSelector(state => state.profile.value);
     const {timeboxes, goals} = useSelector(state => state.scheduleData.value);
@@ -147,10 +145,10 @@ export default function EditTimeboxForm(props) {
             id: props.data.id,
             objectUUID: props.data.objectUUID,
         }).then(async () => {   
-            setAlert({shown: true, title: "Timebox", message: "Cleared recording!"});
+            dispatch({type: 'alert/set', payload: {open: true, title: "Timebox", message: "Cleared recording!"}});
             await queryClient.refetchQueries();
         }).catch(function(error) {
-            setAlert({shown: true, title: "Error", message: "An error occurred, please try again or contact the developer"});
+            dispatch({type: 'alert/set', payload: {open: true, title: "Error", message: "An error occurred, please try again or contact the developer"}});
             console.log(error); 
         });
     }
@@ -242,6 +240,5 @@ export default function EditTimeboxForm(props) {
                 <Button {...styles.forms.nonActionButton} onPress={props.back}>Back</Button>
             </Dialog.Actions>
         </Dialog>
-        {alert.shown && <Alert visible={alert.shown} close={() => setAlert({...alert, shown: false})} title={alert.title} message={alert.message}/> }
     </Portal>)
 }

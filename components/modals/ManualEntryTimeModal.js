@@ -3,7 +3,6 @@ import { Dialog, Button, Portal } from "react-native-paper";
 import { useState } from "react";
 import DatePicker from "react-native-date-picker";
 import serverIP from "../../modules/serverIP";
-import Alert from "../Alert";
 import { queryClient } from '../../modules/queryClient.js';
 import { useDispatch, useSelector } from "react-redux";
 import { convertToTimeAndDate } from "../../modules/formatters.js";
@@ -17,7 +16,6 @@ export default function ManualEntryTimeModal(props) {
     const [recordedEndTime, setRecordedEndTime] = useState(new Date(props.data.endTime));
     const [startTimePickerVisible, setStartTimePickerVisible] = useState(false);
     const [endTimePickerVisible, setEndTimePickerVisible] = useState(false);
-    const [alert, setAlert] = useState({open: false, title: "", message: ""});
     const {scheduleIndex} = useSelector(state => state.profile.value);
 
     const createRecordingMutation = useMutation({
@@ -52,16 +50,16 @@ export default function ManualEntryTimeModal(props) {
         },
         onSuccess: () => {
             props.close()
-            setAlert({
+            dispatch({type: 'alert/set', payload: {
                 open: true,
                 title: "Timebox",
                 message: "Added recorded timebox!"
-            });
+            }});
             queryClient.invalidateQueries(['schedule']); // Refetch to get real data
         },
         onError: (error, goalData, context) => {
             queryClient.setQueryData(['schedule'], context.previousSchedule);
-            setAlert({ open: true, title: "Error", message: "An error occurred, please try again or contact the developer" });
+            dispatch({type: 'alert/set', payload: { open: true, title: "Error", message: "An error occurred, please try again or contact the developer" }});
             queryClient.invalidateQueries(['schedule']);
             
             props.close();
@@ -120,6 +118,5 @@ export default function ManualEntryTimeModal(props) {
         }
         onCancel={() => setEndTimePickerVisible(false)}>
     </DatePicker>
-    {alert.open && <Alert visible={alert.open} close={() => setAlert({...alert, open: false})} title={alert.title} message={alert.message}/> }
     </Portal>)
 }

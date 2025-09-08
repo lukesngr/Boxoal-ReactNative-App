@@ -8,7 +8,6 @@ import { NativeModules, Pressable } from "react-native";
 import serverIP from "../../modules/serverIP";
 import { Button } from "react-native-paper";
 import EditTimeboxForm from "./EditTimeboxForm";
-import Alert from "../Alert";
 import { Dialog, Paragraph, Portal } from "react-native-paper";
 import { useAuthenticator } from "@aws-amplify/ui-react-native";
 import ManualEntryTimeModal from "../modals/ManualEntryTimeModal";
@@ -22,7 +21,6 @@ export default function TimeboxActionsForm(props) {
     const {data, date, time} = props;
     const [manualEntryModalShown, setManualEntryModalShown] = useState(false);
     const [showEditTimeboxForm, setShowEditTimeboxForm] = useState(false);
-    const [alert, setAlert] = useState({shown: false, title: "", message: ""});
     const timeboxRecording = useSelector(state => state.timeboxRecording.value);
     const {boxSizeUnit, boxSizeNumber, scheduleID, scheduleIndex} = useSelector(state => state.profile.value);
     const dispatch = useDispatch();
@@ -67,16 +65,16 @@ export default function TimeboxActionsForm(props) {
         },
         onSuccess: () => {
             closeModal();
-            setAlert({
+            dispatch({type: 'alert/set', payload: {
                 open: true,
                 title: "Timebox",
                 message: "Added recorded timebox!"
-            });
+            }});
             queryClient.invalidateQueries(['schedule']); // Refetch to get real data
         },
         onError: (error, goalData, context) => {
             queryClient.setQueryData(['schedule'], context.previousSchedule);
-            setAlert({ open: true, title: "Error", message: "An error occurred, please try again or contact the developer" });
+            dispatch({type: 'alert/set', payload: { open: true, title: "Error", message: "An error occurred, please try again or contact the developer" }});
             queryClient.invalidateQueries(['schedule']);
             
             closeModal();
@@ -131,8 +129,6 @@ export default function TimeboxActionsForm(props) {
                     <Button {...styles.forms.nonActionButton} onPress={closeModal}>Close</Button>
                 </Dialog.Actions>
             </Dialog>
-            
-            {alert.shown && <Alert visible={alert.shown} close={() => setAlert({...alert, shown: false})} title={alert.title} message={alert.message}/> }
         </Portal>
         <ManualEntryTimeModal dispatch={dispatch} visible={manualEntryModalShown} close={() => setManualEntryModalShown(false)} data={data} scheduleID={scheduleID}></ManualEntryTimeModal>
         </>)}

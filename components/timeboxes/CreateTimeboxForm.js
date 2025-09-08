@@ -26,7 +26,7 @@ export default function CreateTimeboxForm(props) {
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
     const [numberOfBoxes, setNumberOfBoxes] = useState('1');
-    const activeGoals = goals.filter(goal => goal.active);
+    const activeGoals = goals.filter(goal => goal.state == 'active');
     const [goalSelected, setGoalSelected] = useState(activeGoals.length == 0 ? -1 : activeGoals[0].id);
     
     const [moreOptionsVisible, setMoreOptionsVisible] = useState(false);

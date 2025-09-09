@@ -2,7 +2,6 @@ import { Text } from "react-native";
 import { View } from "react-native";
 import { IconButton, FAB, Surface, Icon } from "react-native-paper";
 import CreateScheduleForm from "../components/schedules/CreateScheduleForm";
-import { useSelector } from "react-redux";
 import { useState } from "react";
 import EditScheduleForm from "../components/schedules/EditScheduleForm";
 import GoalAccordion from "../components/goals/GoalAccordion";
@@ -14,6 +13,7 @@ import { getMaxNumberOfGoals } from "../modules/coreLogic";
 import useGoalStatistics from "../hooks/useGoalStatistics";
 import useGoalLimits from "../hooks/useGoalLimits";
 import { useDispatch, useSelector } from "react-redux";
+import Alert from "../components/Alert";
 
 export default function Goals(props) {
     const profile = useSelector(state => state.profile.value);

@@ -17,6 +17,7 @@ export default function ManualEntryTimeModal(props) {
     const [startTimePickerVisible, setStartTimePickerVisible] = useState(false);
     const [endTimePickerVisible, setEndTimePickerVisible] = useState(false);
     const {scheduleIndex} = useSelector(state => state.profile.value);
+    const dispatch = useDispatch();
 
     const createRecordingMutation = useMutation({
         mutationFn: (recordingData) => axios.post(serverIP+'/createRecordedTimebox', recordingData),

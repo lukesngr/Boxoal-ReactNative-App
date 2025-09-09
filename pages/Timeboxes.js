@@ -11,7 +11,7 @@ export default function Timeboxes(props) {
     <>
       <TimeboxHeading data={props.data} />
       <TimeboxGrid data={props.data}></TimeboxGrid>
-      <Alert open={open} title={title} message={message} close={() => dispatch({ open: false, title: "", message: "" })}></Alert>
+      <Alert open={open} title={title} message={message} close={() => dispatch({type: 'alert/set', payload: { open: false, title: "", message: "" }})}></Alert>
     </>
   )
   

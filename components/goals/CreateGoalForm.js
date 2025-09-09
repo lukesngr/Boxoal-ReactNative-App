@@ -12,9 +12,10 @@ import { getMaxNumberOfGoals } from "../../modules/coreLogic.js";
 import { useMutation } from "@tanstack/react-query";
 import dayjs from "dayjs";
 import uuid from 'react-native-uuid';
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 export default function CreateGoalForm(props) {
+    const dispatch = useDispatch();
     const [title, setTitle] = useState("");
     const [targetDate, setTargetDate] = useState(new Date());
     const [targetDateText, setTargetDateText] = useState(dayjs(targetDate).format('D MMMM YYYY'));
@@ -120,7 +121,6 @@ export default function CreateGoalForm(props) {
                 <Button {...styles.forms.actionButton} onPress={props.close}>Close</Button>
             </Dialog.Actions>
           </Dialog>
-            {alert.shown && <Alert visible={alert.shown} close={() => setAlert({...alert, shown: false})} title={alert.title} message={alert.message}/> }
         </Portal>
         <DatePicker 
             modal 

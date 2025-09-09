@@ -11,15 +11,15 @@ import Alert from "../Alert";
 import { useMutation } from "@tanstack/react-query";
 
 import dayjs from "dayjs";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 
 export default function EditGoalForm(props) {
+    const dispatch = useDispatch();
     const [title, setTitle] = useState(props.data.title);
     const [targetDate, setTargetDate] = useState(new Date(props.data.targetDate));
     const [completed, setCompleted] = useState(props.data.state == 'completed');
     const [targetDateText, setTargetDateText] = useState(dayjs(targetDate).format('D MMMM YYYY'));
     const [datePickerVisible, setDatePickerVisible] = useState(false);
-    const [alert, setAlert] = useState(false);
     const {scheduleIndex, wakeupTime} = useSelector(state => state.profile.value);
     const [hasMetric, setHasMetric] = useState(props.data.metric === null ? (false) : (true));
     const [metric, setMetric] = useState(props.data.metric);
@@ -198,7 +198,6 @@ export default function EditGoalForm(props) {
                 <Button {...styles.forms.nonActionButton} onPress={props.close}>Close</Button>
             </Dialog.Actions>
           </Dialog>
-            {alert.open && <Alert visible={alert.open} close={() => setAlert({...alert, open: false})} title={alert.title} message={alert.message}/> }
         </Portal>
         <DatePicker 
             modal 

@@ -3,17 +3,16 @@ import axios from "axios";
 import { useState } from "react";
 import serverIP from "../../modules/serverIP";
 import { queryClient } from '../../modules/queryClient.js';
-
+import { useDispatch } from "react-redux";
 import { Dialog, Portal, TextInput, Button } from "react-native-paper";
-import Alert from "../Alert";
 import { styles } from "../../styles/styles";
 import { useAuthenticator } from "@aws-amplify/ui-react-native";
 
 
 export default function CreateScheduleForm(props) {
     const [title, setTitle] = useState("");
-    const [alert, setAlert] = useState({shown: false, title: "", message: ""});
     const {user} = useAuthenticator();
+    const dispatch = useDispatch();
     
     async function createSchedule() {
         axios.post(serverIP+'/createSchedule', {
@@ -21,11 +20,11 @@ export default function CreateScheduleForm(props) {
             userUUID: user.userId, 
         }).then(async () => {
             props.close();
-            setAlert({shown: true, title: "Timebox", message: "Created schedule!"});
+            dispatch({type: 'alert/set', payload: {open: true, title: "Timebox", message: "Created schedule!"}});
             await queryClient.refetchQueries();
         }).catch(function(error) {
             props.close();
-            setAlert({shown: true, title: "Error", message: "An error occurred, please try again or contact the developer"});
+            dispatch({type: 'alert/set', payload: {open: true, title: "Error", message: "An error occurred, please try again or contact the developer"}});
             
         })
     }
@@ -43,7 +42,6 @@ export default function CreateScheduleForm(props) {
                 <Button {...styles.forms.nonActionButton} onPress={props.close}>Close</Button>
             </Dialog.Actions>
           </Dialog>
-            {alert.shown && <Alert visible={alert.shown} close={() => setAlert({...alert, shown: false})} title={alert.title} message={alert.message}/> }
         </Portal>
     </>)
 }

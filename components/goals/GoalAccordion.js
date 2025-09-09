@@ -6,11 +6,13 @@ import TimeboxAsListItem from "../timeboxes/TimeboxAsListItem";
 import GoalProgressIndicator from "./GoalProgressIndicator";
 import axios from "axios";
 import serverIP from "../../modules/serverIP";
+import { useDispatch } from "react-redux";
 
 export default function GoalAccordion(props) {
     const [editGoalFormVisible, setEditGoalFormVisible] = useState(false);
     const [accordionOpen, setAccordionOpen] = useState(false);
     const [checked, setChecked] = useState(false);
+    const dispatch = useDispatch();
 
     function completeGoal() {
         axios.put(serverIP+'/updateGoal', {
@@ -24,10 +26,10 @@ export default function GoalAccordion(props) {
             state: 'completed'
         }
         ).then(async () => {
-            setAlert({shown: true, title: "Timebox", message: "Updated goal!"});
+            dispatch({type: 'alert/set', payload: {open: true, title: "Timebox", message: "Updated goal!"}});
             await queryClient.refetchQueries();
         }).catch(function(error) {
-            setAlert({shown: true, title: "Error", message: "An error occurred, please try again or contact the developer"});
+            dispatch({type: 'alert/set', payload: {shown: true, title: "Error", message: "An error occurred, please try again or contact the developer"}});
             console.log(error);
         })
 

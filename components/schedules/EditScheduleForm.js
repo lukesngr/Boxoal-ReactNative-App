@@ -14,7 +14,6 @@ import { useMutation } from "@tanstack/react-query";
 export default function EditScheduleForm(props) {
     const dispatch = useDispatch();
     const [title, setTitle] = useState(props.data.title);
-    const [alert, setAlert] = useState({open: false, title: "", message: ""});
     const profile = useSelector(state => state.profile.value);
     const { user } = useAuthenticator();
 
@@ -37,16 +36,16 @@ export default function EditScheduleForm(props) {
         },
         onSuccess: () => {
             props.close();
-            setAlert({
+            dispatch({type: 'alert/set', payload: {
                 open: true,
-                title: "Timebox",
+                title: "Schedule",
                 message: "Updated schedule!"
-            });
+            }});
             queryClient.invalidateQueries(['schedule']); // Refetch to get real data
         },
         onError: (error, scheduleData, context) => {
             queryClient.setQueryData(['schedule'], context.previousSchedule);
-            setAlert({ open: true, title: "Error", message: "An error occurred, please try again or contact the developer" });
+            dispatch({type: 'alert/set', payload: { open: true, title: "Error", message: "An error occurred, please try again or contact the developer" }});
             queryClient.invalidateQueries(['schedule']);
             props.close();
         }
@@ -76,16 +75,16 @@ export default function EditScheduleForm(props) {
                     dispatch({type: 'profile/set', payload: {...profile, scheduleIndex: scheduleBefore}});
             }
             props.close();
-            setAlert({
+            dispatch({type: 'alert/set', payload: {
                 open: true,
-                title: "Timebox",
+                title: "Schedule",
                 message: "Deleted schedule!"
-            });
+            }});
             queryClient.invalidateQueries(['schedule']); // Refetch to get real data
         },
         onError: (error, scheduleData, context) => {
             queryClient.setQueryData(['schedule'], context.previousSchedule);
-            setAlert({ open: true, title: "Error", message: "An error occurred, please try again or contact the developer" });
+            dispatch({type: 'alert/set', payload: { open: true, title: "Error", message: "An error occurred, please try again or contact the developer" }});
             queryClient.invalidateQueries(['schedule']);
             
             props.close();
@@ -124,7 +123,6 @@ export default function EditScheduleForm(props) {
                 <Button textColor="white" {...styles.forms.nonActionButton} onPress={props.close}>Close</Button>
             </Dialog.Actions>
           </Dialog>
-            {alert.open && <Alert visible={alert.open} close={() => setAlert({...alert, open: false})} title={alert.title} message={alert.message}/> }
         </Portal>
     </>)
 }

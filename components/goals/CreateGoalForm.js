@@ -19,7 +19,6 @@ export default function CreateGoalForm(props) {
     const [targetDate, setTargetDate] = useState(new Date());
     const [targetDateText, setTargetDateText] = useState(dayjs(targetDate).format('D MMMM YYYY'));
     const [datePickerVisible, setDatePickerVisible] = useState(false);
-    const [alert, setAlert] = useState(false);
     const [hasMetric, setHasMetric] = useState(false);
     const [metric, setMetric] = useState(0);
     const {scheduleIndex, wakeupTime} = useSelector(state => state.profile.value);
@@ -46,13 +45,13 @@ export default function CreateGoalForm(props) {
         },
         onSuccess: () => {
             props.close();
-            setAlert({ open: true, title: "Timebox", message: "Created goal!" });
+            dispatch({type: 'alert/set', payload: { open: true, title: "Goal", message: "Created goal!" }});
             queryClient.invalidateQueries(['schedule']); // Refetch to get real data
         },
         onError: (error, goalData, context) => {
             queryClient.setQueryData(['schedule'], context.previousGoals);
             props.close();
-            setAlert({ open: true, title: "Error", message: "An error occurred, please try again or contact the developer" });
+            dispatch({type: 'alert/set', payload: { open: true, title: "Error", message: "An error occurred, please try again or contact the developer" }});
             queryClient.invalidateQueries(['schedule']);
             
         }
@@ -85,7 +84,7 @@ export default function CreateGoalForm(props) {
         if (goalLimit > goalsNotCompleted || !props.active) {
             createGoalMutation.mutate(goalData);
         } else {
-            setAlert({ shown: true, title: "Error", message: "Please complete more goals and we will unlock more goal slots for you!" });
+            dispatch({type: 'alert/set', payload: { open: true, title: "Error", message: "Please complete more goals and we will unlock more goal slots for you!" }});
         }
     }
 

@@ -45,14 +45,14 @@ export default function EditGoalForm(props) {
         },
         onSuccess: () => {
             props.close();
-            setAlert({ open: true, title: "Goal", message: "Updated goal!" });
+            dispatch({type: 'alert/set', payload: { open: true, title: "Goal", message: "Updated goal!" }});
             queryClient.invalidateQueries(['schedule']); // Refetch to get real data
         },
         onError: (error, goalData, context) => {
             queryClient.setQueryData(['schedule'], context.previousGoals);
             props.close();
             
-            setAlert({ open: true, title: "Error", message: "An error occurred, please try again or contact the developer" });
+            dispatch({type: 'alert/set', payload: { open: true, title: "Error", message: "An error occurred, please try again or contact the developer" }});
             queryClient.invalidateQueries(['schedule']);
         }
     });
@@ -92,11 +92,11 @@ export default function EditGoalForm(props) {
             id: props.data.id
         }).then(async () => {   
             props.close();
-            setAlert({shown: true, title: "Timebox", message: "Deleted goal!"});
+            dispatch({type: 'alert/set', payload: {open: true, title: "Goal", message: "Deleted goal!"}});
             await queryClient.refetchQueries();
         }).catch(function(error) {
             props.close();
-            setAlert({shown: true, title: "Error", message: "An error occurred, please try again or contact the developer"});
+            dispatch({type: 'alert/set', payload: {open: true, title: "Error", message: "An error occurred, please try again or contact the developer"}});
             
         });
     }
@@ -138,12 +138,12 @@ export default function EditGoalForm(props) {
                 axios.post('/api/logMetric', data)
                 .then(async () => {
                     close();
-                    setAlert({ shown: true, title: "Goal", message: "Logged metric!" });
+                    dispatch({type: 'alert/set', payload: { open: true, title: "Goal", message: "Logged metric!" }});
                     await queryClient.refetchQueries();
                 })
                 .catch(function() {
                     close();
-                    setAlert({ shown: true, title: "Error", message: "An error occurred, please try again or contact the developer" });
+                    dispatch({type: 'alert/set', payload: { open: true, title: "Error", message: "An error occurred, please try again or contact the developer" }});
                 });
             }
         }else {

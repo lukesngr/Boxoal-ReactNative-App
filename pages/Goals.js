@@ -13,9 +13,12 @@ import { GoalTree } from "./GoalTree";
 import { getMaxNumberOfGoals } from "../modules/coreLogic";
 import useGoalStatistics from "../hooks/useGoalStatistics";
 import useGoalLimits from "../hooks/useGoalLimits";
+import { useDispatch, useSelector } from "react-redux";
 
 export default function Goals(props) {
     const profile = useSelector(state => state.profile.value);
+    const {open, title, message} = useSelector(state => state.alert.value);
+    const dispatch = useDispatch();
     const [createScheduleVisible, setCreateScheduleVisible] = useState(false);
     const [editScheduleVisible, setEditScheduleVisible] = useState(false);
     const [createGoalVisible, setCreateGoalVisible] = useState(false);
@@ -31,10 +34,10 @@ export default function Goals(props) {
         }
     }
 
-    if(showSkillTree) {
-        return (<GoalTree data={schedule} close={() => setShowSkillTree(false)}></GoalTree>) 
-    }else{
-        return (<>
+    return <>
+    <Alert open={open} title={title} message={message} close={() => dispatch({type: 'alert/set', payload: { open: false, title: "", message: "" }})}></Alert>
+    {showSkillTree ? (
+        <GoalTree data={schedule} close={() => setShowSkillTree(false)}></GoalTree>) : (<>
         <View style={{backgroundColor: '#D9D9D9', width: '100%', height: '100%', padding: 20, paddingLeft: 15, paddingRight: 15}}>
             <View style={{backgroundColor: 'white', width: '100%', height: '100%'}}>
                 <Surface style={{flexDirection: 'row', alignItems: 'center', paddingLeft: 20, backgroundColor: 'white'}}> 
@@ -58,5 +61,5 @@ export default function Goals(props) {
         <EditScheduleForm data={schedule} visible={editScheduleVisible} close={() => setEditScheduleVisible(false)}></EditScheduleForm>
         <CreateScheduleForm visible={createScheduleVisible} close={() => setCreateScheduleVisible(false)}></CreateScheduleForm>
         </>)
-        }
+        }</>
 }

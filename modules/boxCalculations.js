@@ -256,22 +256,18 @@ export function getStatistics(recordedTimeboxes, timeboxes) {
 
     for(let timebox of timeboxes) {
 
-        let isSameDay = dayjs(timebox.startTime).isSameOrAfter(today, 'date') && dayjs(timebox.startTime).isBefore(nextDayWakeup);
-        let isReoccuringDaily = timebox.reoccuring != null && timebox.reoccuring.reoccurFrequency === "daily";
-        let isReoccuringWeeklyAndToday = timebox.reoccuring != null && timebox.reoccuring.reoccurFrequency === "weekly" && timebox.reoccuring.weeklyDay == today.day();
-        let isReoccuringDailyOrWeeklyAndToday = isReoccuringDaily || isReoccuringWeeklyAndToday;
-
-        if(timebox.isTimeblock && (isSameDay || isReoccuringDailyOrWeeklyAndToday)) {
-            if(dayjs(timebox.startTime).isSameOrAfter(today)) {
-                if(dayjs(timebox.endTime).isAfter(nextDayWakeup)) {
-                    hoursLeftToday -= ((nextDayWakeup.toDate() - new Date(timebox.startTime)) / hoursConversionDivisor)
-                }else{
-                    hoursLeftToday -= ((new Date(timebox.endTime) - new Date(timebox.startTime)) / hoursConversionDivisor)
-                }
-            }else if(dayjs(timebox.endTime).isAfter(today)) {
-                hoursLeftToday -= ((new Date(timebox.endTime) - new Date()) / hoursConversionDivisor)
+        let isInWeek = dayjs(timebox.startTime).isSameOrAfter(startOfThisWeek, 'date') && dayjs(timebox.startTime).isBefore(endOfThisWeek);
+        let isReoccuring = timebox.reoccuring != null;
+        if(timebox.isTimeblock && isInWeek) {
+            hoursLeftThisWeek -= ((new Date(timebox.endTime) - new Date(timebox.startTime)) / hoursConversionDivisor)
+        }else if(timebox.isTimeblock && isReoccuring) {
+            if(timebox.reoccuring.endOfDayRange == timebox.reoccuring.startOfDayRange) {
+                hoursLeftThisWeek -= (((new Date(timebox.endTime) - new Date(timebox.startTime))*1) / hoursConversionDivisor);
+            }else {
+                hoursLeftThisWeek -= (((new Date(timebox.endTime) - new Date(timebox.startTime))*(timebox.reoccuring.endOfDayRange - timebox.reoccuring.startOfDayRange)) / hoursConversionDivisor);
             }
-        }   
+             
+        }  
     }
 
     hoursLeftToday = Math.round(hoursLeftToday)

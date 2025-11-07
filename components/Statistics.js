@@ -11,7 +11,7 @@ export function Statistics(props) {
         percentagePredictedStart, 
         percentageCorrectTime, 
         percentageRescheduled, 
-        hoursLeftToday} = getStatistics(props.recordedTimeboxes, props.timeboxes);
+        hoursLeftThisWeek} = getStatistics(props.recordedTimeboxes, props.timeboxes);
     
 
     return (
@@ -33,7 +33,7 @@ export function Statistics(props) {
         </Surface>
 
         <Surface style={styles.dashboard.statTextSurface} elevation={4}>
-            <Text style={styles.dashboard.statHeading}>Hours Available Today</Text>
+            <Text style={styles.dashboard.statHeading}>Hours Left This Week</Text>
             <View style={styles.dashboard.statTextContainer}>
                 <Text style={styles.dashboard.statText}>{hoursLeftToday}</Text>
             </View>

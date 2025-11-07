@@ -35,7 +35,7 @@ export function Statistics(props) {
         <Surface style={styles.dashboard.statTextSurface} elevation={4}>
             <Text style={styles.dashboard.statHeading}>Hours Left This Week</Text>
             <View style={styles.dashboard.statTextContainer}>
-                <Text style={styles.dashboard.statText}>{hoursLeftToday}</Text>
+                <Text style={styles.dashboard.statText}>{hoursLeftThisWeek}</Text>
             </View>
             <Text style={styles.dashboard.statDenominationLabel}>Hours</Text>
         </Surface>

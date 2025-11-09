@@ -12,6 +12,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 
 export function GoalTree(props) {
     const [currentLine, setCurrentLine] = useState(1);
+    const [onTimeboxView, setOnTimeboxView] = useState({data: [], open: false});
     let goalsCompleted = props.data.goals.reduce((count, item) => item.completed ? count + 1 : count, 0);
     let goalsInLine = props.data.goals.filter((item) => item.partOfLine == currentLine);
     let maxNumberOfGoals = getMaxNumberOfGoals(goalsCompleted);
@@ -46,7 +47,7 @@ export function GoalTree(props) {
             </View>
             <ScrollView>
                 {goalsInLine.map((goal, index) => {
-                    return <GoalTreeNode line={currentLine} key={index} goal={goal}></GoalTreeNode>
+                    return <GoalTreeNode line={currentLine} key={index} goal={goal} setTimeboxView={setOnTimeboxView}></GoalTreeNode>
                 })}
                 <AddGoalToTree goals={props.data.goals} line={currentLine} addNonActiveGoal={addNonActiveGoal}></AddGoalToTree>
             </ScrollView>

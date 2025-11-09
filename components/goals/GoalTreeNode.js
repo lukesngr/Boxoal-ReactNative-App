@@ -8,7 +8,7 @@ import { styles } from "../../styles/styles";
 export function GoalTreeNode(props) {
     return (
         <View style={{alignSelf: 'center'}}>
-            <View style={{backgroundColor: styles.primaryColor, maxWidth: '80%', paddingHorizontal: '10%', paddingVertical: '5%'}}>
+            <View onClick={props.setTimeboxView({data: props.goal.timeboxes, open: true})} style={{backgroundColor: styles.primaryColor, maxWidth: '80%', paddingHorizontal: '10%', paddingVertical: '5%'}}>
                 <Text style={{fontFamily: 'Koulen-Regular', fontSize: 30, color: 'white'}}>{props.goal.title}</Text>
                 {props.goal.state == "completed" && <Text style={{fontFamily: 'Koulen-Regular', color: '#4FF38E', fontSize: 15, textAlign: 'center'}} className="goalCardUndertext">Completed</Text>}
                 {props.goal.state == "failed" && <Text style={{fontFamily: 'Koulen-Regular', color: '#FF0606', fontSize: 15, textAlign: 'center'}} className="goalCardUndertext">Failed</Text>}

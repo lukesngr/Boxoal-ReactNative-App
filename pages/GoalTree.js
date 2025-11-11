@@ -8,11 +8,12 @@ import AddGoalToTree  from "../components/goals/AddGoalToTree";
 import { BackHandler } from "react-native";
 import { faBars } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
+import { GoalTreeTimeboxes } from "../components/goals/GoalTreeTimeboxes";
 
 
 export function GoalTree(props) {
     const [currentLine, setCurrentLine] = useState(1);
-    const [onTimeboxView, setOnTimeboxView] = useState({data: [], open: false});
+    const [onTimeboxView, setOnTimeboxView] = useState({data: {}, open: false});
     let goalsCompleted = props.data.goals.reduce((count, item) => item.completed ? count + 1 : count, 0);
     let goalsInLine = props.data.goals.filter((item) => item.partOfLine == currentLine);
     let maxNumberOfGoals = getMaxNumberOfGoals(goalsCompleted);
@@ -46,9 +47,13 @@ export function GoalTree(props) {
                 {maxNumberOfGoals > 1 && <IconButton icon="arrow-right" size={25} onPress={() => moveRight()}></IconButton> }
             </View>
             <ScrollView>
-                {goalsInLine.map((goal, index) => {
-                    return <GoalTreeNode line={currentLine} key={index} goal={goal} setTimeboxView={setOnTimeboxView}></GoalTreeNode>
-                })}
+                {onTimeboxView.open ? (<GoalTreeTimeboxes goal={onTimeboxView.data} close={() => setOnTimeboxView({data: {}, open: false})}></GoalTreeTimeboxes>) : (
+                    <>
+                        {goalsInLine.map((goal, index) => {
+                            return <GoalTreeNode line={currentLine} key={index} goal={goal} setTimeboxView={setOnTimeboxView}></GoalTreeNode>
+                        })}
+                    </>
+                )}
                 <AddGoalToTree goals={props.data.goals} line={currentLine} addNonActiveGoal={addNonActiveGoal}></AddGoalToTree>
             </ScrollView>
         </View>

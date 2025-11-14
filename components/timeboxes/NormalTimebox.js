@@ -12,7 +12,7 @@ export default function NormalTimebox(props) {
     let height = Math.floor(timeboxHeight*percentageOfBoxSizeFilled);
     return (
     <View style={{position: 'relative', height: height, backgroundColor: props.data.color, width: '100%', marginTop: props.marginFromTop}}>
-        <Text style={{fontSize: fontSize, color: 'black'}}>{props.data.title}</Text>
+        <Text style={props.data.isTimeblock ? ({fontSize: fontSize, color: 'white'}) : ({fontSize: fontSize, color: 'black'})}>{props.data.title}</Text>
     </View>
     )
 }

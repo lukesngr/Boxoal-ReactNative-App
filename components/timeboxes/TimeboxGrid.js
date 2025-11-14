@@ -20,7 +20,6 @@ export default function TimeboxGrid(props) {
     const selectedDate = useSelector(state => state.selectedDate.value);
     const profile = useSelector(state => state.profile.value);
     let schedule = props.data[profile.scheduleIndex]; 
-    schedule.timeboxes = filterTimeboxesBasedOnWeekRange(schedule.timeboxes, selectedDate); //filter timeboxes based on week range
     const dayToName = getArrayOfDayDateDayNameAndMonthForHeaders(selectedDate); //get all info to make headers look nice
     const listOfTimes = returnTimesSeperatedForSchedule(profile); //get times that go down each row
     let currentDay = getCurrentDay();

@@ -9,6 +9,7 @@ import { BackHandler } from "react-native";
 import { faBars } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { GoalTreeTimeboxes } from "../components/goals/GoalTreeTimeboxes";
+import { Button } from "react-native-paper";
 
 
 export function GoalTree(props) {
@@ -38,13 +39,22 @@ export function GoalTree(props) {
     <View style={{backgroundColor: '#D9D9D9', width: '100%', height: '100%', padding: 20, paddingLeft: 15, paddingRight: 15}}>
         <View style={{backgroundColor: 'white', width: '100%', height: '100%'}}>
             <View style={{flexDirection: 'row', alignItems: 'center', paddingLeft: 20, justifyContent: 'center', backgroundColor: 'white'}}>
-                <Text style={{fontFamily: 'KameronRegular', fontSize: 35, color: 'black', textAlign: 'center', marginTop: 30}}>Goal Tree</Text>
-                <IconButton icon="menu" size={40} onPress={props.close} style={{marginLeft: 15, marginTop: 29}}></IconButton>
+                
+                
             </View>
-            <View style={{flexDirection: 'row', justifyContent: 'center'}}>
-                {maxNumberOfGoals > 1 && <IconButton icon="arrow-left" size={25} onPress={() => moveLeft()}></IconButton> }
-                <Text style={{fontFamily: 'KameronRegular', fontSize: 25, color: 'black', marginTop: 15, marginHorizontal: 0}}>Goal {currentLine}</Text>
-                {maxNumberOfGoals > 1 && <IconButton icon="arrow-right" size={25} onPress={() => moveRight()}></IconButton> }
+            <View style={{flexDirection: 'row', justifyContent: 'center', overflow: 'visible', paddingTop: 10}}>
+                {onTimeboxView.open ? (<Pressable onPress={() => setOnTimeboxView({data: {}, open: false})}>
+                    <View style={{backgroundColor: '#403d3d', marginTop: 25, paddingHorizontal: 20, paddingVertical: 10, marginBottom: 10}}>
+                        <Text style={{fontFamily: 'Koulen-Regular', fontSize: 25, color: 'white'}}>Go Back</Text>
+                    </View>
+                    </Pressable>) : 
+                (<>
+                    {maxNumberOfGoals > 1 && <IconButton icon="arrow-left" size={25} onPress={() => moveLeft()}></IconButton> }
+                    <Text style={{fontFamily: 'KameronRegular', fontSize: 35, color: 'black', marginTop: 10, marginHorizontal: 0}}>Goal {currentLine}</Text>
+                    <IconButton icon="menu" size={35} onPress={props.close}></IconButton>
+                    {maxNumberOfGoals > 1 && <IconButton icon="arrow-right" size={25} onPress={() => moveRight()}></IconButton> }
+                </>)
+                }
             </View>
             <ScrollView>
                 {onTimeboxView.open ? (<GoalTreeTimeboxes goal={onTimeboxView.data} close={() => setOnTimeboxView({data: {}, open: false})}></GoalTreeTimeboxes>) : (
@@ -52,9 +62,10 @@ export function GoalTree(props) {
                         {goalsInLine.map((goal, index) => {
                             return <GoalTreeNode line={currentLine} key={index} goal={goal} setTimeboxView={setOnTimeboxView}></GoalTreeNode>
                         })}
+                        <AddGoalToTree goals={props.data.goals} line={currentLine} addNonActiveGoal={addNonActiveGoal}></AddGoalToTree>
                     </>
                 )}
-                <AddGoalToTree goals={props.data.goals} line={currentLine} addNonActiveGoal={addNonActiveGoal}></AddGoalToTree>
+                <View style={{height: 20}}></View>
             </ScrollView>
         </View>
     </View>)

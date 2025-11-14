@@ -4,14 +4,15 @@ import Svg from "react-native-svg";
 import {Path} from "react-native-svg";
 import dayjs from "dayjs";
 import { getAverageTimeOverAndOffBy } from "../../modules/boxCalculations";
+import { styles } from "../../styles/styles";
 
 export function GoalTreeTimeboxes(props) {
-    return (<View>
-        <View>
-            <Text>{props.goal.title}</Text>
-            <Text>{dayjs(props.goal.targetDate).format('D MMM')}</Text>
-            {props.goal.state == "completed" && <Text style={{color: '#4FF38E'}} className="goalCardUndertext">Completed</Text>}
-            {props.goal.state == "failed" && <Text style={{color: '#FF0606'}} className="goalCardUndertext">Failed</Text>}
+    return (<View style={{alignSelf: 'center'}}>
+        <View style={{backgroundColor: styles.primaryColor, maxWidth: '80%', paddingHorizontal: '10%', paddingVertical: '5%'}}>
+            <Text style={{fontFamily: 'Koulen-Regular', fontSize: 30, color: 'white'}}>{props.goal.title}</Text>
+            <Text style={{fontFamily: 'Koulen-Regular', color: 'white', fontSize: 15, textAlign: 'center'}}>{dayjs(props.goal.targetDate).format('D MMM')}</Text>
+            {props.goal.state == "completed" && <Text style={{color: '#4FF38E', textAlign: 'center'}} className="goalCardUndertext">Completed</Text>}
+            {props.goal.state == "failed" && <Text style={{color: '#FF0606', textAlign: 'center'}} className="goalCardUndertext">Failed</Text>}
             {props.goal.state == "active" && <Text className="goalCardUndertext">{goal.percentageCompleted}%</Text>}
         </View>
         {props.goal.timeboxes.map((timebox, index) => {
@@ -33,16 +34,19 @@ export function GoalTreeTimeboxes(props) {
                         strokeLinejoin="round"
                     />
                 </Svg>
-                <View key={index} className="goalTimeboxCard">
-                    <Text className="goalTimeboxTitle">
-                        <Icon source="clock-time-eight-outline" size={20} />
+                <View style={{backgroundColor: '#403d3d', maxWidth: '80%', paddingHorizontal: '10%', paddingVertical: '5%'}} key={index} className="goalTimeboxCard">
+                    <View style={{alignItems: 'center'}}>
+                        <Icon color="white" source="clock-time-eight-outline" size={20} />
+                    </View>
+                    <Text style={{fontFamily: 'Koulen-Regular', fontSize: 30, color: 'white'}} className="goalTimeboxTitle">
+                        
                         {timebox.title} - {dayjs(timebox.startTime).format('hh:mm DD/MM')}
                     </Text>
                     <View>
-                        {isFailed && <Text className="goalTimeboxFailed">Failed</Text>}
-                        {isCompleted && <Text className="goalTimeboxCompleted">Completed</Text>}
-                        {isCompleted && <Text className="goalTimeboxCompleted">{timeStartedAccuracyForTimebox > 0 ? (timeStartedAccuracyForTimebox.toFixed(2) +" min late") : ((-timeStartedAccuracyForTimebox).toFixed(2) +" min early")}</Text>}
-                        {isCompleted && <Text className="goalTimeboxCompleted">{minutesOverBy > 0 ? (minutesOverBy.toFixed(2) +" min longer") : ((-minutesOverBy).toFixed(2) +" min earlier")}</Text>}
+                        {isFailed && <Text style={{fontFamily: 'Koulen-Regular', color: '#FF0606', fontSize: 15}} className="goalTimeboxFailed">Failed</Text>}
+                        {isCompleted && <Text style={{fontFamily: 'Koulen-Regular', color: '#4FF38E', fontSize: 15}} className="goalTimeboxCompleted">Completed</Text>}
+                        {isCompleted && <Text style={{fontFamily: 'Koulen-Regular', color: '#4FF38E', fontSize: 15}} className="goalTimeboxCompleted">{timeStartedAccuracyForTimebox > 0 ? (timeStartedAccuracyForTimebox.toFixed(2) +" min late") : ((-timeStartedAccuracyForTimebox).toFixed(2) +" min early")}</Text>}
+                        {isCompleted && <Text style={{fontFamily: 'Koulen-Regular', color: '#4FF38E', fontSize: 15}} className="goalTimeboxCompleted">{minutesOverBy > 0 ? (minutesOverBy.toFixed(2) +" min longer") : ((-minutesOverBy).toFixed(2) +" min earlier")}</Text>}
                     </View>
                 </View>
                 </>)

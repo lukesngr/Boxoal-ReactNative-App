@@ -15,6 +15,7 @@ import { PaperProvider, MD3LightTheme  } from 'react-native-paper';
 import { Authenticator } from '@aws-amplify/ui-react-native';
 import { queryClient } from './modules/queryClient.js';
 import * as Sentry from '@sentry/react-native';
+import Auth from './pages/Auth.js';
 
 Sentry.init({
   dsn: 'https://902123d7102e3995a2a1ee5418959618@o4509511383842816.ingest.us.sentry.io/4509612901531648',
@@ -80,7 +81,7 @@ export default Sentry.wrap(function App() {
             <Stack.Navigator>
               <Stack.Screen
                 name="SplashScreen"
-                component={SplashScreen}
+                component={Auth}
                 options={ {headerShown: false} }
               />
               <Stack.Screen

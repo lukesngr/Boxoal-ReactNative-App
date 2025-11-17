@@ -5,11 +5,7 @@ import { Pressable, ScrollView, Text, View } from "react-native";
 import { GoalTreeNode } from "../components/goals/GoalTreeNode";
 import { current } from "@reduxjs/toolkit";
 import AddGoalToTree  from "../components/goals/AddGoalToTree";
-import { BackHandler } from "react-native";
-import { faBars } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { GoalTreeTimeboxes } from "../components/goals/GoalTreeTimeboxes";
-import { Button } from "react-native-paper";
 
 
 export function GoalTree(props) {

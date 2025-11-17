@@ -1,7 +1,5 @@
 import {Alert, Pressable, Text, View} from 'react-native';
 import {styles} from '../../styles/styles';
-import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import { useState } from 'react';
 import { signUp, confirmSignUp } from 'aws-amplify/auth';
 import { Button, TextInput } from 'react-native-paper';

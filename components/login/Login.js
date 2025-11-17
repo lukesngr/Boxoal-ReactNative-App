@@ -1,7 +1,5 @@
 import {Pressable, Text, View} from 'react-native';
 import {styles} from '../../styles/styles';
-import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import { useState } from 'react';
 import { Button } from 'react-native-paper';
 import { signIn } from 'aws-amplify/auth';

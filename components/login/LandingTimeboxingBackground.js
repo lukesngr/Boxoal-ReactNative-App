@@ -2,10 +2,13 @@ import { useState } from "react";
 import { useEffect } from "react";
 import { BlurView } from '@sbaiahmed1/react-native-blur';
 import { View } from "react-native";
+import { useWindowDimensions } from 'react-native';
+import { Text } from "react-native-paper";
 
 export function LandingTimeboxingBackground(props) {
     
     const [forShowTimeboxes, setForShowTimeboxes] = useState([]);
+    const { width, height } = useWindowDimensions();
     useEffect(() => {
         const listOfColors = ["#606EFE", "#3AFFB0", "#DC5EFB", "#86FB80", "#AF79FB", "#7BFF59", "#639D5E", "#4AF9FF"];
         const todoActions = [
@@ -117,10 +120,8 @@ export function LandingTimeboxingBackground(props) {
         ];
         function generateForShowTimeboxes() {
             const arrayOfArrayOfTimeboxes = [];
-            const windowHeight = window.innerHeight;
-            const windowWidth = window.innerWidth;
-            const amountOfTimeboxesNeededForVertical = Math.ceil(windowHeight / 25);
-            const amountOfTimeboxesNeededForHorizontal = Math.ceil(windowWidth / 200);
+            const amountOfTimeboxesNeededForVertical = Math.ceil(height / 25);
+            const amountOfTimeboxesNeededForHorizontal = Math.ceil(width / 200);
             for (let i = 0; i < amountOfTimeboxesNeededForHorizontal; i++) {
                 const arrayOfTimeboxes = [];
                 for (let j = 0; j < amountOfTimeboxesNeededForVertical; j++) {
@@ -138,27 +139,33 @@ export function LandingTimeboxingBackground(props) {
         }
         generateForShowTimeboxes();
     }, []);
+
+    console.log(forShowTimeboxes);
     
     return (<>
-    <BlurView intensity={100} style={{position: 'absolute', top: 0, left: 0, overflow: 'hidden'}}>
-            <View style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'center', width: '100%', height: '100%', overflow: 'hidden'}}>
-                {forShowTimeboxes.map((arrayOfTimeboxes, index) => (
-                    <View key={index} style={{
-                        flexDirection: 'column',
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        width: '100%',
-                        height: '100%',
-                        overflow: 'hidden',
-                        borderRightWidth: 2,
-                        borderRightColor: 'black'
-                    }}>
-                        {arrayOfTimeboxes.map((timebox, index2) => (
-                            <View key={index2} style={{backgroundColor: timebox.color}}>{timebox.title}</View>
-                        ))}
+    
+    <View style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'center', width: '100%', height: '100%', overflow: 'hidden'}}>
+        {forShowTimeboxes.map((arrayOfTimeboxes, index) => (
+            <View key={index} style={{
+                flexDirection: 'column',
+                justifyContent: 'center',
+                alignItems: 'center',
+                width: '100%',
+                height: '100%',
+                overflow: 'hidden',
+                borderRightWidth: 2,
+                borderRightColor: 'black'
+            }}>
+                {arrayOfTimeboxes.map((timebox, index2) => (
+                    <View key={index2} style={{backgroundColor: timebox.color}}>
+                        <Text>{timebox.title}</Text>
                     </View>
                 ))}
             </View>
+        ))}
+    </View>
+    <BlurView blurType="light" style={{position: 'absolute', top: 0, left: 0, bottom: 0, right: 0, height: '100%', width: '100%'}}
+        blurAmount={1000}>
     </BlurView>
     {props.children}
     </>

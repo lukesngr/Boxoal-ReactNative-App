@@ -14,8 +14,7 @@ const firstStepFunction = (t) => stepFunction(20.0, t);
 const secondStepFunction = (t) => stepFunction(22.0, t);
 const thirdStepFunction = (t) => stepFunction(6.0, t);
 
-export default function LandingPage(props) {
-    const {setComponentDisplayed} = props;
+export default function LandingPage({setComponentDisplayed}) {
 
     const firstLineDisplayed = useRef(new Animated.Value(0)).current;
     const secondLineDisplayed = useRef(new Animated.Value(0)).current;

@@ -6,7 +6,7 @@ import { signIn } from 'aws-amplify/auth';
 import { TextInput } from 'react-native-paper';
 import { Alert } from 'react-native';
 
-export function Login({ navigation }) {
+export function Login({setComponentDisplayed}) {
     const [passwordHidden, setPasswordHidden] = useState(true);
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
@@ -26,14 +26,6 @@ export function Login({ navigation }) {
         }
     }
 
-    function createAccount() {
-        navigation.navigate('SignUp')
-    }
-
-    function forgetPassword() {
-        navigation.navigate('ResetPassword');
-    }
-
     return (
         <View style={{width: '90%', marginLeft: '5%'}}>
             <Text style={styles.signInTitle}>Sign In</Text>
@@ -47,10 +39,10 @@ export function Login({ navigation }) {
             }></TextInput>
             <Button mode="contained" testID="signInButton" style={{...styles.welcomeButtonOutlineStyle, marginTop: 20}} onPress={login}>Sign In</Button>
             <View style={{flexDirection: 'row', justifyContent: 'space-between', width: '90%'}}>
-                <Pressable onPress={forgetPassword}>
+                <Pressable onPress={() => setComponentDisplayed('forgotPassword')}>
                     <Text style={styles.signInUnderText}>Forget Password</Text>
                 </Pressable>
-                <Pressable onPress={createAccount}>
+                <Pressable onPress={() => setComponentDisplayed('createAccount')}>
                     <Text style={styles.signInUnderText}>Create Account</Text>
                 </Pressable>            
             </View>

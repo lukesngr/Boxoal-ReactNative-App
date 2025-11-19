@@ -2,6 +2,7 @@ import { useAuthenticator } from '@aws-amplify/ui-react-native';
 import { useState, useEffect } from 'react';
 import { LandingTimeboxingBackground } from '../components/login/LandingTimeboxingBackground';
 import LandingPage from '../components/login/LandingPage';
+import { Login } from '../components/login/Login';
 
 export default function Auth({navigation}) {
     const { authStatus } = useAuthenticator();
@@ -16,8 +17,8 @@ export default function Auth({navigation}) {
                 
                 <LandingTimeboxingBackground>
                 {componentDisplayed == "landing" && <LandingPage setComponentDisplayed={setComponentDisplayed} />}
-                {/*{componentDisplayed == "signIn" && <SignInCard setComponentDisplayed={setComponentDisplayed} />}
-                {componentDisplayed == "createAccount" && <CreateAccountCard setComponentDisplayed={setComponentDisplayed} />}
+                {componentDisplayed == "signIn" && <Login setComponentDisplayed={setComponentDisplayed} />}
+                {/*{componentDisplayed == "createAccount" && <CreateAccountCard setComponentDisplayed={setComponentDisplayed} />}
                 {componentDisplayed == "forgotPassword" && <ForgotPasswordCard setComponentDisplayed={setComponentDisplayed} />}*/}
                 </LandingTimeboxingBackground>
     </>)

@@ -208,6 +208,14 @@ export const styles = {
     normalTimeboxHeight: 30,
     enlargedTimeboxHeight: 60,
     primaryColor: "#875F9A",
+    landingLines: {
+        fontSize: 40,
+        fontFamily: 'BlueScreen',   
+        fontWeight: '400',           
+        color: '#fff',
+        lineHeight: 34,
+        marginLeft: 10 
+    },
     dashboard: {
         statTextSurface: {backgroundColor: "#875F9A", height: 'fit-content', width: '80%', marginTop: 30, marginHorizontal: 30},
         statHeading: {fontFamily: 'Koulen-Regular', fontSize: 19, color: 'white', marginTop: 20, marginHorizontal: 10},

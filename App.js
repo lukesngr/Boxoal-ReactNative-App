@@ -1,6 +1,5 @@
 import {NavigationContainer, DefaultTheme} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import SplashScreen from './pages/SplashScreen';
 import FinalView from './pages/FinalView';
 import { Provider } from 'react-redux';
 import {store, persistor} from './redux/store';

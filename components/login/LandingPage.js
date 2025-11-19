@@ -64,48 +64,46 @@ export default function LandingPage({setComponentDisplayed}) {
     
     return (
         <View style={{justifyContent: 'center', alignItems: 'center', height: '100%', width: '100%'}}>
-        <View style={{ backgroundColor: styles.primaryColor, width: 300, height: 350, padding: 10}}>
-            <Image style={{width: 85, height: 85, marginLeft: 'auto', marginRight: 'auto', display: 'block'}} source={require('../../assets/icon2.png')} />
-            <Animated.View style={[styles.splashTextContainer, {
-                width: firstLineDisplayed.interpolate({inputRange: [0, 100], outputRange: ['0%', '100%']}),
-                borderRightColor: blinkingCaretOne.interpolate({
-                    inputRange: [0, 0.5, 0.6, 1], 
-                    outputRange: ['transparent', 'transparent', styles.primaryColor, styles.primaryColor]
-            })}]}>
-                <Text numberOfLines={1} style={styles.landingLines}>Make Every</Text>
-            </Animated.View>
-            <Animated.View style={[styles.splashTextContainer, {
-                width: secondLineDisplayed.interpolate({inputRange: [0, 100], outputRange: ['0%', '100%']}),
-                borderRightColor: blinkingCaretTwo.interpolate({
-                    inputRange: [0, 0.5, 0.6, 1], 
-                    outputRange: ['transparent', 'transparent', styles.primaryColor, styles.primaryColor]
-            })}]}>
-                <Text numberOfLines={1} style={styles.landingLines}>Second Work</Text>
-            </Animated.View>
-            <Animated.View style={[styles.splashTextContainer, {
-                width: thirdLineDisplayed.interpolate({inputRange: [0, 100], outputRange: ['0%', '100%']}),
-                borderRightColor: blinkingCaretThree.interpolate({
-                    inputRange: [0, 0.5, 0.6, 1], 
-                    outputRange: ['transparent', 'transparent', styles.primaryColor, styles.primaryColor]
-            })}]}>
-                <Text numberOfLines={1} style={styles.landingLines}>For</Text>
-            </Animated.View>
-            <Animated.View style={[styles.splashTextContainer, {
-                width: fourthLineDisplayed.interpolate({inputRange: [0, 100], outputRange: ['0%', '100%']}),
-                borderRightColor: blinkingCaretFour.interpolate({
-                    inputRange: [0, 0.5, 0.6, 1], 
-                    outputRange: ['transparent', 'transparent', styles.primaryColor, styles.primaryColor]
-            })}]}>
-                <Text numberOfLines={1} style={styles.landingLines}>Your Dreams</Text>
-            </Animated.View>
-            <Pressable onPress={() => setComponentDisplayed('signIn')}>
-                <View style={{height: 50, backgroundColor: 'black', width: 300, marginTop: 30, marginBottom: 10}}>
-                    <Text style={{fontFamily: 'Koulen-Regular', fontSize: 27, color: 'white', textAlign: 'center'}} >Get Started Timeboxing</Text>
-                </View>
-            </Pressable>
-        </View>
-        
-        
+            <View style={{ backgroundColor: styles.primaryColor, width: 300, height: 350, padding: 10}}>
+                <Image style={{width: 85, height: 85, marginLeft: 'auto', marginRight: 'auto', display: 'block'}} source={require('../../assets/icon2.png')} />
+                <Animated.View style={[styles.splashTextContainer, {
+                    width: firstLineDisplayed.interpolate({inputRange: [0, 100], outputRange: ['0%', '100%']}),
+                    borderRightColor: blinkingCaretOne.interpolate({
+                        inputRange: [0, 0.5, 0.6, 1], 
+                        outputRange: ['transparent', 'transparent', styles.primaryColor, styles.primaryColor]
+                })}]}>
+                    <Text numberOfLines={1} style={styles.landingLines}>Make Every</Text>
+                </Animated.View>
+                <Animated.View style={[styles.splashTextContainer, {
+                    width: secondLineDisplayed.interpolate({inputRange: [0, 100], outputRange: ['0%', '100%']}),
+                    borderRightColor: blinkingCaretTwo.interpolate({
+                        inputRange: [0, 0.5, 0.6, 1], 
+                        outputRange: ['transparent', 'transparent', styles.primaryColor, styles.primaryColor]
+                })}]}>
+                    <Text numberOfLines={1} style={styles.landingLines}>Second Work</Text>
+                </Animated.View>
+                <Animated.View style={[styles.splashTextContainer, {
+                    width: thirdLineDisplayed.interpolate({inputRange: [0, 100], outputRange: ['0%', '100%']}),
+                    borderRightColor: blinkingCaretThree.interpolate({
+                        inputRange: [0, 0.5, 0.6, 1], 
+                        outputRange: ['transparent', 'transparent', styles.primaryColor, styles.primaryColor]
+                })}]}>
+                    <Text numberOfLines={1} style={styles.landingLines}>For</Text>
+                </Animated.View>
+                <Animated.View style={[styles.splashTextContainer, {
+                    width: fourthLineDisplayed.interpolate({inputRange: [0, 100], outputRange: ['0%', '100%']}),
+                    borderRightColor: blinkingCaretFour.interpolate({
+                        inputRange: [0, 0.5, 0.6, 1], 
+                        outputRange: ['transparent', 'transparent', styles.primaryColor, styles.primaryColor]
+                })}]}>
+                    <Text numberOfLines={1} style={styles.landingLines}>Your Dreams</Text>
+                </Animated.View>
+                <Pressable onPress={() => setComponentDisplayed('signIn')}>
+                    <View style={{height: 50, backgroundColor: 'black', width: 300, marginTop: 30, marginBottom: 10}}>
+                        <Text style={{fontFamily: 'Koulen-Regular', fontSize: 27, color: 'white', textAlign: 'center'}} >Get Started Timeboxing</Text>
+                    </View>
+                </Pressable>
+            </View>
         </View>
     )
 }

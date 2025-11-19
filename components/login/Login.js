@@ -5,6 +5,7 @@ import { Button } from 'react-native-paper';
 import { signIn } from 'aws-amplify/auth';
 import { TextInput } from 'react-native-paper';
 import { Alert } from 'react-native';
+import { Image } from 'react-native';
 
 export function Login({setComponentDisplayed}) {
     const [passwordHidden, setPasswordHidden] = useState(true);
@@ -27,24 +28,26 @@ export function Login({setComponentDisplayed}) {
     }
 
     return (
-        <View style={{width: '90%', marginLeft: '5%'}}>
-            <Text style={styles.signInTitle}>Sign In</Text>
-            <TextInput label="Username" testID='loginUsername' value={username} onChangeText={setUsername} {...styles.paperInput}></TextInput>
-            <TextInput label="Password" testID='loginPassword' value={password} onChangeText={setPassword} secureTextEntry={passwordHidden} {...styles.paperInput} right={
-                <TextInput.Icon
-                icon={passwordHidden ? 'eye' : 'eye-off'}
-                onPress={() => setPasswordHidden(!passwordHidden)}
-                forceTextInputFocus={false}
-                />
-            }></TextInput>
-            <Button mode="contained" testID="signInButton" style={{...styles.welcomeButtonOutlineStyle, marginTop: 20}} onPress={login}>Sign In</Button>
-            <View style={{flexDirection: 'row', justifyContent: 'space-between', width: '90%'}}>
-                <Pressable onPress={() => setComponentDisplayed('forgotPassword')}>
-                    <Text style={styles.signInUnderText}>Forget Password</Text>
-                </Pressable>
-                <Pressable onPress={() => setComponentDisplayed('createAccount')}>
-                    <Text style={styles.signInUnderText}>Create Account</Text>
-                </Pressable>            
+        <View style={{justifyContent: 'center', alignItems: 'center', height: '100%', width: '100%'}}>
+            <View style={{ backgroundColor: styles.primaryColor, width: 300, height: 350, padding: 10}}>
+                <Image style={{width: 85, height: 85, marginLeft: 'auto', marginRight: 'auto', display: 'block'}} source={require('../../assets/icon2.png')} />
+                <Text style={styles.signInTitle}>Sign In</Text>
+                {/*<TextInput label="Username" testID='loginUsername' value={username} onChangeText={setUsername} {...styles.paperInput}></TextInput>
+                <TextInput label="Password" testID='loginPassword' value={password} onChangeText={setPassword} secureTextEntry={passwordHidden} {...styles.paperInput} right={
+                    <TextInput.Icon
+                    icon={passwordHidden ? 'eye' : 'eye-off'}
+                    onPress={() => setPasswordHidden(!passwordHidden)}
+                    forceTextInputFocus={false}
+                    />
+                }></TextInput>
+                <View style={{flexDirection: 'row', justifyContent: 'space-between', width: '90%'}}>
+                    <Pressable onPress={() => setComponentDisplayed('forgotPassword')}>
+                        <Text style={styles.signInUnderText}>Forget Password</Text>
+                    </Pressable>
+                    <Pressable onPress={() => setComponentDisplayed('createAccount')}>
+                        <Text style={styles.signInUnderText}>Create Account</Text>
+                    </Pressable>            
+                </View>*/}
             </View>
         </View>
     )

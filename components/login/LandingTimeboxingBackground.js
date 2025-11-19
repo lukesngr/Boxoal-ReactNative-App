@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useEffect } from "react";
 import { BlurView } from '@sbaiahmed1/react-native-blur';
+import { View } from "react-native";
 
 export function LandingTimeboxingBackground(props) {
     
@@ -136,9 +137,6 @@ export function LandingTimeboxingBackground(props) {
             setForShowTimeboxes(arrayOfArrayOfTimeboxes);
         }
         generateForShowTimeboxes();
-
-        window.addEventListener('resize', generateForShowTimeboxes);
-        return () => window.removeEventListener('resize', generateForShowTimeboxes);
     }, []);
     
     return (<>

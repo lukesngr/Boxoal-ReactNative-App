@@ -19,6 +19,5 @@ export default function Auth() {
                 {componentDisplayed == "createAccount" && <CreateAccountCard setComponentDisplayed={setComponentDisplayed} />}
                 {componentDisplayed == "forgotPassword" && <ForgotPasswordCard setComponentDisplayed={setComponentDisplayed} />}*/}
                 </LandingTimeboxingBackground>
-                <Alert />
     </>)
 }

@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import { LandingTimeboxingBackground } from '../components/login/LandingTimeboxingBackground';
 import LandingPage from '../components/login/LandingPage';
 
-export default function Auth() {
+export default function Auth({navigation}) {
     const { authStatus } = useAuthenticator();
     const [componentDisplayed, setComponentDisplayed] = useState("landing");
 

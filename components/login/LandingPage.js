@@ -1,19 +1,104 @@
 import { View } from "react-native";
 import { styles } from "../../styles/styles";
-import { Image } from "react-native";
-import { Text } from "react-native-paper";
+import { Image, Text } from "react-native";
 import { Pressable } from "react-native";
+import { Animated, Easing } from 'react-native';
+import { useEffect, useRef } from 'react';
+
+function stepFunction(steps, t) {
+    let stepSize = 1 / 20.0;
+    return Math.floor(t / stepSize)*stepSize;
+}
+
+const firstStepFunction = (t) => stepFunction(20.0, t);
+const secondStepFunction = (t) => stepFunction(22.0, t);
+const thirdStepFunction = (t) => stepFunction(6.0, t);
 
 export default function LandingPage(props) {
     const {setComponentDisplayed} = props;
+
+    const firstLineDisplayed = useRef(new Animated.Value(0)).current;
+    const secondLineDisplayed = useRef(new Animated.Value(0)).current;
+    const thirdLineDisplayed = useRef(new Animated.Value(0)).current;
+    const fourthLineDisplayed = useRef(new Animated.Value(0)).current;
+
+    const blinkingCaretOne = useRef(new Animated.Value(0)).current;
+    const blinkingCaretTwo = useRef(new Animated.Value(0)).current;
+    const blinkingCaretThree = useRef(new Animated.Value(0)).current;
+    const blinkingCaretFour = useRef(new Animated.Value(0)).current;
+
+    useEffect(() => {
+        Animated.sequence([
+          Animated.timing(firstLineDisplayed, {toValue: 100, useNativeDriver: false, duration: 2000, easing: firstStepFunction}),
+          Animated.timing(secondLineDisplayed, {toValue: 100, useNativeDriver: false, duration: 2000, easing: secondStepFunction}),
+          Animated.timing(thirdLineDisplayed, {toValue: 100, useNativeDriver: false, duration: 2000, easing: thirdStepFunction}),
+          Animated.timing(fourthLineDisplayed, {toValue: 100, useNativeDriver: false, duration: 2000, easing: secondStepFunction})
+        ]).start();
+    
+        Animated.sequence([
+            Animated.loop(
+                Animated.sequence([
+                    Animated.timing(blinkingCaretOne, {toValue: 1, useNativeDriver: false, duration: 500, easing: Easing.linear}),
+                    Animated.timing(blinkingCaretOne, { toValue: 0, useNativeDriver: false, duration: 0})
+                ]), { iterations: 4 }
+            ), 
+            Animated.loop(
+                Animated.sequence([
+                    Animated.timing(blinkingCaretTwo, {toValue: 1, useNativeDriver: false, duration: 500, easing: Easing.linear}),
+                    Animated.timing(blinkingCaretTwo, {toValue: 0, useNativeDriver: false, duration: 0})
+                ]), { iterations: 4 }
+            ),
+            Animated.loop(
+                Animated.sequence([
+                    Animated.timing(blinkingCaretThree, {toValue: 1, useNativeDriver: false, duration: 500, easing: Easing.linear}),
+                    Animated.timing(blinkingCaretThree, {toValue: 0, useNativeDriver: false, duration: 0})
+                ]), { iterations: 4 }
+            ),
+            Animated.loop(
+                Animated.sequence([
+                    Animated.timing(blinkingCaretFour, {toValue: 1, useNativeDriver: false, duration: 500, easing: Easing.linear}),
+                    Animated.timing(blinkingCaretFour, {toValue: 0, useNativeDriver: false, duration: 0})
+                ]), { iterations: 4 }
+            )
+        ]).start();
+      }, []);
+    
     return (
         <View style={{justifyContent: 'center', alignItems: 'center', height: '100%', width: '100%'}}>
         <View style={{ backgroundColor: styles.primaryColor, width: 300, height: 350, padding: 10}}>
             <Image style={{width: 85, height: 85, marginLeft: 'auto', marginRight: 'auto', display: 'block'}} source={require('../../assets/icon2.png')} />
-            <Text style={styles.landingLines}>Make Every</Text>
-            <Text style={styles.landingLines}>Second Work</Text>
-            <Text style={styles.landingLines}>For</Text>
-            <Text style={styles.landingLines}>Your Dreams</Text>
+            <Animated.View style={[styles.splashTextContainer, {
+                width: firstLineDisplayed.interpolate({inputRange: [0, 100], outputRange: ['0%', '100%']}),
+                borderRightColor: blinkingCaretOne.interpolate({
+                    inputRange: [0, 0.5, 0.6, 1], 
+                    outputRange: ['transparent', 'transparent', styles.primaryColor, styles.primaryColor]
+            })}]}>
+                <Text numberOfLines={1} style={styles.landingLines}>Make Every</Text>
+            </Animated.View>
+            <Animated.View style={[styles.splashTextContainer, {
+                width: secondLineDisplayed.interpolate({inputRange: [0, 100], outputRange: ['0%', '100%']}),
+                borderRightColor: blinkingCaretTwo.interpolate({
+                    inputRange: [0, 0.5, 0.6, 1], 
+                    outputRange: ['transparent', 'transparent', styles.primaryColor, styles.primaryColor]
+            })}]}>
+                <Text numberOfLines={1} style={styles.landingLines}>Second Work</Text>
+            </Animated.View>
+            <Animated.View style={[styles.splashTextContainer, {
+                width: thirdLineDisplayed.interpolate({inputRange: [0, 100], outputRange: ['0%', '100%']}),
+                borderRightColor: blinkingCaretThree.interpolate({
+                    inputRange: [0, 0.5, 0.6, 1], 
+                    outputRange: ['transparent', 'transparent', styles.primaryColor, styles.primaryColor]
+            })}]}>
+                <Text numberOfLines={1} style={styles.landingLines}>For</Text>
+            </Animated.View>
+            <Animated.View style={[styles.splashTextContainer, {
+                width: fourthLineDisplayed.interpolate({inputRange: [0, 100], outputRange: ['0%', '100%']}),
+                borderRightColor: blinkingCaretFour.interpolate({
+                    inputRange: [0, 0.5, 0.6, 1], 
+                    outputRange: ['transparent', 'transparent', styles.primaryColor, styles.primaryColor]
+            })}]}>
+                <Text numberOfLines={1} style={styles.landingLines}>Your Dreams</Text>
+            </Animated.View>
             <Pressable onPress={() => setComponentDisplayed('signIn')}>
                 <View style={{height: 50, backgroundColor: 'black', width: 300, marginTop: 30, marginBottom: 10}}>
                     <Text style={{fontFamily: 'Koulen-Regular', fontSize: 27, color: 'white', textAlign: 'center'}} >Get Started Timeboxing</Text>

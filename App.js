@@ -80,7 +80,7 @@ export default Sentry.wrap(function App() {
           <NavigationContainer theme={MyTheme} linking={linking} fallback={<Loading></Loading>}>
             <Stack.Navigator>
               <Stack.Screen
-                name="SplashScreen"
+                name="Auth"
                 component={Auth}
                 options={ {headerShown: false} }
               />

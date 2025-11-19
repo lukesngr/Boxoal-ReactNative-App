@@ -121,7 +121,7 @@ export function LandingTimeboxingBackground(props) {
         function generateForShowTimeboxes() {
             const arrayOfArrayOfTimeboxes = [];
             const amountOfTimeboxesNeededForVertical = Math.ceil(height / 25);
-            const amountOfTimeboxesNeededForHorizontal = Math.ceil(width / 200);
+            const amountOfTimeboxesNeededForHorizontal = Math.ceil(width / 100);
             for (let i = 0; i < amountOfTimeboxesNeededForHorizontal; i++) {
                 const arrayOfTimeboxes = [];
                 for (let j = 0; j < amountOfTimeboxesNeededForVertical; j++) {
@@ -150,14 +150,21 @@ export function LandingTimeboxingBackground(props) {
                 flexDirection: 'column',
                 justifyContent: 'center',
                 alignItems: 'center',
-                width: '100%',
-                height: '100%',
                 overflow: 'hidden',
                 borderRightWidth: 2,
                 borderRightColor: 'black'
             }}>
                 {arrayOfTimeboxes.map((timebox, index2) => (
-                    <View key={index2} style={{backgroundColor: timebox.color}}>
+                    <View key={index2} style={{overflow: 'hidden',              
+                        width: 100,
+                        height: 50,
+                        color: 'white',                  
+                        fontFamily: 'Roboto',            
+                        fontSize: 20,
+                        borderBottomWidth: 2,            
+                        borderBottomColor: 'black',      
+                        textAlign: 'center', 
+                        backgroundColor: timebox.color}}>
                         <Text>{timebox.title}</Text>
                     </View>
                 ))}

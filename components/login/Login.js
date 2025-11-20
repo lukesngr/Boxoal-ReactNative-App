@@ -29,25 +29,30 @@ export function Login({setComponentDisplayed}) {
 
     return (
         <View style={{justifyContent: 'center', alignItems: 'center', height: '100%', width: '100%'}}>
-            <View style={{ backgroundColor: styles.primaryColor, width: 300, height: 350, padding: 10}}>
+            <View style={{ backgroundColor: styles.primaryColor, width: 300, height: 400, padding: 10}}>
                 <Image style={{width: 85, height: 85, marginLeft: 'auto', marginRight: 'auto', display: 'block'}} source={require('../../assets/icon2.png')} />
                 <Text style={styles.signInTitle}>Sign In</Text>
-                {/*<TextInput label="Username" testID='loginUsername' value={username} onChangeText={setUsername} {...styles.paperInput}></TextInput>
-                <TextInput label="Password" testID='loginPassword' value={password} onChangeText={setPassword} secureTextEntry={passwordHidden} {...styles.paperInput} right={
+                <TextInput label="Username" testID='loginUsername' value={username} onChangeText={setUsername}  {...styles.paperInput} ></TextInput>
+                <TextInput label="Password" testID='loginPassword' value={password} onChangeText={setPassword}  {...styles.paperInput} secureTextEntry={passwordHidden} right={
                     <TextInput.Icon
                     icon={passwordHidden ? 'eye' : 'eye-off'}
                     onPress={() => setPasswordHidden(!passwordHidden)}
                     forceTextInputFocus={false}
                     />
                 }></TextInput>
-                <View style={{flexDirection: 'row', justifyContent: 'space-between', width: '90%'}}>
+                <Pressable onPress={() => login()}>
+                    <View style={{height: 50, backgroundColor: 'black', width: 300, marginTop: 10, marginBottom: 10}}>
+                        <Text style={{fontFamily: 'Koulen-Regular', fontSize: 22, color: 'white', textAlign: 'center'}} >Sign In</Text>
+                    </View>
+                </Pressable>
+                <View style={{flexDirection: 'row', justifyContent: 'space-between', width: '100%'}}>
                     <Pressable onPress={() => setComponentDisplayed('forgotPassword')}>
                         <Text style={styles.signInUnderText}>Forget Password</Text>
                     </Pressable>
                     <Pressable onPress={() => setComponentDisplayed('createAccount')}>
                         <Text style={styles.signInUnderText}>Create Account</Text>
                     </Pressable>            
-                </View>*/}
+                </View>
             </View>
         </View>
     )

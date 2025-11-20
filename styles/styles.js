@@ -146,11 +146,11 @@ export const styles = {
         marginBottom: 0
     },
     signInTitle: {
-        color: 'black',
+        color: 'white',
+        fontFamily: 'Koulen-Regular',
         fontSize: 28,
         textAlign: 'left',
-        marginTop: 20,
-        padding: 10,
+        marginTop: 10,
     },
     signInLabel: {
         color: 'black',
@@ -174,11 +174,11 @@ export const styles = {
         marginLeft: 10,
     },
     signInUnderText: {
-        color: 'black',
+        color: 'white',
         fontSize: 16,
-        marginLeft: 10,
         marginTop: 10,
         textAlign: 'left',
+        fontFamily: 'KameronRegular', 
     },
     paperInput: {
         style: {
@@ -189,9 +189,6 @@ export const styles = {
             fontWeight: 'normal'
         },
         contentStyle: {
-            fontFamily: 'KameronRegular',
-        },
-        outlineStyle: {
             fontFamily: 'KameronRegular',
         },
         selectionColor: 'black',

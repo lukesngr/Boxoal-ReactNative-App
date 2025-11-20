@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import { LandingTimeboxingBackground } from '../components/login/LandingTimeboxingBackground';
 import LandingPage from '../components/login/LandingPage';
 import { Login } from '../components/login/Login';
+import { ResetPassword } from '../components/login/ResetPassword';
 
 export default function Auth({navigation}) {
     const { authStatus } = useAuthenticator();
@@ -19,7 +20,7 @@ export default function Auth({navigation}) {
                 {componentDisplayed == "landing" && <LandingPage setComponentDisplayed={setComponentDisplayed} />}
                 {componentDisplayed == "signIn" && <Login setComponentDisplayed={setComponentDisplayed} />}
                 {/*{componentDisplayed == "createAccount" && <CreateAccountCard setComponentDisplayed={setComponentDisplayed} />}*/}
-                {componentDisplayed == "forgotPassword" && <ForgotPasswordCard setComponentDisplayed={setComponentDisplayed} />}
+                {componentDisplayed == "forgotPassword" && <ResetPassword setComponentDisplayed={setComponentDisplayed} />}
                 </LandingTimeboxingBackground>
     </>)
 }

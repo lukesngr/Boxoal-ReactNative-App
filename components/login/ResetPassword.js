@@ -4,8 +4,9 @@ import { useState } from 'react';
 import { confirmResetPassword, resetPassword } from 'aws-amplify/auth';
 import { Button, TextInput } from 'react-native-paper';
 import { set } from '../../redux/activeOverlayInterval';
+import { Image } from 'react-native';
 
-export function ResetPassword({navigation}) {
+export function ResetPassword({setComponentDisplayed}) {
     const [confirmPasswordHidden, setConfirmPasswordHidden] = useState(true);
     const [passwordHidden, setPasswordHidden] = useState(true);
     const [confirmationCode, setConfirmationCode] = useState("");
@@ -46,7 +47,7 @@ export function ResetPassword({navigation}) {
             try {
                 await confirmResetPassword({ username, confirmationCode, newPassword});
                 Alert.alert("Password Reset", "Your password has been reset");
-                navigation.navigate("Login");
+                setComponentDisplayed("signIn");
             }catch(error) {
                 Alert.alert("Error", error.message);
             }
@@ -56,7 +57,7 @@ export function ResetPassword({navigation}) {
 
     return (
         <View style={{justifyContent: 'center', alignItems: 'center', height: '100%', width: '100%'}}>
-            <View style={{ backgroundColor: styles.primaryColor, width: 300, height: 400, padding: 10}}>
+            <View style={{ backgroundColor: styles.primaryColor, width: 300, height: 'fit-content', padding: 10}}>
             <Image style={{width: 85, height: 85, marginLeft: 'auto', marginRight: 'auto', display: 'block'}} source={require('../../assets/icon2.png')} />
             <Text style={styles.signInTitle}>Reset Password</Text>
             {codeSent ? ( <>

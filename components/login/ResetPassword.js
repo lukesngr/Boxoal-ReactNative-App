@@ -56,8 +56,8 @@ export function ResetPassword({setComponentDisplayed}) {
     }
 
     return (
-        <View style={{justifyContent: 'center', alignItems: 'center', height: '100%', width: '100%'}}>
-            <View style={{ backgroundColor: styles.primaryColor, width: 300, height: 'fit-content', padding: 10}}>
+    <View style={{justifyContent: 'center', alignItems: 'center', height: '100%', width: '100%'}}>
+        <View style={{ backgroundColor: styles.primaryColor, width: 300, height: 'fit-content', padding: 10}}>
             <Image style={{width: 85, height: 85, marginLeft: 'auto', marginRight: 'auto', display: 'block'}} source={require('../../assets/icon2.png')} />
             <Text style={styles.signInTitle}>Reset Password</Text>
             {codeSent ? ( <>

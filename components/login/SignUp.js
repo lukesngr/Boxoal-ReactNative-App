@@ -78,11 +78,16 @@ export function SignUp({navigation}) {
     }
 
     return (
-        <>
+    <View style={{justifyContent: 'center', alignItems: 'center', height: '100%', width: '100%'}}>
+        <View style={{ backgroundColor: styles.primaryColor, width: 300, height: 'fit-content', padding: 10}}>
             <Text style={styles.signInTitle}>Sign Up</Text>
             {enteredDetails ? ( <>
                 <TextInput label="Code" value={code} onChangeText={setCode} {...styles.paperInput}></TextInput>
-                <Button mode="contained" style={{...styles.welcomeButtonOutlineStyle, marginTop: 20}} onPress={verifyCode}>Verify Code</Button>
+                <Pressable onPress={() => verifyCode()}>
+                    <View style={{height: 50, backgroundColor: 'black', width: 300, marginTop: 10, marginBottom: 10}}>
+                        <Text style={{fontFamily: 'Koulen-Regular', fontSize: 22, color: 'white', textAlign: 'center'}} >Verify Code</Text>
+                    </View>
+                </Pressable>
             </>) : (<>
                 <TextInput label="Email" value={email} onChangeText={setEmail} {...styles.paperInput}></TextInput>
                 <TextInput label="Username" value={username} onChangeText={setUsername} {...styles.paperInput}></TextInput>
@@ -100,9 +105,14 @@ export function SignUp({navigation}) {
                     forceTextInputFocus={false}
                     />}>
                 </TextInput>
-                <Button mode="contained" style={{...styles.welcomeButtonOutlineStyle, marginTop: 20}} onPress={createAccount}>Sign Up</Button>
+                <Pressable onPress={() => createAccount()}>
+                    <View style={{height: 50, backgroundColor: 'black', width: 300, marginTop: 10, marginBottom: 10}}>
+                        <Text style={{fontFamily: 'Koulen-Regular', fontSize: 22, color: 'white', textAlign: 'center'}} >Sign Up</Text>
+                    </View>
+                </Pressable>
             </>)
             }
-        </>
+        </View>
+    </View>
     )
 }

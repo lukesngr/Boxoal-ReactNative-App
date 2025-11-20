@@ -55,7 +55,9 @@ export function ResetPassword({navigation}) {
     }
 
     return (
-        <>
+        <View style={{justifyContent: 'center', alignItems: 'center', height: '100%', width: '100%'}}>
+            <View style={{ backgroundColor: styles.primaryColor, width: 300, height: 400, padding: 10}}>
+            <Image style={{width: 85, height: 85, marginLeft: 'auto', marginRight: 'auto', display: 'block'}} source={require('../../assets/icon2.png')} />
             <Text style={styles.signInTitle}>Reset Password</Text>
             {codeSent ? ( <>
                 <TextInput label="Code" value={confirmationCode} onChangeText={setConfirmationCode} {...styles.paperInput}></TextInput>
@@ -73,12 +75,21 @@ export function ResetPassword({navigation}) {
                     forceTextInputFocus={false}
                     />}>
                 </TextInput>
-                <Button mode="contained" style={{...styles.welcomeButtonOutlineStyle, marginTop: 20}} onPress={confirmAndSetPassword}>Reset Password</Button>
+                <Pressable onPress={() => confirmAndSetPassword()}>
+                    <View style={{height: 50, backgroundColor: 'black', width: 300, marginTop: 10, marginBottom: 10}}>
+                        <Text style={{fontFamily: 'Koulen-Regular', fontSize: 22, color: 'white', textAlign: 'center'}} >Reset Password</Text>
+                    </View>
+                </Pressable>
             </>) : (<>
                 <TextInput label="Username" value={username} onChangeText={setUsername} {...styles.paperInput}></TextInput>
-                <Button mode="contained" style={{...styles.welcomeButtonOutlineStyle, marginTop: 20}} onPress={sendCode}>Send Code To SMS/Email</Button>
+                <Pressable onPress={() => sendCode()}>
+                    <View style={{height: 50, backgroundColor: 'black', width: 300, marginTop: 10, marginBottom: 10}}>
+                        <Text style={{fontFamily: 'Koulen-Regular', fontSize: 22, color: 'white', textAlign: 'center'}} >Send Code To SMS/Email</Text>
+                    </View>
+                </Pressable>
             </>)
             }
-        </>
+        </View>
+    </View>
     )
 }

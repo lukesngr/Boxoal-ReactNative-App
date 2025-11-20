@@ -18,8 +18,8 @@ export default function Auth({navigation}) {
                 <LandingTimeboxingBackground>
                 {componentDisplayed == "landing" && <LandingPage setComponentDisplayed={setComponentDisplayed} />}
                 {componentDisplayed == "signIn" && <Login setComponentDisplayed={setComponentDisplayed} />}
-                {/*{componentDisplayed == "createAccount" && <CreateAccountCard setComponentDisplayed={setComponentDisplayed} />}
-                {componentDisplayed == "forgotPassword" && <ForgotPasswordCard setComponentDisplayed={setComponentDisplayed} />}*/}
+                {/*{componentDisplayed == "createAccount" && <CreateAccountCard setComponentDisplayed={setComponentDisplayed} />}*/}
+                {componentDisplayed == "forgotPassword" && <ForgotPasswordCard setComponentDisplayed={setComponentDisplayed} />}
                 </LandingTimeboxingBackground>
     </>)
 }

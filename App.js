@@ -84,21 +84,6 @@ export default Sentry.wrap(function App() {
                 options={ {headerShown: false} }
               />
               <Stack.Screen
-                name="Login"
-                component={Login}
-                options={ {headerShown: false} }
-              />
-              <Stack.Screen
-                name="ResetPassword"
-                component={ResetPassword}
-                options={ {headerShown: false} }
-              />
-              <Stack.Screen
-                name="SignUp"
-                component={SignUp}
-                options={ {headerShown: false} }
-              />
-              <Stack.Screen
                 name="FinalView"
                 component={FinalView}
                 options={{headerShown: false}}></Stack.Screen>

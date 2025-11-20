@@ -19,7 +19,7 @@ export default function Auth({navigation}) {
                 <LandingTimeboxingBackground>
                 {componentDisplayed == "landing" && <LandingPage setComponentDisplayed={setComponentDisplayed} />}
                 {componentDisplayed == "signIn" && <Login setComponentDisplayed={setComponentDisplayed} />}
-                {/*{componentDisplayed == "createAccount" && <CreateAccountCard setComponentDisplayed={setComponentDisplayed} />}*/}
+                {componentDisplayed == "createAccount" && <ResetPassword setComponentDisplayed={setComponentDisplayed} />}
                 {componentDisplayed == "forgotPassword" && <ResetPassword setComponentDisplayed={setComponentDisplayed} />}
                 </LandingTimeboxingBackground>
     </>)

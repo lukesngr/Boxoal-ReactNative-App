@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { signUp, confirmSignUp } from 'aws-amplify/auth';
 import { Button, TextInput } from 'react-native-paper';
 
-export function SignUp({navigation}) {
+export function SignUp({setComponentDisplayed}) {
     const [email, setEmail] = useState("");
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
@@ -30,7 +30,7 @@ export function SignUp({navigation}) {
 
         if(isSignUpComplete) {
             Alert.alert("Signed up, please login")
-            navigation.navigate('Login');
+            setComponentDisplayed('signIn');
         }
     }
 
@@ -68,7 +68,7 @@ export function SignUp({navigation}) {
 
             if(isSignUpComplete) {
                 Alert.alert("Signed up")
-                navigation.navigate('Login');
+                setComponentDisplayed('signIn');
             }
 
             if(nextStep?.signUpStep === 'CONFIRM_SIGN_UP') {

@@ -6,8 +6,10 @@ import { signIn } from 'aws-amplify/auth';
 import { TextInput } from 'react-native-paper';
 import { Alert } from 'react-native';
 import { Image } from 'react-native';
+import { useDispatch } from 'react-redux';
 
 export function Login({setComponentDisplayed}) {
+    const dispatch = useDispatch();
     const [passwordHidden, setPasswordHidden] = useState(true);
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
@@ -16,14 +18,14 @@ export function Login({setComponentDisplayed}) {
         if(username != "" && password != "") {
             try {
                 const result = await signIn({username, password});
-                navigation.navigate('FinalView');
+                setComponentDisplayed("signIn");
             } catch (error) {
-                Alert.alert("Error", error.message);
+                dispatch({type: 'alert/set', payload: { open: true, title: "Error", message: error.message }});
             }
-        }else if(username == ""){
-            Alert.alert("Error", "Username is required");
-        }else if(password == ""){
-            Alert.alert("Error", "Password is required");
+        }else if(username == "") {
+            dispatch({type: 'alert/set', payload: { open: true, title: "Error", message: "Username is required"}});
+        }else if(password == "") {
+            dispatch({type: 'alert/set', payload: { open: true, title: "Error", message: "Password is required"}});
         }
     }
 

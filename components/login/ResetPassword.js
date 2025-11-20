@@ -5,8 +5,10 @@ import { confirmResetPassword, resetPassword } from 'aws-amplify/auth';
 import { Button, TextInput } from 'react-native-paper';
 import { set } from '../../redux/activeOverlayInterval';
 import { Image } from 'react-native';
+import { useDispatch } from 'react-redux';
 
 export function ResetPassword({setComponentDisplayed}) {
+    const dispatch = useDispatch();
     const [confirmPasswordHidden, setConfirmPasswordHidden] = useState(true);
     const [passwordHidden, setPasswordHidden] = useState(true);
     const [confirmationCode, setConfirmationCode] = useState("");
@@ -18,9 +20,9 @@ export function ResetPassword({setComponentDisplayed}) {
 
     async function sendCode() {
         if(username == "") {
-            Alert.alert("Please enter a username");
+            dispatch({type: 'alert/set', payload: { open: true, title: "Error", message: "Please enter a username"}});
         }else {
-            Alert.alert("Code Sent", "Check your email for the code");
+            dispatch({type: 'alert/set', payload: { open: true, title: "Code Sent", message: "Check your email for the code"}});
             try {
                 const output = await resetPassword({ username });
                 if(output.nextStep.resetPasswordStep == 'CONFIRM_RESET_PASSWORD_WITH_CODE') {
@@ -34,22 +36,22 @@ export function ResetPassword({setComponentDisplayed}) {
 
     async function confirmAndSetPassword() {
         if(confirmationCode == "") {
-            Alert.alert("Please enter a code");
+            dispatch({type: 'alert/set', payload: { open: true, title: "Error", message: "Please enter a code"}});
         }else if(password == "") {
-            Alert.alert("Please enter new password");
+            dispatch({type: 'alert/set', payload: { open: true, title: "Error", message: "Please enter new password"}});
         }else if(confirmPassword == "") {
-            Alert.alert("Please confirm password");
+            dispatch({type: 'alert/set', payload: { open: true, title: "Error", message: "Please confirm password"}});
         }else if(confirmPassword != password) {
-            Alert.alert("Please ensure your passwords match");
+            dispatch({type: 'alert/set', payload: { open: true, title: "Error", message: "Please ensure your passwords match"}});
         }else if(!matchesPasswordPolicy.test(password)) {
-            Alert.alert("Please ensure your password has at least 8 characters, one uppercase letter, one lowercase letter, one number, and one special character");
+            dispatch({type: 'alert/set', payload: { open: true, title: "Error", message: "Please ensure your password has at least 8 characters, one uppercase letter, one lowercase letter, one number, and one special character"}});
         }else{
             try {
                 await confirmResetPassword({ username, confirmationCode, newPassword});
-                Alert.alert("Password Reset", "Your password has been reset");
+                dispatch({type: 'alert/set', payload: { open: true, title: "Error", message: "Your password has been reset"}});
                 setComponentDisplayed("signIn");
             }catch(error) {
-                Alert.alert("Error", error.message);
+                dispatch({type: 'alert/set', payload: { open: true, title: "Error", message: error.message}});
             }
         }
         

@@ -1,10 +1,12 @@
 import {Alert, Pressable, Text, View} from 'react-native';
 import {styles} from '../../styles/styles';
-import { useState } from 'react';
+import { use, useState } from 'react';
 import { signUp, confirmSignUp } from 'aws-amplify/auth';
 import { Button, TextInput } from 'react-native-paper';
+import { useDispatch } from 'react-redux';
 
 export function SignUp({setComponentDisplayed}) {
+    const dispatch = useDispatch();
     const [email, setEmail] = useState("");
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
@@ -19,7 +21,7 @@ export function SignUp({setComponentDisplayed}) {
 
     async function verifyCode() {
         if(code == "") {
-            Alert.alert("Please enter a code");
+            dispatch({type: 'alert/set', payload: { open: true, title: "Error", message: "Please enter a code"}});
         }else{
             const { isSignUpComplete, nextStep } = await confirmSignUp({
                 username: username,
@@ -29,7 +31,7 @@ export function SignUp({setComponentDisplayed}) {
 
 
         if(isSignUpComplete) {
-            Alert.alert("Signed up, please login")
+            dispatch({type: 'alert/set', payload: { open: true, title: "Error", message: "Signed up, please login"}});
             setComponentDisplayed('signIn');
         }
     }
@@ -37,24 +39,24 @@ export function SignUp({setComponentDisplayed}) {
     async function createAccount() {
         if(noAtSymbol.test(email) || username == "" || password == "" || confirmPassword == "") {
             if(noAtSymbol.test(email)) {
-                Alert.alert("Please enter a valid email address");
+                dispatch({type: 'alert/set', payload: { open: true, title: "Error", message: "Please enter a valid email address"}});
             }
 
             if(username == "") {
-                Alert.alert("Please enter a username");
+                dispatch({type: 'alert/set', payload: { open: true, title: "Error", message: "Please enter a username"}});
             }
             
             if(password == "") {
-                Alert.alert("Please enter new password");
+                dispatch({type: 'alert/set', payload: { open: true, title: "Error", message: "Please enter new password"}});
             }
             
             if(confirmPassword == "") {
-                Alert.alert("Please confirm password");
+                dispatch({type: 'alert/set', payload: { open: true, title: "Error", message: "Please confirm password"}});
             } 
         }else if(!matchesPasswordPolicy.test(password)) {
-            Alert.alert("Please ensure your password has at least 8 characters, one uppercase letter, one lowercase letter, one number, and one special character");
+            dispatch({type: 'alert/set', payload: { open: true, title: "Error", message: "Please ensure your password has at least 8 characters, one uppercase letter, one lowercase letter, one number, and one special character"}});
         }else if(password != confirmPassword) {
-            Alert.alert("Please ensure that the password match");
+            dispatch({type: 'alert/set', payload: { open: true, title: "Error", message: "Please ensure that the password match"}});
         }else {
             const { isSignUpComplete, userId, nextStep } = await signUp({
                 username: username,
@@ -67,7 +69,7 @@ export function SignUp({setComponentDisplayed}) {
             });
 
             if(isSignUpComplete) {
-                Alert.alert("Signed up")
+                dispatch({type: 'alert/set', payload: { open: true, title: "Error", message: "Signed up"}});
                 setComponentDisplayed('signIn');
             }
 

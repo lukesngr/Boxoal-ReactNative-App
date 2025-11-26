@@ -40,10 +40,9 @@ export function Statistics(props) {
             <Text style={styles.dashboard.statDenominationLabel}>Hours</Text>
         </Surface>
 
-        
         <StatisticsGraph percentage={percentagePredictedStart} title="Matching Scheduled Start" property="Scheduled Start"/>
         <StatisticsGraph percentage={percentageCorrectTime} title="Matching Scheduled Time" property="Scheduled Time"/>
         <StatisticsGraph percentage={percentageRescheduled} title="Rescheduled" property="Rescheduled"/>
-        </ScrollView>
+    </ScrollView>
     )
 }

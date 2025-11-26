@@ -5,6 +5,7 @@ import LandingPage from '../components/login/LandingPage';
 import { Login } from '../components/login/Login';
 import { ResetPassword } from '../components/login/ResetPassword';
 import Alert from "../components/Alert";
+import { useSelector } from 'react-redux';
 
 export default function Auth({navigation}) {
     const { authStatus } = useAuthenticator();

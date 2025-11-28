@@ -139,8 +139,6 @@ export function LandingTimeboxingBackground(props) {
         }
         generateForShowTimeboxes();
     }, []);
-
-    console.log(forShowTimeboxes);
     
     return (<>
     

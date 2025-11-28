@@ -24,7 +24,7 @@ export function GoalTreeTimeboxes(props) {
                     ({minutesOverBy, timeStartedAccuracyForTimebox} = getAverageTimeOverAndOffBy(timebox));
                 }
                 return (<>
-                <Svg style={{alignSelf: 'center'}} width={25} height={45} viewBox="0 0 24 30">
+                <Svg key={index+"svg"} style={{alignSelf: 'center'}} width={25} height={45} viewBox="0 0 24 30">
                     <Path 
                         d="M12 0 L12 24 M5 17 L12 24 L19 17" 
                         stroke="black" 
@@ -34,7 +34,7 @@ export function GoalTreeTimeboxes(props) {
                         strokeLinejoin="round"
                     />
                 </Svg>
-                <View style={{backgroundColor: '#403d3d', maxWidth: '80%', paddingHorizontal: '10%', paddingVertical: '5%'}} key={index} className="goalTimeboxCard">
+                <View key={index+"view"} style={{backgroundColor: '#403d3d', maxWidth: '80%', paddingHorizontal: '10%', paddingVertical: '5%'}} key={index} className="goalTimeboxCard">
                     <View style={{alignItems: 'center'}}>
                         <Icon color="white" source="clock-time-eight-outline" size={20} />
                     </View>

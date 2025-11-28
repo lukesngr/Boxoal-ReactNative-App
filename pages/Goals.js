@@ -41,7 +41,7 @@ export default function Goals(props) {
         <View style={{backgroundColor: '#D9D9D9', width: '100%', height: '100%', padding: 20, paddingLeft: 15, paddingRight: 15}}>
             <View style={{backgroundColor: 'white', width: '100%', height: '100%'}}>
                 <Surface style={{flexDirection: 'row', alignItems: 'center', paddingLeft: 20, backgroundColor: 'white'}}> 
-                    <Text style={{fontSize: 25, color: 'black', textAlign: 'left', marginTop: 5, width: 220}}>{schedule.title}</Text>
+                    <Text style={{fontSize: 25, color: 'black', textAlign: 'left', marginTop: 5, width: 150}}>{schedule.title}</Text>
                     <View style={{flexDirection: 'row', justifyContent: 'space-between', gap: -25}}>
                         <IconButton icon="tree" size={36} onPress={() => setShowSkillTree(true)}></IconButton>
                         <IconButton testID="editScheduleButton" icon="cog" size={36} onPress={() => setEditScheduleVisible(true)}></IconButton>

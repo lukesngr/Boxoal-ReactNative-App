@@ -6,5 +6,5 @@ export default function ActiveOverlay() {
     const activeOverlayHeight = useSelector(state => state.activeOverlayHeight.value);
 
     return <View style={{width: overlayDimensions.headerWidth, height: activeOverlayHeight, backgroundColor: '#D9D9D9', opacity: 1, 
-    zIndex: 999, top: 0, position: 'absolute', transform: [{translateY: overlayDimensions.headerHeight}]}}></View>
+    zIndex: 998, top: 0, position: 'absolute', transform: [{translateY: overlayDimensions.headerHeight}]}}></View>
 }

@@ -8,7 +8,7 @@ import { styles } from "../../styles/styles";
 import { Dialog, Portal, TextInput, Button } from "react-native-paper";
 import Alert from "../Alert";
 import { getMaxNumberOfGoals } from "../../modules/coreLogic.js";
-
+import { Picker } from "@react-native-picker/picker";
 import { useMutation } from "@tanstack/react-query";
 import dayjs from "dayjs";
 import uuid from 'react-native-uuid';
@@ -22,8 +22,8 @@ export default function CreateGoalForm(props) {
     const [datePickerVisible, setDatePickerVisible] = useState(false);
     const [hasMetric, setHasMetric] = useState(false);
     const [metric, setMetric] = useState(0);
-    const {scheduleIndex, wakeupTime} = useSelector(state => state.profile.value);
-    let goalsCompleted = props.goals.reduce((count, item) => item.state == 'completed' ? count + 1 : count, 0);
+    const {scheduleIndex, wakeupTime, goalLimit} = useSelector(state => state.profile.value);
+    let goalsCompleted = props.goals.reduce((count, item) => (item.state == 'completed' || item.state == 'failed') ? count + 1 : count, 0);
     let goalsNotCompleted = props.goals.length - goalsCompleted;
     let maxNumberOfGoals = getMaxNumberOfGoals(goalsCompleted);
 
@@ -47,10 +47,12 @@ export default function CreateGoalForm(props) {
         onSuccess: () => {
             props.close();
             dispatch({type: 'alert/set', payload: { open: true, title: "Goal", message: "Created goal!" }});
+            console.log("yo")
             queryClient.invalidateQueries(['schedule']); // Refetch to get real data
         },
         onError: (error, goalData, context) => {
             queryClient.setQueryData(['schedule'], context.previousGoals);
+            console.log("yo")
             props.close();
             dispatch({type: 'alert/set', payload: { open: true, title: "Error", message: "An error occurred, please try again or contact the developer" }});
             queryClient.invalidateQueries(['schedule']);
@@ -61,7 +63,7 @@ export default function CreateGoalForm(props) {
     function createGoal() {
         const isActiveOnInTree = props.active ? "active" : "waiting";
         const wakeupTimeSplitted = wakeupTime.split(':');
-        const alteredDate = targetDate.hour(wakeupTimeSplitted[0]).minute(wakeupTimeSplitted[1]);
+        const alteredDate = dayjs(targetDate).hour(wakeupTimeSplitted[0]).minute(wakeupTimeSplitted[1]);
 
         const goalData = {
             title,
@@ -76,12 +78,13 @@ export default function CreateGoalForm(props) {
             partOfLine: props.line,
             state: isActiveOnInTree,
             active: props.active,
-            objectUUID: crypto.randomUUID()
+            objectUUID: uuid.v4()
         }
 
         if(hasMetric) {
             goalData.metric = Number(metric);
         }
+        console.log("ds", goalLimit, goalsNotCompleted)
         if (goalLimit > goalsNotCompleted || !props.active) {
             createGoalMutation.mutate(goalData);
         } else {
@@ -109,12 +112,12 @@ export default function CreateGoalForm(props) {
                     value={hasMetric ? "Yes" : "No"} 
                     {...styles.paperInput}
                     render={(props) => (
-                        <Picker style={styles.forms.pickerParentStyle} dropdownIconColor='black' selectedValue={[i]} onValueChange={setHasMetric}>
+                        <Picker style={styles.forms.pickerParentStyle} dropdownIconColor='black' selectedValue={hasMetric} onValueChange={setHasMetric}>
                             <Picker.Item styles={styles.forms.pickerItemStyle} label="False" value={false} />
                             <Picker.Item styles={styles.forms.pickerItemStyle} label="True" value={true} />
                         </Picker>
                 )}></TextInput>
-                {hasMetric && <TextInput label="Metric" value={title} onChangeText={setMetric} {...styles.paperInput}/> }
+                {hasMetric && <TextInput label="Metric" value={metric} onChangeText={setMetric} {...styles.paperInput}/> }
             </Dialog.Content>
             <Dialog.Actions>
                 <Button testID="createGoalButton" {...styles.forms.actionButton} mode="contained" onPress={createGoal}>Create</Button>

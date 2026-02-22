@@ -6,7 +6,7 @@ import { signIn } from 'aws-amplify/auth';
 import { TextInput } from 'react-native-paper';
 import { Alert } from 'react-native';
 import { Image } from 'react-native';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 export function Login({setComponentDisplayed}) {
     const dispatch = useDispatch();
@@ -31,7 +31,7 @@ export function Login({setComponentDisplayed}) {
 
     return (
         <View style={{justifyContent: 'center', alignItems: 'center', height: '100%', width: '100%'}}>
-            <View style={{ backgroundColor: styles.primaryColor, width: 300, height: 400, padding: 10}}>
+            <View style={{ backgroundColor: styles.primaryColor, width: 300, height: 425, padding: 10}}>
                 <Image style={{width: 85, height: 85, marginLeft: 'auto', marginRight: 'auto', display: 'block'}} source={require('../../assets/icon2.png')} />
                 <Text style={styles.signInTitle}>Sign In</Text>
                 <TextInput label="Username" testID='loginUsername' value={username} onChangeText={setUsername}  {...styles.paperInput} ></TextInput>

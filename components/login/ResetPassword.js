@@ -29,7 +29,7 @@ export function ResetPassword({setComponentDisplayed}) {
                     setCodeSent(true);
                 }
             } catch (error) {
-                console.log(error);
+                dispatch({type: 'alert/set', payload: { open: true, title: "Error", message: error.message}});
             }
         }
     }
@@ -37,13 +37,13 @@ export function ResetPassword({setComponentDisplayed}) {
     async function confirmAndSetPassword() {
         if(confirmationCode == "") {
             dispatch({type: 'alert/set', payload: { open: true, title: "Error", message: "Please enter a code"}});
-        }else if(password == "") {
+        }else if(newPassword == "") {
             dispatch({type: 'alert/set', payload: { open: true, title: "Error", message: "Please enter new password"}});
         }else if(confirmPassword == "") {
             dispatch({type: 'alert/set', payload: { open: true, title: "Error", message: "Please confirm password"}});
-        }else if(confirmPassword != password) {
+        }else if(confirmPassword != newPassword) {
             dispatch({type: 'alert/set', payload: { open: true, title: "Error", message: "Please ensure your passwords match"}});
-        }else if(!matchesPasswordPolicy.test(password)) {
+        }else if(!matchesPasswordPolicy.test(newPassword)) {
             dispatch({type: 'alert/set', payload: { open: true, title: "Error", message: "Please ensure your password has at least 8 characters, one uppercase letter, one lowercase letter, one number, and one special character"}});
         }else{
             try {

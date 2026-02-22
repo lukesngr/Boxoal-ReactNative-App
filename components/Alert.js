@@ -6,7 +6,7 @@ export default function Alert() {
     const dispatch = useDispatch();
     return (
         <Dialog style={{backgroundColor: '#875F9A', position: 'absolute', width: '90%'}} visible={open} 
-		onDismiss={() => dispatch({open: false, title: '', message: ''})}>
+		onDismiss={() => dispatch({type: 'alert/set', payload: {open: false, title: '', message: ''}})}>
             <Dialog.Title style={{color: 'white'}}>{title}</Dialog.Title>
             <Dialog.Content>
                 <Paragraph style={{color: 'white'}} testID='alertMessage'>
@@ -15,7 +15,7 @@ export default function Alert() {
             </Dialog.Content>
             <Dialog.Actions>
                 <Button textColor="white" testID="closeAlert" 
-			onPress={() => dispatch({open: false, title: '', message: ''})}>Close</Button>
+			onPress={() => dispatch({type: 'alert/set', payload: {open: false, title: '', message: ''}})}>Close</Button>
             </Dialog.Actions>
         </Dialog>
     )

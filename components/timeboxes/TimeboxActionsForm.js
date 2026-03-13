@@ -4,7 +4,6 @@ import { queryClient } from '../../modules/queryClient.js';
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setActiveOverlayInterval, resetActiveOverlayInterval } from "../../redux/activeOverlayInterval";
-import { NativeModules, Pressable } from "react-native";
 import serverIP from "../../modules/serverIP";
 import { Button } from "react-native-paper";
 import EditTimeboxForm from "./EditTimeboxForm";
@@ -12,10 +11,11 @@ import { Dialog, Paragraph, Portal } from "react-native-paper";
 import { useAuthenticator } from "@aws-amplify/ui-react-native";
 import ManualEntryTimeModal from "../modals/ManualEntryTimeModal";
 import { styles } from "../../styles/styles.js";
-
+import NativeBackgroundModule from "../../specs/NativeBackgroundModule.ts";
 import { useMutation } from "@tanstack/react-query";
 import uuid from 'react-native-uuid';
 import TimelineRecording from "./TimelineRecording.js";
+import { reoccurringBoxOnOriginalDate } from "../../modules/dateCode.js";
 
 export default function TimeboxActionsForm(props) {
     const {data, date, time} = props;
@@ -25,7 +25,7 @@ export default function TimeboxActionsForm(props) {
     const {boxSizeUnit, boxSizeNumber, scheduleID, scheduleIndex} = useSelector(state => state.profile.value);
     const dispatch = useDispatch();
     
-    const noPreviousRecording = thereIsNoRecording(data.recordedTimeBoxes, data.reoccuring, date, time);
+    const noPreviousRecording = thereIsNoRecording(data.recordedTimeBox, data.reoccuring, date, time);
     const timeboxIsntRecording = timeboxRecording.timeboxID == -1;
     const timeboxIsRecording = timeboxRecording.timeboxID == data.id && timeboxRecording.timeboxDate == date;
 
@@ -82,25 +82,54 @@ export default function TimeboxActionsForm(props) {
     });
 
     async function startRecording() {
-        NativeModules.BackgroundWorkManager.startBackgroundWork(JSON.stringify(data), JSON.stringify({id: scheduleID, boxSizeNumber, boxSizeUnit}), new Date().toISOString());
+        NativeBackgroundModule.startBackgroundWork(JSON.stringify(data), JSON.stringify({id: scheduleID, boxSizeNumber, boxSizeUnit}), new Date().toISOString());
         dispatch({type: 'timeboxRecording/set', payload: {timeboxID: data.id, timeboxDate: date, recordingStartTime: new Date().toISOString()}});
         dispatch(resetActiveOverlayInterval());
     }
 
     async function stopRecording() {
-        NativeModules.BackgroundWorkManager.stopBackgroundWork();
+        NativeBackgroundModule.stopBackgroundWork();
         let recordedStartTime = new Date(timeboxRecording.recordingStartTime);
         dispatch({type: 'timeboxRecording/set', payload: {timeboxID: -1, timeboxDate: 0, recordingStartTime: 0}});
         dispatch(setActiveOverlayInterval());
-        let recordingData = {
-            recordedStartTime: recordedStartTime, 
-            recordedEndTime: new Date(), 
-            timeBox: { connect: { id: data.id, objectUUID: data.objectUUID } }, 
-            schedule: { connect: { id: scheduleID } },
-            objectUUID: uuid.v4(),
-        };
-        createRecordingMutation.mutate(recordingData);
+	let timeboxData;
+	if(!reoccurringBoxOnOriginalDate(data.startTime, date, time)) {
+	  	const differenceInMinutes = (new Date(data.endTime).getTime() - new Date(data.startTime).getTime()) / 60000;
+		const startTime = dayjs(date+' '+time, 'D/M HH:mm');
+		let endTime = dayjs(date+' '+time, 'D/M HH:mm');
+		endTime = endTime.add(differenceInMinutes, 'm')
+		timeboxData = {...data,
+		  objectUUID: crypto.randomUUID(),
+		  startTime: startTime.toISOString(),
+		  endTime: endTime.toISOString(),
+		  schedule: {connect: {id: scheduleID}},
+		  goal: {connect: {id: data.goalID}},
+		  recordedTimeBox: {
+		    create: {
+                      recordedStartTime: recordedStartTime, 
+                      recordedEndTime: new Date().toISOString(), 
+                      schedule: { connect: { id: scheduleID } },
+            	      objectUUID: crypto.randomUUID(),
+		    }
+                  }
+                }
+		delete timeboxData.goalID;
+		delete timeboxData.reoccuring;
+		createTimeboxMutation.mutate(timeboxData);
+	}else{
+		timeboxData = data;
+	        const recordingData = {
+            	  recordedStartTime: recordedStartTime, 
+                  recordedEndTime: new Date().toISOString(), 
+                  timeBox: { connect: { objectUUID: timeboxData.objectUUID } }, 
+                  schedule: { connect: { id: scheduleID } },
+                  objectUUID: crypto.randomUUID(),
+        	};
+        	createRecordingMutation.mutate(recordingData);
+	}
+
     }
+    
     
     return (
     <>
@@ -115,8 +144,8 @@ export default function TimeboxActionsForm(props) {
                     </Paragraph>
                     {!noPreviousRecording && <TimelineRecording timeboxStart={data.startTime}
                             timeboxEnd={data.endTime}
-                            recordingStart={data.recordedTimeBoxes[0].recordedStartTime}
-                            recordingEnd={data.recordedTimeBoxes[0].recordedEndTime}></TimelineRecording>}
+                            recordingStart={data.recordedTimeBox.recordedStartTime}
+                            recordingEnd={data.recordedTimeBox.recordedEndTime}></TimelineRecording>}
                 </Dialog.Content>
                 <Dialog.Actions>
                     {noPreviousRecording && timeboxIsntRecording && <>

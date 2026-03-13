@@ -14,9 +14,10 @@ import androidx.work.Data;
 import androidx.work.ExistingWorkPolicy;
 import android.util.Log;
 import androidx.work.OneTimeWorkRequest;
+import com.boxoalnative.NativeBackgroundModuleSpec;
 
-public class BackgroundModule extends ReactContextBaseJavaModule {
-    private static final String MODULE_NAME = "BackgroundWorkManager";
+public class BackgroundModule extends NativeBackgroundModuleSpec {
+    public static final String MODULE_NAME = "BackgroundModule";
 
     private Context mContext;
     private OneTimeWorkRequest workRequest;
@@ -26,14 +27,14 @@ public class BackgroundModule extends ReactContextBaseJavaModule {
         mContext = reactContext;
     }
 
-    @ReactMethod
+    @Override
     public void startBackgroundWork(String timebox, String schedule, String recordingStartTime) {
         Data serviceInput = new Data.Builder().putString("timebox", timebox).putString("schedule", schedule).putString("recordingStartTime", recordingStartTime).build();
         workRequest = new OneTimeWorkRequest.Builder(BackgroundWorker.class).setInputData(serviceInput).build();
         WorkManager.getInstance(mContext).enqueueUniqueWork("recordingUpdate", ExistingWorkPolicy.REPLACE, workRequest);
     }
 
-    @ReactMethod
+    @Override
     public void stopBackgroundWork() {
         WorkManager.getInstance(mContext).cancelUniqueWork("recordingUpdate");
     }

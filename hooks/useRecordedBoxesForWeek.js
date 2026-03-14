@@ -8,7 +8,6 @@ export default function useRecordedBoxesForWeek(dayToName, recordedTimeboxes) {
     const overlayDimensions = useSelector(state => state.overlayDimensions.value);
 
     let recordingBoxesForWeek = [];
-
     for(let day of dayToName) {
         let filteredRecordings = recordedTimeboxes.filter(filterRecordingBasedOnDay(day));
         let recordingBoxesForDay = [];
@@ -17,7 +16,7 @@ export default function useRecordedBoxesForWeek(dayToName, recordedTimeboxes) {
                 let pixelsToRecordingStart = calculatePixelsFromTopOfGridBasedOnTime(wakeupTime, boxSizeUnit, boxSizeNumber, overlayDimensions, dayjs(element.recordedStartTime));
                 let pixelsToRecordingEnd = calculatePixelsFromTopOfGridBasedOnTime(wakeupTime, boxSizeUnit, boxSizeNumber, overlayDimensions, dayjs(element.recordedEndTime)); 
                 let marginToRecording = pixelsToRecordingStart+overlayDimensions.headerHeight;
-                let recordingBoxHeight = pixelsToRecordingEnd-marginToRecording;
+                let recordingBoxHeight = pixelsToRecordingEnd - pixelsToRecordingStart;
                 let availableSpace = (overlayDimensions.overlayHeight-marginToRecording);
                 let biggerThanAvailableSpace = recordingBoxHeight > availableSpace;
 

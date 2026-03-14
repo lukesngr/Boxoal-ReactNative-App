@@ -22,7 +22,7 @@ export default function ManualEntryTimeModal(props) {
     const {scheduleIndex, scheduleID} = useSelector(state => state.profile.value);
     const dispatch = useDispatch();
     const createTimeboxMutation = useCreateBoxMut(props.data.goalID, props.close)
-
+    
     const createRecordingMutation = useMutation({
         mutationFn: (recordingData) => axios.post(serverIP+'/createRecordedTimebox', recordingData),
         onMutate: async (recordingData) => {
@@ -73,23 +73,25 @@ export default function ManualEntryTimeModal(props) {
 
     function submitManualEntry() {
         let objectUUID = uuid.v4();
-        let timeboxData;
-	let [date, time] = convertToTimeAndDate(props.data.startTime);
+        let timeboxData; //alot of redundant code here but alas dont want to fix just yet
+	let [time, date] = convertToTimeAndDate(recordedStartTime);
 	if(!reoccurringBoxOnOriginalDate(data.startTime, date, time)) {
-	  	const differenceInMinutes = (new Date(data.endTime).getTime() - new Date(data.startTime).getTime()) / 60000;
-		const startTime = dayjs(`${dayjs().date()+'/'+(dayjs().month()+1)} ${time} ${dayjs().year()}`, 'D/M H:mm YYYY');
+		const startTimeAsDate = new Date(data.startTime)
+	  	const differenceInMinutes = (new Date(data.endTime).getTime() - startTimeAsDate.getTime()) / 60000;
+		const startTime = dayjs().hour(startTimeAsDate.getHours()).minute(startTimeAsDate.getMinutes())
+			.year(recordedStartTime.getFullYear()).month(recordedStartTime.getMonth()).date(recordedStartTime.getDate());
 		let endTime = startTime;
 		endTime = endTime.add(differenceInMinutes, 'm')
 		timeboxData = {...data,
 		  objectUUID: uuid.v4(),
-		  startTime: startTime.toISOString(),
-		  endTime: endTime.toISOString(),
+		  startTime: startTime.utc().format(),
+		  endTime: endTime.utc().format(),
 		  schedule: {connect: {id: scheduleID}},
 		  goal: {connect: {id: data.goalID}},
 		  recordedTimeBox: {
 		    create: {
-                      recordedStartTime: recordedStartTime, 
-                      recordedEndTime: new Date().toISOString(), 
+                      recordedStartTime: recordedStartTime.toISOString(), 
+                      recordedEndTime: recordedEndTime.toISOString(), 
                       schedule: { connect: { id: scheduleID } },
             	      objectUUID: objectUUID,
 		    }
@@ -101,8 +103,8 @@ export default function ManualEntryTimeModal(props) {
 	}else{
 		timeboxData = data;
 	        const recordingData = {
-            	  recordedStartTime: recordedStartTime, 
-                  recordedEndTime: new Date().toISOString(), 
+            	  recordedStartTime: recordedStartTime.toISOString(), 
+                  recordedEndTime: recordedEndTime.toISOString(), 
                   timeBox: { connect: { objectUUID: timeboxData.objectUUID } }, 
                   schedule: { connect: { id: scheduleID } },
                   objectUUID: objectUUID,

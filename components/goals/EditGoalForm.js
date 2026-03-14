@@ -22,7 +22,7 @@ export default function EditGoalForm(props) {
     const [datePickerVisible, setDatePickerVisible] = useState(false);
     const {scheduleIndex, wakeupTime} = useSelector(state => state.profile.value);
     const [hasMetric, setHasMetric] = useState(props.data.metric === null ? (false) : (true));
-    const [metric, setMetric] = useState(props.data.metric);
+    const [metric, setMetric] = useState(props.data.metric != null ? String(props.data.metric) : '');
     const [onLogMetricView, setOnLogMetricView] = useState(false);
 
     const updateGoalMutation = useMutation({

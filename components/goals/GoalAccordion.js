@@ -3,7 +3,6 @@ import EditGoalForm from "./EditGoalForm";
 import { useState } from "react";
 import { View } from "react-native";
 import TimeboxAsListItem from "../timeboxes/TimeboxAsListItem";
-import GoalProgressIndicator from "./GoalProgressIndicator";
 import axios from "axios";
 import serverIP from "../../modules/serverIP";
 import { useDispatch } from "react-redux";
@@ -41,20 +40,21 @@ export default function GoalAccordion(props) {
     }
 
     return (!(props.goal.state == 'active') ? <></> : ( <>
-        <Surface style={{flexDirection: 'row', width: '100%', backgroundColor: 'white', borderRadius: 0}} elevation={accordionOpen ? 1 : 0}>
-            <GoalProgressIndicator goal={props.goal}></GoalProgressIndicator>         
+        <View style={{flexDirection: 'row', width: '100%', backgroundColor: 'white', paddingHorizontal: 20}} elevation={accordionOpen ? 1 : 0}>
+	    <View style={{flex: 1, flexDirection: 'row', borderColor: 'black', borderWidth: 1, paddingBottom: 13}}>
+	    <View style={{paddingTop: 13}}>
+                <Checkbox color='black' testID="completeGoal" status={checked} style={{padding: 10}} onPress={() => {setChecked(true); completeGoal();}} />
+            </View>
             <TouchableRipple onPress={() => setAccordionOpen(!accordionOpen)}>
-                <Text testID={props.goal.title+"goalTitle"} style={{color: 'black', fontSize: 20, width: 150, paddingTop: 15}}>{props.goal.title}</Text>
+                <Text testID={props.goal.title+"goalTitle"} style={{color: 'black', fontSize: 20, paddingTop: 15, width: 150}}>{props.goal.title}</Text>
             </TouchableRipple>
-            <View style={{paddingTop: 15}}>
-                <Checkbox color='black' testID="completeGoal" status={checked} style={{padding: 10, marginTop: 20}} onPress={() => {setChecked(true); completeGoal();}} />
-            </View>
-            <View style={{flexDirection: 'row', justifyContent: 'space-between', gap: -50}}>
+            <View style={{flexDirection: 'row', marginLeft: 70, marginTop: 10}}>
                 
-                <IconButton size={35} icon="cog" onPress={() => setEditGoalFormVisible(true)} />
-                <IconButton size={35} icon={accordionOpen ? 'chevron-down' : 'chevron-up'} onPress={() => setAccordionOpen(!accordionOpen)} />
+                <IconButton size={35} style={{ margin: 0, padding: 0, width: 33, height: 33 }} icon="cog" onPress={() => setEditGoalFormVisible(true)} />
+                <IconButton size={35} style={{ margin: 0, padding: 0, width: 33, height: 33 }} icon={accordionOpen ? 'chevron-down' : 'chevron-up'} onPress={() => setAccordionOpen(!accordionOpen)} />
             </View>
-        </Surface>
+	    </View>
+        </View>
         {accordionOpen && props.goal.timeboxes.map((timebox, index) => {
             return <TimeboxAsListItem key={index} timebox={timebox}></TimeboxAsListItem>
         })}          

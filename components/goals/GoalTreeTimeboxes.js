@@ -13,11 +13,11 @@ export function GoalTreeTimeboxes(props) {
             <Text style={{fontFamily: 'Koulen-Regular', color: 'white', fontSize: 15, textAlign: 'center'}}>{dayjs(props.goal.targetDate).format('D MMM')}</Text>
             {props.goal.state == "completed" && <Text style={{color: '#4FF38E', textAlign: 'center'}} className="goalCardUndertext">Completed</Text>}
             {props.goal.state == "failed" && <Text style={{color: '#FF0606', textAlign: 'center'}} className="goalCardUndertext">Failed</Text>}
-            {props.goal.state == "active" && <Text className="goalCardUndertext">{goal.percentageCompleted}%</Text>}
+            {props.goal.state == "active" && <Text className="goalCardUndertext">{props.goal.percentageCompleted}%</Text>}
         </View>
         {props.goal.timeboxes.map((timebox, index) => {
-                const isFailed = dayjs().isAfter(dayjs(timebox.endTime)) && timebox.recordedTimeBoxes.length == 0;
-                const isCompleted = timebox.recordedTimeBoxes.length > 0;
+                const isFailed = dayjs().isAfter(dayjs(timebox.endTime)) && timebox.recordedTimeBox == null;
+                const isCompleted = timebox.recordedTimeBox != null;
                 let minutesOverBy = 0;
                 let timeStartedAccuracyForTimebox = 0;
                 if(isCompleted) {

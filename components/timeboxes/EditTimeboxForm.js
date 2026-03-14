@@ -46,11 +46,13 @@ export default function EditTimeboxForm(props) {
                 if (!old) return old;
                 let copyOfOld = JSON.parse(JSON.stringify(old));
                 let timeboxIndex = copyOfOld[scheduleIndex].timeboxes.findIndex(element => element.objectUUID == data.objectUUID);
-                copyOfOld[scheduleIndex].timeboxes[timeboxIndex] = {...timeboxData, recordedTimeBoxes: []};
-                let goalIndex = copyOfOld[scheduleIndex].goals.findIndex(element => element.id == Number(goalSelected));
-                let timeboxGoalIndex = copyOfOld[scheduleIndex].goals[goalIndex].timeboxes.findIndex(element => element.objectUUID == data.objectUUID);
-                copyOfOld[scheduleIndex].goals[goalIndex].timeboxes[timeboxGoalIndex] = {...timeboxData, recordedTimeBoxes: []};
-                return copyOfOld;
+                copyOfOld[scheduleIndex].timeboxes[timeboxIndex] = {...timeboxData};
+		if(!(timeboxData.isTimeblock)) {
+                  let goalIndex = copyOfOld[scheduleIndex].goals.findIndex(element => element.id == Number(goalSelected));
+                  let timeboxGoalIndex = copyOfOld[scheduleIndex].goals[goalIndex].timeboxes.findIndex(element => element.objectUUID == data.objectUUID);
+                  copyOfOld[scheduleIndex].goals[goalIndex].timeboxes[timeboxGoalIndex] = {...timeboxData};
+		}
+		return copyOfOld;
             });
             
             
@@ -84,9 +86,11 @@ export default function EditTimeboxForm(props) {
                 let copyOfOld = JSON.parse(JSON.stringify(old));
                 let timeboxIndex = copyOfOld[scheduleIndex].timeboxes.findIndex(element => element.objectUUID == objectUUID);
                 copyOfOld[scheduleIndex].timeboxes.splice(timeboxIndex, 1);
-                let goalIndex = copyOfOld[scheduleIndex].goals.findIndex(element => element.id == Number(goalSelected));
-                let timeboxGoalIndex = copyOfOld[scheduleIndex].goals[goalIndex].timeboxes.findIndex(element => element.objectUUID == objectUUID);
-                copyOfOld[scheduleIndex].goals[goalIndex].timeboxes.splice(timeboxGoalIndex, 1);
+                if(!(timeboxData.isTimeblock)) {
+                  let goalIndex = copyOfOld[scheduleIndex].goals.findIndex(element => element.id == Number(goalSelected));
+                  let timeboxGoalIndex = copyOfOld[scheduleIndex].goals[goalIndex].timeboxes.findIndex(element => element.objectUUID == data.objectUUID);
+                  copyOfOld[scheduleIndex].goals[goalIndex].timeboxes[timeboxGoalIndex] = {...timeboxData};
+		}
                 return copyOfOld;
             });
             

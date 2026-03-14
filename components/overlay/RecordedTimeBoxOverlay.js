@@ -3,6 +3,7 @@ import { useSelector } from "react-redux";
 import useRecordedBoxes from "../../hooks/useRecordedBoxesForWeek";
 import { filterRecordingBasedOnDay } from "../../modules/coreLogic";
 import { useEffect, useMemo } from "react";
+import { dayToName } from "../../modules/dateCode";
 
 export default function RecordedTimeBoxOverlay(props) {
     const onDayView = useSelector(state => state.onDayView.value);
@@ -11,7 +12,6 @@ export default function RecordedTimeBoxOverlay(props) {
     const {recordedTimeboxes} = useSelector(state => state.scheduleData.value);
     let displayedRecordings = [];
     let recordedBoxesForWeek = useRecordedBoxes(props.dayToName, recordedTimeboxes);
-
     if(onDayView) {
         displayedRecordings = [recordedBoxesForWeek[daySelected]];
         
@@ -20,7 +20,7 @@ export default function RecordedTimeBoxOverlay(props) {
     }
     
     return (
-    <View style={{position: 'absolute', transform: [{translateX: 50}], zIndex: 999}}>
+    <View style={{position: 'absolute', zIndex: 999}}>
     {displayedRecordings.map((displayedRecording, index) => {
         let dayIndex = index;
         return (
@@ -29,7 +29,7 @@ export default function RecordedTimeBoxOverlay(props) {
                 <View key={index} style={{
                     width: headerWidth, 
                     height: recordedBox.recordingBoxHeight, 
-                    transform: [{translateY: recordedBox.marginToRecording}, {translateX: headerWidth*dayIndex}],
+                    transform: [{translateY: recordedBox.marginToRecording}, {translateX: headerWidth*(dayIndex+1)}],
                     backgroundColor: 'red',
                     opacity: 0.7,
                     zIndex: 999,

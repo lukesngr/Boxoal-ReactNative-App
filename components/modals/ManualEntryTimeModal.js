@@ -7,17 +7,21 @@ import { queryClient } from '../../modules/queryClient.js';
 import { useDispatch, useSelector } from "react-redux";
 import { convertToTimeAndDate } from "../../modules/formatters.js";
 import { styles } from "../../styles/styles.js";
-
+import { reoccurringBoxOnOriginalDate } from "../../modules/dateCode.js";
 import { useMutation } from "@tanstack/react-query";
 import uuid from 'react-native-uuid';
+import useCreateBoxMut from "../../hooks/useCreateBoxMut.js";
+import dayjs from "dayjs";
 
 export default function ManualEntryTimeModal(props) {
+    const {data} = props;
     const [recordedStartTime, setRecordedStartTime] = useState(new Date(props.data.startTime));
     const [recordedEndTime, setRecordedEndTime] = useState(new Date(props.data.endTime));
     const [startTimePickerVisible, setStartTimePickerVisible] = useState(false);
     const [endTimePickerVisible, setEndTimePickerVisible] = useState(false);
-    const {scheduleIndex} = useSelector(state => state.profile.value);
+    const {scheduleIndex, scheduleID} = useSelector(state => state.profile.value);
     const dispatch = useDispatch();
+    const createTimeboxMutation = useCreateBoxMut(props.data.goalID, props.close)
 
     const createRecordingMutation = useMutation({
         mutationFn: (recordingData) => axios.post(serverIP+'/createRecordedTimebox', recordingData),
@@ -36,13 +40,13 @@ export default function ManualEntryTimeModal(props) {
 
                 //recordedTimeboxes in timeboxes
                 let timeboxIndex = copyOfOld[scheduleIndex].timeboxes.findIndex(element => element.objectUUID == props.data.objectUUID);
-                copyOfOld[scheduleIndex].timeboxes[timeboxIndex].recordedTimeBoxes.push(recordingDataCopy);
+                copyOfOld[scheduleIndex].timeboxes[timeboxIndex].recordedTimeBox = recordingDataCopy;
 
                 //recordedTimeBoxes in goals
                 let goalIndex = copyOfOld[scheduleIndex].goals.findIndex(element => element.id == Number(props.data.goalID));
                 let timeboxGoalIndex = copyOfOld[scheduleIndex].goals[goalIndex].timeboxes.findIndex(element => element.objectUUID == props.data.objectUUID);
                 
-                copyOfOld[scheduleIndex].goals[goalIndex].timeboxes[timeboxGoalIndex].recordedTimeBoxes.push(recordingDataCopy);
+                copyOfOld[scheduleIndex].goals[goalIndex].timeboxes[timeboxGoalIndex].recordedTimeBox = recordingDataCopy;
                 return copyOfOld;
             });
             
@@ -69,19 +73,46 @@ export default function ManualEntryTimeModal(props) {
 
     function submitManualEntry() {
         let objectUUID = uuid.v4();
-        let recordingData = {
-            recordedStartTime: recordedStartTime, 
-            recordedEndTime: recordedEndTime, 
-            timeBox: { connect: { id: props.data.id, objectUUID: props.data.objectUUID } }, 
-            schedule: { connect: { id: props.scheduleID } },
-            objectUUID,
-        };
-        createRecordingMutation.mutate(recordingData);
+        let timeboxData;
+	let [date, time] = convertToTimeAndDate(props.data.startTime);
+	if(!reoccurringBoxOnOriginalDate(data.startTime, date, time)) {
+	  	const differenceInMinutes = (new Date(data.endTime).getTime() - new Date(data.startTime).getTime()) / 60000;
+		const startTime = dayjs(`${dayjs().date()+'/'+(dayjs().month()+1)} ${time} ${dayjs().year()}`, 'D/M H:mm YYYY');
+		let endTime = startTime;
+		endTime = endTime.add(differenceInMinutes, 'm')
+		timeboxData = {...data,
+		  objectUUID: uuid.v4(),
+		  startTime: startTime.toISOString(),
+		  endTime: endTime.toISOString(),
+		  schedule: {connect: {id: scheduleID}},
+		  goal: {connect: {id: data.goalID}},
+		  recordedTimeBox: {
+		    create: {
+                      recordedStartTime: recordedStartTime, 
+                      recordedEndTime: new Date().toISOString(), 
+                      schedule: { connect: { id: scheduleID } },
+            	      objectUUID: objectUUID,
+		    }
+                  }
+                }
+		delete timeboxData.goalID;
+		delete timeboxData.reoccuring;
+		createTimeboxMutation.mutate(timeboxData);
+	}else{
+		timeboxData = data;
+	        const recordingData = {
+            	  recordedStartTime: recordedStartTime, 
+                  recordedEndTime: new Date().toISOString(), 
+                  timeBox: { connect: { objectUUID: timeboxData.objectUUID } }, 
+                  schedule: { connect: { id: scheduleID } },
+                  objectUUID: objectUUID,
+        	};
+        	createRecordingMutation.mutate(recordingData);
+	}
         
-        //confused as to what this codes does will test later
-        let [date, time] = convertToTimeAndDate(props.data.startTime);
+        
         let timeboxTitle = props.data.title;
-        let timebox = {...props.data, recordedTimeBoxes: [{recordedStartTime, recordedEndTime, title: timeboxTitle}]};
+        let timebox = {...props.data, recordedTimeBox: {recordedStartTime, recordedEndTime, title: timeboxTitle}};
         props.dispatch({type: 'modalVisible/set', payload: {visible: true, props: {data: timebox, date, time}}});
     }
 

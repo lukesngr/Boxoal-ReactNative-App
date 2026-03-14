@@ -16,6 +16,10 @@ import { useMutation } from "@tanstack/react-query";
 import uuid from 'react-native-uuid';
 import TimelineRecording from "./TimelineRecording.js";
 import { reoccurringBoxOnOriginalDate } from "../../modules/dateCode.js";
+import dayjs from "dayjs";
+import useCreateBoxMut from "../../hooks/useCreateBoxMut.js";
+import customParseFormat from 'dayjs/plugin/customParseFormat';
+dayjs.extend(customParseFormat)
 
 export default function TimeboxActionsForm(props) {
     const {data, date, time} = props;
@@ -24,14 +28,15 @@ export default function TimeboxActionsForm(props) {
     const timeboxRecording = useSelector(state => state.timeboxRecording.value);
     const {boxSizeUnit, boxSizeNumber, scheduleID, scheduleIndex} = useSelector(state => state.profile.value);
     const dispatch = useDispatch();
-    
+     
     const noPreviousRecording = thereIsNoRecording(data.recordedTimeBox, data.reoccuring, date, time);
     const timeboxIsntRecording = timeboxRecording.timeboxID == -1;
     const timeboxIsRecording = timeboxRecording.timeboxID == data.id && timeboxRecording.timeboxDate == date;
-
     function closeModal() {
         dispatch({type: 'modalVisible/set', payload: {visible: false, props: {}}});
     }
+    
+    const createTimeboxMutation = useCreateBoxMut(data.goalID, closeModal)
 
     const createRecordingMutation = useMutation({
         mutationFn: (recordingData) => axios.post(serverIP+'/createRecordedTimebox', recordingData),
@@ -95,13 +100,13 @@ export default function TimeboxActionsForm(props) {
 	let timeboxData;
 	if(!reoccurringBoxOnOriginalDate(data.startTime, date, time)) {
 	  	const differenceInMinutes = (new Date(data.endTime).getTime() - new Date(data.startTime).getTime()) / 60000;
-		const startTime = dayjs(date+' '+time, 'D/M HH:mm');
-		let endTime = dayjs(date+' '+time, 'D/M HH:mm');
+		const startTime = dayjs(`${dayjs().date()+'/'+(dayjs().month()+1)} ${time} ${dayjs().year()}`, 'D/M H:mm YYYY');
+		let endTime = startTime;
 		endTime = endTime.add(differenceInMinutes, 'm')
 		timeboxData = {...data,
-		  objectUUID: crypto.randomUUID(),
-		  startTime: startTime.toISOString(),
-		  endTime: endTime.toISOString(),
+		  objectUUID: uuid.v4(),
+		  startTime: startTime.utc().format(),
+		  endTime: endTime.utc().format(),
 		  schedule: {connect: {id: scheduleID}},
 		  goal: {connect: {id: data.goalID}},
 		  recordedTimeBox: {
@@ -109,7 +114,7 @@ export default function TimeboxActionsForm(props) {
                       recordedStartTime: recordedStartTime, 
                       recordedEndTime: new Date().toISOString(), 
                       schedule: { connect: { id: scheduleID } },
-            	      objectUUID: crypto.randomUUID(),
+            	      objectUUID: uuid.v4(),
 		    }
                   }
                 }
@@ -123,7 +128,7 @@ export default function TimeboxActionsForm(props) {
                   recordedEndTime: new Date().toISOString(), 
                   timeBox: { connect: { objectUUID: timeboxData.objectUUID } }, 
                   schedule: { connect: { id: scheduleID } },
-                  objectUUID: crypto.randomUUID(),
+                  objectUUID: uuid.v4(),
         	};
         	createRecordingMutation.mutate(recordingData);
 	}

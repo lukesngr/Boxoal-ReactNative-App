@@ -17,7 +17,6 @@ export function StatisticsGraph(props) {
       { value: 1-percentage, color: '#495057' },
     ]
 
-    console.log(percentage);
     return (
         <Surface style={{backgroundColor: styles.primaryColor, width: '80%', marginTop: 30, marginHorizontal: 30}}  elevation={4}>
             

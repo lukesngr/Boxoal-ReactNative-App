@@ -2,9 +2,6 @@ import {useState, useEffect} from 'react';
 import { convertToDayjs } from '../../modules/formatters';
 import { addBoxesToTime, calculateMaxNumberOfBoxes } from '../../modules/boxCalculations';
 import {Picker} from '@react-native-picker/picker';;
-import axios from 'axios';
-import { queryClient } from '../../modules/queryClient.js';
-import serverIP from '../../modules/serverIP';
 import { styles } from '../../styles/styles';
 import { dayToName } from '../../modules/dateCode';
 import { listOfColors } from '../../styles/styles';
@@ -12,8 +9,7 @@ import { Dialog, Portal, TextInput, Button, SegmentedButtons } from 'react-nativ
 import { useDispatch, useSelector } from 'react-redux';
 var utc = require("dayjs/plugin/utc");
 import dayjs from 'dayjs';
-
-import { useMutation } from "@tanstack/react-query";
+import useCreateBoxMut from '../../hooks/useCreateBoxMut.js'
 import uuid from 'react-native-uuid';
 
 dayjs.extend(utc);
@@ -34,54 +30,17 @@ export default function CreateTimeboxForm(props) {
     const [reoccuring, setReoccuring] = useState(false);
     const [startOfDayRange, setStartOfDayRange] = useState(0);
     const [endOfDayRange, setEndOfDayRange] = useState(6);
-    const {scheduleIndex} = useSelector(state => state.profile.value);
-
     
     let {time, date} = props;
 
     let maxNumberOfBoxes = calculateMaxNumberOfBoxes(wakeupTime, boxSizeUnit, boxSizeNumber, timeboxes, time, date);
-
-    const createTimeboxMutation = useMutation({
-        mutationFn: (timeboxData) => axios.post(serverIP+'/createTimebox', timeboxData),
-        onMutate: async (timeboxData) => {
-            await queryClient.cancelQueries(['schedule']); 
-            
-            const previousSchedule = queryClient.getQueryData(['schedule']);
-            
-            queryClient.setQueryData(['schedule'], (old) => {
-                if (!old) return old;
-                let copyOfOld = JSON.parse(JSON.stringify(old));
-                copyOfOld[scheduleIndex].timeboxes.push({...timeboxData, recordedTimeBoxes: []});
-                let goalIndex = copyOfOld[scheduleIndex].goals.findIndex(element => element.id == Number(goalSelected));
-                copyOfOld[scheduleIndex].goals[goalIndex].timeboxes.push({...timeboxData, recordedTimeBoxes: []})
-                return copyOfOld;
-            });
-            
-            
-            return { previousSchedule };
-        },
-        onSuccess: () => {
-            dispatch({type: 'alert/set', payload: {
-                open: true,
-                title: "Timebox",
-                message: "Added timebox!"
-            }});
-            queryClient.invalidateQueries(['schedule']); // Refetch to get real data
-            closeModal();
-        },
-        onError: (error, context) => {
-            queryClient.setQueryData(['schedule'], context.previousSchedule);
-            
-            dispatch({type: 'alert/set', payload: { open: true, title: "Error", message: "An error occurred, please try again or contact the developer" }});
-            queryClient.invalidateQueries(['schedule']);
-            closeModal();
-        }
-    });
-
     function closeModal() {
         dispatch({type: 'modalVisible/set', payload: {visible: false, props: {}}});
     }
 
+    const createTimeboxMutation = useCreateBoxMut(goalSelected);
+
+   
     function handleSubmit() {
 
         if(goalSelected == -1 && !isTimeblock) {

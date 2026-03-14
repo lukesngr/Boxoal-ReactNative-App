@@ -28,7 +28,6 @@ export default function TimeboxGrid(props) {
     useActiveOverlay(schedule);
     useDaySelected(currentDay);
     useGoalStatistics(schedule);
-
     return (
     <ScrollView>
         <View style={styles.overallView}>

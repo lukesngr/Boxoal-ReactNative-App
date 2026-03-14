@@ -15,6 +15,12 @@ import { Authenticator } from '@aws-amplify/ui-react-native';
 import { queryClient } from './modules/queryClient.js';
 import * as Sentry from '@sentry/react-native';
 import Auth from './pages/Auth.js';
+import dayjs from 'dayjs';
+import utc from 'dayjs/plugin/utc';
+import customParseFormat from 'dayjs/plugin/customParseFormat';
+import Alert from './components/Alert';
+dayjs.extend(utc);
+dayjs.extend(customParseFormat);
 
 Sentry.init({
   dsn: 'https://902123d7102e3995a2a1ee5418959618@o4509511383842816.ingest.us.sentry.io/4509612901531648',
@@ -77,6 +83,7 @@ export default Sentry.wrap(function App() {
       <Provider store={store}>
         <PersistGate persistor={persistor} loading={<Loading></Loading>}>
           <NavigationContainer theme={MyTheme} linking={linking} fallback={<Loading></Loading>}>
+             
             <Stack.Navigator>
               <Stack.Screen
                 name="Auth"
@@ -88,6 +95,7 @@ export default Sentry.wrap(function App() {
                 component={FinalView}
                 options={{headerShown: false}}></Stack.Screen>
             </Stack.Navigator>
+	    <Alert></Alert>
           </NavigationContainer>
         </PersistGate>
       </Provider>

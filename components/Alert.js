@@ -1,15 +1,16 @@
 import { Paragraph, Button, Dialog } from "react-native-paper";
 import { useSelector, useDispatch } from "react-redux";
+import { styles } from "../styles/styles";
 
 export default function Alert() {
     const {open, title, message} = useSelector(state => state.alert.value);
     const dispatch = useDispatch();
     return (
-        <Dialog style={{backgroundColor: '#875F9A', position: 'absolute', width: '90%'}} visible={open} 
+        <Dialog style={{backgroundColor: '#875F9A', position: 'absolute', width: '90%', zIndex: 999, top: 120}} visible={open} 
 		onDismiss={() => dispatch({type: 'alert/set', payload: {open: false, title: '', message: ''}})}>
-            <Dialog.Title style={{color: 'white'}}>{title}</Dialog.Title>
+            <Dialog.Title style={styles.forms.dialogTitleStyle}>{title}</Dialog.Title>
             <Dialog.Content>
-                <Paragraph style={{color: 'white'}} testID='alertMessage'>
+                <Paragraph style={{color: 'white', fontFamily: 'KameronRegular', fontSize: 20}} testID='alertMessage'>
                     {message}
                 </Paragraph>
             </Dialog.Content>

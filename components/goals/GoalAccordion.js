@@ -41,7 +41,7 @@ export default function GoalAccordion(props) {
 
     return (!(props.goal.state == 'active') ? <></> : ( <>
         <View style={{flexDirection: 'row', width: '100%', backgroundColor: 'white', paddingHorizontal: 20}} elevation={accordionOpen ? 1 : 0}>
-	    <View style={{flex: 1, flexDirection: 'row', borderColor: 'black', borderWidth: 1, paddingBottom: 13}}>
+	    <View style={{flex: 1, flexDirection: 'row', borderColor: '#1A1A2E', borderWidth: 2, paddingBottom: 13}}>
 	    <View style={{paddingTop: 13}}>
                 <Checkbox color='black' testID="completeGoal" status={checked} style={{padding: 10}} onPress={() => {setChecked(true); completeGoal();}} />
             </View>

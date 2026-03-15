@@ -33,6 +33,7 @@ export default function TimeboxActionsForm(props) {
     const timeboxIsntRecording = timeboxRecording.timeboxID == -1;
     const timeboxIsRecording = timeboxRecording.timeboxID == data.id && timeboxRecording.timeboxDate == date;
     function closeModal() {
+    	setManualEntryModalShown(false)
         dispatch({type: 'modalVisible/set', payload: {visible: false, props: {}}});
     }
     
@@ -164,7 +165,7 @@ export default function TimeboxActionsForm(props) {
                 </Dialog.Actions>
             </Dialog>
         </Portal>
-        <ManualEntryTimeModal dispatch={dispatch} visible={manualEntryModalShown} close={() => setManualEntryModalShown(false)} data={data} scheduleID={scheduleID}></ManualEntryTimeModal>
+        <ManualEntryTimeModal dispatch={dispatch} visible={manualEntryModalShown} close={closeModal} data={data} scheduleID={scheduleID}></ManualEntryTimeModal>
         </>)}
     </>);
 }

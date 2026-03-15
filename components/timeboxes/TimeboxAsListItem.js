@@ -11,12 +11,12 @@ import { useEffect } from "react";
 
 export default function TimeboxAsListItem(props) {
     const dispatch = useDispatch();
-    const [checked, setChecked] = useState(props.timebox.recordedTimeBoxes.length > 0);
+    const [checked, setChecked] = useState(props.timebox.recordedTimeBox != null);
     const {id, wakeupTime, boxSizeUnit, boxSizeNumber} = useSelector(state => state.profile.value);
 
     useEffect(() => {
-        setChecked(props.timebox.recordedTimeBoxes?.length > 0);
-    }, [props.timebox.recordedTimeBoxes]);
+        setChecked(props.timebox.recordedTimeBox != null);
+    }, [props.timebox.recordedTimeBox]);
 
     function completeTimebox() {
         axios.post(serverIP+'/createRecordedTimebox', {

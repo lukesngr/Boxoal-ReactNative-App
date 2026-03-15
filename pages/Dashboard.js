@@ -13,7 +13,6 @@ export function Dashboard({navigation, data}) {
 
   if(data.length != 0) {
     let dataForSchedule = data[scheduleIndex]
-    goalsCompleted = dataForSchedule.goals.reduce((count, item) => item.completed ? count + 1 : count, 0);
     recordedTimeboxes = dataForSchedule.recordedTimeboxes;
     timeboxes = dataForSchedule.timeboxes;
   }
@@ -29,7 +28,6 @@ export function Dashboard({navigation, data}) {
         <Text style={{fontFamily: 'KameronRegular', fontSize: 30, color: 'black', textAlign: 'center' }}>Welcome Back</Text>
         <IconButton icon="logout" size={40} onPress={() => logout}></IconButton>
       </View>
-      <Text style={{fontFamily: 'KameronRegular', fontSize: 20, color: 'black', marginTop: 20, marginHorizontal: 30}}>Lvl {goalsCompleted}</Text>
       <Statistics timeboxes={timeboxes} recordedTimeboxes={recordedTimeboxes} />
     </View>
   );

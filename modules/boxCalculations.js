@@ -277,8 +277,8 @@ export function getStatistics(recordedTimeboxes, timeboxes) {
 }
 
 export function getAverageTimeOverAndOffBy(timebox) {
-    let recordedTimeboxStartTime = new Date(timebox.recordedTimeBoxes[0].recordedStartTime);
-    let recordedTimeboxEndTime = new Date(timebox.recordedTimeBoxes[0].recordedEndTime);
+    let recordedTimeboxStartTime = new Date(timebox.recordedTimeBox.recordedStartTime);
+    let recordedTimeboxEndTime = new Date(timebox.recordedTimeBox.recordedEndTime);
     let timeboxStartTime = new Date(timebox.startTime);
     let timeboxEndTime = new Date(timebox.endTime);
     let minutesOverBy = ((recordedTimeboxEndTime - recordedTimeboxStartTime) - (timeboxEndTime - timeboxStartTime));

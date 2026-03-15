@@ -44,3 +44,14 @@ export function filterTimeboxesBasedOnWeekRange(timeboxes, selectedDate) {
     timeboxes = timeboxes.slice(0, indexOfEndOfRange+1);
     return timeboxes;
 }
+
+export function reoccurringBoxOnOriginalDate(originalDate, date, time) {
+    const original = dayjs(originalDate);
+    const parsedDate = dayjs(date, 'D/M');
+    const parsedTime = dayjs(time, 'HH:mm');
+    const dayMatch = original.date() === parsedDate.date();
+    const monthMatch = original.month() === parsedDate.month();
+    const hourMatch = original.hour() === parsedTime.hour();
+    const minuteMatch = original.minute() === parsedTime.minute();
+    return dayMatch && monthMatch && hourMatch && minuteMatch;
+}

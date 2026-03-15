@@ -16,11 +16,10 @@ export function useProfile(userId, dispatch) {
     })
 
     useEffect(() => {
-        if(data !== undefined) {
+        if(data != null) {
             let {boxSizeUnit, boxSizeNumber, wakeupTime, scheduleID, goalLimit, scheduleIndex} = data;
             dispatch({type: 'profile/set', payload: {scheduleID, scheduleIndex, boxSizeUnit, boxSizeNumber, wakeupTime, goalLimit}});
         }else{
-            console.log(data, userId)
             dispatch({type: 'profile/set', payload: {scheduleID: 0, scheduleIndex: 0, boxSizeUnit: 'min', boxSizeNumber: 30, wakeupTime: '07:00', goalLimit: -1}});
         }
     }, [data]);

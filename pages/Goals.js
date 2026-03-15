@@ -38,22 +38,22 @@ export default function Goals(props) {
     <Alert open={open} title={title} message={message} close={() => dispatch({type: 'alert/set', payload: { open: false, title: "", message: "" }})}></Alert>
     {showSkillTree ? (
         <GoalTree data={schedule} close={() => setShowSkillTree(false)}></GoalTree>) : (<>
-        <View style={{backgroundColor: '#D9D9D9', width: '100%', height: '100%', padding: 20, paddingLeft: 15, paddingRight: 15}}>
+        <View style={{backgroundColor: '#D9D9D9', width: '100%', height: '100%', padding: 20, paddingTop: 60, paddingLeft: 15, paddingRight: 15}}>
             <View style={{backgroundColor: 'white', width: '100%', height: '100%'}}>
-                <Surface style={{flexDirection: 'row', alignItems: 'center', paddingLeft: 20, backgroundColor: 'white'}}> 
+                <View style={{flexDirection: 'row', alignItems: 'center', paddingLeft: 20, backgroundColor: 'white'}}> 
                     <Text style={{fontSize: 25, color: 'black', textAlign: 'left', marginTop: 5, width: 150}}>{schedule.title}</Text>
                     <View style={{flexDirection: 'row', justifyContent: 'space-between', gap: -25}}>
                         <IconButton icon="tree" size={36} onPress={() => setShowSkillTree(true)}></IconButton>
-                        <IconButton testID="editScheduleButton" icon="cog" size={36} onPress={() => setEditScheduleVisible(true)}></IconButton>
+                        <IconButton testID="editScheduleButton" icon="pencil" size={36} onPress={() => setEditScheduleVisible(true)}></IconButton>
                         <IconButton icon="plus" size={36} onPress={() => setCreateScheduleVisible(true)}></IconButton>
                     </View>
-                </Surface>
+                </View>
                 {schedule.goals.map((goal, index) => {
                     return <GoalAccordion key={index} goal={goal}></GoalAccordion>
                 })}
-                <Surface style={{paddingLeft: 40, flexDirection: 'row', paddingBottom: 15, backgroundColor: 'white'}}>
-                <FAB testID="addGoalButton" icon="plus" label="Add Goal" mode='elevated' style={styles.addGoalFAB} onPress={() => setCreateGoalVisible(true)}/>
-                </Surface>
+                <View style={{paddingHorizontal: 20, flexDirection: 'row', paddingBottom: 15, backgroundColor: 'white'}}>
+                <FAB testID="addGoalButton" icon="plus" label="Add Goal" mode='elevated' color="white" style={styles.addGoalFAB} onPress={() => setCreateGoalVisible(true)}/>
+                </View>
             </View>
         </View>
         <CorrectModalDisplayer></CorrectModalDisplayer>

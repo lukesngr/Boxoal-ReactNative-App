@@ -109,7 +109,8 @@ export const styles = {
     },
     overallView: {
         marginLeft: 4, 
-        marginRight: 4
+        marginRight: 4,
+	position: 'relative'
     },
     timeboxCell: {
         flex: 1, 
@@ -195,8 +196,8 @@ export const styles = {
         textColor: 'black',
     },
     addGoalFAB: {
-        width: '85%', 
-        marginTop: 10, 
+        width: '100%', 
+        marginTop: 5,
         backgroundColor: '#875F9A', 
         textAlign: 'center', 
     },

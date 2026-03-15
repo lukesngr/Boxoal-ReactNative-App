@@ -53,7 +53,7 @@ export function GoalTree(props) {
                 }
             </View>
             <ScrollView>
-                {onTimeboxView.open ? (<GoalTreeTimeboxes goal={onTimeboxView.data} close={() => setOnTimeboxView({data: {}, open: false})}></GoalTreeTimeboxes>) : (
+                {onTimeboxView.open ? (<GoalTreeTimeboxes goal={onTimeboxView.data}></GoalTreeTimeboxes>) : (
                     <>
                         {goalsInLine.map((goal, index) => {
                             return <GoalTreeNode line={currentLine} key={index} goal={goal} setTimeboxView={setOnTimeboxView}></GoalTreeNode>

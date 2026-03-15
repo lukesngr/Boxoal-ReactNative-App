@@ -12,7 +12,7 @@ export default function TimeboxHeading(props) {
     const dispatch = useDispatch();
 
     return (
-        <View>
+        <View style={{marginTop: 50}}>
             <View style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}> 
                 <Text style={{fontFamily: 'KameronRegular', fontSize: 28, color: 'black', textAlign: 'center', marginTop: 5}}> Timeboxes</Text>
                 <View style={{flexDirection: 'row', justifyContent: 'space-between', gap: -25}}>

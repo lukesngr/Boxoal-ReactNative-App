@@ -27,10 +27,12 @@ export default function TimeboxActionsForm(props) {
     const [manualEntryModalShown, setManualEntryModalShown] = useState(false);
     const [showEditTimeboxForm, setShowEditTimeboxForm] = useState(false);
     const timeboxRecording = useSelector(state => state.timeboxRecording.value);
+    const recordedTimeboxesMap = useSelector(state => state.scheduleData.value.recordedTimeboxes);
     const {boxSizeUnit, boxSizeNumber, scheduleID, scheduleIndex} = useSelector(state => state.profile.value);
     const dispatch = useDispatch();
      
-    const noPreviousRecording = thereIsNoRecording(data.recordedTimeBox, data.reoccuring, date, time);
+    const recordedTimebox = recordedTimeboxesMap ? recordedTimeboxesMap.getFromK2(data.objectUUID) : null;
+    const noPreviousRecording = thereIsNoRecording(recordedTimebox, data.reoccuring, date, time);
     const timeboxIsntRecording = timeboxRecording.timeboxID == -1;
     const timeboxIsRecording = timeboxRecording.timeboxID == data.id && timeboxRecording.timeboxDate == date;
     function closeModal() {
@@ -165,10 +167,10 @@ delete timeboxData.goalID;
                        {noPreviousRecording ? (`Actions for ${data.title} ${data.isTimeblock ? "timeblock" : "timebox"}`) :
                         ("Timebox and recording comparison")}
                     </Paragraph>
-                    {!noPreviousRecording && <TimelineRecording timeboxStart={data.startTime}
+                    {!noPreviousRecording && recordedTimebox && <TimelineRecording timeboxStart={data.startTime}
                             timeboxEnd={data.endTime}
-                            recordingStart={data.recordedTimeBox.recordedStartTime}
-                            recordingEnd={data.recordedTimeBox.recordedEndTime}></TimelineRecording>}
+                            recordingStart={recordedTimebox.recordedStartTime}
+                            recordingEnd={recordedTimebox.recordedEndTime}></TimelineRecording>}
                 </Dialog.Content>
                 <Dialog.Actions>
                     {noPreviousRecording && timeboxIsntRecording && <>

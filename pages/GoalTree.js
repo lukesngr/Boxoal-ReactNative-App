@@ -6,13 +6,20 @@ import { GoalTreeNode } from "../components/goals/GoalTreeNode";
 import { current } from "@reduxjs/toolkit";
 import AddGoalToTree  from "../components/goals/AddGoalToTree";
 import { GoalTreeTimeboxes } from "../components/goals/GoalTreeTimeboxes";
+import { useSelector } from "react-redux";
 
 
 export function GoalTree(props) {
+    const profile = useSelector(state => state.profile.value);
+    const scheduleData = useSelector(state => state.scheduleData.value);
     const [currentLine, setCurrentLine] = useState(1);
     const [onTimeboxView, setOnTimeboxView] = useState({data: {}, open: false});
-    let goalsCompleted = props.data.goals.reduce((count, item) => item.completed ? count + 1 : count, 0);
-    let goalsInLine = props.data.goals.filter((item) => item.partOfLine == currentLine);
+    
+    const goalsMap = scheduleData.goals;
+    const goalsForSchedule = goalsMap ? goalsMap.getFromK1(props.data.id) : [];
+    
+    let goalsCompleted = goalsForSchedule.reduce((count, item) => item.completed ? count + 1 : count, 0);
+    let goalsInLine = goalsForSchedule.filter((item) => item.partOfLine == currentLine);
     let maxNumberOfGoals = getMaxNumberOfGoals(goalsCompleted);
     let addNonActiveGoal = goalsInLine.length == 0;
 
@@ -58,7 +65,7 @@ export function GoalTree(props) {
                         {goalsInLine.map((goal, index) => {
                             return <GoalTreeNode line={currentLine} key={index} goal={goal} setTimeboxView={setOnTimeboxView}></GoalTreeNode>
                         })}
-                        <AddGoalToTree goals={props.data.goals} line={currentLine} addNonActiveGoal={addNonActiveGoal}></AddGoalToTree>
+                        <AddGoalToTree goals={goalsForSchedule} line={currentLine} addNonActiveGoal={addNonActiveGoal}></AddGoalToTree>
                     </>
                 )}
                 <View style={{height: 20}}></View>

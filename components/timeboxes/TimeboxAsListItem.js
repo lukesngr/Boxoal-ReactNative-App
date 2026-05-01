@@ -12,12 +12,14 @@ import { fetchAuthSession } from "aws-amplify/auth";
 
 export default function TimeboxAsListItem(props) {
     const dispatch = useDispatch();
-    const [checked, setChecked] = useState(props.timebox.recordedTimeBox != null);
+    const recordedTimeboxesMap = useSelector(state => state.scheduleData.value.recordedTimeboxes);
+    const recordedTimebox = recordedTimeboxesMap ? recordedTimeboxesMap.getFromK2(props.timebox.objectUUID) : null;
+    const [checked, setChecked] = useState(recordedTimebox != null);
     const {id, wakeupTime, boxSizeUnit, boxSizeNumber} = useSelector(state => state.profile.value);
 
     useEffect(() => {
-        setChecked(props.timebox.recordedTimeBox != null);
-    }, [props.timebox.recordedTimeBox]);
+        setChecked(recordedTimebox != null);
+    }, [recordedTimebox]);
 
     async function completeTimebox() {
         const session = await fetchAuthSession();

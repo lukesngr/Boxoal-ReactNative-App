@@ -17,6 +17,7 @@ import Alert from "../components/Alert";
 
 export default function Goals(props) {
     const profile = useSelector(state => state.profile.value);
+    const scheduleData = useSelector(state => state.scheduleData.value);
     const {open, title, message} = useSelector(state => state.alert.value);
     const dispatch = useDispatch();
     const [createScheduleVisible, setCreateScheduleVisible] = useState(false);
@@ -28,9 +29,12 @@ export default function Goals(props) {
     useGoalLimits(schedule.goals);
     let highestActiveIndex = 0;
 
-    for(let i = 0; i < schedule.goals.length; i++) {
-        if(schedule.goals[i].active && schedule.goals[i].partOfLine > highestActiveIndex) {
-            highestActiveIndex = schedule.goals[i].partOfLine;
+    const goalsMap = scheduleData.goals;
+    const goalsForSchedule = goalsMap ? goalsMap.getFromK1(schedule.id) : [];
+
+    for(let i = 0; i < goalsForSchedule.length; i++) {
+        if(goalsForSchedule[i].active && goalsForSchedule[i].partOfLine > highestActiveIndex) {
+            highestActiveIndex = goalsForSchedule[i].partOfLine;
         }
     }
 
@@ -48,7 +52,7 @@ export default function Goals(props) {
                         <IconButton icon="plus" size={36} onPress={() => setCreateScheduleVisible(true)}></IconButton>
                     </View>
                 </View>
-                {schedule.goals.map((goal, index) => {
+                {goalsForSchedule.map((goal, index) => {
                     return <GoalAccordion key={index} goal={goal}></GoalAccordion>
                 })}
                 <View style={{paddingHorizontal: 20, flexDirection: 'row', paddingBottom: 15, backgroundColor: 'white'}}>
@@ -57,7 +61,7 @@ export default function Goals(props) {
             </View>
         </View>
         <CorrectModalDisplayer></CorrectModalDisplayer>
-        <CreateGoalForm visible={createGoalVisible} active={true} line={highestActiveIndex+1} close={() => setCreateGoalVisible(false)} id={schedule.id}  goals={schedule.goals}></CreateGoalForm>
+        <CreateGoalForm visible={createGoalVisible} active={true} line={highestActiveIndex+1} close={() => setCreateGoalVisible(false)} id={schedule.id}  goals={goalsForSchedule}></CreateGoalForm>
         <EditScheduleForm data={schedule} visible={editScheduleVisible} close={() => setEditScheduleVisible(false)}></EditScheduleForm>
         <CreateScheduleForm visible={createScheduleVisible} close={() => setCreateScheduleVisible(false)}></CreateScheduleForm>
         </>)

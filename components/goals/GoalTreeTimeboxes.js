@@ -5,8 +5,13 @@ import {Path} from "react-native-svg";
 import dayjs from "dayjs";
 import { getAverageTimeOverAndOffBy } from "../../modules/boxCalculations";
 import { styles } from "../../styles/styles";
+import { useSelector } from "react-redux";
 
 export function GoalTreeTimeboxes(props) {
+    const timeboxesMap = useSelector(state => state.scheduleData.value.timeboxes);
+    const recordedTimeboxesMap = useSelector(state => state.scheduleData.value.recordedTimeboxes);
+    const timeboxesForGoal = timeboxesMap ? timeboxesMap.getFromK1(props.goal.id) : [];
+    
     return (<View style={{alignSelf: 'center'}}>
         <View style={{backgroundColor: styles.primaryColor, maxWidth: '80%', paddingHorizontal: '10%', paddingVertical: '5%'}}>
             <Text style={{fontFamily: 'Koulen-Regular', fontSize: 30, color: 'white'}}>{props.goal.title}</Text>
@@ -15,9 +20,10 @@ export function GoalTreeTimeboxes(props) {
             {props.goal.state == "failed" && <Text style={{color: '#FF0606', textAlign: 'center'}} className="goalCardUndertext">Failed</Text>}
             {props.goal.state == "active" && <Text className="goalCardUndertext">{props.goal.percentageCompleted}%</Text>}
         </View>
-        {props.goal.timeboxes.map((timebox, index) => {
-                const isFailed = dayjs().isAfter(dayjs(timebox.endTime)) && timebox.recordedTimeBox == null;
-                const isCompleted = timebox.recordedTimeBox != null;
+        {timeboxesForGoal.map((timebox, index) => {
+                const recordedTimebox = recordedTimeboxesMap ? recordedTimeboxesMap.getFromK2(timebox.objectUUID) : null;
+                const isFailed = dayjs().isAfter(dayjs(timebox.endTime)) && recordedTimebox == null;
+                const isCompleted = recordedTimebox != null;
                 let minutesOverBy = 0;
                 let timeStartedAccuracyForTimebox = 0;
                 if(isCompleted) {

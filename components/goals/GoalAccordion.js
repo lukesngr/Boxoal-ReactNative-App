@@ -5,7 +5,7 @@ import { View } from "react-native";
 import TimeboxAsListItem from "../timeboxes/TimeboxAsListItem";
 import axios from "axios";
 import serverIP from "../../modules/serverIP";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { queryClient } from '../../modules/queryClient.js';
 import { fetchAuthSession } from "aws-amplify/auth";
 
@@ -14,6 +14,8 @@ export default function GoalAccordion(props) {
     const [accordionOpen, setAccordionOpen] = useState(false);
     const [checked, setChecked] = useState(false);
     const dispatch = useDispatch();
+    const timeboxesMap = useSelector(state => state.scheduleData.value.timeboxes);
+    const timeboxesForGoal = timeboxesMap ? timeboxesMap.getFromK1(props.goal.id) : [];
 
     async function completeGoal() {
         const session = await fetchAuthSession();
@@ -66,7 +68,7 @@ export default function GoalAccordion(props) {
             </View>
 	    </View>
         </View>
-        {accordionOpen && props.goal.timeboxes.map((timebox, index) => {
+        {accordionOpen && timeboxesForGoal.map((timebox, index) => {
             return <TimeboxAsListItem key={index} timebox={timebox}></TimeboxAsListItem>
         })}          
         <EditGoalForm data={props.goal} visible={editGoalFormVisible} close={() => setEditGoalFormVisible(false)}></EditGoalForm>

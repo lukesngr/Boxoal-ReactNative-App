@@ -11,6 +11,7 @@ var utc = require("dayjs/plugin/utc");
 import dayjs from 'dayjs';
 import useCreateBoxMut from '../../hooks/useCreateBoxMut.js'
 import uuid from 'react-native-uuid';
+import { fetchAuthSession } from "aws-amplify/auth";
 
 dayjs.extend(utc);
 
@@ -41,7 +42,7 @@ export default function CreateTimeboxForm(props) {
     const createTimeboxMutation = useCreateBoxMut(goalSelected);
 
    
-    function handleSubmit() {
+    async function handleSubmit() {
 
         if(goalSelected == -1 && !isTimeblock) {
             dispatch({type: 'alert/set', payload: {open: true, title: "Error", message: "Please create a goal before creating a timebox"}});
@@ -71,7 +72,15 @@ export default function CreateTimeboxForm(props) {
                 data["reoccuring"] = { create: { startOfDayRange, endOfDayRange } };
             }
             
-            createTimeboxMutation.mutate(data);
+            const session = await fetchAuthSession();
+            const accessToken = session.tokens?.accessToken.toString();
+            const headers = {
+                headers: {
+                    'Authorization': `Bearer ${accessToken}`,
+                    'Content-Type': 'application/json'
+                }
+            };
+            createTimeboxMutation.mutate({ timeboxData: data, headers });
         }
 
     }

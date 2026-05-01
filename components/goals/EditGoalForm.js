@@ -12,6 +12,7 @@ import { useMutation } from "@tanstack/react-query";
 
 import dayjs from "dayjs";
 import { useSelector, useDispatch } from "react-redux";
+import { fetchAuthSession } from "aws-amplify/auth";
 
 export default function EditGoalForm(props) {
     const dispatch = useDispatch();
@@ -26,8 +27,8 @@ export default function EditGoalForm(props) {
     const [onLogMetricView, setOnLogMetricView] = useState(false);
 
     const updateGoalMutation = useMutation({
-        mutationFn: (goalData) => axios.put(serverIP+'/updateGoal', goalData),
-        onMutate: async (goalData) => {
+        mutationFn: ({ goalData, headers }) => axios.put(serverIP+'/updateGoal', goalData, headers),
+        onMutate: async ({ goalData, headers }) => {
             await queryClient.cancelQueries(['schedule']); 
             
             const previousGoals = queryClient.getQueryData(['schedule']);
@@ -57,7 +58,7 @@ export default function EditGoalForm(props) {
         }
     });
 
-    function updateGoal() {
+    async function updateGoal() {
         const wakeupTimeSplitted = wakeupTime.split(':');
         const alteredDate = dayjs(targetDate).hour(wakeupTimeSplitted[0]).minute(wakeupTimeSplitted[1]);
 
@@ -75,33 +76,51 @@ export default function EditGoalForm(props) {
             goalData.metric = Number(metric);
         }
         
-        updateGoalMutation.mutate(goalData);
+        const session = await fetchAuthSession();
+        const accessToken = session.tokens?.accessToken.toString();
+        const headers = {
+            headers: {
+                'Authorization': `Bearer ${accessToken}`,
+                'Content-Type': 'application/json'
+            }
+        };
+        updateGoalMutation.mutate({ goalData, headers });
 
         if(completed) {
-            axios.get(serverIP+'/setNextGoalToActive', {line: props.data.partOfLine}).then(async () => {
+            try {
+                await axios.get(serverIP+'/setNextGoalToActive', {line: props.data.partOfLine, ...headers});
                 await queryClient.refetchQueries();
-            }).catch(function(error) {
+            } catch(error) {
                 
-            })
+            }
         };
     }
     
-    function deleteGoal() {
-        
-        axios.post(serverIP+'/deleteGoal', {
-            id: props.data.id
-        }).then(async () => {   
+    async function deleteGoal() {
+        const session = await fetchAuthSession();
+        const accessToken = session.tokens?.accessToken.toString();
+        const headers = {
+            headers: {
+                'Authorization': `Bearer ${accessToken}`,
+                'Content-Type': 'application/json'
+            }
+        };
+        try {
+            await axios.post(serverIP+'/deleteGoal', {
+                id: props.data.id
+            }, headers);   
             props.close();
             dispatch({type: 'alert/set', payload: {open: true, title: "Goal", message: "Deleted goal!"}});
             await queryClient.refetchQueries();
-        }).catch(function(error) {
+        } catch(error) {
             props.close();
             dispatch({type: 'alert/set', payload: {open: true, title: "Error", message: "An error occurred, please try again or contact the developer"}});
             
         });
     }
+    }
 
-    function logMetric() {
+    async function logMetric() {
         if(onLogMetricView) {
             const data = {
                 date: new Date().toISOString(),
@@ -127,24 +146,40 @@ export default function EditGoalForm(props) {
                     state: "completed",
                 }
                 
-                updateGoalMutation.mutate(goalData);
+                const session = await fetchAuthSession();
+                const accessToken = session.tokens?.accessToken.toString();
+                const headers = {
+                    headers: {
+                        'Authorization': `Bearer ${accessToken}`,
+                        'Content-Type': 'application/json'
+                    }
+                };
+                updateGoalMutation.mutate({ goalData, headers });
 
-                axios.get('/api/setNextGoalToActive', {line: props.data.partOfLine}).then(async () => {
+                try {
+                    await axios.get('/api/setNextGoalToActive', {line: props.data.partOfLine, ...headers});
                     await queryClient.refetchQueries();
-                }).catch(function() {
-                })
+                } catch(error) {
+                }
             }else{
 
-                axios.post('/api/logMetric', data)
-                .then(async () => {
+                const session = await fetchAuthSession();
+                const accessToken = session.tokens?.accessToken.toString();
+                const headers = {
+                    headers: {
+                        'Authorization': `Bearer ${accessToken}`,
+                        'Content-Type': 'application/json'
+                    }
+                };
+                try {
+                    await axios.post('/api/logMetric', data, headers);
                     close();
                     dispatch({type: 'alert/set', payload: { open: true, title: "Goal", message: "Logged metric!" }});
                     await queryClient.refetchQueries();
-                })
-                .catch(function() {
+                } catch(error) {
                     close();
                     dispatch({type: 'alert/set', payload: { open: true, title: "Error", message: "An error occurred, please try again or contact the developer" }});
-                });
+                }
             }
         }else {
             setOnLogMetricView(true);

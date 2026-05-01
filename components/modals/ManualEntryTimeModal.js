@@ -12,6 +12,7 @@ import { useMutation } from "@tanstack/react-query";
 import uuid from 'react-native-uuid';
 import useCreateBoxMut from "../../hooks/useCreateBoxMut.js";
 import dayjs from "dayjs";
+import { fetchAuthSession } from "aws-amplify/auth";
 
 export default function ManualEntryTimeModal(props) {
     const {data} = props;
@@ -24,8 +25,8 @@ export default function ManualEntryTimeModal(props) {
     const createTimeboxMutation = useCreateBoxMut(props.data.goalID, props.close)
     
     const createRecordingMutation = useMutation({
-        mutationFn: (recordingData) => axios.post(serverIP+'/createRecordedTimebox', recordingData),
-        onMutate: async (recordingData) => {
+        mutationFn: ({ recordingData, headers }) => axios.post(serverIP+'/createRecordedTimebox', recordingData, headers),
+        onMutate: async ({ recordingData, headers }) => {
             await queryClient.cancelQueries(['schedule']); 
             
             const previousSchedule = queryClient.getQueryData(['schedule']);
@@ -71,46 +72,62 @@ export default function ManualEntryTimeModal(props) {
         }
     });
 
-    function submitManualEntry() {
+async function submitManualEntry() {
         let objectUUID = uuid.v4();
         let timeboxData; //alot of redundant code here but alas dont want to fix just yet
-	let [time, date] = convertToTimeAndDate(recordedStartTime);
-	if(!reoccurringBoxOnOriginalDate(data.startTime, date, time)) {
-		const startTimeAsDate = new Date(data.startTime)
-	  	const differenceInMinutes = (new Date(data.endTime).getTime() - startTimeAsDate.getTime()) / 60000;
-		const startTime = dayjs().hour(startTimeAsDate.getHours()).minute(startTimeAsDate.getMinutes())
-			.year(recordedStartTime.getFullYear()).month(recordedStartTime.getMonth()).date(recordedStartTime.getDate());
-		let endTime = startTime;
-		endTime = endTime.add(differenceInMinutes, 'm')
-		timeboxData = {...data,
-		  objectUUID: uuid.v4(),
-		  startTime: startTime.utc().format(),
-		  endTime: endTime.utc().format(),
-		  schedule: {connect: {id: scheduleID}},
-		  goal: {connect: {id: data.goalID}},
-		  recordedTimeBox: {
-		    create: {
-                      recordedStartTime: recordedStartTime.toISOString(), 
-                      recordedEndTime: recordedEndTime.toISOString(), 
-                      schedule: { connect: { id: scheduleID } },
-            	      objectUUID: objectUUID,
-		    }
-                  }
+        let [time, date] = convertToTimeAndDate(recordedStartTime);
+        if(!reoccurringBoxOnOriginalDate(data.startTime, date, time)) {
+            const startTimeAsDate = new Date(data.startTime)
+            const differenceInMinutes = (new Date(data.endTime).getTime() - startTimeAsDate.getTime()) / 60000;
+            const startTime = dayjs().hour(startTimeAsDate.getHours()).minute(startTimeAsDate.getMinutes())
+                .year(recordedStartTime.getFullYear()).month(recordedStartTime.getMonth()).date(recordedStartTime.getDate());
+            let endTime = startTime;
+            endTime = endTime.add(differenceInMinutes, 'm')
+            timeboxData = {...data,
+                objectUUID: uuid.v4(),
+                startTime: startTime.utc().format(),
+                endTime: endTime.utc().format(),
+                schedule: {connect: {id: scheduleID}},
+                goal: {connect: {id: data.goalID}},
+                recordedTimeBox: {
+                    create: {
+                        recordedStartTime: recordedStartTime.toISOString(), 
+                        recordedEndTime: recordedEndTime.toISOString(), 
+                        schedule: { connect: { id: scheduleID } },
+                        objectUUID: objectUUID,
+                    }
                 }
-		delete timeboxData.goalID;
-		delete timeboxData.reoccuring;
-		createTimeboxMutation.mutate(timeboxData);
-	}else{
-		timeboxData = data;
-	        const recordingData = {
-            	  recordedStartTime: recordedStartTime.toISOString(), 
-                  recordedEndTime: recordedEndTime.toISOString(), 
-                  timeBox: { connect: { objectUUID: timeboxData.objectUUID } }, 
-                  schedule: { connect: { id: scheduleID } },
-                  objectUUID: objectUUID,
-        	};
-        	createRecordingMutation.mutate(recordingData);
-	}
+            };
+            delete timeboxData.goalID;
+            delete timeboxData.reoccuring;
+            const session = await fetchAuthSession();
+            const accessToken = session.tokens?.accessToken.toString();
+            const headers = {
+                headers: {
+                    'Authorization': `Bearer ${accessToken}`,
+                    'Content-Type': 'application/json'
+                }
+            };
+            createTimeboxMutation.mutate({ timeboxData, headers });
+        }else{
+            timeboxData = data;
+            const recordingData = {
+                recordedStartTime: recordedStartTime.toISOString(), 
+                recordedEndTime: recordedEndTime.toISOString(), 
+                timeBox: { connect: { objectUUID: timeboxData.objectUUID } }, 
+                schedule: { connect: { id: scheduleID } },
+                objectUUID: objectUUID,
+            };
+            const session = await fetchAuthSession();
+            const accessToken = session.tokens?.accessToken.toString();
+            const headers = {
+                headers: {
+                    'Authorization': `Bearer ${accessToken}`,
+                    'Content-Type': 'application/json'
+                }
+            };
+            createRecordingMutation.mutate({ recordingData, headers });
+        }
         
         
         let timeboxTitle = props.data.title;

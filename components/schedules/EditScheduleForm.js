@@ -10,6 +10,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { useAuthenticator } from "@aws-amplify/ui-react-native";
 import { useMutation } from "@tanstack/react-query";
+import { fetchAuthSession } from "aws-amplify/auth";
 
 export default function EditScheduleForm(props) {
     const dispatch = useDispatch();
@@ -18,8 +19,8 @@ export default function EditScheduleForm(props) {
     const { user } = useAuthenticator();
 
     const updateScheduleMutation = useMutation({
-        mutationFn: (scheduleData) => axios.put(serverIP+'/updateSchedule', scheduleData),
-        onMutate: async (scheduleData) => {
+        mutationFn: ({ scheduleData, headers }) => axios.put(serverIP+'/updateSchedule', scheduleData, headers),
+        onMutate: async ({ scheduleData, headers }) => {
             await queryClient.cancelQueries(['schedule']); 
             
             const previousSchedule = queryClient.getQueryData(['schedule']);;
@@ -52,8 +53,8 @@ export default function EditScheduleForm(props) {
     });
 
     const deleteScheduleMutation = useMutation({
-        mutationFn: (scheduleData) => axios.post(serverIP+'/deleteSchedule', scheduleData),
-        onMutate: async (scheduleData) => {
+        mutationFn: ({ scheduleData, headers }) => axios.post(serverIP+'/deleteSchedule', scheduleData, headers),
+        onMutate: async ({ scheduleData, headers }) => {
             await queryClient.cancelQueries(['schedule']); 
             
             const previousSchedule = queryClient.getQueryData(['schedule']);
@@ -92,20 +93,40 @@ export default function EditScheduleForm(props) {
     });
 
     async function updateSchedule() {
-       updateScheduleMutation.mutate({
+        const session = await fetchAuthSession();
+        const accessToken = session.tokens?.accessToken.toString();
+        const headers = {
+            headers: {
+                'Authorization': `Bearer ${accessToken}`,
+                'Content-Type': 'application/json'
+            }
+        };
+        updateScheduleMutation.mutate({
+            scheduleData: {
                 title,
                 userUUID: user.userId,
                 id: props.data.id
+            },
+            headers
         });
     }
 
     async function deleteSchedule() {
-        
+        const session = await fetchAuthSession();
+        const accessToken = session.tokens?.accessToken.toString();
+        const headers = {
+            headers: {
+                'Authorization': `Bearer ${accessToken}`,
+                'Content-Type': 'application/json'
+            }
+        };
         deleteScheduleMutation.mutate({
+            scheduleData: {
                 userUUID: user.userId,
                 id: props.data.id
+            },
+            headers
         });
-            
     }
 
     return (

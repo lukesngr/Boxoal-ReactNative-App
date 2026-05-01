@@ -7,6 +7,7 @@ import { useDispatch } from "react-redux";
 import { Dialog, Portal, TextInput, Button } from "react-native-paper";
 import { styles } from "../../styles/styles";
 import { useAuthenticator } from "@aws-amplify/ui-react-native";
+import { fetchAuthSession } from "aws-amplify/auth";
 
 
 export default function CreateScheduleForm(props) {
@@ -15,18 +16,27 @@ export default function CreateScheduleForm(props) {
     const dispatch = useDispatch();
     
     async function createSchedule() {
-        axios.post(serverIP+'/createSchedule', {
-            title,
-            userUUID: user.userId, 
-        }).then(async () => {
+        const session = await fetchAuthSession();
+        const accessToken = session.tokens?.accessToken.toString();
+        const headers = {
+            headers: {
+                'Authorization': `Bearer ${accessToken}`,
+                'Content-Type': 'application/json'
+            }
+        };
+        try {
+            await axios.post(serverIP+'/createSchedule', {
+                title,
+                userUUID: user.userId, 
+            }, headers);
             props.close();
             dispatch({type: 'alert/set', payload: {open: true, title: "Timebox", message: "Created schedule!"}});
             await queryClient.refetchQueries();
-        }).catch(function(error) {
+        } catch(error) {
             props.close();
             dispatch({type: 'alert/set', payload: {open: true, title: "Error", message: "An error occurred, please try again or contact the developer"}});
             
-        })
+        }
     }
 
     return (

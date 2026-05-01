@@ -19,6 +19,7 @@ import { reoccurringBoxOnOriginalDate } from "../../modules/dateCode.js";
 import dayjs from "dayjs";
 import useCreateBoxMut from "../../hooks/useCreateBoxMut.js";
 import customParseFormat from 'dayjs/plugin/customParseFormat';
+import { fetchAuthSession } from "aws-amplify/auth";
 dayjs.extend(customParseFormat)
 
 export default function TimeboxActionsForm(props) {
@@ -40,8 +41,8 @@ export default function TimeboxActionsForm(props) {
     const createTimeboxMutation = useCreateBoxMut(data.goalID, closeModal)
 
     const createRecordingMutation = useMutation({
-        mutationFn: (recordingData) => axios.post(serverIP+'/createRecordedTimebox', recordingData),
-        onMutate: async (recordingData) => {
+        mutationFn: ({ recordingData, headers }) => axios.post(serverIP+'/createRecordedTimebox', recordingData, headers),
+        onMutate: async ({ recordingData, headers }) => {
             await queryClient.cancelQueries(['schedule']); 
             
             const previousSchedule = queryClient.getQueryData(['schedule']);
@@ -119,20 +120,36 @@ export default function TimeboxActionsForm(props) {
 		    }
                   }
                 }
-		delete timeboxData.goalID;
-		delete timeboxData.reoccuring;
-		createTimeboxMutation.mutate(timeboxData);
-	}else{
-		timeboxData = data;
-	        const recordingData = {
-            	  recordedStartTime: recordedStartTime, 
-                  recordedEndTime: new Date().toISOString(), 
-                  timeBox: { connect: { objectUUID: timeboxData.objectUUID } }, 
-                  schedule: { connect: { id: scheduleID } },
-                  objectUUID: uuid.v4(),
+delete timeboxData.goalID;
+ 		delete timeboxData.reoccuring;
+ 		const session = await fetchAuthSession();
+ 		const accessToken = session.tokens?.accessToken.toString();
+ 		const headers = {
+ 		    headers: {
+ 		        'Authorization': `Bearer ${accessToken}`,
+ 		        'Content-Type': 'application/json'
+ 		    }
+ 		};
+ 		createTimeboxMutation.mutate({ timeboxData, headers });
+}else{
+ 		timeboxData = data;
+ 	        const recordingData = {
+              	  recordedStartTime: recordedStartTime, 
+                    recordedEndTime: new Date().toISOString(), 
+                    timeBox: { connect: { objectUUID: timeboxData.objectUUID } }, 
+                    schedule: { connect: { id: scheduleID } },
+                    objectUUID: uuid.v4(),
         	};
-        	createRecordingMutation.mutate(recordingData);
-	}
+         	const session = await fetchAuthSession();
+         	const accessToken = session.tokens?.accessToken.toString();
+         	const headers = {
+             	    headers: {
+                      'Authorization': `Bearer ${accessToken}`,
+                      'Content-Type': 'application/json'
+                  }
+          	};
+         	createRecordingMutation.mutate({ recordingData, headers });
+ 	}
 
     }
     

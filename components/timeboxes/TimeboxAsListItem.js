@@ -8,6 +8,7 @@ import { convertToTimeAndDate } from "../../modules/formatters.js";
 import { Pressable } from "react-native";
 import { useDispatch } from "react-redux";
 import { useEffect } from "react";
+import { fetchAuthSession } from "aws-amplify/auth";
 
 export default function TimeboxAsListItem(props) {
     const dispatch = useDispatch();
@@ -18,25 +19,43 @@ export default function TimeboxAsListItem(props) {
         setChecked(props.timebox.recordedTimeBox != null);
     }, [props.timebox.recordedTimeBox]);
 
-    function completeTimebox() {
-        axios.post(serverIP+'/createRecordedTimebox', {
-            recordedStartTime: props.timebox.startTime, 
-            recordedEndTime: props.timebox.endTime,
-            timeBox: {connect: {id: props.timebox.id}}, 
-            schedule: {connect: {id: id}}
-        }).then(() => {
-            queryClient.refetchQueries();
-        }).catch(function(error) {
+    async function completeTimebox() {
+        const session = await fetchAuthSession();
+        const accessToken = session.tokens?.accessToken.toString();
+        const headers = {
+            headers: {
+                'Authorization': `Bearer ${accessToken}`,
+                'Content-Type': 'application/json'
+            }
+        };
+        try {
+            await axios.post(serverIP+'/createRecordedTimebox', {
+                recordedStartTime: props.timebox.startTime, 
+                recordedEndTime: props.timebox.endTime,
+                timeBox: {connect: {id: props.timebox.id}}, 
+                schedule: {connect: {id: id}}
+            }, headers);
+            await queryClient.refetchQueries();
+        } catch(error) {
             console.log(error); 
-        })  
+        }
     }
 
-    function clearRecording() {
-        axios.post(serverIP+'/clearRecording', {id: props.timebox.id}).then(
-            async () => { await queryClient.refetchQueries();}
-        ).catch(function(error) {
+    async function clearRecording() {
+        const session = await fetchAuthSession();
+        const accessToken = session.tokens?.accessToken.toString();
+        const headers = {
+            headers: {
+                'Authorization': `Bearer ${accessToken}`,
+                'Content-Type': 'application/json'
+            }
+        };
+        try {
+            await axios.post(serverIP+'/clearRecording', {id: props.timebox.id}, headers);
+            await queryClient.refetchQueries();
+        } catch(error) {
             console.log(error); 
-        });
+        }
     }
 
     function openTimeboxModal() {

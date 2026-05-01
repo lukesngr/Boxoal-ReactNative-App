@@ -12,6 +12,7 @@ import Alert from "../Alert";
 import { dayToName } from "../../modules/dateCode";
 
 import { useMutation } from "@tanstack/react-query";
+import { fetchAuthSession } from "aws-amplify/auth";
 
 export default function EditTimeboxForm(props) {
     const dispatch = useDispatch();
@@ -36,8 +37,8 @@ export default function EditTimeboxForm(props) {
     }
 
     const updateTimeboxMutation = useMutation({
-        mutationFn: (timeboxData) => axios.put(serverIP+'/updateTimeBox', timeboxData),
-        onMutate: async (timeboxData) => {
+        mutationFn: ({ timeboxData, headers }) => axios.put(serverIP+'/updateTimeBox', timeboxData, headers),
+        onMutate: async ({ timeboxData, headers }) => {
             await queryClient.cancelQueries(['schedule']); 
             
             const previousSchedule = queryClient.getQueryData(['schedule']);
@@ -75,8 +76,8 @@ export default function EditTimeboxForm(props) {
     });
 
     const deleteTimeboxMutation = useMutation({
-        mutationFn: (objectUUID) => axios.post(serverIP+'/deleteTimebox', {objectUUID: objectUUID}),
-        onMutate: async (objectUUID) => {
+        mutationFn: ({ objectUUID, headers }) => axios.post(serverIP+'/deleteTimebox', {objectUUID: objectUUID}, headers),
+        onMutate: async ({ objectUUID, headers }) => {
             await queryClient.cancelQueries(['schedule']); 
             
             const previousSchedule = queryClient.getQueryData(['schedule']);
@@ -113,7 +114,7 @@ export default function EditTimeboxForm(props) {
         }
     });
 
-    function updateTimeBox() {
+async function updateTimeBox() {
         let endTime = convertToDayjs(addBoxesToTime(boxSizeUnit, boxSizeNumber, time, numberOfBoxes), date).utc().format(); //add boxes to start time to get end time
 
         let data = {
@@ -136,39 +137,48 @@ export default function EditTimeboxForm(props) {
             updateData["reoccuring"] = { create: { startOfDayRange, endOfDayRange } };
         } 
 
-        updateTimeboxMutation.mutate(data);
+        const session = await fetchAuthSession();
+        const accessToken = session.tokens?.accessToken.toString();
+        const headers = {
+            headers: {
+                'Authorization': `Bearer ${accessToken}`,
+                'Content-Type': 'application/json'
+            }
+        };
+        updateTimeboxMutation.mutate({ timeboxData: data, headers });
     }
     
-    function deleteTimeBox() {
-        deleteTimeboxMutation.mutate(props.data.objectUUID);
+    async function deleteTimeBox() {
+        const session = await fetchAuthSession();
+        const accessToken = session.tokens?.accessToken.toString();
+        const headers = {
+            headers: {
+                'Authorization': `Bearer ${accessToken}`,
+                'Content-Type': 'application/json'
+            }
+        };
+        deleteTimeboxMutation.mutate({ objectUUID: props.data.objectUUID, headers });
     }
 
-    function clearRecording() {
-        
-        axios.post(serverIP+'/clearRecording', {
-            id: props.data.id,
-            objectUUID: props.data.objectUUID,
-        }).then(async () => {   
+async function clearRecording() {
+        const session = await fetchAuthSession();
+        const accessToken = session.tokens?.accessToken.toString();
+        const headers = {
+            headers: {
+                'Authorization': `Bearer ${accessToken}`,
+                'Content-Type': 'application/json'
+            }
+        };
+        try {
+            await axios.post(serverIP+'/clearRecording', {
+                id: props.data.id,
+                objectUUID: props.data.objectUUID,
+            }, headers);
             dispatch({type: 'alert/set', payload: {open: true, title: "Timebox", message: "Cleared recording!"}});
             await queryClient.refetchQueries();
-        }).catch(function(error) {
+        } catch(error) {
             dispatch({type: 'alert/set', payload: {open: true, title: "Error", message: "An error occurred, please try again or contact the developer"}});
             console.log(error); 
-        });
-    }
-
-    function safeSetNumberOfBoxes(number) {
-        let amountOfBoxes;
-        try {
-            amountOfBoxes = Number(number)
-        }catch(e){
-            amountOfBoxes = 1;
-        }
-
-        if(amountOfBoxes > maxNumberOfBoxes) {
-            setNumberOfBoxes('1');
-        }else {
-            setNumberOfBoxes(String(amountOfBoxes));
         }
     }
 

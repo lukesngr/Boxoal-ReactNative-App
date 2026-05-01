@@ -13,6 +13,7 @@ import { useMutation } from "@tanstack/react-query";
 import dayjs from "dayjs";
 import uuid from 'react-native-uuid';
 import { useDispatch, useSelector } from "react-redux";
+import { fetchAuthSession } from "aws-amplify/auth";
 
 export default function CreateGoalForm(props) {
     const dispatch = useDispatch();
@@ -28,8 +29,8 @@ export default function CreateGoalForm(props) {
     let maxNumberOfGoals = getMaxNumberOfGoals(goalsCompleted);
 
     const createGoalMutation = useMutation({
-        mutationFn: (goalData) => axios.post(serverIP+'/createGoal', goalData),
-        onMutate: async (goalData) => {
+        mutationFn: ({ goalData, headers }) => axios.post(serverIP+'/createGoal', goalData, headers),
+        onMutate: async ({ goalData, headers }) => {
             await queryClient.cancelQueries(['schedule']); 
             
             const previousGoals = queryClient.getQueryData(['schedule']);
@@ -60,7 +61,7 @@ export default function CreateGoalForm(props) {
         }
     });
 
-    function createGoal() {
+    async function createGoal() {
         const isActiveOnInTree = props.active ? "active" : "waiting";
         const wakeupTimeSplitted = wakeupTime.split(':');
         const alteredDate = dayjs(targetDate).hour(wakeupTimeSplitted[0]).minute(wakeupTimeSplitted[1]);
@@ -86,7 +87,15 @@ export default function CreateGoalForm(props) {
         }
         console.log("ds", goalLimit, goalsNotCompleted)
         if (goalLimit > goalsNotCompleted || !props.active) {
-            createGoalMutation.mutate(goalData);
+            const session = await fetchAuthSession();
+            const accessToken = session.tokens?.accessToken.toString();
+            const headers = {
+                headers: {
+                    'Authorization': `Bearer ${accessToken}`,
+                    'Content-Type': 'application/json'
+                }
+            };
+            createGoalMutation.mutate({ goalData, headers });
         } else {
             dispatch({type: 'alert/set', payload: { open: true, title: "Error", message: "Please complete more goals and we will unlock more goal slots for you!" }});
         }

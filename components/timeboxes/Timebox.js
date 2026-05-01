@@ -8,6 +8,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faDiagramPredecessor } from '@fortawesome/free-solid-svg-icons';
 import axios from "axios";
 import serverIP from "../../modules/serverIP";
+import { fetchAuthSession } from "aws-amplify/auth";
 
 export default function Timebox(props) {
     const dispatch = useDispatch();
@@ -48,13 +49,25 @@ export default function Timebox(props) {
         }
     }
 
-    function expandSchedule() {
+    async function expandSchedule() {
         let smallestTimeboxLength = findSmallestTimeBoxLengthInSpace(timeboxGrid[date], boxesInsideSpace);
+        const session = await fetchAuthSession();
+        const accessToken = session.tokens?.accessToken.toString();
+        const headers = {
+            headers: {
+                'Authorization': `Bearer ${accessToken}`,
+                'Content-Type': 'application/json'
+            }
+        };
         if(smallestTimeboxLength % 60 == 0) {
-            axios.post(serverIP+'/updateProfile', {...profile, boxSizeNumber: (smallestTimeboxLength / 60), boxSizeUnit: 'hr'}).catch(function(error) { console.log(error); });
+            try {
+                await axios.post(serverIP+'/updateProfile', {...profile, boxSizeNumber: (smallestTimeboxLength / 60), boxSizeUnit: 'hr'}, headers);
+            } catch(error) { console.log(error); };
             dispatch({type: 'profile/set', payload: {...profile, boxSizeNumber: smallestTimeboxLength, boxSizeUnit: 'hr'}});
         }else{
-            axios.post(serverIP+'/updateProfile', {...profile, boxSizeNumber: smallestTimeboxLength, boxSizeUnit: 'min'}).catch(function(error) { console.log(error); });
+            try {
+                await axios.post(serverIP+'/updateProfile', {...profile, boxSizeNumber: smallestTimeboxLength, boxSizeUnit: 'min'}, headers);
+            } catch(error) { console.log(error); };
             dispatch({type: 'profile/set', payload: {...profile, boxSizeNumber: smallestTimeboxLength, boxSizeUnit: 'min'}});
         }
     }

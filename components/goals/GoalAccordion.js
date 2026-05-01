@@ -6,6 +6,8 @@ import TimeboxAsListItem from "../timeboxes/TimeboxAsListItem";
 import axios from "axios";
 import serverIP from "../../modules/serverIP";
 import { useDispatch } from "react-redux";
+import { queryClient } from '../../modules/queryClient.js';
+import { fetchAuthSession } from "aws-amplify/auth";
 
 export default function GoalAccordion(props) {
     const [editGoalFormVisible, setEditGoalFormVisible] = useState(false);
@@ -13,30 +15,39 @@ export default function GoalAccordion(props) {
     const [checked, setChecked] = useState(false);
     const dispatch = useDispatch();
 
-    function completeGoal() {
-        axios.put(serverIP+'/updateGoal', {
-            title: props.goal.title,
-            priority: parseInt(props.goal.priority), //damn thing won't convert auto even with number input
-            targetDate: props.goal.targetDate, 
-            id: props.goal.id,
-            completed: true,
-            completedOn: new Date().toISOString(),
-            active: false,
-            state: 'completed'
-        }
-        ).then(async () => {
+    async function completeGoal() {
+        const session = await fetchAuthSession();
+        const accessToken = session.tokens?.accessToken.toString();
+        const headers = {
+            headers: {
+                'Authorization': `Bearer ${accessToken}`,
+                'Content-Type': 'application/json'
+            }
+        };
+        try {
+            await axios.put(serverIP+'/updateGoal', {
+                title: props.goal.title,
+                priority: parseInt(props.goal.priority),
+                targetDate: props.goal.targetDate, 
+                id: props.goal.id,
+                completed: true,
+                completedOn: new Date().toISOString(),
+                active: false,
+                state: 'completed'
+            }, headers);
             dispatch({type: 'alert/set', payload: {open: true, title: "Timebox", message: "Updated goal!"}});
             await queryClient.refetchQueries();
-        }).catch(function(error) {
+        } catch(error) {
             dispatch({type: 'alert/set', payload: {shown: true, title: "Error", message: "An error occurred, please try again or contact the developer"}});
             console.log(error);
-        })
+        }
 
-        axios.get(serverIP+'/setNextGoalToActive').then(async () => {
+        try {
+            await axios.get(serverIP+'/setNextGoalToActive', headers);
             await queryClient.refetchQueries();
-        }).catch(function(error) {
+        } catch(error) {
             console.log(error);
-        })
+        }
     }
 
     return (!(props.goal.state == 'active') ? <></> : ( <>

@@ -11,6 +11,7 @@ import axios from "axios";
 import serverIP from "../modules/serverIP";
 import { useAuthenticator } from "@aws-amplify/ui-react-native";
 import dayjs from "dayjs";
+import { fetchAuthSession } from "aws-amplify/auth";
 
 export default function SettingsDialog(props) {
     const {user} = useAuthenticator();
@@ -34,24 +35,34 @@ export default function SettingsDialog(props) {
         dispatch({type: 'onDayView/set', payload: value});
     }
 
-    function updateProfile() {
+    async function updateProfile() {
         const wakeupTimeAsText = dayjs(wakeupTime).format('HH:mm');
         const convertedBackBoxSizeNumber = Number(boxSizeNumber);
         
-        axios.put('/api/updateProfile', {
-            scheduleIndex: (scheduleIndex - 1),
-            scheduleID: data[scheduleIndex - 1].id,
-            boxSizeUnit,
-            boxSizeNumber: convertedBackBoxSizeNumber,
-            wakeupTime: wakeupTimeAsText,
-            userUUID: user.userId,
-            goalLimit: Number(goalLimit),
-        }).then(async () => {
+        const session = await fetchAuthSession();
+        const accessToken = session.tokens?.accessToken.toString();
+        const headers = {
+            headers: {
+                'Authorization': `Bearer ${accessToken}`,
+                'Content-Type': 'application/json'
+            }
+        };
+        
+        try {
+            await axios.put('/api/updateProfile', {
+                scheduleIndex: (scheduleIndex - 1),
+                scheduleID: data[scheduleIndex - 1].id,
+                boxSizeUnit,
+                boxSizeNumber: convertedBackBoxSizeNumber,
+                wakeupTime: wakeupTimeAsText,
+                userUUID: user.userId,
+                goalLimit: Number(goalLimit),
+            }, headers);
             dispatch({type: 'alert/set', payload: { open: true, title: "Profile", message: "Updated profile!" }});
             await queryClient.refetchQueries();
-        }).catch(() =>{
+        } catch(error) {
             dispatch({type: 'alert/set', payload: { open: true, title: "Error", message: "An error occurred, please try again or contact the developer" }});
-        });
+        };
 
         dispatch({
             type: 'profile/set',

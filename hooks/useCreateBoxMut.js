@@ -8,7 +8,7 @@ export default function useCreateBoxMut(goalSelected, closeModal) {
   const dispatch = useDispatch();
   const {scheduleIndex} = useSelector(state => state.profile.value);
   return useMutation({
-        mutationFn: (timeboxData) => axios.post(serverIP+'/createTimebox', timeboxData),
+        mutationFn: ({ timeboxData, headers }) => axios.post(serverIP+'/createTimebox', timeboxData, headers),
         onMutate: async (timeboxData) => {
             await queryClient.cancelQueries(['schedule']); 
             

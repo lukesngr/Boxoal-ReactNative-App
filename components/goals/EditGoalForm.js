@@ -37,7 +37,7 @@ export default function EditGoalForm(props) {
                 if (!old) return old;
                 let copyOfOld = JSON.parse(JSON.stringify(old));
                 let goalIndex = copyOfOld[scheduleIndex].goals.findIndex(element => element.objectUUID == props.data.objectUUID);
-                copyOfOld[scheduleIndex].goals[goalIndex] = {...goalData, timeboxes: copyOfOld[scheduleIndex].goals[goalIndex].timeboxes};
+                copyOfOld[scheduleIndex].goals[goalIndex] = {...goalData};
                 return copyOfOld;
             });
             
@@ -116,8 +116,7 @@ export default function EditGoalForm(props) {
             props.close();
             dispatch({type: 'alert/set', payload: {open: true, title: "Error", message: "An error occurred, please try again or contact the developer"}});
             
-        });
-    }
+        };
     }
 
     async function logMetric() {
@@ -173,11 +172,11 @@ export default function EditGoalForm(props) {
                 };
                 try {
                     await axios.post('/api/logMetric', data, headers);
-                    close();
+                    props.close();
                     dispatch({type: 'alert/set', payload: { open: true, title: "Goal", message: "Logged metric!" }});
                     await queryClient.refetchQueries();
                 } catch(error) {
-                    close();
+                    props.close();
                     dispatch({type: 'alert/set', payload: { open: true, title: "Error", message: "An error occurred, please try again or contact the developer" }});
                 }
             }

@@ -200,8 +200,8 @@ export function findSmallestTimeBoxLengthInSpace(timeboxGridFilteredByDate, time
     return smallestTimeboxLength;
 } 
 
-export function getStatistics(recordedTimeboxes, timeboxes) {
-    const {wakeupTime} = useSelector((state) => state.profile.value);
+export function getStatistics(recordedTimeboxes) {
+    const timeboxesMap = useSelector(state => state.scheduleData.value.timeboxes);
     let reschedules = 0;
     let minutesOverBy = 0;
     let averageTimeStartedOffBy = 0;
@@ -209,16 +209,14 @@ export function getStatistics(recordedTimeboxes, timeboxes) {
     let timeboxesThatMatchCorrectTime = 0;
     let startOfThisWeek = dayjs().day(0);
     let endOfThisWeek = dayjs().day(6);
-    let today = dayjs()
-    let nextDayWakeup = convertToDayjs(wakeupTime, (today.date()+1)+'/'+(today.month()+1));
     let hoursLeftThisWeek = 144;
 
     for(let i = 0; i < recordedTimeboxes.length; i++) {
         let recordedTimebox = recordedTimeboxes[i];
         let recordedTimeboxStartTime = new Date(recordedTimebox.recordedStartTime);
         let recordedTimeboxEndTime = new Date(recordedTimebox.recordedEndTime);
-        let timeboxStartTime = new Date(recordedTimebox.timeBox.startTime);
-        let timeboxEndTime = new Date(recordedTimebox.timeBox.endTime);
+        let timeboxStartTime = new Date(timeboxesMap.getFromK2(recordedTimebox.timeboxUUID)?.startTime);
+        let timeboxEndTime = new Date(timeboxesMap.getFromK2(recordedTimebox.timeboxUUID)?.endTime);
         
         //reschedule rate
         if(recordedTimeboxStartTime.getDate() != timeboxStartTime.getDate()) {
@@ -256,7 +254,7 @@ export function getStatistics(recordedTimeboxes, timeboxes) {
         percentageRescheduled = 0;
     }
 
-    for(let timebox of timeboxes) {
+    for(let timebox of timeboxesMap.k2ToValue) {
         let isInWeek = dayjs(timebox.startTime).isSameOrAfter(startOfThisWeek, 'date') && dayjs(timebox.startTime).isBefore(endOfThisWeek);
         let isReoccuring = timebox.reoccuring != null;
         if(timebox.isTimeblock && isInWeek) {

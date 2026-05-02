@@ -29,9 +29,9 @@ export default function GoalAccordion(props) {
         try {
             await axios.put(serverIP+'/updateGoal', {
                 title: props.goal.title,
-                priority: parseInt(props.goal.priority),
                 targetDate: props.goal.targetDate, 
                 id: props.goal.id,
+                objectUUID: props.goal.objectUUID,
                 completed: true,
                 completedOn: new Date().toISOString(),
                 active: false,

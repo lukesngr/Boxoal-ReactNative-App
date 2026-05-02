@@ -24,9 +24,8 @@ export default function CreateGoalForm(props) {
     const [hasMetric, setHasMetric] = useState(false);
     const [metric, setMetric] = useState(0);
     const {scheduleIndex, wakeupTime, goalLimit} = useSelector(state => state.profile.value);
-    let goalsCompleted = props.goals.reduce((count, item) => (item.state == 'completed' || item.state == 'failed') ? count + 1 : count, 0);
-    let goalsNotCompleted = props.goals.length - goalsCompleted;
-    let maxNumberOfGoals = getMaxNumberOfGoals(goalsCompleted);
+    const {goalsActive, goalsCompleted} = useSelector(state => state.goalStatistics.value);
+    let goalsNotCompleted = goalsActive - goalsCompleted;
 
     const createGoalMutation = useMutation({
         mutationFn: ({ goalData, headers }) => axios.post(serverIP+'/createGoal', goalData, headers),
@@ -48,12 +47,10 @@ export default function CreateGoalForm(props) {
         onSuccess: () => {
             props.close();
             dispatch({type: 'alert/set', payload: { open: true, title: "Goal", message: "Created goal!" }});
-            console.log("yo")
             queryClient.invalidateQueries(['schedule']); // Refetch to get real data
         },
         onError: (error, goalData, context) => {
             queryClient.setQueryData(['schedule'], context.previousGoals);
-            console.log("yo")
             props.close();
             dispatch({type: 'alert/set', payload: { open: true, title: "Error", message: "An error occurred, please try again or contact the developer" }});
             queryClient.invalidateQueries(['schedule']);
@@ -85,8 +82,7 @@ export default function CreateGoalForm(props) {
         if(hasMetric) {
             goalData.metric = Number(metric);
         }
-        console.log("ds", goalLimit, goalsNotCompleted)
-        if (goalLimit > goalsNotCompleted || !props.active) {
+        if (goalLimit > goalsNotCompleted || goalLimit == -1 || !props.active) {
             const session = await fetchAuthSession();
             const accessToken = session.tokens?.accessToken.toString();
             const headers = {

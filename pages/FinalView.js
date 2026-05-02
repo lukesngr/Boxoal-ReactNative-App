@@ -21,6 +21,7 @@ import { getCurrentUser } from 'aws-amplify/auth';
 import { get } from 'react-native/Libraries/TurboModule/TurboModuleRegistry';
 import Alert from '../components/Alert';
 import * as Sentry from "@sentry/react-native";
+import { fetchAuthSession } from 'aws-amplify/auth';
 
 import Erroring from '../components/Erroring';
 
@@ -43,9 +44,15 @@ function FinalViewSeperatedForFunctionality({userId, navigation, route, dispatch
     const {status, data, error, refetch} = useQuery({
         queryKey: ["schedule"], 
         queryFn: async () => {
-            const response = await axios.get(serverIP+"/getSchedules", { params: {
-                userUUID: userId
-            }});
+            const session = await fetchAuthSession();
+            const accessToken = session.tokens?.accessToken.toString();
+            const headers = {
+              headers: {
+                'Authorization': `Bearer ${accessToken}`,
+                'Content-Type': 'application/json'
+              }
+            };
+            const response = await axios.get(serverIP+"/getSchedules", headers);
             return response.data;
         },
         enabled: true

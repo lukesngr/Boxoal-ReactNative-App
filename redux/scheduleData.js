@@ -1,4 +1,4 @@
-import DoubleKeyMap from '@/modules/doubleKeyMap';
+import DoubleKeyMap from '../modules/doubleKeyMap';
 import { createSlice } from '@reduxjs/toolkit'
 
 export const scheduleData = createSlice({

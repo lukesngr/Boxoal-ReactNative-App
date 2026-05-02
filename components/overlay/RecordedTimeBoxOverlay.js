@@ -9,9 +9,9 @@ export default function RecordedTimeBoxOverlay(props) {
     const onDayView = useSelector(state => state.onDayView.value);
     const daySelected = useSelector(state => state.daySelected.value);
     const {headerWidth} = useSelector(state => state.overlayDimensions.value);
-    const {recordedTimeboxes} = useSelector(state => state.scheduleData.value);
+    const recordedTimeboxes = useSelector(state => state.scheduleData.value.recordedTimeboxes);
     let displayedRecordings = [];
-    let recordedBoxesForWeek = useRecordedBoxes(props.dayToName, recordedTimeboxes);
+    let recordedBoxesForWeek = useRecordedBoxes(props.dayToName, [...recordedTimeboxes.k2ToValue.values()]);
     if(onDayView) {
         displayedRecordings = [recordedBoxesForWeek[daySelected]];
         

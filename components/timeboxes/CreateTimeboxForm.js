@@ -23,7 +23,7 @@ export default function CreateTimeboxForm(props) {
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
     const [numberOfBoxes, setNumberOfBoxes] = useState('1');
-    const activeGoals = goals.filter(goal => goal.state == 'active');
+    const activeGoals = [...goals.k2ToValue.values()].filter(goal => goal.state == 'active');
     const [goalSelected, setGoalSelected] = useState(activeGoals.length == 0 ? -1 : activeGoals[0].id);
     
     const [moreOptionsVisible, setMoreOptionsVisible] = useState(false);
@@ -39,7 +39,7 @@ export default function CreateTimeboxForm(props) {
         dispatch({type: 'modalVisible/set', payload: {visible: false, props: {}}});
     }
 
-    const createTimeboxMutation = useCreateBoxMut(goalSelected);
+    const createTimeboxMutation = useCreateBoxMut(goalSelected, closeModal);
 
    
     async function handleSubmit() {

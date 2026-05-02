@@ -17,13 +17,9 @@ export default function useCreateBoxMut(goalSelected, closeModal) {
             queryClient.setQueryData(['schedule'], (old) => {
                 if (!old) return old;
                 let copyOfOld = JSON.parse(JSON.stringify(old));
-                copyOfOld[scheduleIndex].timeboxes.push({...timeboxData, recordedTimeBoxes: []});
-                if(!(timeboxData.isTimeblock)) {
-                    const goalIndex = copyOfOld[scheduleIndex].goals.findIndex(element => element.id == Number(goalSelected));
-                    copyOfOld[scheduleIndex].goals[goalIndex].timeboxes.push({...timeboxData})
-                }
+                copyOfOld[scheduleIndex].timeboxes.push(timeboxData);
 		if(Object.hasOwn(timeboxData, 'recordedTimeBox')) {
-		  copyOfOld[scheduleIndex].recordedTimeboxes.push({...timeboxData.recordedTimeBox, timeBox: timeboxData});
+		  copyOfOld[scheduleIndex].recordedTimeboxes.push({...timeboxData.recordedTimeBox});
 		}                
 		return copyOfOld;
             });

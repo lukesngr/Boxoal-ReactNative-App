@@ -26,6 +26,15 @@ export default function EditGoalForm(props) {
     const [metric, setMetric] = useState(props.data.metric != null ? String(props.data.metric) : '');
     const [onLogMetricView, setOnLogMetricView] = useState(false);
 
+    function closeMetricView() {
+    	if(props.data.metric != null) {
+	  setMetric(String(props.data.metric))
+        }else{ 
+	  setMetric('')
+        }
+        setOnLogMetricView(false)
+   }
+
     const updateGoalMutation = useMutation({
         mutationFn: ({ goalData, headers }) => axios.put(serverIP+'/updateGoal', goalData, headers),
         onMutate: async ({ goalData, headers }) => {
@@ -133,7 +142,7 @@ export default function EditGoalForm(props) {
 
             if(metric >= props.data.metric) {
                 const wakeupTimeSplitted = wakeupTime.split(':');
-                const alteredDate = targetDate.hour(wakeupTimeSplitted[0]).minute(wakeupTimeSplitted[1]);
+                const alteredDate = dayjs(targetDate).hour(wakeupTimeSplitted[0]).minute(wakeupTimeSplitted[1]);
 
                 const goalData = {
                     title,
@@ -156,10 +165,11 @@ export default function EditGoalForm(props) {
                 updateGoalMutation.mutate({ goalData, headers });
 
                 try {
-                    await axios.get('/api/setNextGoalToActive', {line: props.data.partOfLine, ...headers});
+                    await axios.get(serverIP+'/setNextGoalToActive', {line: props.data.partOfLine, ...headers});
                     await queryClient.refetchQueries();
                 } catch(error) {
                 }
+                closeMetricView()
             }else{
 
                 const session = await fetchAuthSession();
@@ -171,12 +181,14 @@ export default function EditGoalForm(props) {
                     }
                 };
                 try {
-                    await axios.post('/api/logMetric', data, headers);
+                    await axios.post(serverIP+'/logMetric', data, headers);
+                    closeMetricView();
                     props.close();
                     dispatch({type: 'alert/set', payload: { open: true, title: "Goal", message: "Logged metric!" }});
                     await queryClient.refetchQueries();
                 } catch(error) {
-                    props.close();
+		    closeMetricView()
+                    props.close()
                     dispatch({type: 'alert/set', payload: { open: true, title: "Error", message: "An error occurred, please try again or contact the developer" }});
                 }
             }
@@ -189,7 +201,7 @@ export default function EditGoalForm(props) {
     <>
         <Portal>
           <Dialog style={styles.forms.dialogStyle} visible={props.visible} onDismiss={props.close}>
-            <Dialog.Title style={styles.forms.dialogTitleStyle}>Edit Goal</Dialog.Title>
+            <Dialog.Title style={styles.forms.dialogTitleStyle}>{onLogMetricView ? 'Log Metric' : 'Edit Goal'}</Dialog.Title>
             <Dialog.Content>
                 {onLogMetricView ? (
                     <TextInput label="Metric" value={metric} onChangeText={setMetric} {...styles.paperInput}/> 
@@ -227,9 +239,9 @@ export default function EditGoalForm(props) {
             </Dialog.Content>
             <Dialog.Actions>
                 {hasMetric && <Button {...styles.forms.actionButton} mode="contained" onPress={logMetric}>Log Metric</Button>}
-                <Button {...styles.forms.actionButton} mode="contained" onPress={updateGoal}>Update</Button>
-                <Button {...styles.forms.nonActionButton} onPress={deleteGoal}>Delete</Button>
-                <Button {...styles.forms.nonActionButton} onPress={props.close}>Close</Button>
+                {!onLogMetricView && <Button {...styles.forms.actionButton} mode="contained" onPress={updateGoal}>Update</Button> }
+                {!onLogMetricView && <Button {...styles.forms.nonActionButton} onPress={deleteGoal}>Delete</Button> }
+                <Button {...styles.forms.nonActionButton} onPress={onLogMetricView ? (closeMetricView) : (props.close)}>Close</Button>
             </Dialog.Actions>
           </Dialog>
         </Portal>
